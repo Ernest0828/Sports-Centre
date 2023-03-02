@@ -5,8 +5,15 @@ module.exports = function(req, res, next) {
   // function to check the validity of the email address entered by the customer
   // return true if email is valid and false otherwise
   function validateEmail(customerEmail) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerEmail);
+    return /^[^\s@]+@(gmail\.com|yahoo\.com|hotmail\.com)$/.test(customerEmail);
   }
+  
+  // function to check if phone number is valid (10 digits && starts with 0)
+  function validatePhoneNumber(phoneNumber) {
+    // remove any non-digit characters from the phone number
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+    return /^0\d{9}$/.test(phoneNumber);
+}
 
   // for register route
   if (req.path === "/register") {
@@ -18,6 +25,10 @@ module.exports = function(req, res, next) {
     // if email is invalid 
     else if (!validateEmail(email)) {
       return res.status(401).send("Invalid Email");
+    }
+    // if phone number is invalid
+    else if (!validatePhoneNumber(number)) {
+      return res.status(401).send("Invalid Phone n")
     }
   } 
   
