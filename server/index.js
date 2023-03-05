@@ -8,11 +8,14 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//     res.send('<h1>GymCorp</h1>');
-// });
+app.get('/', (req, res) => {
+    res.send('<h1>GymCorp</h1>');
+});
 
-app.use("/auth", require("./routes/auth"));
+// register and login customer routes
+app.use("/auth", require("./routes/jwtAuth"));
+
+// dashboard route
 
 app.listen(PORT, () => {
     console.log('App listening on port ' + PORT);
