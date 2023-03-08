@@ -6,5 +6,6 @@ CREATE TABLE customer(
     custName VARCHAR(255) NOT NULL,
     custNumber INT,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    membership VARCHAR(255)
 );

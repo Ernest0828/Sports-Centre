@@ -1,18 +1,15 @@
 //glue for libraries
 const express = require("express");
-const app = express(); //variable that takes express library and runs it  
-const cors = require("cors");
-const pool = require("../db")
+const router = express.Router()
+const pool = require("../database/db")
 
 //ROUTES//
  
 //create new customer//
-app.post("/customer", async (req, res)=>{
-
+router.post("/customer", async (req, res)=>{
+    //console.log(req.body);
+    const { description } = req.body;
     try {
-
-        //console.log(req.body);
-        const { description } = req.body;
         const newCustomer = await pool.query("INSERT INTO customers (description) VALUES($1) RETURNING *", //adding data so RETURNING gets back the data, same for update
         [description]
         );
@@ -27,7 +24,7 @@ app.post("/customer", async (req, res)=>{
 
 //get all customer// 
 
-app.get("/customer", async(req, res) => {
+router.get("/customer", async(req, res) => {
     try {
         const allCustomers = await pool.query("SELECT * from customers"); //no returning * because SELECT does that
         res.json(allCustomers.rows);
@@ -38,7 +35,7 @@ app.get("/customer", async(req, res) => {
 
 //get one customer//
 
-app.get("/customer/:id", async(req, res) => {
+router.get("/customer/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const customers = await pool.query("SELECT * from customers WHERE customer_id = $1", [id]) //where clause to specify 
@@ -51,7 +48,7 @@ app.get("/customer/:id", async(req, res) => {
 
 //update a customer detail//
 
-app.put("/customer/:id", async(req, res) => {
+router.put("/customer/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const {description} = req.body;
@@ -67,7 +64,7 @@ app.put("/customer/:id", async(req, res) => {
 
 //delete a customer//
 
-app.delete("/customer/:id", async(req, res) => {
+router.delete("/customer/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const deleteCustomer = await pool.query("DELETE FROM customers WHERE customer_id = $1", 
@@ -81,7 +78,7 @@ app.delete("/customer/:id", async(req, res) => {
 
 //create new activity//
 
-app.post("/activities", async (req, res)=>{
+router.post("/activities", async (req, res)=>{
 
     try {
 
@@ -101,7 +98,7 @@ app.post("/activities", async (req, res)=>{
 
 //get all activity//
 
-app.get("/activities", async(req, res) => {
+router.get("/activities", async(req, res) => {
     try {
         const allActivities = await pool.query("SELECT * from activities"); //no returning * because SELECT does that
         res.json(allActivities.rows);
@@ -112,7 +109,7 @@ app.get("/activities", async(req, res) => {
 
 //get one activity//
 
-app.get("/activities/:id", async(req, res) => {
+router.get("/activities/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const activity = await pool.query("SELECT * from activities WHERE activity_id = $1", [id]) //where clause to specify 
@@ -125,7 +122,7 @@ app.get("/activities/:id", async(req, res) => {
 
 //update an activity//
 
-app.put("/activities/:id", async(req, res) => {
+router.put("/activities/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const {description} = req.body;
@@ -142,7 +139,7 @@ app.put("/activities/:id", async(req, res) => {
 
 //delete an activity//
 
-app.delete("/activities/:id", async(req, res) => {
+router.delete("/activities/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const deleteActivity = await pool.query("DELETE FROM activities WHERE activity_id = $1", 
@@ -157,7 +154,7 @@ app.delete("/activities/:id", async(req, res) => {
 
 //create new staff//
 
-app.post("/staff", async (req, res)=>{
+router.post("/staff", async (req, res)=>{
 
     try {
 
@@ -181,7 +178,7 @@ app.post("/staff", async (req, res)=>{
 
 //get all staff//
 
-app.get("/staff", async(req, res) => {
+router.get("/staff", async(req, res) => {
     try {
         const allStaff = await pool.query("SELECT * from staff"); //no returning * because SELECT does that
         res.json(allStaff.rows);
@@ -192,7 +189,7 @@ app.get("/staff", async(req, res) => {
 
 //get one staff//
 
-app.get("/staff/:id", async(req, res) => {
+router.get("/staff/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const staff = await pool.query("SELECT * from staff WHERE staff_id = $1", [id]) //where clause to specify 
@@ -228,7 +225,7 @@ app.get("/staff/:id", async(req, res) => {
 
 //delete a staff//
 
-app.delete("/activities/:id", async(req, res) => {
+router.delete("/activities/:id", async(req, res) => {
     try {
         const {id} = req.params;
         const deleteActivity = await pool.query("DELETE FROM activities WHERE activity_id = $1", 
@@ -239,5 +236,7 @@ app.delete("/activities/:id", async(req, res) => {
         console.error(err.message);
     }
 })
+
+module.exports = router;
 
 //ROUTES_END//

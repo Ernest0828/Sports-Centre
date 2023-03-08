@@ -28,7 +28,7 @@ module.exports = function(req, res, next) {
     }
     // if phone number is invalid
     else if (!validatePhoneNumber(number)) {
-      return res.status(401).send("Invalid Phone n")
+      return res.status(401).send("Invalid Phone Number")
     }
   } 
   

@@ -1,23 +1,22 @@
-// import all necessary dependencies
 const express = require("express")
 const router = express.Router()
-const pool = require("../db");
+const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
-const validity = require("../middleware/validData");
+const validData = require("../middleware/validData");
+const auth = require("../middleware/auth")
 
-// routes for registering new customer, using HTTP POST method
-router.post("/register", validity, async (req, res) => {
+// routes for registering new customer
+router.post("/register", validData, async (req, res) => {
+    // destructure req.body (name, number, email, password)
+    const { name, number, email, password } = req.body;
+
     try {
-        // destructure req.body (name, number, email, password)
-        const { name, number, email, password } = req.body;
-
         // check if customer already exist
         const customer = await pool.query("SELECT * FROM customer WHERE email = $1", [
             email
         ]);
-        if (customer.rows.length != 0) {
-            // return error 401 : "Unauthenticated"
+        if (customer.rows.length > 0) {
             return res.status(401).send("User already exits");
         }
         // hashes password using bcrypt and inserts a new record into the customer table
@@ -27,7 +26,7 @@ router.post("/register", validity, async (req, res) => {
         const bcryptPassword = await bcrypt.hash(password, salt);
 
         // add new customer to database
-        const newCustomer = await pool.query
+        let newCustomer = await pool.query
         ("INSERT INTO customer (custName, custNumber, email, password) VALUES ($1, $2, $3, $4) RETURNING *",
         [name, number, email, bcryptPassword]
         );
@@ -42,18 +41,17 @@ router.post("/register", validity, async (req, res) => {
     }
 });
 
-// routes for logging in existing customer, using HTTP POST method
-router.post("/login", validity, async (req, res) => {
-    try {
-        // destructure the req.body
-        const { email, password } = req.body;
+// routes for logging in existing customer
+router.post("/login", validData, async (req, res) => {
+    // destructure the req.body
+    const { email, password } = req.body;
 
+    try {
         // check if customer does not exist
         const customer = await pool.query("SELECT * FROM customer WHERE email = $1", [
             email
         ]);
         if (customer.rows.length === 0) {
-            // error 401 : "Unauthenticated"
             return res.status(401).send("Email and Password is incorrect");
         }
 
@@ -74,5 +72,14 @@ router.post("/login", validity, async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
+router.get("/verify", auth, (req, res) => {
+    try {
+        res.json(true);
+    } catch (error) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+})
 
 module.exports = router;
