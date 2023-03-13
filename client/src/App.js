@@ -15,7 +15,7 @@ import Facilities from './components/pages/facilities/Facilities';
 
 
 function App() {
-  return <Facilities/>
+  return <Profile />
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );
