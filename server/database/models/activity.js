@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-const Facility = require("./facility");
+// const Facility = require("./facility");
 
-const { INTEGER, STRING, DATE, TIME } = Sequelize;
+const { INTEGER, STRING, TIME, FLOAT } = Sequelize;
 
 const Activity = db.define('Activity', {
     activityId: {
@@ -15,17 +15,21 @@ const Activity = db.define('Activity', {
         type: STRING,
         allowNull: false
     },
-    date: {
-        type: DATE,
-        allowNull: false,
+    day: {
+        type: STRING,
+        allowNull: true,
     },
     time: {
         type: TIME,
-        allowNull: false,
+        allowNull: true,
+    },
+    price: {
+        type: FLOAT,
+        allowNull: false
     }
 });
 
 // add foreign key constraint to facilityId column
-Activity.belongsTo(Facility, { foreignKey: 'facilityId' });
+// Activity.belongsTo(Facility, { foreignKey: 'facilityId' });
 
 module.exports = Activity;

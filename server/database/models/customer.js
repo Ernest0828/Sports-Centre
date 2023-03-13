@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const { STRING, UUID, UUIDV4, INTEGER } = Sequelize;
+const { STRING, UUID, UUIDV4, INTEGER, BOOLEAN } = Sequelize;
 
 const Customer = db.define('Customer', {
   customerId: {
@@ -26,8 +26,8 @@ const Customer = db.define('Customer', {
     type: STRING,
     allowNull: false
   },
-  membership: {
-    type: STRING,
+  isMembership: {
+    type: BOOLEAN,
     allowNull: true
   },
   bookings: {

@@ -33,7 +33,7 @@ const Classes = db.define('Classes', {
 });
 
 // add foreign key constraint
-Classes.belongsTo(Payment, { foreignKey: 'paymentId' });
-Classes.belongsTo(Facility, { foreignKey: 'facilityId' });
+// Classes.belongsTo(Payment, { foreignKey: 'paymentId' });
+// Classes.belongsTo(Facility, { foreignKey: 'facilityId' });
 
 module.exports = Classes;
