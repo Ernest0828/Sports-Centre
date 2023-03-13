@@ -6,18 +6,22 @@ const SECRET = process.env.jwtSecret;
 const verifyToken = async(req,res,next) => {
     try {       
         // destructure the token from fetch request
-        const token = req.header("token");
-
+        // const token = req.header("token");
+        const token = req.cookies.token;
         // if not authorize to enter
         if (!token) {
             return res.status(403).send("Not Authorize");
         }
         // check validity of token
         // if the token is valid, the payload data is extracted and set to req.customer
-        const verified = jwt.verify(token, SECRET);
-        req.customer = verified.customer;
-        next();
-        
+        // const verified = jwt.verify(token, SECRET);
+        // req.customer = verified.customer;
+        // next();
+        jwt.verify(token, SECRET, (err, user) => {
+            if (err) return res.status(403).send("Token not valid");
+            req.user = user;
+            next();
+        });      
     } catch (err) {
         console.error(err.message);
         return res.status(403).send("Not Authorize");
