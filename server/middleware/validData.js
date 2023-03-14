@@ -1,5 +1,5 @@
 // middleware function that validates the data submitted by a customer for registering or logging in
-module.exports = function(req, res, next) {
+const validateData = function(req, res, next) {
   const { name, number, email, password  } = req.body;
 
   // function to check the validity of the email address entered by the customer
@@ -41,6 +41,7 @@ module.exports = function(req, res, next) {
       return res.status(401).send("Invalid Email");
     }
   }
-
   next();
 };
+
+module.exports = validateData;
