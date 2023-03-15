@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-const Facility = require("./facility");
-const Payment = require("./payment")
+// const Facility = require("./facility");
+// const Payment = require("./payment");
 
 const { INTEGER, STRING, DATE, TIME, FLOAT } = Sequelize;
 
@@ -16,19 +16,15 @@ const Classes = db.define('Classes', {
         type: STRING,
         allowNull: false
     },
-    facilityName: {
-        type: STRING,
-        allowNull: false
-    },
-    price: {
-        type: FLOAT,
-        allowNull: false
-    },
     date: {
         type: DATE
     },
     time: {
         type: TIME
+    },
+    price: {
+        type: FLOAT,
+        allowNull: false
     }
 });
 

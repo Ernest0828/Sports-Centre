@@ -13,51 +13,51 @@ const Membership = require("./models/membership");
 
 // relation between tables
 // 1. Customer has many to one relation with Booking
-Customer.hasMany(Booking);
-Booking.belongsTo(Customer);
+Customer.hasMany(Booking, { foreignKey: "customerId" });
+Booking.belongsTo(Customer, { foreignKey: "customerId" });
 
 // 2. Customer has one to one relation with Payment
-Customer.hasOne(Payment);
-Payment.belongsTo(Customer);
+Customer.hasOne(Payment, { foreignKey: "customerId" });
+Payment.belongsTo(Customer, { foreignKey: "customerId" });
 
 // 3. Staff has many to many relation with Booking
 Staff.belongsToMany(Booking, { through: StaffBooking });
 Booking.belongsToMany(Staff, { through: StaffBooking });
 
 // 4. Payment has one to many relation with Booking
-Payment.hasMany(Booking);
-Booking.belongsTo(Payment);
+Payment.hasMany(Booking, { foreignKey: "paymentId" });
+Booking.belongsTo(Payment, { foreignKey: "paymentId" });
 
 // 5. Activity has one to one relation with Booking
-Activity.hasOne(Booking);
-Booking.belongsTo(Activity);
+Activity.hasOne(Booking, { foreignKey: "activityId" });
+Booking.belongsTo(Activity, { foreignKey: "activityId" });
 
 // 6. Classes has one to one relation with Booking
-Classes.hasOne(Booking);
-Booking.belongsTo(Classes);
+Classes.hasOne(Booking, { foreignKey: "classId" });
+Booking.belongsTo(Classes, { foreignKey: "classId" });
 
 // 7. Facility has one to one relation with Booking
-Facility.hasOne(Booking);
-Booking.belongsTo(Facility);
+Facility.hasOne(Booking, { foreignKey: "facilityId" });
+Booking.belongsTo(Facility, { foreignKey: "facilityId" });
 
 // 8. Facility has one to many relation with with Activity
-Facility.hasMany(Activity);
-Activity.belongsTo(Facility);
+Facility.hasMany(Activity, { foreignKey: "facilityId" });
+Activity.belongsTo(Facility, { foreignKey: "facilityId" });
 
 // 9. Facility has one to many relation with with Classes
-Facility.hasMany(Classes);
-Classes.belongsTo(Facility);
+Facility.hasMany(Classes, { foreignKey: "facilityId" });
+Classes.belongsTo(Facility, { foreignKey: "facilityId" });
 
 // 10. Customer has one to one relation with Membership
-Customer.hasOne(Membership);
-Membership.belongsTo(Customer);
+Customer.hasOne(Membership, { foreignKey: "customerId" });
+Membership.belongsTo(Customer, { foreignKey: "customerId" });
 
 // 11. Payment has one to one relation with Membership
-Payment.hasOne(Membership);
-Membership.belongsTo(Payment);
+Payment.hasOne(Membership, { foreignKey: "paymentId" });
+Membership.belongsTo(Payment, { foreignKey: "paymentId" });
 
 db
-    .sync( {force:true})
+    .sync({force:true})
     .then((result) => {
         console.log(result);
     })

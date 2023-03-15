@@ -15,7 +15,7 @@ const Activity = db.define('Activity', {
         type: STRING,
         allowNull: false
     },
-    day: {
+    date: {
         type: STRING,
         allowNull: true,
     },

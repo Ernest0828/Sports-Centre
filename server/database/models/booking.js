@@ -4,7 +4,7 @@ const db = require("../db");
 // const Staff = require("./staff");
 // const Activity = require("./activity");
 // const Facility = require("./facility");
-// const Payment = require("./payment");
+const Payment = require("./payment");
 // const Classes = require("./classes");
 
 const { INTEGER, STRING, DATE, TIME } = Sequelize;
@@ -32,7 +32,7 @@ const Booking = db.define('Booking', {
 // Booking.belongsTo(Customer, { foreignKey: 'customerId' });
 // Booking.belongsTo(Staff, { foreignKey: 'staffId' });
 // Booking.belongsTo(Activity, { foreignKey: 'activityId' });
-// Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
+Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
 // Booking.belongsTo(Facility, { foreignKey: 'facilityId' });
 // Booking.belongsTo(Classes, { foreignKey: 'classId' });
 
