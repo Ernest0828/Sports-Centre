@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const Staff = require("../database/models/staff");
 const bcrypt = require("bcrypt");
-const jwtGeneratorStaff = require("../utils/jwtGenerator");
 const validData = require("../middleware/validData");
-const auth = require("../middleware/auth");
+const verifyManager = require("../middleware/verifyManager");
 
 //ROUTES//
 
@@ -44,7 +44,7 @@ router.post("/login", validData, async (req, res) => {
         // check if staff does not exist
         const staff = await Staff.findOne({ where: {staffEmail : email} });
         if (!staff) {
-            return res.status(404).send("Not Authorise");
+            return res.status(404).send("Not a Staff Member");
         }
         // check if the password matches the hashed password stored in database using bcrypt
         const validPassword = await bcrypt.compare(password, staff.password);
@@ -53,13 +53,12 @@ router.post("/login", validData, async (req, res) => {
             return res.status(401).send("Email and Password is incorrect");
         }
         // if password match, generates a JWT token for the customer and sends it in JSON format
-        const token = jwtGeneratorStaff(staff.staffId, staff.isManager );
+        const token = jwt.sign({id: staff.staffId, isManager:staff.isManager}, process.env.jwtSecret, {expiresIn: "2hr"});
 
         res.cookie("token", token, {
             httpOnly: true
         })
         .status(200)
-        // .json({token});
         return res.status(200).send("Login Successful");
 
     } catch (err) {
@@ -68,13 +67,8 @@ router.post("/login", validData, async (req, res) => {
     }
 });
 
-router.get("/verify", auth, (req, res) => {
-  try {
-    res.json(true);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
+// router.get("/verifyManager/:id", verifyManager, (req, res, next) => {
+//     res.send("Admin logged in and can delete all account ");
+// });
 
 module.exports = router;
