@@ -1,4 +1,4 @@
-import React,{Fragment, useState} from 'react';
+import React,{Fragment, Profiler, useState} from 'react';
 import './App.css';
 import {BrowserRouter as Router, 
   Routes, 
@@ -12,10 +12,18 @@ import Login from "./components/pages/login/Login";
 import Register from "./components/pages/register/Register";
 import Profile from "./components/pages/profile/Profile";
 import Facilities from './components/pages/facilities/Facilities';
-
+import Climbingwall from './components/pages/individual facilities/Climbingwall';
+import Fitnessroom from './components/pages/individual facilities/Fitnessroom';
+import Sportshall from './components/pages/individual facilities/Sportshall';
+import Swimmingpool from './components/pages/individual facilities/Swimmingpool';
+import Squashcourt from './components/pages/individual facilities/Squashcourt';
+import Studio from './components/pages/individual facilities/Studio';
+import Aerobics from './components/pages/individual classes/Aerobics';
+import Pilates from './components/pages/individual classes/Pilates';
+import Yoga from './components/pages/individual classes/Yoga';
 
 function App() {
-  return <Profile />
+  return <Climbingwall />
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );

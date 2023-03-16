@@ -9,7 +9,7 @@ const Facilities = () => {
         <div className="facilities">
             <div className="facWrapper">
                 <div className="facLeft">
-                    
+                  
                 </div>
                 <div className="facRight">
                     <span className="basketTitle">Basket</span>
