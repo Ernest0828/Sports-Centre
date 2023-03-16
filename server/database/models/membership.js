@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-// const Customer = require("./customer");
-// const Payment = require("./payment");
+const Customer = require("./customer");
+const Payment = require("./payment");
 
 const { STRING, DATE } = Sequelize;
 
@@ -20,7 +20,7 @@ const Membership = db.define('Membership', {
     }
 });
 
-// Membership.belongsTo(Customer, { foreignKey: 'customerId'});
-// Membership.belongsTo(Payment, { foreignKey: 'paymentId' });
+Membership.belongsTo(Customer, { foreignKey: 'customerId'});
+Membership.belongsTo(Payment, { foreignKey: 'paymentId' });
 
 module.exports = Membership;

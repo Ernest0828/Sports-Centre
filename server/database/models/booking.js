@@ -1,11 +1,11 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-// const Customer = require("./customer");
-// const Staff = require("./staff");
-// const Activity = require("./activity");
-// const Facility = require("./facility");
+const Customer = require("./customer");
+const Staff = require("./staff");
+const Activity = require("./activity");
+const Facility = require("./facility");
 const Payment = require("./payment");
-// const Classes = require("./classes");
+const Classes = require("./classes");
 
 const { INTEGER, STRING, DATE, TIME } = Sequelize;
 
@@ -21,19 +21,25 @@ const Booking = db.define('Booking', {
         allowNull: false
     },
     date: {
-        type: DATE
+        type: DATE,
+        allowNull: false
     },
-    time: {
-        type: TIME
+    startTime: {
+        type: TIME,
+        allowNull: false
+    },
+    endTime: {
+        type: TIME,
+        allowNull: false
     }
 });
 
 // add foreign key constraint
-// Booking.belongsTo(Customer, { foreignKey: 'customerId' });
-// Booking.belongsTo(Staff, { foreignKey: 'staffId' });
-// Booking.belongsTo(Activity, { foreignKey: 'activityId' });
+Booking.belongsTo(Customer, { foreignKey: 'customerId' });
+Booking.belongsTo(Staff, { foreignKey: 'staffId' });
+Booking.belongsTo(Activity, { foreignKey: 'activityId' });
 Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
-// Booking.belongsTo(Facility, { foreignKey: 'facilityId' });
-// Booking.belongsTo(Classes, { foreignKey: 'classId' });
+Booking.belongsTo(Facility, { foreignKey: 'facilityId' });
+Booking.belongsTo(Classes, { foreignKey: 'classId' });
 
 module.exports = Booking;
