@@ -10,12 +10,14 @@ import {BrowserRouter as Router,
 import Dashboard from "./components/pages/dashboard/Dashboard";
 import Login from "./components/pages/login/Login";
 import Register from "./components/pages/register/Register";
-import Profile from "./components/pages/profile/Profile";
-import Facilities from './components/pages/facilities/Facilities';
-
+import MemberProfile from "./components/pages/profile/MemberProfile";
+import Facilities from './components/facilities/Facilities';
+import BookFacility from './components/pages/bookFacility/BookFacility';
+import BookClasses from './components/pages/bookClasses/BookClasses';
+import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
-  return <Profile />
+  return <BookClasses/>
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );

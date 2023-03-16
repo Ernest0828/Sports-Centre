@@ -1,0 +1,26 @@
+.bookClasses{
+    width: 100vw;
+    height: 100vh;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arimo;
+    overflow: auto;
+}
+
+.classWrapper{
+    width: 90%;
+    height: 98%;
+    display: flex;
+}
+
+
+
+
+
+
+
+
+
+
