@@ -17,7 +17,7 @@ import BookClasses from './components/pages/bookClasses/BookClasses';
 import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
-  return <BookClasses/>
+  return <BookFacility/>
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );

@@ -122,13 +122,13 @@
 
 .cancelMembershipButton{
     align-self: center;
-	width: auto;
 	border: none;
 	margin-top: 15px;
 	cursor: pointer;
-	color: black;
-	background-color: white;
+	color: rgb(103, 103, 103);
+	background-color: transparent;
 	font-size: 15px;
+	text-decoration: underline;
     /* background-color: red; */
 }
 

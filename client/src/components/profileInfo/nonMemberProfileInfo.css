@@ -110,7 +110,7 @@
 	font-family:Arimo ;
 	color: grey;
 	font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .membershipDetails > label{
@@ -120,23 +120,26 @@
 	margin-top: 0px;
 }
 
+
 .getMembership{
     align-self: center;
-	width: auto;
 	border: none;
-	border-radius: 20px;
-	padding: 10px;
-	margin-top: 10px;
 	cursor: pointer;
-	color: white;
-    background-color: #fa991c;   
+	color: rgb(103, 103, 103);
+	background-color: transparent;
+	font-size: 15px;
+	text-decoration: underline;
+	padding: 0;
+	margin-bottom: 10px;
+    /* background-color: red; */
 }
 
 .getMembership:hover{
-    transform: scale(.98);
-	background-color: #DE7F05 ;
-	color: white;
+	transform: scale(.99);
+	color:black ;
 }
+
+
 
 @media screen and (max-width: 768px) {
     .editInfo {

@@ -1,5 +1,5 @@
 import React,{Fragment, useState} from "react";
-import "./basket.css";
+import "./noAccBasket.css";
 import { Link} from "react-router-dom";
 
 export default function Basket() {
@@ -8,8 +8,10 @@ export default function Basket() {
         <div className="basket">
             <span className="basketTitle">Basket</span> 
             <div className="userBasket">
-                hi
-                
+              <div className="basketLoginPrompt">
+                <div className="basketLoginPromptDescription">Log in to add items to your basket.</div>
+                <button className="basketLoginButton">Login</button>
+              </div>                
             </div>
         </div>
     </Fragment>

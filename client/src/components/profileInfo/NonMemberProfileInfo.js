@@ -53,15 +53,13 @@ export default function NonMemberProfileInfo() {
                                 <div className="membershipDetails">
                                     <label>Membership</label>
                                     <p className="membershipDetails">Type: None</p>
-                                    <p className="membershipDetails">Start: -</p>
-                                    <p className="membershipDetails">End: -</p>
+                                    <button className="getMembership">Get a membership</button>
                                 </div>
                             )}
 
                         </div>
                         {isEditMode && <button className="updateProfileButton" type="submit">Update</button>}
                         {!isEditMode && <button className="editProfileButton" onClick={handleEditMode}>Edit Profile</button>}
-                        {!isEditMode && <button className="getMembership">Get a membership</button>}
                     </form>
             </div>
         </Fragment>
