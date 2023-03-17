@@ -10,7 +10,9 @@ export default function Basket() {
             <div className="userBasket">
               <div className="basketLoginPrompt">
                 <div className="basketLoginPromptDescription">Log in to add items to your basket.</div>
-                <button className="basketLoginButton">Login</button>
+                <Link to="../login">
+                    <button className="basketLoginButton">Login</button>
+                </Link>
               </div>                
             </div>
         </div>

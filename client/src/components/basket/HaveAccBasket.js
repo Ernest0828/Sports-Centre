@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import "./haveAccBasket.css";
 import { Link } from "react-router-dom";
 
+//used chatgpt for inspiration on the remove function
 export default function Basket() {
   const [items, setItems] = useState([
     { description: "Swimming Pool — 1 Hour", cost: 8.0 },
