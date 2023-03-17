@@ -11,13 +11,24 @@ import Dashboard from "./components/pages/dashboard/Dashboard";
 import Login from "./components/pages/login/Login";
 import Register from "./components/pages/register/Register";
 import MemberProfile from "./components/pages/profile/MemberProfile";
-import Facilities from './components/facilities/Facilities';
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
 import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
-  return <BookFacility/>
+
+  return (
+    <Fragment>
+      <Router>
+        <Routes>
+          <Route exact path="/login" element={<Login/>}/>
+          <Route exact path="/register" element={<Register/>}/>
+          <Route exact path="/profile" element={<MemberProfile/>}/>
+          <Route exact path="/book-facility" element={<BookFacility/>}/>
+          <Route exact path="/book-class" element={<BookClasses/>}/>
+        </Routes>
+      </Router>
+    </Fragment>
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );
@@ -43,6 +54,7 @@ function App() {
   //     </Router>
   //   </Fragment>
   // );
+  );
 }
 
 export default App;

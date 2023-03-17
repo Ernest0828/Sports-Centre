@@ -99,7 +99,7 @@
     color: rgb(29, 28, 28);
 }
 
-.loginRegisterButton{
+.loginRegisterLink{
     width: 60%;
     height: 50px;
     align-self: center;
@@ -113,7 +113,19 @@
     cursor: pointer;
 }
 
-.loginRegisterButton:hover{
+.loginRegisterLink:hover, .buttonInLink:hover{
     transform: scale(.98);
     background-color: #032539;
 }
+
+.buttonInLink{
+    width: 100%;
+    height: 100%;
+    align-self: center;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;}

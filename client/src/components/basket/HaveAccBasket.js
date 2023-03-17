@@ -14,7 +14,7 @@ export default function Basket() {
                 </div>
                 <div className="belowDescription">
                   <div className="itemCost">
-                    <p>£13.00</p>
+                    <p>£8.00</p>
                   </div>
                   <button className="removeBookingButton">Remove</button>
                 </div>  
@@ -25,7 +25,7 @@ export default function Basket() {
                 </div>
                 <div className="belowDescription">
                   <div className="itemCost">
-                    <p>£13.00</p>
+                    <p>£8.00</p>
                   </div>
                   <button className="removeBookingButton">Remove</button>
                 </div>  
@@ -35,7 +35,7 @@ export default function Basket() {
                 </div>
                 <div className="belowDescription">
                   <div className="itemCost">
-                    <p>£13.00</p>
+                    <p>£8.00</p>
                   </div>
                   <button className="removeBookingButton">Remove</button>
                 </div>  
@@ -45,7 +45,7 @@ export default function Basket() {
                 </div>
                 <div className="belowDescription">
                   <div className="itemCost">
-                    <p>£13.00</p>
+                    <p>£8.00</p>
                   </div>
                   <button className="removeBookingButton">Remove</button>
                 </div>  
@@ -53,7 +53,7 @@ export default function Basket() {
             </div>
             <div className="basketBottom">
               <div className="basketTotalCost">
-                  <p>Total: £39.00</p>
+                  <p>Total: £32.00</p>
               </div>
               <button className="checkoutButton">Check Out</button>
             </div>

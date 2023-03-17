@@ -19,7 +19,9 @@ const Login = ({setAuth}) => {
                             <input placeholder="Password" className="loginInput"/>
                             <button className="loginButton" onClick={()=>setAuth(true)}>Log In</button>
                             <span className="loginForgot">Forgot Password?</span>
-                            <button className="loginRegisterButton">Create a New Account</button>
+                            <Link to="/register" className="loginRegisterLink">
+                                <button className="buttonInLink">Create a New Account</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

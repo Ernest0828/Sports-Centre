@@ -47,6 +47,7 @@
     color: black;
 }
 
+
 table{
     border-collapse: collapse;
     width: 100%;
@@ -64,3 +65,20 @@ td{
     padding: 10px;
 }
 
+.profileDeleteBookingBtn{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+
+
+.profileDeleteBookingBtn:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
