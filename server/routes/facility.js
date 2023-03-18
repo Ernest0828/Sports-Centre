@@ -2,35 +2,35 @@ const express = require("express");
 const router = express.Router();
 const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
-// For manager to amend the facility
 
-// 1. Add new facilities
+// 1. Add new facilities (only for manager)
 router.post("/facilityid", verifyManager, async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
     try {
         // check if activity already exist
         const existingFacility = await Facility.findOne({ where: {facilityName: name}});
         if (existingFacility) 
-            return res.status(401).send("Activity already exists");
+            return res.status(401).send("Facility already exists");
 
         await Facility.create({ facilityName: name, capacity: capacity, startTime: start, endTime: end });
-        return res.status(200).send("New facility created");
+        return res.status(201).send("New facility created");
     } catch (err) {
         next(err);
     }
 });
 
-// 2. Update an existing facility
+// 2. Update an existing facility (only for manager)
 router.put("/:id", verifyManager, async (req, res, next) => {
     try {
         const updateFacility = await Facility.findByPk(req.params.id);
-        res.send(await updateFacility.update(req.body));
+        await updateFacility.update(req.body);
+        return res.status(200).send("Facility updated");
     } catch (err) {
         next(err);
     }
 });
 
-// 3. Delete facility
+// 3. Delete facility (only for manager)
 router.delete("/:id", verifyManager, async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(req.params.id);
