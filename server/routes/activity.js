@@ -4,9 +4,7 @@ const Activity  = require("../database/models/activity");
 const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
 
-// For manager to amend the activities
-
-// 1. Add new activities
+// 1. Add new activities (only for manager)
 router.post("/activityid", verifyManager, async (req, res, next) => {
     const { name, price, facilityName } = req.body;
     try {
@@ -20,23 +18,24 @@ router.post("/activityid", verifyManager, async (req, res, next) => {
             return res.status(401).send("Activity already exists");
 
         await Activity.create({ activityName: name, price: price, facilityName:facilityName });
-        return res.status(200).send("New activity created");
+        return res.status(201).send("New activity created");
     } catch (err) {
         next(err);
     }
 });
 
-// 2. Update an existing activity
+// 2. Update an existing activity (only for manager)
 router.put("/:id", verifyManager, async (req, res, next) => {
     try {
         const updateActivity = await Activity.findByPk(req.params.id);
-        res.send(await updateActivity.update(req.body));
+        await updateActivity.update(req.body);
+        return res.status(200).send("Activity updated");
     } catch (err) {
         next(err);
     }
 });
 
-// 3. Delete activity
+// 3. Delete activity (only for manager)
 router.delete("/:id", verifyManager, async (req, res, next) => {
     try {
         const activity = await Activity.findByPk(req.params.id);
