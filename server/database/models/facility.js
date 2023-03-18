@@ -4,14 +4,15 @@ const db = require("../db");
 const { INTEGER, STRING, TIME } = Sequelize;
 
 const Facility = db.define('Facility', {
-  facilityId: {
-    type: INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true
-  },
+  // facilityId: {
+  //   type: INTEGER,
+  //   primaryKey: true,
+  //   allowNull: false,
+  //   autoIncrement: true
+  // },
   facilityName: {
     type: STRING,
+    primaryKey: true,
     allowNull: false
   },
   capacity: {

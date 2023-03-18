@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const { STRING, UUID, UUIDV4, INTEGER, BOOLEAN } = Sequelize;
+const { STRING, UUID, UUIDV4, INTEGER, BOOLEAN, ENUM } = Sequelize;
 
 const Customer = db.define('Customer', {
   customerId: {
@@ -28,12 +28,18 @@ const Customer = db.define('Customer', {
   },
   isMembership: {
     type: BOOLEAN,
-    allowNull: true
+    allowNull: false,
+    defaultValue: false
   },
-  bookings: {
-    type: STRING,
+  membershipType: {
+    type: ENUM("monthly", "annually"),
     allowNull: true
   }
+  // bookings: {
+  //   type: ARRAY(STRING),
+  //   allowNull: true,
+  //   defaultValue: []
+  // }
 });
 
 module.exports = Customer;

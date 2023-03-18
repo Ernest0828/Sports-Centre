@@ -13,6 +13,7 @@ const Activity = db.define('Activity', {
     },
     activityName: {
         type: STRING,
+        primaryKey: true,
         allowNull: false
     },
     day: {
@@ -34,6 +35,6 @@ const Activity = db.define('Activity', {
 });
 
 // add foreign key constraint to facilityId column
-Activity.belongsTo(Facility, { foreignKey: 'facilityId' });
+Activity.belongsTo(Facility, { foreignKey: 'facilityName' });
 
 module.exports = Activity;
