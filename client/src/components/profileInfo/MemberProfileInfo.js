@@ -27,13 +27,13 @@ export default function MemberProfileInfo() {
                             {isEditMode ? (
                                 <input type="text" defaultValue="Edmund" />
                             ) : (
-                                <p>Edmund</p>
+                                <p>Brayden</p>
                             )}
                             <label>Email</label>
                             {isEditMode ? (
                                 <input type="email" defaultValue="sc21ewkc@leeds.ac.uk" />
                             ) : (
-                                <p>sc21ewkc@leeds.ac.uk</p>
+                                <p>sc22bmj@leeds.ac.uk</p>
                             )}
                             <label>Number</label>
                             {isEditMode ? (

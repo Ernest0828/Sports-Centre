@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import "./classDetails.css";
-import Navbar from "../../navbar/navbar";
+import Navbar from "../../managerNavbar/navbar";
 
 const data = [
     {

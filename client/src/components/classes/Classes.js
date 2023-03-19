@@ -12,26 +12,26 @@ const Classes = () => {
             <p>Select a class to view timetables and availability.</p>
           </div>
           <div className="gridFormat">
-            <div className="classItem">
+            <Link to = "/pilates" className="classItem">
               <img className="classImage" alt="" src="https://images.pexels.com/photos/3984353/pexels-photo-3984353.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"/>
               <div className="className">
                 <p>Pilates</p>
               </div>
-            </div>
+            </Link>
 
-            <div className="classItem">
+            <Link to = "/aerobics" className="classItem">
               <img className="classImage" alt="" src="https://images.pexels.com/photos/6455793/pexels-photo-6455793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"/>
               <div className="className">
                 <p>Aerobics</p>
               </div>
-            </div>
+            </Link>
 
-            <div className="classItem">
+            <Link to = "/yoga" className="classItem">
               <img className="classImage" alt="" src="https://images.pexels.com/photos/8436715/pexels-photo-8436715.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"/>
               <div className="className">
                 <p>Yoga</p>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
     </Fragment>

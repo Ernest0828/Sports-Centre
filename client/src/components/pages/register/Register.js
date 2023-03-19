@@ -21,7 +21,9 @@ const Register = () => {
                         <input type="password" placeholder="Password" className="registerInput"/>
                         <input type="password" placeholder="Retype your password" className="registerInput"/>
                         <button className="registerButton">Sign Up</button>
-                        <button className="registerLoginButton">Login</button>
+                        <Link to = "/dashboard">
+                            <button className="registerLoginButton">Login</button>
+                        </Link>
                     </div>
                 </div>
             </div>

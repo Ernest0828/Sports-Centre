@@ -17,9 +17,13 @@ const Login = ({setAuth}) => {
                             <span className="loginBoxDesc">Login</span>
                             <input placeholder="Email" className="loginInput"/>
                             <input placeholder="Password" className="loginInput"/>
-                            <button className="loginButton" onClick={()=>setAuth(true)}>Log In</button>
+                            <Link to = "/dashboard">
+                                <button className="loginButton" onClick={()=>setAuth(true)}>Log In</button>
+                            </Link>
                             <span className="loginForgot">Forgot Password?</span>
-                            <button className="loginRegisterButton">Create a New Account</button>
+                            <Link to = "/register">
+                                <button className="loginRegisterButton">Create a New Account</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

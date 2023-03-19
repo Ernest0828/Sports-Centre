@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./climbingwall.css"
 import Calendar from 'react-calendar'
+import Navbar from "../../navbar/navbar"
 
 const Climbingwall = () => {
 
@@ -51,6 +52,7 @@ const Climbingwall = () => {
     }
     return (
         <div>
+            <Navbar/>
                         <div className="climbingWallContainer">
                             {open && <div className="slider">
                             <FontAwesomeIcon icon={faCircleXmark} className="close" onClick={()=>setOpen(false)} />

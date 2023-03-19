@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import "./facilityDetails.css";
-import Navbar from "../../navbar/navbar";
+import Navbar from "../../managerNavbar/navbar";
 const data = [
     {
       id      : '01',

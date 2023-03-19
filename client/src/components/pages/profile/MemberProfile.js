@@ -2,11 +2,13 @@ import React,{Fragment, useState} from "react";
 import "./memberProfile.css";
 import { Link} from "react-router-dom";
 import ProfileInfo from "../../profileInfo/MemberProfileInfo";
+import Navbar from "../../navbar/navbar"
   
 const MemberProfile = () => {
     return (
     <Fragment>
         <div className="profile">
+            <Navbar/>
             <div className="profileWrapper">
                 <ProfileInfo/>
                 <div className="profileRight">
