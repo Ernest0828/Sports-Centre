@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./pilates.css"
 import Calendar from 'react-calendar'
+import Navbar from "../../navbar/navbar"
 
 const Pilates = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -51,6 +52,7 @@ const Pilates = () => {
 
   return (
     <div>
+      <Navbar/>
 					<div className="pilatesContainer">
 						{open && <div className="slider">
 						<FontAwesomeIcon icon={faCircleXmark} className="close" onClick={()=>setOpen(false)} />

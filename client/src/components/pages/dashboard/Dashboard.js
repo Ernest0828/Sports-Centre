@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
-import "./Dashboard.css";
-import { Link } from "react-router-dom";
-import Navbar from "../../navbar/Navbar";
 
-const Classes = () => {
+import { Link } from "react-router-dom";
+import Navbar from "../../navbar/navbar";
+
+const Dashboard = () => {
   return (
     <Fragment>
+      <Navbar/>
       <div className="gridFormat">  
-        <div className="classItem">
+        <Link to = "/book-facility" className="classItem">
           <img
             className="classImage"
             alt=""
@@ -16,9 +17,9 @@ const Classes = () => {
           <div className="className">
             <p>Book a Facility</p>
           </div>
-        </div>
+        </Link>
 
-        <div className="classItem">
+        <Link to = "/book-class" className="classItem">
           <img
             className="classImage"
             alt=""
@@ -27,7 +28,7 @@ const Classes = () => {
           <div className="className">
             <p>Book a Class</p>
           </div>
-        </div>
+        </Link>
 
         <div className="classItem">
           <img
@@ -43,4 +44,4 @@ const Classes = () => {
     </Fragment>
   );
 };
-export default Classes;
+export default Dashboard;

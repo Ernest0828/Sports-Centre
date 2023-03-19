@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./swimmingpool.css"
 import Calendar from 'react-calendar'
+import Navbar from "../../navbar/navbar"
+
 
 const Swimmingpool = () => {
 
@@ -52,6 +54,7 @@ const Swimmingpool = () => {
 
   return (
     <div>
+      <Navbar/>
 					<div className="swimmingPoolContainer">
 						{open && <div className="slider">
 						<FontAwesomeIcon icon={faCircleXmark} className="close" onClick={()=>setOpen(false)} />

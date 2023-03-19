@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import "./staff.css";
-import Navbar from "../navbar/navbar";
+import Navbar from "../managerNavbar/navbar";
 import { Link } from 'react-router-dom';
 
 const data = [
