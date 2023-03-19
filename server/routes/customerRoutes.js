@@ -1,23 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const Staff = require("../database/models/staff");
+const Customer  = require("../database/models/customer");
 const bcrypt = require("bcrypt");
 const validData = require("../middleware/validData");
-const verifyManager = require("../middleware/verifyManager");
+const verifyToken = require("../middleware/verifyToken");
+const verifyUser = require("../middleware/verifyUser");
 
-//ROUTES//
-
-// routes for creating new staff
+// routes for registering new customer
 router.post("/register", validData, async (req, res) => {
     // destructure req.body (name, number, email, password)
-    const { name, number, email, password, isManager } = req.body;
+    const { name, number, email, password } = req.body;
 
     try {
         // check if customer already exist
-        const existingStaff = await Staff.findOne({ where: {staffEmail : email} });
-        if (existingStaff) {
-            return res.status(401).send("Staff already exits");
+        const existingCustomer = await Customer.findOne({ where: {customerEmail : email} });
+        if (existingCustomer) {
+            return res.status(401).send("User already exits");
         }
         // hashes password using bcrypt and inserts a new record into the customer table
         const saltRound = 10;
@@ -25,10 +24,8 @@ router.post("/register", validData, async (req, res) => {
         const bcryptPassword = await bcrypt.hash(password, salt);
 
         // add new customer to database
-        await Staff.create({ staffName: name, staffNumber: number, staffEmail: email, password: bcryptPassword, isManager: isManager });
-
-        return res.status(200).send("New staff created.");
-
+        await Customer.create({ customerName: name, customerNumber: number, customerEmail: email, password: bcryptPassword });
+        return res.status(200).send("New customer created.");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
@@ -41,34 +38,39 @@ router.post("/login", validData, async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // check if staff does not exist
-        const staff = await Staff.findOne({ where: {staffEmail : email} });
-        if (!staff) {
-            return res.status(404).send("Not a Staff Member");
+        // check if customer does not exist
+        const customer = await Customer.findOne({ where: {customerEmail : email} });
+        if (!customer) {
+            return res.status(404).send("User not found");
         }
         // check if the password matches the hashed password stored in database using bcrypt
-        const validPassword = await bcrypt.compare(password, staff.password);
+        const validPassword = await bcrypt.compare(password, customer.password);
         // if password incorrect (does not match)
         if (!validPassword) {
             return res.status(401).send("Email and Password is incorrect");
         }
         // if password match, generates a JWT token for the customer and sends it in JSON format
-        const token = jwt.sign({id: staff.staffId, isManager:staff.isManager}, process.env.jwtSecret, {expiresIn: "2hr"});
+        // const token = jwtGenerator(Customer.customerId);
+        const token = jwt.sign({id: customer.customerId}, process.env.jwtSecret, {expiresIn: "2hr"});
 
         res.cookie("token", token, {
             httpOnly: true
         })
         .status(200)
+        // .json({token});
         return res.status(200).send("Login Successful");
-
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
     }
 });
 
-// router.get("/verifyManager/:id", verifyManager, (req, res, next) => {
-//     res.send("Admin logged in and can delete all account ");
+// router.get("/verify", verifyToken, (req, res, next) => {
+//     res.send("User logged in ");
+// });
+
+// router.get("/verifyUser/:id", verifyUser, (req, res, next) => {
+//     res.send("User logged in and can delete account ");
 // });
 
 module.exports = router;
