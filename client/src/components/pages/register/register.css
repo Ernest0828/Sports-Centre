@@ -70,18 +70,18 @@
     outline: none;
 }
 
-.registerButton{
+.registerButtonLink{
     height: 50px;
     border-radius: 10px;
     border: none;
     background-color: #FA991C;
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
 }
 
-.registerButton:hover{
+.registerButtonLink:hover{
     transform: scale(.98);
     background-color:#DE7F05 ;
 }
