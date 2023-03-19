@@ -20,12 +20,11 @@ router.post('/bookingid', async (req, res, next) => {
             number,
             date,
             start,
-            end,
             customerId,
             activityId,
             classId,
             facilityName,
-            paymentId
+            paymentId,
         } = req.body;
 
         // check if booking already exist
@@ -35,28 +34,43 @@ router.post('/bookingid', async (req, res, next) => {
         // check if activity or class exists
         let bookingType;
         let bookingTypeId;
+        let end;
         if (activityId) {
             const activity = await Activity.findOne({ where: {activityId, facilityName} });
             if (!activity) return res.status(404).send("This activity is not available at this facility");
             bookingType = "activity";
             bookingTypeId = activityId;
+
+            // set endTime for "Team events" to be +2hr after startTime
+            // other activities +1hr
+            if (activity.activityName === "Team events (2-hours)") {
+              end = moment.duration(start).add(moment.duration('02:00:00'));
+            } else {
+              end = moment.duration(start).add(moment.duration('01:00:00'));
+            }
         } 
         else if (classId) {
             const classes = await Classes.findOne({ where: {classId, facilityName} });
             if (!classes) return res.status(404).send("This class is not available at this facility");
             bookingType = "class";
             bookingTypeId = classId;
+
+            // set endTime for classes to be +1hr after startTime
+            end = moment.duration(start).add(moment.duration('01:00:00'));
         } 
         else
             return res.status(400).send("No bookings were made");
 
-        // check if facility exists
-        const facility = await Facility.findByPk(facilityName);
-        if (!facility) return res.status(404).send("Facility not found");
+        // // check if facility exists
+        // const facility = await Facility.findByPk(facilityName);
+        // if (!facility) return res.status(404).send("Facility not found");
 
         // check if customer exists
         const customer = await Customer.findByPk(customerId);
         if (!customer) return res.status(404).send("Customer not found");
+
+        // format the endTime
+        end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
 
         // create the booking
         await Booking.create({
@@ -150,7 +164,6 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
       number,
       date,
       start,
-      end,
       activityId,
       classId,
       facilityName,
@@ -164,19 +177,30 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
       const activity = await Activity.findOne({ where: {activityId, facilityName} });
       if (!activity) return res.status(404).send("This activity is not available at this facility");
       bookingType = "activity";
-      bookingTypeId = activityId;  
-
-    } else if (classId) {
+      bookingTypeId = activityId;
+      
+      // set endTime for "Team events" to be +2hr after startTime
+      // other activities +1hr
+      if (activity.activityName === "Team events (2-hours)") {
+        end = moment.duration(start).add(moment.duration('02:00:00'));
+      } else {
+        end = moment.duration(start).add(moment.duration('01:00:00'));
+      }
+    } 
+    else if (classId) {
       const classes = await Classes.findOne({ where: {classId, facilityName} });
       if (!classes) return res.status(404).send("This class is not available at this facility");
       bookingType = "class";
       bookingTypeId = classId;
 
+      // set endTime for classes to be +1hr after startTime
+      end = moment.duration(start).add(moment.duration('01:00:00'));
+
     } else return res.status(400).send("No bookings were made");
 
-    // Check if the specified facility exists
-    const facility = await Facility.findByPk(facilityName);
-    if (!facility) return res.status(404).send("Facility not found");
+    // // Check if the specified facility exists
+    // const facility = await Facility.findByPk(facilityName);
+    // if (!facility) return res.status(404).send("Facility not found");
 
     // Check if valid customer and staff
     const customer = await Customer.findByPk(customerId);
@@ -188,6 +212,9 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
     // Check if booking already exists
     const existingBooking = await Booking.findOne({ where: { customerId, date, facilityName, startTime: start} });
     if (existingBooking) return res.status(401).send("Booking already exists");
+
+    // format the endTime
+    end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
 
     // Create the booking and staff booking
     const booking = await Booking.create({
