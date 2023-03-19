@@ -1,0 +1,80 @@
+/*.profile{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arimo;
+    overflow: auto;
+    background-color: black;
+}*/
+
+.facilityactivityDetailsTitle{
+    color: black;
+    padding: 20px 20px 0;
+    font-size: 20px ;
+    font-weight: 600;
+    margin-top: 15%;
+
+}
+
+.facilityactivityDetailsTable{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 70px;
+    padding-left: 50px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+
+table{
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th{
+    padding: 10px;
+    text-align: left;
+    background-color: #1C768F;
+    color: white;
+}
+
+th.activity-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+
+td{
+    background-color: white;
+    border-bottom: 1px solid #E4E3DF;
+    text-align: left;
+    padding: 10px;
+}
+
+.button{
+    width: 5%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.deleteButton{
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 10 px;
+    margin-left: 10px;
+}
+
+/*{isEditable && (
+    <td>
+        <button className="deleteButton" onClick={() => onDeleteRow(id)}>
+        Delete
+        </button>
+    </td>
+ )}*/

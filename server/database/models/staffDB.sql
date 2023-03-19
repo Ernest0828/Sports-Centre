@@ -1,9 +1,3 @@
-CREATE DATABASE gymCorp; 
-
-CREATE TABLE customers(
-    customer_ID SERIAL PRIMARY KEY,
-    description VARCHAR(255)
-);
 
 CREATE TABLE staff(
     staff_ID SERIAL PRIMARY KEY,

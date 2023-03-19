@@ -1,0 +1,77 @@
+.classDetailsTitle{
+    color: black;
+
+    font-size: 20px ;
+    font-weight: 600;
+}
+
+.classDetailsTable{
+    padding: 0px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+    padding: 70px;
+    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+
+
+table{
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th{
+    padding: 10px;
+    text-align: left;
+    background-color: #1C768F;
+    color: white;
+}
+
+
+td{
+    border-bottom: 1px solid #E4E3DF;
+    text-align: left;
+    padding: 10px;
+}
+
+.button{
+    width: 5%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.deleteButton{
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 5 px;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.editButton{
+    width: 5%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+.updateProfileButton{
+    align-self: center;
+	width: 150px;
+	border: none;
+	border-radius: 20px;
+	padding: 10px;
+	margin-top: 10px;
+	cursor: pointer;
+	color: white;
+    background-color: #fa991c;
+}
+
+.updateProfileButton:hover{
+	transform: scale(.98);
+	background-color: #DE7F05 ;
+	color: white;
+}

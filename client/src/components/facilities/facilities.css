@@ -1,0 +1,80 @@
+
+.facilities{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: 2.5;
+    margin-right: 30px;
+    background-color: white;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    border-radius: 10px;
+    height: auto;
+  }
+
+  .bookFacilityDescription{
+    margin-top: 25px;
+    text-align: center;
+  }
+  
+  .bookFacilityDescription > h3{
+    color: #032539;
+    font-weight: 800;
+  }
+
+.gridFormat{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  height: 90%;
+}
+
+.facilityItem{
+  position: relative;
+  border-radius:10px ;
+  background-color: #1c768f;
+  z-index: 3;
+  align-items: center;
+  max-width: 250px;
+  max-height: 250px;
+}
+
+.facilityItem:hover{
+  transform: scale(.99);
+  cursor:pointer
+}
+
+.facilityImage{
+  width: 100%;
+  height: 80%;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  z-index: 1;
+  align-self: flex-start;
+}
+
+.facilityImage:hover{
+  cursor:pointer;
+}
+
+
+.facilityName{
+  color: white;
+  z-index :2;
+  align-self: flex-end;
+  font-weight: 600;
+}
+
+/* 
+.facilityName:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+} */
+
+.facilityName > p{
+  font-size: 20px;
+  font-family: Arimo;
+  margin-top:5px;
+}
