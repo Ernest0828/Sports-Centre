@@ -109,4 +109,4 @@ const Climbingwall = () => {
       )
 }
 
-export default Climbingwall
+export default Climbingwall 

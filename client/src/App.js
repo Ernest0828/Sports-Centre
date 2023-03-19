@@ -23,7 +23,7 @@ import Pilates from './components/pages/individual classes/Pilates';
 import Yoga from './components/pages/individual classes/Yoga';
 
 function App() {
-  return <Climbingwall />
+  return <Dashboard />
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const setAuth = boolean => {
   //   console.log("Setting auth to: ",boolean );
