@@ -21,8 +21,8 @@ Customer.hasOne(Payment, { foreignKey: "customerId" });
 Payment.belongsTo(Customer, { foreignKey: "customerId" });
 
 // 3. Staff has many to many relation with Booking
-Staff.belongsToMany(Booking, { through: StaffBooking });
-Booking.belongsToMany(Staff, { through: StaffBooking });
+Staff.belongsToMany(Booking, { through: StaffBooking, foreignKey: "staffId" });
+Booking.belongsToMany(Staff, { through: StaffBooking, foreignKey: "bookingId" });
 
 // 4. Payment has one to many relation with Booking
 Payment.hasMany(Booking, { foreignKey: "paymentId" });
@@ -37,16 +37,16 @@ Classes.hasOne(Booking, { foreignKey: "classId" });
 Booking.belongsTo(Classes, { foreignKey: "classId" });
 
 // 7. Facility has one to one relation with Booking
-Facility.hasOne(Booking, { foreignKey: "facilityId" });
-Booking.belongsTo(Facility, { foreignKey: "facilityId" });
+Facility.hasOne(Booking, { foreignKey: "facilityName" });
+Booking.belongsTo(Facility, { foreignKey: "facilityName" });
 
 // 8. Facility has one to many relation with with Activity
-Facility.hasMany(Activity, { foreignKey: "facilityId" });
-Activity.belongsTo(Facility, { foreignKey: "facilityId" });
+Facility.hasMany(Activity, { foreignKey: "facilityName" });
+Activity.belongsTo(Facility, { foreignKey: "facilityName" });
 
 // 9. Facility has one to many relation with with Classes
-Facility.hasMany(Classes, { foreignKey: "facilityId" });
-Classes.belongsTo(Facility, { foreignKey: "facilityId" });
+Facility.hasMany(Classes, { foreignKey: "facilityName" });
+Classes.belongsTo(Facility, { foreignKey: "facilityName" });
 
 // 10. Customer has one to one relation with Membership
 Customer.hasOne(Membership, { foreignKey: "customerId" });

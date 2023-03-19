@@ -1,10 +1,11 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const jwt = require('jsonwebtoken');
 const Customer  = require("../database/models/customer");
 const bcrypt = require("bcrypt");
-const jwtGenerator = require("../utils/jwtGenerator");
 const validData = require("../middleware/validData");
-const verifyToken = require("../middleware/auth")
+const verifyToken = require("../middleware/verifyToken");
+const verifyUser = require("../middleware/verifyUser");
 
 // routes for registering new customer
 router.post("/register", validData, async (req, res) => {
@@ -49,7 +50,8 @@ router.post("/login", validData, async (req, res) => {
             return res.status(401).send("Email and Password is incorrect");
         }
         // if password match, generates a JWT token for the customer and sends it in JSON format
-        const token = jwtGenerator(customer.customerId);
+        // const token = jwtGenerator(Customer.customerId);
+        const token = jwt.sign({id: customer.customerId}, process.env.jwtSecret, {expiresIn: "2hr"});
 
         res.cookie("token", token, {
             httpOnly: true
@@ -63,13 +65,12 @@ router.post("/login", validData, async (req, res) => {
     }
 });
 
-router.get("/verify", verifyToken, (req, res, next) => {
-    try {
-        res.json(true);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-    }
-});
+// router.get("/verify", verifyToken, (req, res, next) => {
+//     res.send("User logged in ");
+// });
+
+// router.get("/verifyUser/:id", verifyUser, (req, res, next) => {
+//     res.send("User logged in and can delete account ");
+// });
 
 module.exports = router;

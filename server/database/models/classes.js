@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-// const Facility = require("./facility");
-// const Payment = require("./payment");
+const Facility = require("./facility");
+const Payment = require("./payment");
 
-const { INTEGER, STRING, DATE, TIME, FLOAT } = Sequelize;
+const { INTEGER, STRING, TIME, FLOAT } = Sequelize;
 
 const Classes = db.define('Classes', {
     classId: {
@@ -16,11 +16,17 @@ const Classes = db.define('Classes', {
         type: STRING,
         allowNull: false
     },
-    date: {
-        type: DATE
+    day: {
+        type: STRING,
+        allowNull: false
     },
-    time: {
-        type: TIME
+    startTime: {
+        type: TIME,
+        allowNull: false
+    },
+    endTime: {
+        type: TIME,
+        allowNull: false
     },
     price: {
         type: FLOAT,
@@ -29,7 +35,6 @@ const Classes = db.define('Classes', {
 });
 
 // add foreign key constraint
-// Classes.belongsTo(Payment, { foreignKey: 'paymentId' });
-// Classes.belongsTo(Facility, { foreignKey: 'facilityId' });
+Classes.belongsTo(Facility, { foreignKey: 'facilityName' });
 
 module.exports = Classes;

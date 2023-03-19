@@ -1,11 +1,11 @@
 require('dotenv').config();
 const verifyToken = require('./verifyToken');
 
-// verify the customer
-const verifyUser = async (req, res, next) => {
+// verify the staff
+const verifyStaff = async (req, res, next) => {
     try {
-        verifyToken(req, res, next, () => {
-        if (req.user.id === req.params.id) {
+        verifyToken(req, res, () => {
+        if (req.user.id === req.params.id || req.user.isManager != null) {
             next();
         } else {
             return res.status(403).send("Not Authorised");
@@ -17,4 +17,4 @@ const verifyUser = async (req, res, next) => {
     }
 };
 
-module.exports = verifyUser;
+module.exports = verifyStaff;

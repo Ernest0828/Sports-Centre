@@ -1,13 +1,13 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-// const Customer = require("./customer");
-// const Staff = require("./staff");
-// const Activity = require("./activity");
-// const Facility = require("./facility");
+const Customer = require("./customer");
+const Staff = require("./staff");
+const Activity = require("./activity");
+const Facility = require("./facility");
 const Payment = require("./payment");
-// const Classes = require("./classes");
+const Classes = require("./classes");
 
-const { INTEGER, STRING, DATE, TIME } = Sequelize;
+const { INTEGER, DATE, TIME, ENUM } = Sequelize;
 
 const Booking = db.define('Booking', {
     bookingId: {
@@ -16,24 +16,34 @@ const Booking = db.define('Booking', {
         allowNull: false,
         autoIncrement: true
     },
-    description: {
-        type: STRING,
+    noOfPeople: {
+        type: INTEGER,
         allowNull: false
     },
     date: {
-        type: DATE
+        type: DATE,
+        allowNull: false
     },
-    time: {
-        type: TIME
-    }
+    startTime: {
+        type: TIME,
+        allowNull: false
+    },
+    endTime: {
+        type: TIME,
+        allowNull: false
+    },
+    bookingType: {
+        type: ENUM('activity', 'class'),
+        allowNull: false
+  },
 });
 
 // add foreign key constraint
-// Booking.belongsTo(Customer, { foreignKey: 'customerId' });
-// Booking.belongsTo(Staff, { foreignKey: 'staffId' });
-// Booking.belongsTo(Activity, { foreignKey: 'activityId' });
+Booking.belongsTo(Customer, { foreignKey: 'customerId' });
+Booking.belongsTo(Staff, { foreignKey: 'staffId', allowNull: true });
+Booking.belongsTo(Activity, { foreignKey: 'activityId', allowNull: true });
+Booking.belongsTo(Classes, { foreignKey: 'classId', allowNull: true });
+Booking.belongsTo(Facility, { foreignKey: 'facilityName' });
 Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
-// Booking.belongsTo(Facility, { foreignKey: 'facilityId' });
-// Booking.belongsTo(Classes, { foreignKey: 'classId' });
 
 module.exports = Booking;
