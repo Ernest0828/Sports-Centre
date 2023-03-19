@@ -14,8 +14,14 @@ app.use(cookieParser())
 
 // routes
 app.use("/auth", require("./routes/customerRoutes"));
-app.use("/dashboard", require("./routes/dashboard"));
+app.use("/api/customer", require("./routes/customers"));
+// app.use("/dashboard", require("./routes/dashboard"));
 app.use("/auth/staff", require("./routes/staffRoutes"));
+app.use("/api/activities", require("./routes/activity"));
+app.use("/api/classes", require("./routes/classes"));
+app.use("/api/facilities", require("./routes/facility"));
+app.use("/api/bookings", require("./routes/booking"));
+app.use("/api/membership", require("./routes/membership"));
 
 
 app.use((err, req, res, next) => {
