@@ -45,6 +45,7 @@
 
 .basketLoginButton{
     align-self: center;
+    font-weight: 600;
 	width: 150px;
 	border: none;
 	border-radius: 20px;

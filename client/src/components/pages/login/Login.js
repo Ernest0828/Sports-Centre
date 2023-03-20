@@ -17,12 +17,12 @@ const Login = ({setAuth}) => {
                             <span className="loginBoxDesc">Login</span>
                             <input placeholder="Email" className="loginInput"/>
                             <input placeholder="Password" className="loginInput"/>
-                            <Link to = "/dashboard">
-                                <button className="loginButton" onClick={()=>setAuth(true)}>Log In</button>
+                            <Link to="/auth/login" className="loginButtonLink">
+                                <button className="buttonInLink" onClick={()=>setAuth(true)}>Log In</button>
                             </Link>
                             <span className="loginForgot">Forgot Password?</span>
-                            <Link to = "/register">
-                                <button className="loginRegisterButton">Create a New Account</button>
+                            <Link to="/register" className="loginRegisterLink">
+                                <button className="buttonInLink">Create a New Account</button>
                             </Link>
                         </div>
                     </div>
