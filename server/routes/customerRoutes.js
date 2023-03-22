@@ -24,7 +24,7 @@ router.post("/register", validData, async (req, res) => {
         const bcryptPassword = await bcrypt.hash(password, salt);
 
         // add new customer to database
-        await Customer.create({ customerName: name, customerNumber: number, customerEmail: email, password: bcryptPassword });
+        await Customer.create({ customerName: name, customerNumber: number, customerEmail: email, password: bcryptPassword});
         return res.status(200).send("New customer created.");
     } catch (err) {
         console.error(err.message);
@@ -65,12 +65,5 @@ router.post("/login", validData, async (req, res) => {
     }
 });
 
-// router.get("/verify", verifyToken, (req, res, next) => {
-//     res.send("User logged in ");
-// });
-
-// router.get("/verifyUser/:id", verifyUser, (req, res, next) => {
-//     res.send("User logged in and can delete account ");
-// });
 
 module.exports = router;

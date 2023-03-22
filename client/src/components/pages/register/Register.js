@@ -1,9 +1,31 @@
 import React,{Fragment} from "react";
 import "./register.css";
 import { Link} from "react-router-dom";
+import axios from "axios";
 
 
 const Register = () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const details = event.target;
+      
+        const data = {
+          name: details.elements.name.value,
+          number: details.elements.number.value,
+          email: details.elements.email.value,
+          password: details.elements.password.value,
+        };
+      
+        try {
+          const response = await axios.post('http://localhost:3000/auth/register', data);
+          console.log(response.data); // Print the response from the server
+          // Redirect to login page or show a success message
+        } catch (error) {
+          console.error(error.response.data); // Print the error message from the server
+          // Show an error message to the user
+        }
+    };
+      
     return (
         <Fragment>
         <div className="register">
@@ -13,20 +35,21 @@ const Register = () => {
                     <span className="registerDesc">Log in or register and start booking with GymCorp!</span>
                 </div>
                 <div className="registerRight">
-                    <div className="registerBox">
+                    <form className="registerBox" onSubmit={handleSubmit}>
                         <span className="registerBoxDesc">Create an account</span>
-                        <input  placeholder="Name" className="registerInput"/>
-                        <input  placeholder="Number" className="registerInput"/>
-                        <input type="email" placeholder="Email" className="registerInput"/>
-                        <input type="password" placeholder="Password" className="registerInput"/>
+                        <input name="name" placeholder="Name" className="registerInput"/>
+                        <input name="number" placeholder="Number" className="registerInput"/>
+                        <input name="email" type="email" placeholder="Email" className="registerInput"/>
+                        <input name="password" type="password" placeholder="Password" className="registerInput"/>
                         <input type="password" placeholder="Retype your password" className="registerInput"/>
-                        <Link to="/auth/register" className="registerButtonLink">
+                        {/*Temporary link to profile until we get dashboard*/}
+                        <Link to="/register" className="registerButtonLink"> 
                             <button className="buttonInLink">Sign Up</button>
                         </Link>
                         <Link to="/login" className="registerLoginButton">
                             <button className="buttonInLink">Login</button>
                         </Link>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

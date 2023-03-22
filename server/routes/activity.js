@@ -5,7 +5,7 @@ const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new activities (only for manager)
-router.post("/activityid", verifyManager, async (req, res, next) => {
+router.post("/activityid", async (req, res, next) => {
     const { name, price, facilityName } = req.body;
     try {
         const facility = await Facility.findByPk(facilityName);

@@ -16,43 +16,38 @@ import BookClasses from './components/pages/bookClasses/BookClasses';
 import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const setAuth = boolean => {
+    setIsAuthenticated(boolean);
+  };
 
   return (
+    // <Fragment>
+    //   <Router>
+    //     <Routes>
+    //       <Route exact path="/login" element={<Login setAuth={setAuth}/>}/>
+    //       <Route exact path="/register" element={<Register setAuth={setAuth}/>}/>
+    //       <Route exact path="/profile" element={<MemberProfile/>}/>
+    //       <Route exact path="/book-facility" element={<BookFacility/>}/>
+    //       <Route exact path="/book-class" element={<BookClasses/>}/>
+    //     </Routes>
+    //   </Router>
+    // </Fragment>
     <Fragment>
       <Router>
         <Routes>
-          <Route exact path="/login" element={<Login/>}/>
-          <Route exact path="/register" element={<Register/>}/>
+          <Route exact path="/register" 
+          element = {!isAuthenticated? (<Register setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
+          <Route path="/login" 
+          element = {!isAuthenticated? (<Login setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
+          <Route path="/dashboard" 
+          element = {!isAuthenticated? (<Dashboard setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>       
           <Route exact path="/profile" element={<MemberProfile/>}/>
           <Route exact path="/book-facility" element={<BookFacility/>}/>
-          <Route exact path="/book-class" element={<BookClasses/>}/>
+          <Route exact path="/book-class" element={<BookClasses/>}/>      
         </Routes>
       </Router>
     </Fragment>
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const setAuth = boolean => {
-  //   console.log("Setting auth to: ",boolean );
-  //   setIsAuthenticated(boolean);
-  //   console.log("Auth is: ",isAuthenticated );
-  // };
-
-  // return (
-  //   <Fragment>
-  //     <Router>
-  //       <div className="container">
-  //         <Routes>
-  //           <Route path="/register" 
-  //           element = {!isAuthenticated? (<Register setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>
-  //           <Route path="/login" 
-  //           element = {!isAuthenticated? (<Login setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
-  //           <Route path="/dashboard" 
-  //           element = {!isAuthenticated? (<Dashboard setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>
-
-  //         </Routes>
-  //       </div>
-        
-  //     </Router>
-  //   </Fragment>
   // );
   );
 }

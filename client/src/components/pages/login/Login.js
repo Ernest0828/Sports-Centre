@@ -1,9 +1,44 @@
-import React,{Fragment} from "react";
+import React,{Fragment, useState, useContext} from "react";
 import "./login.css";
-import { Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import { Auth } from "../../../context/Auth";
 
+const Login = () => {
 
-const Login = ({setAuth}) => {
+    const [credentials, setCredentials] = useState({
+        customerEmail: "",
+        password: "",
+    });
+
+    const { user, loading, error, dispatch } = useContext(Auth);
+    
+    const navigate = useNavigate()
+
+    const handleChange = (e) => {
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    };
+
+    const handleClick = async (e) => {
+    e.preventDefault();
+    dispatch({ type: "LOGIN_START" });
+    try {
+        const res = await axios.post("http://localhost:5000/auth/login", credentials,{
+            headers:{
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        console.log(res);
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+        navigate("/")
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+    }
+    };
+
+    console.log(user)
+
     return (
         <Fragment>
             <div className="login">
@@ -15,11 +50,12 @@ const Login = ({setAuth}) => {
                     <div className="loginRight">
                         <div className="loginBox">
                             <span className="loginBoxDesc">Login</span>
-                            <input placeholder="Email" className="loginInput"/>
-                            <input placeholder="Password" className="loginInput"/>
-                            <Link to="/auth/login" className="loginButtonLink">
-                                <button className="buttonInLink" onClick={()=>setAuth(true)}>Log In</button>
+                            <input id="customerEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
+                            <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
+                            <Link to="/profile" disabled={loading} onClick={handleClick} className="loginButtonLink">
+                                <button className="buttonInLink">Log In</button>
                             </Link>
+                            {error && <span>{error.message}</span>}
                             <span className="loginForgot">Forgot Password?</span>
                             <Link to="/register" className="loginRegisterLink">
                                 <button className="buttonInLink">Create a New Account</button>
@@ -28,7 +64,6 @@ const Login = ({setAuth}) => {
                     </div>
                 </div>
             </div>
-            {/* Login tutorial  */}
         </Fragment>
     );
 };

@@ -4,7 +4,7 @@ const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new facilities (only for manager)
-router.post("/facilityid", verifyManager, async (req, res, next) => {
+router.post("/facilityid", async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
     try {
         // check if activity already exist
