@@ -1,16 +1,22 @@
-const express = require("express");
+// const express = require("express");
+// const router = express.Router();
+// const Staff  = require("../database/models/staff");
+// const bcrypt = require("bcrypt");
+// const verifyStaff = require("../middleware/verifyStaff");
+// const verifyManager = require("../middleware/verifyManager");
+import express from "express";
 const router = express.Router();
-const Staff  = require("../database/models/staff");
-const bcrypt = require("bcrypt");
-const verifyStaff = require("../middleware/verifyStaff");
-const verifyManager = require("../middleware/verifyManager");
+import Staff from "../database/models/staff.js";
+import bcrypt from "bcrypt"
+import verifyStaff from "../middleware/verifyStaff.js";
+import verifyManager from "../middleware/verifyManager.js";
 
 // 1. Update staff info
 router.put("/:id", verifyStaff, async (req, res, next) => {
     try {
         const updateStaff = await Staff.findByPk(req.params.id);
-        await updateStaff.update(req.body);
-        res.status(200).send("Updated!");
+        const updatedStaff = await updateStaff.update(req.body);
+        res.status(200).json(updatedStaff);
     } catch (err) {
         next(err);
     }
@@ -47,8 +53,8 @@ router.put("/change-password/:id", verifyStaff, async (req, res, next) => {
             bcyrptPassword = await bcrypt.hash(password, salt);
         }
         const updateStaff = await Staff.findByPk(req.params.id);
-        await updateStaff.update({ ...req.body, password: bcyrptPassword });
-        res.status(200).send("Password updated!")
+        const updatedPassword = await updateStaff.update({ ...req.body, password: bcyrptPassword });
+        res.status(200).json(updatedPassword)
     } catch (err) {
         next(err);
     }
@@ -58,14 +64,14 @@ router.put("/change-password/:id", verifyStaff, async (req, res, next) => {
 router.delete("/:id", verifyManager, async (req, res, next) => {
     try {
         const staff = await Staff.findByPk(req.params.id);
-        if(!staff) return res.status(404).send("Staff not found");
+        if(!staff) return res.status(404).json("Staff not found");
         else { 
             await staff.destroy(req.body);
-            res.status(200).send("Account deleted");
+            res.status(200).json("Account deleted");
         }
     } catch (err) {
         next(err);
     }
 });
 
-module.exports = router;
+export default router
