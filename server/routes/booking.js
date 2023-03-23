@@ -1,17 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const moment = require('moment');
-// // const Op = require("sequelize");
-// const Booking  = require("../database/models/booking");
-// const Activity  = require("../database/models/activity");
-// const Classes  = require("../database/models/classes");
-// const Facility = require("../database/models/facility");
-// const Payment  = require("../database/models/payment");
-// const Customer  = require("../database/models/customer");
-// const Staff  = require("../database/models/staff");
-// const StaffBooking  = require("../database/models/staffBooking");
-// const verifyUser = require("../middleware/verifyUser");
-// const verifyStaff = require("../middleware/verifyStaff");
 import express from "express";
 const router = express.Router();
 import moment from "moment";

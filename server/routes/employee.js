@@ -1,9 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const Staff  = require("../database/models/staff");
-// const bcrypt = require("bcrypt");
-// const verifyStaff = require("../middleware/verifyStaff");
-// const verifyManager = require("../middleware/verifyManager");
 import express from "express";
 const router = express.Router();
 import Staff from "../database/models/staff.js";

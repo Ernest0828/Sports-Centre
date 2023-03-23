@@ -1,8 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const Classes  = require("../database/models/classes.js");
-// const Facility  = require("../database/models/facility.js");
-// const verifyManager = require("../middleware/verifyManager.js");
 import express from "express";
 const router = express.Router();
 import Classes from "../database/models/classes.js";
