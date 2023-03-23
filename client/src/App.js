@@ -1,5 +1,6 @@
 import React,{Fragment, Profiler, useState} from 'react';
 import './App.css';
+import PropTypes from 'prop-types';
 import {BrowserRouter as Router, 
   Routes, 
   Route, 
@@ -30,9 +31,13 @@ import Studio from './components/pages/individual facilities/Studio';
 import Aerobics from './components/pages/individual classes/Aerobics';
 import Pilates from './components/pages/individual classes/Pilates';
 import Yoga from './components/pages/individual classes/Yoga';
+import MyComponent from './components/dropdown/dropdown';
+import DropdownChoice from './components/dropdown/dropdown';
+import ReactDatePicker from './components/Calendar/ReactDatePicker';
 
 function App() {
   return (
+    // <ReactDatePicker />
     <Fragment>
       <Router>
         <Routes>

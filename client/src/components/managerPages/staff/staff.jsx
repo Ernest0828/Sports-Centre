@@ -71,7 +71,7 @@ const Staff = () => {
 
 
     return(
-        <body>
+        <body className="staffBody">
             <Navbar/>
             <div  className="staffDetails">
                 <h1 className="staffDetailsTitle">GymCorp Staff</h1>

@@ -5,7 +5,6 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./swimmingpool.css"
-import Calendar from 'react-calendar'
 import Navbar from "../../navbar/navbar"
 
 
@@ -93,7 +92,7 @@ const Swimmingpool = () => {
 												</div>
 													<div className="swimmingPoolDetailsPrice">
                           <h1>Select your details</h1>
-                          <Calendar />
+
                           <span>
                               Dropdown boxes here
                           </span>

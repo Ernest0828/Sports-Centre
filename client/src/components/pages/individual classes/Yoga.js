@@ -5,7 +5,7 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./yoga.css"
-import Calendar from 'react-calendar'
+
 import Navbar from "../../navbar/navbar"
 
 const Yoga = () => {
@@ -92,7 +92,7 @@ const Yoga = () => {
 												</div>
 													<div className="yogaDetailsPrice">
                           <h1>Select your details</h1>
-                          <Calendar />
+
                           <span>
                               Dropdown boxes here
                           </span>

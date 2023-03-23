@@ -5,7 +5,7 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./studio.css"
-import Calendar from 'react-calendar'
+
 import Navbar from "../../navbar/navbar"
 
 
@@ -93,7 +93,7 @@ const Studio = () => {
 												</div>
 													<div className="studioDetailsPrice">
                           <h1>Select your details</h1>
-                          <Calendar />
+
                           <span>
                               Dropdown boxes here
                           </span>
