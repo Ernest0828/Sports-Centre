@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+import { Sequelize } from "sequelize";
+import db from "../db.js";
 
 const { STRING, UUID, UUIDV4, INTEGER, BOOLEAN, ENUM } = Sequelize;
 
@@ -35,11 +35,6 @@ const Customer = db.define('Customer', {
     type: ENUM("monthly", "annually"),
     allowNull: true
   }
-  // bookings: {
-  //   type: ARRAY(STRING),
-  //   allowNull: true,
-  //   defaultValue: []
-  // }
 });
 
-module.exports = Customer;
+export default Customer
