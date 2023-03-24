@@ -71,7 +71,7 @@
     outline: none;
 }
 
-.loginButtonLink{
+.loginButton{
     height: 50px;
     border-radius: 10px;
     border: none;
@@ -83,7 +83,7 @@
     cursor: pointer;
 }
 
-.loginButtonLink:hover{
+.loginButton:hover{
     transform: scale(.98);
     background-color: #DE7F05;
 }

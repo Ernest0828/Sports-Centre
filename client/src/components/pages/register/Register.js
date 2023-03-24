@@ -17,7 +17,7 @@ const Register = () => {
         };
       
         try {
-          const response = await axios.post('http://localhost:3000/auth/register', data);
+          const response = await axios.post('http://localhost:5000/api/auth/register', data);
           console.log(response.data); // Print the response from the server
           // Redirect to login page or show a success message
         } catch (error) {
@@ -43,9 +43,7 @@ const Register = () => {
                         <input name="password" type="password" placeholder="Password" className="registerInput"/>
                         <input type="password" placeholder="Retype your password" className="registerInput"/>
                         {/*Temporary link to profile until we get dashboard*/}
-                        <Link to="/register" className="registerButtonLink"> 
-                            <button className="buttonInLink">Sign Up</button>
-                        </Link>
+                        <button className="registerButton" type="submit">Sign Up</button>
                         <Link to="/login" className="registerLoginButton">
                             <button className="buttonInLink">Login</button>
                         </Link>
