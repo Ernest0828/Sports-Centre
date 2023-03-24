@@ -5,6 +5,7 @@ import {BrowserRouter as Router,
   Route, 
   Navigate
 } from 'react-router-dom';
+import { AuthProvider } from './context/Auth';
 
 //components
 import Dashboard from "./components/pages/dashboard/Dashboard";
@@ -34,19 +35,21 @@ function App() {
     //   </Router>
     // </Fragment>
     <Fragment>
-      <Router>
-        <Routes>
-          <Route exact path="/register" 
-          element = {!isAuthenticated? (<Register setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
-          <Route path="/login" 
-          element = {!isAuthenticated? (<Login setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
-          <Route path="/dashboard" 
-          element = {!isAuthenticated? (<Dashboard setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>       
-          <Route exact path="/profile" element={<MemberProfile/>}/>
-          <Route exact path="/book-facility" element={<BookFacility/>}/>
-          <Route exact path="/book-class" element={<BookClasses/>}/>      
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route exact path="/register" 
+            element = {!isAuthenticated? (<Register setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
+            <Route path="/login" 
+            element = {!isAuthenticated? (<Login setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
+            <Route path="/dashboard" 
+            element = {!isAuthenticated? (<Dashboard setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>       
+            <Route exact path="/profile" element={<MemberProfile/>}/>
+            <Route exact path="/book-facility" element={<BookFacility/>}/>
+            <Route exact path="/book-class" element={<BookClasses/>}/>      
+          </Routes>
+        </Router>
+      </AuthProvider>
     </Fragment>
   // );
   );

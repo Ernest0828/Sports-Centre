@@ -1,30 +1,42 @@
-import React,{Fragment} from "react";
+import React,{Fragment, useState} from "react";
 import "./register.css";
 import { Link} from "react-router-dom";
 import axios from "axios";
 
 
 const Register = () => {
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const details = event.target;
-      
-        const data = {
-          name: details.elements.name.value,
-          number: details.elements.number.value,
-          email: details.elements.email.value,
-          password: details.elements.password.value,
-        };
-      
-        try {
-          const response = await axios.post('http://localhost:5000/api/auth/register', data);
-          console.log(response.data); // Print the response from the server
-          // Redirect to login page or show a success message
-        } catch (error) {
-          console.error(error.response.data); // Print the error message from the server
-          // Show an error message to the user
+    const [credentials, setCredentials] = useState({
+        name: "",
+        number: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      const [error, setError] = useState("");
+      const [success, setSuccess] = useState("");
+    
+      const handleChange = (e) => {
+        setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+      };
+    
+      const handleClick = async (e) => {
+        e.preventDefault();
+        setError("");
+        setSuccess("");
+        if (credentials.password !== credentials.confirmPassword) {
+          setError("Passwords do not match");
+          return;
         }
-    };
+        try {
+          const res = await axios.post( "http://localhost:5000/api/auth/register", credentials);
+          console.log(res);
+          setSuccess(res.data.message);
+          // Redirect to login page or show success message
+        } catch (err) {
+          console.log(err.response.data);
+          setError(err.response.data.message);
+        }
+      };
       
     return (
         <Fragment>
@@ -35,19 +47,20 @@ const Register = () => {
                     <span className="registerDesc">Log in or register and start booking with GymCorp!</span>
                 </div>
                 <div className="registerRight">
-                    <form className="registerBox" onSubmit={handleSubmit}>
+                    <div className="registerBox">
                         <span className="registerBoxDesc">Create an account</span>
-                        <input name="name" placeholder="Name" className="registerInput"/>
-                        <input name="number" placeholder="Number" className="registerInput"/>
-                        <input name="email" type="email" placeholder="Email" className="registerInput"/>
-                        <input name="password" type="password" placeholder="Password" className="registerInput"/>
-                        <input type="password" placeholder="Retype your password" className="registerInput"/>
-                        {/*Temporary link to profile until we get dashboard*/}
-                        <button className="registerButton" type="submit">Sign Up</button>
+                        <input id="name" placeholder="Name" required value={credentials.name} onChange={handleChange} className="registerInput"/>
+                        <input id="number" placeholder="Number" required value={credentials.number} onChange={handleChange} className="registerInput"/>
+                        <input id="email" type="email" placeholder="Email" required value={credentials.email} onChange={handleChange} className="registerInput"/>
+                        <input id="password" type="password" placeholder="Password" required value={credentials.password} onChange={handleChange}className="registerInput"/>
+                        <input id="confirmPassword" type="password" placeholder="Retype your password" required value={credentials.confirmPassword} onChange={handleChange} className="registerInput"/>
+                        <button className="registerButton" type="submit" onClick={handleClick}>Sign Up</button>
+                        {error && <span className="registerErrorMsg">{error}</span>}
+                        {success && <span className="registerSuccessMsg">{success}</span>}
                         <Link to="/login" className="registerLoginButton">
                             <button className="buttonInLink">Login</button>
                         </Link>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

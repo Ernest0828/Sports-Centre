@@ -11,7 +11,7 @@ const Login = () => {
         password: "",
     });
 
-    const { user, loading, error, dispatch } = useContext(Auth);
+    const {loading, error, dispatch } = useContext(Auth);
     
     const navigate = useNavigate()
 
@@ -23,21 +23,17 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await axios.post("http://localhost:5000/api/auth/login", credentials,{
-            headers:{
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        });
+        const res = await axios.post("http://localhost:5000/api/auth/login", credentials);
+        localStorage.setItem("token",res.data.token);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate("/profile")
     } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
         dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
     };
 
-    console.log(user)
 
     return (
         <Fragment>
