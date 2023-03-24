@@ -53,7 +53,7 @@ const Login = () => {
                             <input id="customerEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
                             <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
                             <button disabled={loading} onClick={handleClick} className="loginButton">Log In</button>
-                            {error && <span>{error.message}</span>}
+                            {error && <span className="loginErrorMsg">{error.message}</span>}
                             <span className="loginForgot">Forgot Password?</span>
                             <Link to="/register" className="loginRegisterLink">
                                 <button className="buttonInLink">Create a New Account</button>
