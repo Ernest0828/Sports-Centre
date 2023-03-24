@@ -4,7 +4,7 @@ const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new facilities (only for manager)
-router.post("/facilityid", verifyManager, async (req, res, next) => {
+router.post("/facilityid", async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
     try {
         // check if activity already exist
@@ -31,7 +31,7 @@ router.put("/:id", verifyManager, async (req, res, next) => {
 });
 
 // 3. Delete facility (only for manager)
-router.delete("/:id", verifyManager, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(req.params.id);
         if(!facility) return res.status(404).send("Facility not found");

@@ -36,6 +36,7 @@ function App() {
     <Fragment>
       <Router>
         <Routes>
+          <Route exact path="/" element={<Login/>}/>
           <Route exact path="/login" element={<Login/>}/>
           <Route exact path="/register" element={<Register/>}/>
           <Route exact path="/dashboard" element={<Dashboard/>}/>

@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-// const Facility = require("./facility");
+ const Facility = require("./facility");
 
 const { INTEGER, STRING, FLOAT, TIME } = Sequelize;
 

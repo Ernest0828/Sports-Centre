@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import "./memberProfile.css";
 import { Link } from "react-router-dom";
 import ProfileInfo from "../../profileInfo/MemberProfileInfo";
+import Navbar from "../../navbar/navbar"
 
 const MemberProfile = () => {
     const [bookings, setBookings] = useState([
@@ -17,6 +18,7 @@ const MemberProfile = () => {
 
     return (
         <Fragment>
+            <Navbar/>
             <div className="profile">
                 <div className="profileWrapper">
                     <ProfileInfo />

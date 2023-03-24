@@ -24,7 +24,7 @@ router.get("/find/:id", async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+});  
 
 // 3. To get all staffs
 router.get("/", verifyManager, async (req, res, next) => {

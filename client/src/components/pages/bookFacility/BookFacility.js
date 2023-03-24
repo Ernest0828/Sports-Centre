@@ -4,11 +4,13 @@ import { Link} from "react-router-dom";
 import Basket from "../../basket/HaveAccBasket";
 import Facilities from "../../facilities/Facilities";
 import NoAccBasket from "../../basket/NoAccBasket"
+import Navbar from "../../navbar/navbar"
 
   
 const BookFacility = () => {
   return (
     <Fragment>
+      <Navbar/>
         <div className="bookFacilities">
             <div className="facWrapper">
                 <Facilities/>
