@@ -20,9 +20,11 @@ const Register = () => {
                         <input type="email" placeholder="Email" className="registerInput"/>
                         <input type="password" placeholder="Password" className="registerInput"/>
                         <input type="password" placeholder="Retype your password" className="registerInput"/>
-                        <button className="registerButton">Sign Up</button>
-                        <Link to = "/dashboard">
-                            <button className="registerLoginButton">Login</button>
+                        <Link to="/auth/register" className="registerButtonLink">
+                            <button className="buttonInLink">Sign Up</button>
+                        </Link>
+                        <Link to="/login" className="registerLoginButton">
+                            <button className="buttonInLink">Login</button>
                         </Link>
                     </div>
                 </div>

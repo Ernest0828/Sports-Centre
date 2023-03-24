@@ -17,6 +17,7 @@ app.use("/auth", require("./routes/customerRoutes"));
 app.use("/api/customer", require("./routes/customers"));
 // app.use("/dashboard", require("./routes/dashboard"));
 app.use("/auth/staff", require("./routes/staffRoutes"));
+app.use("/api/staff", require("./routes/employee"));
 app.use("/api/activities", require("./routes/activity"));
 app.use("/api/classes", require("./routes/classes"));
 app.use("/api/facilities", require("./routes/facility"));

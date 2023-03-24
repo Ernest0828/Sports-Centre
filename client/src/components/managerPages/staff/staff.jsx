@@ -4,36 +4,23 @@ import "./staff.css";
 import Navbar from "../managerNavbar/navbar";
 import { Link } from 'react-router-dom';
 
+//temporary data
 const data = [
     {
       staffId     : '01',
-      staffName: 'Chen Ve Co',
-      staffNumber: '201637435',
-      staffEmail: 'sc22vcc@leeds.ac.uk'
+      staffName: 'Ernest Kong',
+      staffNumber: '201583940',
+      staffEmail: 'sc21ezqk@leeds.ac.uk',
+      staffPassword: 'abcde',
+      isManager: false
     },
     {
       staffId     : '02',
-      staffName: 'Brayden Jalleh',
-      staffNumber: '201633748',
-      staffEmail: 'sc22bmj@leeds.ac.uk'
-    },
-    {
-      staffId     : '03',
-      staffName: 'Edmund Chia',
-      staffNumber: '201573802',
-      staffEmail: 'sc21ewkc@leeds.ac.uk'
-    },
-    {
-      staffId     : '04',
-      staffName: 'Ernest Kong',
-      staffNumber: '201583940',
-      staffEmail: 'sc21ezqk@leeds.ac.uk'
-    },
-    {
-      staffId     : '05',
       staffName: 'Zayden',
       staffNumber: '201637435',
-      staffEmail: 'sc21wma@leeds.ac.uk'
+      staffEmail: 'sc21wma@leeds.ac.uk',
+      staffPassword: 'abcde',
+      isManager: false
     },
 ]
 
@@ -41,6 +28,7 @@ const Staff = () => {
 
     const [staffDetails, setStaffDetails] = useState(data)
     const [isEditable, setIsEditable] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
     
     const onChangeInput = (s, staffId) => {
         const { name, value } = s.target
@@ -52,13 +40,6 @@ const Staff = () => {
         setStaffDetails(editData)
       }
 
-
-      const onAddRow = () => {
-        const newId = staffDetails.length + 1; // generate new ID
-        const newRow = { staffId: newId, staffName: "", staffNumber: "", staffEmail: "" };
-        setStaffDetails([...staffDetails, newRow]);
-      };
-
       const onDeleteStaff = (staffId) => {
         const updatedData = staffDetails.filter((item) => item.staffId !== staffId);
         setStaffDetails(updatedData);
@@ -68,7 +49,71 @@ const Staff = () => {
         setIsEditable(!isEditable);
       };
 
+      const onAddRow = async() => {
+        const newId = staffDetails.length + 1; // generate new ID
+        const newRow = { staffId: newId, staffName: "", staffNumber: "", staffEmail: "", staffPassword: "", isManager: ""};
+        setStaffDetails([...staffDetails, newRow]);}
 
+        //send post request to /register endpoint
+        /*try {
+          const response = await fetch ('/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: newRow.staffName,
+              number: newRow.staffNumber,
+              email: newRow.staffEmail,
+              password: newRow.staffPassword, // replace this with the actual password for each staff member
+              isManager: newRow.isManager,
+            })
+          }
+          );
+          if (!response.ok){
+            throw new Error('Failed to create new staff member');
+          }
+
+          console.log('New staff member created')
+        } catch (error) {
+          console.error(error.message('server error'));
+        }
+      };*/ 
+
+    const saveData = async() => {
+      // Loop through staffDetails and make a POST request to /register for each staff member
+      staffDetails.forEach(async (staff) => {
+        try {
+          const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: staff.staffName,
+              number: staff.staffNumber,
+              email: staff.staffEmail,
+              password: staff.staffPassword, // replace this with the actual password for each staff member
+              isManager: staff.isManager, // replace this with the actual value for each staff member
+            }),
+          });
+
+          const data = await response.json();
+
+          console.log('Data:', data);
+
+          setIsSaved(true);
+
+          if (!response.ok){
+            throw new Error('Failed to create new staff member');
+          }
+
+          console.log('New staff member created')
+        } catch (err) {
+          console.error(err.message('Server error;'));
+        }
+      });
+    };
 
     return(
         <body className="staffBody">
@@ -82,11 +127,13 @@ const Staff = () => {
                                     <th>Staff name</th>
                                     <th>Staff number</th>   
                                     <th>Staff email</th>
+                                    <th>Password</th>
+                                    <th>Manager</th>
                                     {isEditable && <th> </th>}
                                 </tr>
                             </thead>
                             <tbody>
-                                {staffDetails.map(({ staffId, staffName, staffNumber, staffEmail }) => (
+                                {staffDetails.map(({ staffId, staffName, staffNumber, staffEmail, staffPassword, isManager }) => (
                                 <tr key = {staffId}>
                                     <td>
                                         <input
@@ -118,6 +165,26 @@ const Staff = () => {
                                             disabled={!isEditable}
                                         />
                                     </td>
+                                    <td>
+                                        <input
+                                            name='staffPassword'
+                                            value={staffPassword}
+                                            type="text"
+                                            onChange={(s) => onChangeInput(s, staffId)}
+                                            placeholder="staff email"
+                                            disabled={!isEditable}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name='isManager'
+                                            value={isManager}
+                                            type="boolean"
+                                            onChange={(s) => onChangeInput(s, staffId)}
+                                            placeholder="manmager or not"
+                                            disabled={!isEditable}
+                                        />
+                                    </td>
                                     {isEditable && (
                                     <td>
                                     <button className="deleteButton" onClick={() => onDeleteStaff(staffId)}>
@@ -130,12 +197,15 @@ const Staff = () => {
                             </tbody>
                         </table>
                         <div>
-                        <button className="editButton" onClick={toggleEdit}>
-                        {isEditable ? " Save " : " Edit "}
-                        </button>
-                        {isEditable && (
-                                <button class="button" onClick={onAddRow}>Add</button>
-                        )}
+                          <button className="editButton" onClick={toggleEdit}>
+                          {isEditable ? " Done "  : " Edit "}
+                          </button>
+                          {isEditable && (
+                                  <button class="button" onClick={onAddRow}>Add</button>
+                          )}
+                          {!isEditable && (
+                                  <button class="button" onClick={saveData}>Save</button>
+                          )}
                         </div>
                     </div>
                 </div>

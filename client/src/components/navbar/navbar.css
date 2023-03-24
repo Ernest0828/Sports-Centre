@@ -1,7 +1,6 @@
 .navbar {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   background-color: #033756;
   display: flex;
@@ -29,6 +28,12 @@
   margin-left: 10%;
   padding-top: 20px;
   text-align: right;
+}
+
+.navbar_right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
 }
 
 .navbar__item--title {
