@@ -1,8 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Facility  = require("../database/models/facility");
-const verifyManager = require("../middleware/verifyManager");
-
+import Facility from "../database/models/facility.js";
+import verifyManager from "../middleware/verifyManager.js";
 // 1. Add new facilities (only for manager)
 router.post("/facilityid", async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
@@ -10,21 +9,21 @@ router.post("/facilityid", async (req, res, next) => {
         // check if activity already exist
         const existingFacility = await Facility.findOne({ where: {facilityName: name}});
         if (existingFacility) 
-            return res.status(401).send("Facility already exists");
+            return res.status(401).json("Facility already exists");
 
-        await Facility.create({ facilityName: name, capacity: capacity, startTime: start, endTime: end });
-        return res.status(201).send("New facility created");
+        const newFacility = await Facility.create({ facilityName: name, capacity: capacity, startTime: start, endTime: end });
+        return res.status(200).json(newFacility);
     } catch (err) {
         next(err);
     }
 });
 
 // 2. Update an existing facility (only for manager)
-router.put("/:id", verifyManager, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateFacility = await Facility.findByPk(req.params.id);
-        await updateFacility.update(req.body);
-        return res.status(200).send("Facility updated");
+        const updatedFacility = await updateFacility.update(req.body);
+        return res.status(200).json(updatedFacility);
     } catch (err) {
         next(err);
     }
@@ -34,10 +33,10 @@ router.put("/:id", verifyManager, async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(req.params.id);
-        if(!facility) return res.status(404).send("Facility not found");
+        if(!facility) return res.status(404).json("Facility not found");
         else { 
             await facility.destroy(req.body);
-            res.status(200).send("Facility deleted");
+            res.status(200).json("Facility deleted");
         }
     } catch (err) {
         next(err);
@@ -64,4 +63,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router

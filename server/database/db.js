@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+import { Sequelize } from "sequelize";
 
 const db = new Sequelize("gymCorp", "postgres", "hogwarts6393", 
 {
@@ -7,4 +7,4 @@ const db = new Sequelize("gymCorp", "postgres", "hogwarts6393",
   port : 5432,
 });
 
-module.exports = db;
+export default db;

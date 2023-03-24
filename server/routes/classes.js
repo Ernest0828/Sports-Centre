@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Classes  = require("../database/models/classes");
-const Facility  = require("../database/models/facility");
-const verifyManager = require("../middleware/verifyManager");
+import Classes from "../database/models/classes.js";
+import Facility from "../database/models/facility.js";
+import verifyManager from "../middleware/verifyManager.js";
 
 // 1. Add new classes (only for manager)
 router.post("/classid", verifyManager, async (req, res, next) => {
@@ -11,14 +11,14 @@ router.post("/classid", verifyManager, async (req, res, next) => {
         
         const facility = await Facility.findByPk(facilityName);
         if (!facility) 
-            return res.status(404).send("Facility not found");
+            return res.status(404).json("Facility not found");
         // check if class already exist
         const existingClass = await Classes.findOne({ where: {className: name, day: day, startTime: start} });
         if (existingClass) 
-            return res.status(401).send("Class already exists");
+            return res.status(401).json("Class already exists");
            
-        await Classes.create({ className: name, day: day, startTime: start, endTime: end, price: price, facilityName: facilityName });
-        return res.status(201).send("New class created.");
+        const classes = await Classes.create({ className: name, day: day, startTime: start, endTime: end, price: price, facilityName: facilityName });
+        return res.status(200).json(classes);
     } catch (err) {
         next(err);
     }
@@ -28,8 +28,8 @@ router.post("/classid", verifyManager, async (req, res, next) => {
 router.put("/:id", verifyManager, async (req, res, next) => {
     try {
         const updateClass = await Classes.findByPk(req.params.id);
-        await updateClass.update(req.body);
-        return res.status(200).send("Class updated");
+        const updatedClass = await updateClass.update(req.body);
+        return res.status(200).json(updatedClass);
     } catch (err) {
         next(err);
     }
@@ -39,10 +39,10 @@ router.put("/:id", verifyManager, async (req, res, next) => {
 router.delete("/:id", verifyManager, async (req, res, next) => {
     try {
         const classes = await Classes.findByPk(req.params.id);
-        if(!classes) return res.status(404).send("Classes not found");
+        if(!classes) return res.status(404).json("Classes not found");
         else { 
             await classes.destroy(req.body);
-            res.status(200).send("Class deleted");
+            res.status(200).json("Class deleted");
         }
     } catch (err) {
         next(err);
@@ -69,4 +69,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router

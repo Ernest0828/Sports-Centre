@@ -10,7 +10,8 @@ function DropdownChoice() {
     "Climbing Wall": ['General use'],
     "Fitness Room": ['General use'],
     "Sports Hall": ['1-hour session', 'Team events'],
-    "Squash Court": ['1-hour session'],
+    "Squash Court A": ['1-hour session'],
+    "Squash Court B": ['1-hour session'],
     "Swimming Pool": ['General use', 'Lane Swimming', 'Lessons', 'Team events']
   };
 
@@ -46,7 +47,8 @@ function DropdownChoice() {
         <option value="Climbing Wall">Climbing Wall</option>
         <option value="Fitness Room">Fitness Room</option>
         <option value="Sports Hall">Sports Hall</option>
-        <option value="Squash Court">Squash Court</option>
+        <option value="Squash Court A">Squash Court</option>
+        <option value="Squash Court B">Squash Court</option>
         <option value="Swimming Pool">Swimming Pool</option>
       </select>
         </div>

@@ -1,5 +1,6 @@
-require('dotenv').config();
-const verifyToken = require('./verifyToken');
+import dotenv from "dotenv";
+dotenv.config();
+import verifyToken from './verifyToken.js';
 
 // verify the staff
 const verifyStaff = async (req, res, next) => {
@@ -8,13 +9,13 @@ const verifyStaff = async (req, res, next) => {
         if (req.user.id === req.params.id || req.user.isManager != null) {
             next();
         } else {
-            return res.status(403).send("Not Authorised");
+            return res.status(403).json( {message: "Not Authorised"} );
         }
     });
     } catch (err) {
         console.error(err.message);
-        return res.status(403).send("Not Authorised");
+        return res.status(403).json( {message: "Not Authorised"} );
     }
 };
 
-module.exports = verifyStaff;
+export default verifyStaff
