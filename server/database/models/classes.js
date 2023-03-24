@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
-const Facility = require("./facility");
-const Payment = require("./payment");
+import { Sequelize } from "sequelize";
+import db from "../db.js";
+import Facility from "./facility.js";
+import Payment from "./payment.js";
 
 const { INTEGER, STRING, TIME, FLOAT } = Sequelize;
 
@@ -37,4 +37,4 @@ const Classes = db.define('Classes', {
 // add foreign key constraint
 Classes.belongsTo(Facility, { foreignKey: 'facilityName' });
 
-module.exports = Classes;
+export default Classes

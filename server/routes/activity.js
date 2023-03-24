@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Activity  = require("../database/models/activity");
-const Facility  = require("../database/models/facility");
-const verifyManager = require("../middleware/verifyManager");
+import Activity from "../database/models/activity.js";
+import Facility from "../database/models/facility.js";
+import verifyManager from "../middleware/verifyManager.js";
 
 // 1. Add new activities (only for manager)
 router.post("/activityid", async (req, res, next) => {
@@ -17,8 +17,8 @@ router.post("/activityid", async (req, res, next) => {
         if (existingActivity) 
             return res.status(401).send("Activity already exists");
 
-        await Activity.create({ activityName: name, price: price, facilityName:facilityName });
-        return res.status(201).send("New activity created");
+        const newActivity = await Activity.create({ activityName: name, price: price, facilityName:facilityName });
+        return res.status(200).json(newActivity);
     } catch (err) {
         next(err);
     }
@@ -28,8 +28,8 @@ router.post("/activityid", async (req, res, next) => {
 router.put("/:id", verifyManager, async (req, res, next) => {
     try {
         const updateActivity = await Activity.findByPk(req.params.id);
-        await updateActivity.update(req.body);
-        return res.status(200).send("Activity updated");
+        const updatedActivity = await updateActivity.update(req.body);
+        return res.status(200).json(updatedActivity);
     } catch (err) {
         next(err);
     }
@@ -42,7 +42,7 @@ router.delete("/:id", verifyManager, async (req, res, next) => {
         if(!activity) return res.status(404).send("Activity not found");
         else { 
             await activity.destroy(req.body);
-            res.status(200).send("Activity deleted");
+            res.status(200).json("Activity deleted");
         }
     } catch (err) {
         next(err);
@@ -53,7 +53,7 @@ router.delete("/:id", verifyManager, async (req, res, next) => {
 router.get("/find/:id", async (req, res, next) => {
     try {
         const activity = await Activity.findByPk(req.params.id);
-        res.json(activity);
+        res.status(200).json(activity);
     } catch (err) {
         next(err);
     }
@@ -69,4 +69,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router

@@ -1,11 +1,11 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
-const Customer = require("./customer");
-const Staff = require("./staff");
-const Activity = require("./activity");
-const Facility = require("./facility");
-const Payment = require("./payment");
-const Classes = require("./classes");
+import { Sequelize } from "sequelize";
+import db from "../db.js";
+import Customer from "./customer.js";
+import Staff from "./staff.js";
+import Activity from "./activity.js";
+import Facility from "./facility.js";
+import Payment from "./payment.js";
+import Classes from "./classes.js";
 
 const { INTEGER, DATE, TIME, ENUM } = Sequelize;
 
@@ -46,4 +46,4 @@ Booking.belongsTo(Classes, { foreignKey: 'classId', allowNull: true });
 Booking.belongsTo(Facility, { foreignKey: 'facilityName' });
 Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
 
-module.exports = Booking;
+export default Booking

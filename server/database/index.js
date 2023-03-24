@@ -1,15 +1,14 @@
 // access point for all database related things
-const db = require("./db");
-
-const Customer = require("./models/customer");
-const Staff = require("./models/staff");
-const StaffBooking = require("./models/staffBooking");
-const Booking = require("./models/booking");
-const Activity = require("./models/activity");
-const Facility = require("./models/facility");
-const Payment = require("./models/payment");
-const Classes = require("./models/classes");
-const Membership = require("./models/membership");
+import db from "./db.js";
+import Customer from "./models/customer.js";
+import Staff from "./models/staff.js";
+import StaffBooking from "./models/staffBooking.js";
+import Booking from "./models/booking.js";
+import Activity from "./models/activity.js";
+import Facility from "./models/facility.js";
+import Payment from "./models/payment.js";
+import Classes from "./models/classes.js";
+import Membership from "./models/membership.js";
 
 // relation between tables
 // 1. Customer has many to one relation with Booking
@@ -65,7 +64,7 @@ db
         console.log(err);
     });
 
- module.exports =
+ export default {
     db,
     Customer,
     Staff,
@@ -75,5 +74,5 @@ db
     Facility,
     Payment,
     Classes,
-    Membership;
-
+    Membership
+ }

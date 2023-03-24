@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+import { Sequelize } from "sequelize";
+import db from "../db.js";
 
 const { INTEGER, UUID, UUIDV4, STRING, BOOLEAN } = Sequelize;
 
@@ -32,5 +32,4 @@ const Staff = db.define('Staff', {
   }
 });
 
-
-module.exports = Staff;
+export default Staff
