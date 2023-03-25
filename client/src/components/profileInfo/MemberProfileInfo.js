@@ -56,7 +56,7 @@ export default function MemberProfileInfo() {
                                 <div className="membershipDetails">
                                     <label>Membership</label>
                                     <p className="membershipDetails">Type: {user.details.membershipType}</p>
-                                    <p className="membershipDetails">Start: {user.details.createdAt}</p>
+                                    <p className="membershipDetails">Start: {user.details.createdAt.split('T')[0]}</p>
                                     <p className="membershipDetails">End: 19/03/2024</p>
                                 </div>
                             )}
