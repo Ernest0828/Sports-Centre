@@ -1,24 +1,16 @@
 import React,{Fragment, useState, useEffect, useContext} from "react";
 import "./memberProfileInfo.css";
 import {Auth} from "../../context/Auth"
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
 import axios from "axios";
 
 export default function MemberProfileInfo() {
     
     const {user} = useContext(Auth);
-    //State to fetch user data
-    const [userData, setUserData] = useState({});
+
     // State: Edit mode for update profile
     const [isEditMode, setIsEditMode] = useState(false);
 
-    useEffect(()=>{
-        const fetchData = async () => {
-            const result = await axios.get("/customer/find/:id");
-            setUserData(result.data);
-        };
-        fetchData();
-    },[]);
 
     const handleEditMode = () => {
         setIsEditMode(!isEditMode);
@@ -38,19 +30,19 @@ export default function MemberProfileInfo() {
                         <span className="editInfoTitle">Update Info</span>
                         <div className="userDetails"> 
                             <label>Name</label>
-                            {isEditMode ? ( <input type="text" defaultValue={userData.name} /> ) : 
+                            {isEditMode ? ( <input type="text" defaultValue={user.details.customerName} /> ) : 
                             (
-                                <p>{userData.name}</p>
+                                <p>{user.details.customerName}</p>
                             )}
                             <label>Email</label>
-                            {isEditMode ? ( <input type="email" defaultValue={userData.email} /> ) : 
+                            {isEditMode ? ( <input type="email" defaultValue={user.details.customerEmail} /> ) : 
                             (
-                                <p>{userData.email}</p>
+                                <p>{user.details.customerEmail}</p>
                             )}
                             <label>Number</label>
-                            {isEditMode ? ( <input defaultValue={userData.number} />) : 
+                            {isEditMode ? ( <input defaultValue={user.details.customerNumber} />) : 
                             (
-                                <p>{userData.number}</p>
+                                <p>{user.details.customerNumber}</p>
                             )}
                             {isEditMode && (
                             <div className="editModePassword">
@@ -63,8 +55,8 @@ export default function MemberProfileInfo() {
                             {!isEditMode && (
                                 <div className="membershipDetails">
                                     <label>Membership</label>
-                                    <p className="membershipDetails">Type: Annual</p>
-                                    <p className="membershipDetails">Start: 19/03/2023</p>
+                                    <p className="membershipDetails">Type: {user.details.membershipType}</p>
+                                    <p className="membershipDetails">Start: {user.details.createdAt}</p>
                                     <p className="membershipDetails">End: 19/03/2024</p>
                                 </div>
                             )}
