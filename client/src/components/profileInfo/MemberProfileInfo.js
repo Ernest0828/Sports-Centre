@@ -1,11 +1,25 @@
-import React,{Fragment, useState} from "react";
+import React,{Fragment, useState, useEffect, useContext} from "react";
 import "./memberProfileInfo.css";
-import { Link} from "react-router-dom";
+import {Auth} from "../../context/Auth"
+import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default function MemberProfileInfo() {
-
+    
+    const {user} = useContext(Auth);
+    //State to fetch user data
+    const [userData, setUserData] = useState({});
     // State: Edit mode for update profile
     const [isEditMode, setIsEditMode] = useState(false);
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            const result = await axios.get("/customer/find/:id");
+            setUserData(result.data);
+        };
+        fetchData();
+    },[]);
+
     const handleEditMode = () => {
         setIsEditMode(!isEditMode);
     };
@@ -24,22 +38,19 @@ export default function MemberProfileInfo() {
                         <span className="editInfoTitle">Update Info</span>
                         <div className="userDetails"> 
                             <label>Name</label>
-                            {isEditMode ? (
-                                <input type="text" defaultValue="Edmund" />
-                            ) : (
-                                <p>Edmund</p>
+                            {isEditMode ? ( <input type="text" defaultValue={userData.name} /> ) : 
+                            (
+                                <p>{userData.name}</p>
                             )}
                             <label>Email</label>
-                            {isEditMode ? (
-                                <input type="email" defaultValue="sc21ewkc@leeds.ac.uk" />
-                            ) : (
-                                <p>sc21ewkc@leeds.ac.uk</p>
+                            {isEditMode ? ( <input type="email" defaultValue={userData.email} /> ) : 
+                            (
+                                <p>{userData.email}</p>
                             )}
                             <label>Number</label>
-                            {isEditMode ? (
-                                <input defaultValue="07867274700" />
-                            ) : (
-                                <p>07867274700</p>
+                            {isEditMode ? ( <input defaultValue={userData.number} />) : 
+                            (
+                                <p>{userData.number}</p>
                             )}
                             {isEditMode && (
                             <div className="editModePassword">

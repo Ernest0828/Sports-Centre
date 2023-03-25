@@ -1,11 +1,11 @@
-import React,{Fragment, useState} from 'react';
+import React,{Fragment, useState, useContext} from 'react';
 import './App.css';
 import {BrowserRouter as Router, 
   Routes, 
   Route, 
   Navigate
 } from 'react-router-dom';
-import { AuthProvider } from './context/Auth';
+import { Auth, AuthProvider } from './context/Auth';
 
 //components
 import Dashboard from "./components/pages/dashboard/Dashboard";
@@ -17,40 +17,22 @@ import BookClasses from './components/pages/bookClasses/BookClasses';
 import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const setAuth = boolean => {
-    setIsAuthenticated(boolean);
-  };
+  const {user} = useContext(Auth);
 
   return (
-    // <Fragment>
-    //   <Router>
-    //     <Routes>
-    //       <Route exact path="/login" element={<Login setAuth={setAuth}/>}/>
-    //       <Route exact path="/register" element={<Register setAuth={setAuth}/>}/>
-    //       <Route exact path="/profile" element={<MemberProfile/>}/>
-    //       <Route exact path="/book-facility" element={<BookFacility/>}/>
-    //       <Route exact path="/book-class" element={<BookClasses/>}/>
-    //     </Routes>
-    //   </Router>
-    // </Fragment>
-    <Fragment>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route exact path="/register" 
-            element = {!isAuthenticated? (<Register setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
-            <Route path="/login" 
-            element = {!isAuthenticated? (<Login setAuth={setAuth}/>) : (<Navigate to ="/dashboard"/>)}/>
-            <Route path="/dashboard" 
-            element = {!isAuthenticated? (<Dashboard setAuth={setAuth}/>) : (<Navigate to ="/login"/>)}/>       
-            <Route exact path="/profile" element={<MemberProfile/>}/>
-            <Route exact path="/book-facility" element={<BookFacility/>}/>
-            <Route exact path="/book-class" element={<BookClasses/>}/>      
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </Fragment>
+
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Dashboard />} />
+          <Route path="/register" element={user ? (<Dashboard/>): (<Register/>)} />
+          <Route path="/login" element={user ? (<Dashboard/>) : (<Login/>)} />
+          <Route path="/profile" element={<MemberProfile />} />
+          <Route path="/book-facility" element={<BookFacility />} />
+          <Route path="/book-class" element={<BookClasses />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   // );
   );
 }

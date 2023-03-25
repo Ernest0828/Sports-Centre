@@ -1,10 +1,14 @@
 import React,{Fragment} from "react";
+import {useContext} from "react";
+import {Auth} from "../../../context/Auth";
 
-const Dashboard = ({setAuth}) => {
+const Dashboard = () => {
+    const {dispatch } = useContext(Auth);
+
     return (
         <Fragment>
             <h1>Dashboard</h1>
-            <button onClick={()=> setAuth(false)}>Logout</button>
+            <button onClick={ ()=> dispatch({type: "LOGOUT"})}>Logout</button>
         </Fragment>
     );
 };
