@@ -90,7 +90,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
       return res.status(404).json("Customer not found");
     }
 
-    let membership = await Membership.findOne({ where: { customerId: req.params.id } });
+    const membership = await Membership.findOne({ where: { customerId: req.params.id } });
     if (!membership) {
       return res.status(404).json("Membership not found");
     }
@@ -136,7 +136,26 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
   }
 });
 
-// 4. Get all customer memberships (for staffs)
+// 4. Get a customer's membership info
+router.get("/membership-info/:customerId", verifyUser, async (req, res, next) => {
+  try {
+    const customer = await Customer.findByPk(req.params.customerId);
+    if (!customer) {
+      return res.status(404).json("Customer not found");
+    }
+
+    const membership = await Membership.findOne({ where: { customerId: req.params.customerId } });
+    if (!membership) {
+      return res.status(404).json("Customer does not have membership");
+    }
+
+    res.status(200).json({ membership });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 5. Get all customer memberships (for staffs)
 router.get("/memberships", verifyStaff, async (req, res, next) => {
   try {
     const memberships = await Membership.findAll({
