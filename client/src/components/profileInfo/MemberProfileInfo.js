@@ -22,6 +22,18 @@ export default function MemberProfileInfo() {
         // code to save changes
     };
 
+    const getMembershipType = () => {
+        return user.details.membershipType || "NULL";
+    };
+
+    const getMembershipStartDate = () => {
+        return user.details.startDate || "NULL";
+    };
+    
+      const getMembershipEndDate = () => {
+        return user.details.endDate || "NULL";
+    };
+    
 
     return (
         <Fragment>
@@ -55,9 +67,9 @@ export default function MemberProfileInfo() {
                             {!isEditMode && (
                                 <div className="membershipDetails">
                                     <label>Membership</label>
-                                    <p className="membershipDetails">Type: {user.details.membershipType}</p>
-                                    <p className="membershipDetails">Start: {user.details.createdAt.split('T')[0]}</p>
-                                    <p className="membershipDetails">End: 19/03/2024</p>
+                                    <p className="membershipDetails">Type: {getMembershipType()}</p>
+                                    <p className="membershipDetails">Start: {getMembershipStartDate()}</p>
+                                    <p className="membershipDetails">End: {getMembershipEndDate()}</p>
                                 </div>
                             )}
 
