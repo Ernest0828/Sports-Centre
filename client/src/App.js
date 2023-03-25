@@ -1,5 +1,4 @@
 import React,{Fragment, useState, useContext} from 'react';
-import './App.css';
 import {BrowserRouter as Router, 
   Routes, 
   Route, 
