@@ -11,10 +11,9 @@ import { Auth, AuthProvider } from './context/Auth';
 import Dashboard from "./components/pages/dashboard/Dashboard";
 import Login from "./components/pages/login/Login";
 import Register from "./components/pages/register/Register";
-import MemberProfile from "./components/pages/profile/MemberProfile";
+import Profile from "./components/pages/profile/Profile";
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
-import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 
 function App() {
   const {user} = useContext(Auth);
@@ -27,7 +26,7 @@ function App() {
           <Route exact path="/" element={<Dashboard />} />
           <Route path="/register" element={user ? (<Dashboard/>): (<Register/>)} />
           <Route path="/login" element={user ? (<Dashboard/>) : (<Login/>)} />
-          <Route path="/profile" element={<MemberProfile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
         </Routes>

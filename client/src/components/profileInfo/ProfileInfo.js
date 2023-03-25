@@ -1,5 +1,5 @@
 import React,{Fragment, useState, useEffect, useContext} from "react";
-import "./memberProfileInfo.css";
+import "./profileInfo.css";
 import {Auth} from "../../context/Auth"
 // import {Link} from "react-router-dom";
 import axios from "axios";
@@ -16,10 +16,24 @@ export default function MemberProfileInfo() {
         setIsEditMode(!isEditMode);
     };
 
+    const [customerName, setCustomerName] = useState(user.details.customerName);
+    const [customerNumber, setCustomerNumber] = useState(user.details.customerNumber);
+    const [customerEmail, setCustomerEmail] = useState(user.details.customerEmail);
+    const [password, setPassword] = useState(user.details.password);
+    const [confirmPassword, setConfirmPassword] = useState(user.details.password);
+
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setIsEditMode(false);
         // code to save changes
+        axios.put('/api/customer/' + (user.details.customerId),{
+            customerName : customerName
+        }).then((response) => {
+            console.log(response.date);
+        }).catch((error)=>{
+            console.log(error);
+        });
     };
 
     const getMembershipType = () => {
@@ -42,26 +56,26 @@ export default function MemberProfileInfo() {
                         <span className="editInfoTitle">Update Info</span>
                         <div className="userDetails"> 
                             <label>Name</label>
-                            {isEditMode ? ( <input type="text" defaultValue={user.details.customerName} /> ) : 
+                            {isEditMode ? ( <input type="text" defaultValue={user.details.customerName} onChange={(e)=> setCustomerName(e.target.value)}/> ) : 
                             (
                                 <p>{user.details.customerName}</p>
                             )}
                             <label>Email</label>
-                            {isEditMode ? ( <input type="email" defaultValue={user.details.customerEmail} /> ) : 
+                            {isEditMode ? ( <input type="email" defaultValue={user.details.customerEmail} onChange={(e)=> setCustomerEmail(e.target.value)} /> ) : 
                             (
                                 <p>{user.details.customerEmail}</p>
                             )}
                             <label>Number</label>
-                            {isEditMode ? ( <input defaultValue={user.details.customerNumber} />) : 
+                            {isEditMode ? ( <input defaultValue={user.details.customerNumber} onChange={(e)=> setCustomerNumber(e.target.value)}/>) : 
                             (
                                 <p>{user.details.customerNumber}</p>
                             )}
                             {isEditMode && (
                             <div className="editModePassword">
                                 <label htmlFor="password">Password</label>
-                                <input id="password" type="password" defaultValue="" />
+                                <input id="password" type="password" defaultValue="" onChange={(e)=> setPassword(e.target.value)}/>
                                 <label htmlFor="retypePassword">Re-type Password</label>
-                                <input id="retypePassword" type="password" defaultValue="" />
+                                <input id="retypePassword" type="password" defaultValue="" onChange={(e)=> setConfirmPassword(e.target.value)}/>
                             </div>
                             )}
                             {!isEditMode && (

@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
-import "./nonMemberProfile.css";
+import "./profile.css";
 import { Link } from "react-router-dom";
-import NonMemberProfileInfo from "../../profileInfo/NonMemberProfileInfo";
+import ProfileInfo from "../../profileInfo/ProfileInfo";
 
-const NonMemberProfile = () => {
+const MemberProfile = () => {
     const [bookings, setBookings] = useState([
         { id: 1, facility: "Sports Hall", description: "Volleyball", time: "16:00", date: "19/2/2023" },
         { id: 2, facility: "Swimming Pool", description: "Lap Swim", time: "17:00", date: "20/2/2023" },
@@ -19,7 +19,7 @@ const NonMemberProfile = () => {
         <Fragment>
             <div className="profile">
                 <div className="profileWrapper">
-                    <NonMemberProfileInfo />
+                    <ProfileInfo />
                     <div className="profileRight">
                         <span className="userBookingsTitle">Your bookings</span>
                         <div className="userBookingsTable">
@@ -34,15 +34,15 @@ const NonMemberProfile = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {bookings.map(booking => (
-                                    <tr key={booking.id}>
-                                        <td>{booking.facility}</td>
-                                        <td>{booking.description}</td>
-                                        <td>{booking.time}</td>
-                                        <td>{booking.date}</td>
-                                        <td><button className="profileDeleteBookingBtn" onClick={() => handleDelete(booking.id)}>Delete</button></td>
-                                    </tr>
-                                ))}
+                                    {bookings.map(booking => (
+                                        <tr key={booking.id}>
+                                            <td>{booking.facility}</td>
+                                            <td>{booking.description}</td>
+                                            <td>{booking.time}</td>
+                                            <td>{booking.date}</td>
+                                            <td><button className="profileDeleteBookingBtn" onClick={() => handleDelete(booking.id)}>Delete</button></td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -50,7 +50,7 @@ const NonMemberProfile = () => {
                 </div>
             </div>
         </Fragment>
-    );
+     );
 };
 
-export default NonMemberProfile;
+export default MemberProfile;
