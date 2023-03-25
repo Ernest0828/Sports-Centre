@@ -90,7 +90,7 @@ export default function MemberProfileInfo() {
                         </div>
                         {isEditMode && <button className="updateProfileButton" type="submit">Update</button>}
                         {!isEditMode && <button className="editProfileButton" onClick={handleEditMode}>Edit Profile</button>}
-                        {!isEditMode && <button className="cancelMembershipButton">Cancel membership</button>}
+                        {!isEditMode && user.details.membershipType !== null &&<button className="cancelMembershipButton">Cancel membership</button>}
                     </form>
             </div>
         </Fragment>
