@@ -23,31 +23,38 @@ export default function MemberProfileInfo() {
     const [confirmPassword, setConfirmPassword] = useState(user.details.password);
 
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         setIsEditMode(false);
         // code to save changes
-        axios.put('/api/customer/' + (user.details.customerId),{
-            customerName : customerName
-        }).then((response) => {
-            console.log(response.date);
-        }).catch((error)=>{
-            console.log(error);
-        });
+        // try {
+        //    const res = await axios.put(`/api/customer/${user.details.customerId}`, {
+        //       customerName: customerName,
+        //     });
+        // } catch (error) {
+        // console.log(error);
+        // }
     };
 
-    const getMembershipType = () => {
-        return user.details.membershipType || "NULL";
-    };
+    const [membershipType, setMembershipType] = useState("Null");
+    const [membershipStartDate, setMembershipStartDate] = useState("Null");
+    const [membershipEndDate, setMembershipEndDate] = useState("Null");
 
-    const getMembershipStartDate = () => {
-        return user.details.startDate || "NULL";
-    };
-    
-      const getMembershipEndDate = () => {
-        return user.details.endDate || "NULL";
-    };
-    
+    useEffect(() => {
+      async function fetchMembershipDetails() {
+        try{
+            const res = await axios.get("http://localhost:5000/api/membership/membership-info/"+user.details.customerId);
+            console.log(res);
+            setMembershipType(res.data.membershipType);
+            setMembershipStartDate(res.data.startDate);
+            setMembershipEndDate(res.data.endDate);
+        }
+        catch(err){
+            console.log(err.response.data);
+        }
+      } fetchMembershipDetails();
+    }, [user.details.customerId]);
+
 
     return (
         <Fragment>
@@ -81,9 +88,9 @@ export default function MemberProfileInfo() {
                             {!isEditMode && (
                                 <div className="membershipDetails">
                                     <label>Membership</label>
-                                    <p className="membershipDetails">Type: {getMembershipType()}</p>
-                                    <p className="membershipDetails">Start: {getMembershipStartDate()}</p>
-                                    <p className="membershipDetails">End: {getMembershipEndDate()}</p>
+                                    <p className="membershipDetails">Type: {membershipType}</p>
+                                    <p className="membershipDetails">Start: {membershipStartDate}</p>
+                                    <p className="membershipDetails">End: {membershipEndDate}</p>
                                 </div>
                             )}
 
