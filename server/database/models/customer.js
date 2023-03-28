@@ -32,7 +32,7 @@ const Customer = db.define('Customer', {
     defaultValue: false
   },
   membershipType: {
-    type: ENUM("monthly", "annually"),
+    type: ENUM("MONTHLY", "ANNUALLY"),
     allowNull: true
   }
 });

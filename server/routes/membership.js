@@ -8,7 +8,7 @@ import verifyUser from "../middleware/verifyUser.js";
 
 
 // 1. Buy a membership
-router.post("/buy/:id", verifyUser, async (req, res, next) => {
+router.post("/buy/:id", async (req, res, next) => {
   try {
     const { membershipType } = req.body;
     const customer = await Customer.findByPk(req.params.id);
@@ -24,9 +24,9 @@ router.post("/buy/:id", verifyUser, async (req, res, next) => {
     // Set membership start and end dates based on membership type
     let startDate = new Date();
     let endDate = new Date();
-    if (membershipType === 'monthly') {
+    if (membershipType === 'MONTHLY') {
       endDate.setDate(endDate.getDate() + 30);
-    } else if (membershipType === 'annually') {
+    } else if (membershipType === 'ANNUALLY') {
       endDate.setDate(endDate.getDate() + 365);
     }
 
@@ -52,7 +52,7 @@ router.post("/buy/:id", verifyUser, async (req, res, next) => {
 });
 
 // 2. Cancel membership
-router.post("/cancel/:id", verifyUser, async (req, res, next) => {
+router.post("/cancel/:id", async (req, res, next) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) {
@@ -81,7 +81,7 @@ router.post("/cancel/:id", verifyUser, async (req, res, next) => {
 });
 
 // 3. Update a membership
-router.put("/update/:id", verifyUser, async (req, res, next) => {
+router.put("/update/:id", async (req, res, next) => {
   try {
     const { membershipType } = req.body;
 
@@ -98,7 +98,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
     // If the new membership type is different than the current one,
     // update the membership start and end dates accordingly
     if (membershipType !== membership.membershipType) {
-      if (membershipType === "monthly") {
+      if (membershipType === "MONTHLY") {
         // Set start date to previous membership end date if available, current date otherwise
         const startDate = membership.endDate ? membership.endDate : new Date();
         membership.startDate = startDate;
@@ -106,7 +106,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
         // Set end date to 30 days after start date
         const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
         membership.endDate = endDate;
-      } else if (membershipType === "annually") {
+      } else if (membershipType === "ANNUALLY") {
         // Set start date to previous membership end date if available, current date otherwise
         const startDate = membership.endDate ? membership.endDate : new Date();
         membership.startDate = startDate;
@@ -137,7 +137,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
 });
 
 // 4. Get a customer's membership info
-router.get("/membership-info/:customerId", verifyUser, async (req, res, next) => {
+router.get("/membership-info/:customerId", async (req, res, next) => {
   try {
     const customer = await Customer.findByPk(req.params.customerId);
     if (!customer) {
