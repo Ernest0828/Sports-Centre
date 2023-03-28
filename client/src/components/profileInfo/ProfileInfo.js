@@ -36,23 +36,23 @@ export default function MemberProfileInfo() {
         // }
     };
 
-    const [membershipType, setMembershipType] = useState("Null");
-    const [membershipStartDate, setMembershipStartDate] = useState("Null");
-    const [membershipEndDate, setMembershipEndDate] = useState("Null");
+    const [membershipType, setMembershipType] = useState("NULL");
+    const [membershipStartDate, setMembershipStartDate] = useState("NULL");
+    const [membershipEndDate, setMembershipEndDate] = useState("NULL");
 
     useEffect(() => {
       async function fetchMembershipDetails() {
         try{
             const res = await axios.get("http://localhost:5000/api/membership/membership-info/"+user.details.customerId);
-            console.log(res);
-            setMembershipType(res.data.membershipType);
-            setMembershipStartDate(res.data.startDate);
-            setMembershipEndDate(res.data.endDate);
+            setMembershipType(res.data.membership.membershipType);
+            setMembershipStartDate(res.data.membership.startDate.split("T")[0]);
+            setMembershipEndDate(res.data.membership.endDate.split("T")[0]);
         }
         catch(err){
             console.log(err.response.data);
         }
-      } fetchMembershipDetails();
+      }
+      fetchMembershipDetails();
     }, [user.details.customerId]);
 
 
