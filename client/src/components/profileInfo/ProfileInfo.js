@@ -24,7 +24,6 @@ export default function MemberProfileInfo() {
     const [updatedCustomerName, setUpdatedCustomerName] = useState(user.details.customerName);
     const [updatedCustomerNumber, setUpdatedCustomerNumber] = useState(user.details.customerNumber);
     const [updatedCustomerEmail, setUpdatedCustomerEmail] = useState(user.details.customerEmail);
-    const [updatedpassword, setUpdatedPassword] = useState(user.details.password);
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");    
@@ -99,16 +98,6 @@ export default function MemberProfileInfo() {
       }
       fetchMembershipDetails();
     }, [user.details.customerId]);
-
-
-    // useEffect(() => {
-    //     if ((password !== confirmPassword)) {
-    //         setIsEditMode(true);    
-    //         setError("Passwords do not match");
-    //     } else {
-    //         setError("");
-    //     }
-    //   }, [password, confirmPassword]);
 
 
     return (
