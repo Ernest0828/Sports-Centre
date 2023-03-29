@@ -7,7 +7,6 @@ import axios from "axios";
 export default function MemberProfileInfo() {
     
     const {user} = useContext(Auth);
-
     // State: Edit mode for update profile
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -20,21 +19,52 @@ export default function MemberProfileInfo() {
     const [customerNumber, setCustomerNumber] = useState(user.details.customerNumber);
     const [customerEmail, setCustomerEmail] = useState(user.details.customerEmail);
     const [password, setPassword] = useState(user.details.password);
-    const [confirmPassword, setConfirmPassword] = useState(user.details.password);
+
+    const [updatedCustomerName, setUpdatedCustomerName] = useState(user.details.customerName);
+    const [updatedCustomerNumber, setUpdatedCustomerNumber] = useState(user.details.customerNumber);
+    const [updatedCustomerEmail, setUpdatedCustomerEmail] = useState(user.details.customerEmail);
+    
 
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setIsEditMode(false);
-        // code to save changes
-        // try {
-        //    const res = await axios.put(`/api/customer/${user.details.customerId}`, {
-        //       customerName: customerName,
-        //     });
-        // } catch (error) {
-        // console.log(error);
-        // }
+        //Updates customerName, customerNumber, customerEmail
+        try {
+            const res = await axios.put("http://localhost:5000/api/customer/"+user.details.customerId,{
+                customerName,
+                customerNumber,
+                customerEmail,
+            }); 
+            setUpdatedCustomerName(res.data.customerName);
+            setUpdatedCustomerNumber(res.data.customerNumber);
+            setUpdatedCustomerEmail(res.data.customerEmail);
+            localStorage.setItem("user", JSON.stringify({...user, details:
+                {
+                    "createdAt" : res.data.createdAt,
+                    "customerEmail" : res.data.customerEmail,
+                    "customerId":res.data.customerId,
+                    "customerName": res.data.customerName,
+                    "customerNumber":res.data.customerNumber,
+                    "isMembership":res.data.isMembership,
+                    "membershipType":res.data.membershipType,
+                    "updatedAt":res.data.updatedAt,
+                }
+            }));
+            
+        } 
+        catch (err) {
+            console.log(err.response.data);
+        }
+
+        //Updates password
+        try {
+            
+        } catch (err) {
+            console.log(err.response.data);
+        }
     };
+   
 
     const [membershipType, setMembershipType] = useState("NULL");
     const [membershipStartDate, setMembershipStartDate] = useState("NULL");
@@ -63,26 +93,26 @@ export default function MemberProfileInfo() {
                         <span className="editInfoTitle">Update Info</span>
                         <div className="userDetails"> 
                             <label>Name</label>
-                            {isEditMode ? ( <input type="text" defaultValue={user.details.customerName} onChange={(e)=> setCustomerName(e.target.value)}/> ) : 
+                            {isEditMode ? ( <input type="text" defaultValue={updatedCustomerName} onChange={(e)=> setCustomerName(e.target.value)}/> ) : 
                             (
-                                <p>{user.details.customerName}</p>
+                                <p>{updatedCustomerName}</p>
                             )}
                             <label>Email</label>
-                            {isEditMode ? ( <input type="email" defaultValue={user.details.customerEmail} onChange={(e)=> setCustomerEmail(e.target.value)} /> ) : 
+                            {isEditMode ? ( <input type="email" defaultValue={updatedCustomerEmail} onChange={(e)=> setCustomerEmail(e.target.value)} /> ) : 
                             (
-                                <p>{user.details.customerEmail}</p>
+                                <p>{updatedCustomerEmail}</p>
                             )}
                             <label>Number</label>
-                            {isEditMode ? ( <input defaultValue={user.details.customerNumber} onChange={(e)=> setCustomerNumber(e.target.value)}/>) : 
+                            {isEditMode ? ( <input defaultValue={updatedCustomerNumber} onChange={(e)=> setCustomerNumber(e.target.value)}/>) : 
                             (
-                                <p>{user.details.customerNumber}</p>
+                                <p>{updatedCustomerNumber}</p>
                             )}
                             {isEditMode && (
                             <div className="editModePassword">
                                 <label htmlFor="password">Password</label>
                                 <input id="password" type="password" defaultValue="" onChange={(e)=> setPassword(e.target.value)}/>
                                 <label htmlFor="retypePassword">Re-type Password</label>
-                                <input id="retypePassword" type="password" defaultValue="" onChange={(e)=> setConfirmPassword(e.target.value)}/>
+                                <input id="retypePassword" type="password" defaultValue=""/>
                             </div>
                             )}
                             {!isEditMode && (
