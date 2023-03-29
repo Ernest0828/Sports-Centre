@@ -34,7 +34,7 @@ export default function MemberProfileInfo() {
         setError("");
         setSuccess("");
         setIsEditMode(false);
-        if (password && password !== confirmPassword) {
+        if ((password || confirmPassword) && (confirmPassword !== password)) {
             setError("Passwords do not match");
             setIsEditMode(true);
         }
