@@ -24,6 +24,8 @@ export default function MemberProfileInfo() {
     const [updatedCustomerName, setUpdatedCustomerName] = useState(user.details.customerName);
     const [updatedCustomerNumber, setUpdatedCustomerNumber] = useState(user.details.customerNumber);
     const [updatedCustomerEmail, setUpdatedCustomerEmail] = useState(user.details.customerEmail);
+    const [updatedpassword, setUpdatedPassword] = useState(user.details.password);
+
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");    
 
@@ -60,19 +62,18 @@ export default function MemberProfileInfo() {
                     "membershipType":res.data.membershipType,
                     "updatedAt":res.data.updatedAt,
                 }
-            }));
-            console.log("here",res.data);
-            
+            }));            
         } 
         catch (err) {
             console.log(err.response.data);
         }
 
         //Updates password
-        
         try {
-            const res = await axios.put("http://localhost:5000/api/customer/change-password/"+user.details.customerId, password);  
-            console.log("2",res.data);
+            const res = await axios.put("http://localhost:5000/api/customer/change-password/"+user.details.customerId, 
+                {password}
+            );  
+            console.log("here",res.data);
         } catch (err) {
             console.log(err.response.data);
         }
