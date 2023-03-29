@@ -119,7 +119,7 @@ router.delete("/:id", verifyUser, async (req, res, next) => {
     }
 });
 
-// 4. Get an booking
+// 4. Get a booking
 router.get("/find/:id", async (req, res, next) => {
     try {
         const booking = await Booking.findByPk(req.params.id);

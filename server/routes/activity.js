@@ -6,7 +6,7 @@ import verifyManager from "../middleware/verifyManager.js";
 
 // 1. Add new activities (only for manager)
 router.post("/activityid", verifyManager, async (req, res, next) => {
-    const { name, price, facilityName } = req.body;
+    const { name, price, facilityName, day, start, end } = req.body;
     try {
         const facility = await Facility.findByPk(facilityName);
         if (!facility) 
@@ -17,7 +17,14 @@ router.post("/activityid", verifyManager, async (req, res, next) => {
         if (existingActivity) 
             return res.status(401).send("Activity already exists");
 
-        const newActivity = await Activity.create({ activityName: name, price: price, facilityName:facilityName });
+        const newActivity = await Activity.create({ 
+            activityName: name, 
+            price: price, 
+            facilityName: facilityName, 
+            day: day, 
+            startTime: start,
+            endTime: end
+         });
         return res.status(200).json(newActivity);
     } catch (err) {
         next(err);
