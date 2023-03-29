@@ -19,16 +19,26 @@ export default function MemberProfileInfo() {
     const [customerNumber, setCustomerNumber] = useState(user.details.customerNumber);
     const [customerEmail, setCustomerEmail] = useState(user.details.customerEmail);
     const [password, setPassword] = useState(user.details.password);
+    const [confirmPassword, setConfirmPassword] = useState("")
 
     const [updatedCustomerName, setUpdatedCustomerName] = useState(user.details.customerName);
     const [updatedCustomerNumber, setUpdatedCustomerNumber] = useState(user.details.customerNumber);
     const [updatedCustomerEmail, setUpdatedCustomerEmail] = useState(user.details.customerEmail);
-    
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");    
 
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
         setIsEditMode(false);
+        if (password && password !== confirmPassword) {
+            setError("Passwords do not match");
+            setIsEditMode(true);
+        }
+
+
         //Updates customerName, customerNumber, customerEmail
         try {
             const res = await axios.put("http://localhost:5000/api/customer/"+user.details.customerId,{
@@ -51,6 +61,7 @@ export default function MemberProfileInfo() {
                     "updatedAt":res.data.updatedAt,
                 }
             }));
+            console.log("here",res.data);
             
         } 
         catch (err) {
@@ -58,11 +69,14 @@ export default function MemberProfileInfo() {
         }
 
         //Updates password
+        
         try {
-            
+            const res = await axios.put("http://localhost:5000/api/customer/change-password/"+user.details.customerId, password);  
+            console.log("2",res.data);
         } catch (err) {
             console.log(err.response.data);
         }
+        
     };
    
 
@@ -84,6 +98,16 @@ export default function MemberProfileInfo() {
       }
       fetchMembershipDetails();
     }, [user.details.customerId]);
+
+
+    // useEffect(() => {
+    //     if ((password !== confirmPassword)) {
+    //         setIsEditMode(true);    
+    //         setError("Passwords do not match");
+    //     } else {
+    //         setError("");
+    //     }
+    //   }, [password, confirmPassword]);
 
 
     return (
@@ -112,7 +136,7 @@ export default function MemberProfileInfo() {
                                 <label htmlFor="password">Password</label>
                                 <input id="password" type="password" defaultValue="" onChange={(e)=> setPassword(e.target.value)}/>
                                 <label htmlFor="retypePassword">Re-type Password</label>
-                                <input id="retypePassword" type="password" defaultValue=""/>
+                                <input id="retypePassword" type="password" defaultValue="" onChange={(e)=> setConfirmPassword(e.target.value)}/>
                             </div>
                             )}
                             {!isEditMode && (
@@ -126,6 +150,8 @@ export default function MemberProfileInfo() {
 
                         </div>
                         {isEditMode && <button className="updateProfileButton" type="submit">Update</button>}
+                        {error && <span className="registerErrorMsg">{error}</span>}
+                        {success && <span className="registerSuccessMsg">{success}</span>}
                         {!isEditMode && <button className="editProfileButton" onClick={handleEditMode}>Edit Profile</button>}
                         {!isEditMode && user.details.membershipType !== null &&<button className="cancelMembershipButton">Cancel membership</button>}
                     </form>
