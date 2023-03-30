@@ -1,5 +1,5 @@
-import { Sequelize } from "sequelize";
-import db from "../db.js";
+const Sequelize = require("sequelize");
+const db = require("../db");
 
 const { INTEGER, STRING, TIME } = Sequelize;
 
@@ -24,4 +24,4 @@ const Facility = db.define('Facility', {
     
 });
 
-export default Facility
+module.exports=Facility;

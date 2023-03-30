@@ -1,19 +1,18 @@
-import React,{Fragment, Profiler, useState} from 'react';
-import './App.css';
+import React,{Fragment, Profiler, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, 
   Routes, 
   Route, 
   Navigate
 } from 'react-router-dom';
+import { Auth, AuthProvider } from './context/Auth';
 
 //components
 import Login from "./components/pages/login/Login";
 import Register from "./components/pages/register/Register";
-import MemberProfile from "./components/pages/profile/MemberProfile";
+import Profile from "./components/pages/profile/Profile";
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
-import NonMemberProfile from './components/pages/profile/NonMemberProfile';
 import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails"
 import Staff from "./components/managerPages/staff/staff"
 import ClassDetails from "./components/managerPages/bookings/classes/classDetails"
@@ -36,20 +35,19 @@ import DropdownChoice from './components/dropdown/dropdown';
 import ReactDatePicker from './components/Calendar/ReactDatePicker';
 
 function App() {
+  const {user} = useContext(Auth);
+
   return (
     // <ReactDatePicker />
-    <Fragment>
+    <AuthProvider>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Login/>}/>
-          <Route exact path="/login" element={<Login/>}/>
-          <Route exact path="/register" element={<Register/>}/>
-          <Route exact path="/dashboard" element={<Dashboard/>}/>
-          <Route exact path="/profile" element={<MemberProfile/>}/>
-
-          <Route exact path="/book-facility" element={<BookFacility/>}/>
-
-          <Route exact path="/book-class" element={<BookClasses/>}/>
+        <Route exact path="/" element={<Dashboard />} />
+          <Route path="/register" element={user ? (<Dashboard/>): (<Register/>)} />
+          <Route path="/login" element={user ? (<Dashboard/>) : (<Login/>)} />
+          <Route path="/profile" element={user ? (<Profile />) : (<Login/>)}  />
+          <Route path="/book-facility" element={<BookFacility />} />
+          <Route path="/book-class" element={<BookClasses />} />
           <Route exact path="/aerobics" element={<Aerobics/>}/>
           <Route exact path="/pilates" element={<Pilates/>}/>
           <Route exact path="/yoga" element={<Yoga/>}/>
@@ -66,9 +64,11 @@ function App() {
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
 
+          
+
         </Routes>
       </Router>
-    </Fragment>
+    </AuthProvider>
 
   )  
 }
@@ -76,14 +76,11 @@ function App() {
 export default App;
 
 /*
-    <Fragment>
+
+    <AuthProvider>
       <Router>
         <Routes>
-          <Route exact path="/login" element={<Login/>}/>
-          <Route exact path="/register" element={<Register/>}/>
-          <Route exact path="/profile" element={<MemberProfile/>}/>
-          <Route exact path="/book-facility" element={<BookFacility/>}/>
-          <Route exact path="/book-class" element={<BookClasses/>}/>
+
         </Routes>
       </Router>
     </Fragment>

@@ -4,16 +4,23 @@ import axios from 'axios';
 import ReactDatePicker from '../Calendar/ReactDatePicker';
 import useFetch from '../managerPages/hooks/useFetch';
 
-//useFetch Hooks
-// const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/bookings/");
-// const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
+
 
 function DropdownChoice(props) {
+
+  //useFetch Hooks
+  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/"); 
+  // const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
+
+
   const [selectedOptionA, setSelectedOptionA] = useState('');
   const [selectedOptionB, setSelectedOptionB] = useState('');
   const [selectedOptionC, setSelectedOptionC] = useState('');
   const {selectedDate} = props;
   
+
+
+
   const optionBValues = {
     "Climbing Wall": ['General use'],
     "Fitness Room": ['General use'],
@@ -30,6 +37,11 @@ function DropdownChoice(props) {
     'Lessons': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
     'Lane Swimming': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
   };
+
+const handleOptionAChange = (event)=> {
+  setSelectedOptionA(event.target.value);
+  setSelectedOptionB('');
+}
 
   const handleOptionBChange = (event) => {
     setSelectedOptionB(event.target.value);
@@ -98,31 +110,32 @@ function DropdownChoice(props) {
       alert("Booking unsuccessful!");
     }
   };
-  
+
 
   return (
     <div className='dropdownWrapper'>
         <div className="dropdownFacility">
       <label>Facility :</label>
-      <select id="optionA" value={selectedOptionA} onChange={(event) => setSelectedOptionA(event.target.value)}>
-        <option value="">-- Please select an option --</option>
-        <option value="Climbing Wall">Climbing Wall</option>
-        <option value="Fitness Room">Fitness Room</option>
-        <option value="Sports Hall">Sports Hall</option>
-        <option value="Squash Court A">Squash Court A</option>
-        <option value="Squash Court B">Squash Court B</option>
-        <option value="Swimming Pool">Swimming Pool</option>
+      <select value={selectedOptionA} onChange={handleOptionAChange}>
+        <option value=''>Select a facility</option>
+        {facilityData.map((facility) => (
+        <option key={facility.name} value={facility.name}>
+        {facility.facilityName}
+        </option>
+        ))}
       </select>
+
         </div>
         <div className="dropdownActivity">
       <label>Activity :</label>
-      <select id="optionB" value={selectedOptionB} onChange={handleOptionBChange} disabled={!selectedOptionA}>
+      <select value={selectedOptionB} onChange={handleOptionBChange} disabled={!selectedOptionA}>
         <option value="">-- Please select an option --</option>
         {selectedOptionA && optionBValues[selectedOptionA].map((option) => (
           <option key={option} value={option}>{option}</option>
-        ))}
+        ))} 
       </select>
         </div>
+        
         <div className="dropdownTime">
       <label >Time :</label>
       <select id="optionC" value={selectedOptionC} onChange={handleOptionCChange} disabled={!selectedOptionA || !selectedOptionB}>
@@ -136,5 +149,11 @@ function DropdownChoice(props) {
     </div>
   );
 }
+
+
+// {activityData.map((activity) => (
+//   <option key={activity.activityId} value={activity.activityName}>
+//     {activity.activityName}
+//   </option>
 
 export default DropdownChoice

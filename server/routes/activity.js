@@ -1,12 +1,12 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Activity from "../database/models/activity.js";
-import Facility from "../database/models/facility.js";
-import verifyManager from "../middleware/verifyManager.js";
+const Activity  = require("../database/models/activity");
+const Facility  = require("../database/models/facility");
+const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new activities (only for manager)
-router.post("/activityid", async (req, res, next) => {
-    const { name, price, facilityName } = req.body;
+router.post("/activityid", verifyManager, async (req, res, next) => {
+    const { name, price, facilityName, day, start, end } = req.body;
     try {
         const facility = await Facility.findByPk(facilityName);
         if (!facility) 
@@ -17,7 +17,14 @@ router.post("/activityid", async (req, res, next) => {
         if (existingActivity) 
             return res.status(401).send("Activity already exists");
 
-        const newActivity = await Activity.create({ activityName: name, price: price, facilityName:facilityName });
+        const newActivity = await Activity.create({ 
+            activityName: name, 
+            price: price, 
+            facilityName: facilityName, 
+            day: day, 
+            startTime: start,
+            endTime: end
+         });
         return res.status(200).json(newActivity);
     } catch (err) {
         next(err);
@@ -69,4 +76,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;

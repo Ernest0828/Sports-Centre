@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
-import verifyToken from './verifyToken.js';
+require('dotenv').config();
+const verifyToken = require('./verifyToken');
 
 // verify the customer
 const verifyUser = async (req, res, next) => {
@@ -18,4 +17,4 @@ const verifyUser = async (req, res, next) => {
     }
 };
 
-export default verifyUser
+module.exports=verifyUser;

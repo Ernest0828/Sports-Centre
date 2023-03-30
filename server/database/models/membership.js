@@ -1,26 +1,30 @@
-import { Sequelize } from "sequelize";
-import db from "../db.js";
-import Customer from "./customer.js";
-import Payment from "./payment.js";
+const Sequelize = require("sequelize");
+const db = require("../db");
+const Customer = require("./customer");
+const Payment = require("./payment");
 
-const { STRING, DATE } = Sequelize;
+const { STRING, INTEGER, DATE } = Sequelize;
 
 const Membership = db.define('Membership', {
     membershipType: {
         type: STRING,
         allowNull: false
     },
+    price: {
+        type: INTEGER,
+        allowNull: false
+    },
     startDate: {
         type: DATE,
-        allowNull: true
+        allowNull: false
     },
     endDate: {
         type: DATE,
-        allowNull: true
+        allowNull: false
     }
 });
 
 Membership.belongsTo(Customer, { foreignKey: 'customerId'});
 Membership.belongsTo(Payment, { foreignKey: 'paymentId' });
 
-export default Membership
+module.exports=Membership;

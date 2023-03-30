@@ -2,8 +2,11 @@ import React, { Fragment } from "react";
 
 import { Link } from "react-router-dom";
 import Navbar from "../../navbar/navbar";
+import {useContext} from "react";
+import {Auth} from "../../../context/Auth";
 
 const Dashboard = () => {
+  const {dispatch } = useContext(Auth);
   return (
     <Fragment>
       <Navbar/>
@@ -44,4 +47,5 @@ const Dashboard = () => {
     </Fragment>
   );
 };
-export default Dashboard;
+
+export default Dashboard

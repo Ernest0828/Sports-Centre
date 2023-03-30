@@ -1,14 +1,14 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Customer from "../database/models/customer.js";
-import Membership from "../database/models/membership.js";
-import verifyManager from "../middleware/verifyManager.js";
-import verifyStaff from "../middleware/verifyStaff.js";
-import verifyUser from "../middleware/verifyUser.js";
+const Customer  = require("../database/models/customer");
+const Membership = require("../database/models/membership");
+const verifyManager  = require("../middleware/verifyManager");
+const verifyStaff  = require("../middleware/verifyStaff");
+const verifyUser  = require("../middleware/verifyUser");
 
 
 // 1. Buy a membership
-router.post("/buy/:id", verifyUser, async (req, res, next) => {
+router.post("/buy/:id", async (req, res, next) => {
   try {
     const { membershipType } = req.body;
     const customer = await Customer.findByPk(req.params.id);
@@ -24,10 +24,13 @@ router.post("/buy/:id", verifyUser, async (req, res, next) => {
     // Set membership start and end dates based on membership type
     let startDate = new Date();
     let endDate = new Date();
-    if (membershipType === 'monthly') {
+    let price;
+    if (membershipType === 'MONTHLY') {
       endDate.setDate(endDate.getDate() + 30);
-    } else if (membershipType === 'annually') {
+      price = "35";
+    } else if (membershipType === 'ANNUAL') {
       endDate.setDate(endDate.getDate() + 365);
+      price = "300";
     }
 
     // Update customer's membership status and type
@@ -41,8 +44,9 @@ router.post("/buy/:id", verifyUser, async (req, res, next) => {
     await Membership.create({
       customerId: req.params.id,
       membershipType: membershipType,
-      startDate: startDate,
-      endDate: endDate
+      price,
+      startDate,
+      endDate,
     });
 
     res.status(200).json(customer);
@@ -52,7 +56,7 @@ router.post("/buy/:id", verifyUser, async (req, res, next) => {
 });
 
 // 2. Cancel membership
-router.post("/cancel/:id", verifyUser, async (req, res, next) => {
+router.post("/cancel/:id", async (req, res, next) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) {
@@ -81,7 +85,7 @@ router.post("/cancel/:id", verifyUser, async (req, res, next) => {
 });
 
 // 3. Update a membership
-router.put("/update/:id", verifyUser, async (req, res, next) => {
+router.put("/update/:id", async (req, res, next) => {
   try {
     const { membershipType } = req.body;
 
@@ -90,7 +94,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
       return res.status(404).json("Customer not found");
     }
 
-    let membership = await Membership.findOne({ where: { customerId: req.params.id } });
+    const membership = await Membership.findOne({ where: { customerId: req.params.id } });
     if (!membership) {
       return res.status(404).json("Membership not found");
     }
@@ -98,7 +102,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
     // If the new membership type is different than the current one,
     // update the membership start and end dates accordingly
     if (membershipType !== membership.membershipType) {
-      if (membershipType === "monthly") {
+      if (membershipType === "MONTHLY") {
         // Set start date to previous membership end date if available, current date otherwise
         const startDate = membership.endDate ? membership.endDate : new Date();
         membership.startDate = startDate;
@@ -106,7 +110,7 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
         // Set end date to 30 days after start date
         const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
         membership.endDate = endDate;
-      } else if (membershipType === "annually") {
+      } else if (membershipType === "ANNUAL") {
         // Set start date to previous membership end date if available, current date otherwise
         const startDate = membership.endDate ? membership.endDate : new Date();
         membership.startDate = startDate;
@@ -136,7 +140,26 @@ router.put("/update/:id", verifyUser, async (req, res, next) => {
   }
 });
 
-// 4. Get all customer memberships (for staffs)
+// 4. Get a customer's membership info
+router.get("/membership-info/:customerId", async (req, res, next) => {
+  try {
+    const customer = await Customer.findByPk(req.params.customerId);
+    if (!customer) {
+      return res.status(404).json("Customer not found");
+    }
+
+    const membership = await Membership.findOne({ where: { customerId: req.params.customerId } });
+    if (!membership) {
+      return res.status(404).json("Customer does not have membership");
+    }
+
+    res.status(200).json({ membership });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 5. Get all customer memberships (for staffs)
 router.get("/memberships", verifyStaff, async (req, res, next) => {
   try {
     const memberships = await Membership.findAll({
@@ -148,4 +171,4 @@ router.get("/memberships", verifyStaff, async (req, res, next) => {
   }
 });
 
-export default router
+module.exports=router;

@@ -10,9 +10,7 @@ const validateData = function(req, res, next) {
   function validatePhoneNumber(phoneNumber) {
     // remove any non-digit characters from the phone number
     phoneNumber = phoneNumber.replace(/\D/g, '');
-    // return /^0\d{9}$/.test(phoneNumber);
-    // return /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(phoneNumber);
-    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phoneNumber);
+    return /^0\d{9}$/.test(phoneNumber);
   }
 
   // for register route
@@ -56,4 +54,4 @@ const validateData = function(req, res, next) {
   next();
 };
 
-export default validateData
+module.exports = validateData;

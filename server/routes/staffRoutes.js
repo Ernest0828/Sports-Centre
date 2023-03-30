@@ -1,10 +1,10 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import jwt from "jsonwebtoken";
-import Staff from "../database/models/staff.js";
-import bcrypt from "bcrypt";
-import validData from "../middleware/validData.js"
-import verifyManager from "../middleware/verifyManager.js";
+const jwt = require('jsonwebtoken');
+const Staff = require("../database/models/staff");
+const bcrypt = require("bcrypt");
+const validData = require("../middleware/validData");
+const verifyManager = require("../middleware/verifyManager");
 
 //ROUTES//
 
@@ -63,4 +63,4 @@ router.post("/login", validData, async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;
