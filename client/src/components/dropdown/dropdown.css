@@ -17,3 +17,14 @@ select {
   width: 50%; /* Increase dropdown size */
   padding: 5px; /* Add padding to dropdown */
 }
+
+.dropdownWrapper>button{
+  border:none;
+  padding: 10px 20px;
+  background-color: #0071c2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}

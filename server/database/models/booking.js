@@ -44,6 +44,6 @@ Booking.belongsTo(Staff, { foreignKey: 'staffId', allowNull: true });
 Booking.belongsTo(Activity, { foreignKey: 'activityId', allowNull: true });
 Booking.belongsTo(Classes, { foreignKey: 'classId', allowNull: true });
 Booking.belongsTo(Facility, { foreignKey: 'facilityName' });
-Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
+// Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
 
 export default Booking

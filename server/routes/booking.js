@@ -23,8 +23,7 @@ router.post('/bookingid', async (req, res, next) => {
             customerId,
             activityId,
             classId,
-            facilityName,
-            paymentId } = req.body;
+            facilityName} = req.body;
 
         // check if booking already exist
         const existingBooking = await Booking.findOne({ where: {startTime: start, customerId, facilityName, date} });
@@ -81,8 +80,8 @@ router.post('/bookingid', async (req, res, next) => {
             ['${bookingType}Id']: bookingTypeId,
             classId,
             activityId,
-            facilityName,
-            paymentId });
+            facilityName });
+            // paymentId });
         return res.status(200).json(newBooking);
     } catch (err) {
         next(err);
@@ -90,7 +89,7 @@ router.post('/bookingid', async (req, res, next) => {
 });
 
 // 2. Update an existing booking
-router.put("/:id", verifyUser, async (req, res, next) => {
+router.put("/:id", /*verifyUser,*/ async (req, res, next) => {
     try {
         const updateBooking = await Booking.findByPk(req.params.id);
         const updatedBooking = await updateBooking.update(req.body);
@@ -101,7 +100,7 @@ router.put("/:id", verifyUser, async (req, res, next) => {
 });
 
 // 3. Delete booking
-router.delete("/:id", verifyUser, async (req, res, next) => {
+router.delete("/:id", /*verifyUser,*/ async (req, res, next) => {
     try {
         const booking = await Booking.findByPk(req.params.id);
         if(!booking) return res.status(404).json("Booking not found");
