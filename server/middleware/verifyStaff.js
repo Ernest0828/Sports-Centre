@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
-import verifyToken from './verifyToken.js';
+require('dotenv').config();
+const verifyToken = require('./verifyToken');
 
 // verify the staff
 const verifyStaff = async (req, res, next) => {
@@ -18,4 +17,4 @@ const verifyStaff = async (req, res, next) => {
     }
 };
 
-export default verifyStaff
+module.exports=verifyStaff;
