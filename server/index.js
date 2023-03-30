@@ -1,16 +1,8 @@
-import express from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import db from "./database/db.js"
-import customerAuth from "./routes/customerRoutes.js";
-import customer from "./routes/customers.js";
-import staffAuth from "./routes/staffRoutes.js";
-import activityRoute from "./routes/activity.js";
-import classRoute from "./routes/classes.js";
-import facilityRoute from "./routes/facility.js";
-import bookingRoute from "./routes/booking.js";
-import membershipRoute from "./routes/membership.js";
+const express = require('express');
+const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+const db = require("./database/db")
 
 const app = express();
 dotenv.config();
@@ -22,14 +14,15 @@ app.use(express.json());
 app.use(cookieParser())
 
 // routes
-app.use("/api/auth", customerAuth);
-app.use("/api/customer", customer);
-app.use("/auth/staff", staffAuth);
-app.use("/api/activities", activityRoute);
-app.use("/api/classes", classRoute);
-app.use("/api/facilities", facilityRoute);
-app.use("/api/bookings", bookingRoute);
-app.use("/api/membership", membershipRoute);
+app.use("/api/auth", require("./routes/customerRoutes"));
+app.use("/api/customer", require("./routes/customers"));
+app.use("/auth/staff", require("./routes/staffRoutes"));
+app.use("/api/employee", require("./routes/employee"));
+app.use("/api/activities", require("./routes/activity"));
+app.use("/api/classes", require("./routes/classes"));
+app.use("/api/facilities", require("./routes/facility"));
+app.use("/api/bookings", require("./routes/booking"));
+app.use("/api/membership", require("./routes/membership"));
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;
@@ -42,11 +35,12 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.listen(PORT, () => {
+    console.log('App listening on port ' + PORT);
+})
+
 db.authenticate()
   .then(() => console.log("Database connected"))
   .catch((err) => console.log("Error: " + err));
 
 // module.exports = app;
-app.listen(PORT, () => {
-    console.log('App listening on port ' + PORT);
-})
