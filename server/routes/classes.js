@@ -1,8 +1,8 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Classes from "../database/models/classes.js";
-import Facility from "../database/models/facility.js";
-import verifyManager from "../middleware/verifyManager.js";
+const Classes  = require("../database/models/classes.js");
+const Facility  = require("../database/models/facility.js");
+const verifyManager = require("../middleware/verifyManager.js");
 
 // 1. Add new classes (only for manager)
 router.post("/classid", verifyManager, async (req, res, next) => {
@@ -69,4 +69,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;

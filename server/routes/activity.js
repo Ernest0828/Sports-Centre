@@ -1,8 +1,8 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Activity from "../database/models/activity.js";
-import Facility from "../database/models/facility.js";
-import verifyManager from "../middleware/verifyManager.js";
+const Activity  = require("../database/models/activity");
+const Facility  = require("../database/models/facility");
+const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new activities (only for manager)
 router.post("/activityid", verifyManager, async (req, res, next) => {
@@ -76,4 +76,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;

@@ -1,10 +1,11 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import jwt from "jsonwebtoken"
-import Customer from "../database/models/customer.js";
-import bcrypt from "bcrypt"
-import validData from "../middleware/validData.js"
-
+const jwt = require('jsonwebtoken');
+const Customer  = require("../database/models/customer");
+const bcrypt = require("bcrypt");
+const validData = require("../middleware/validData");
+const verifyToken = require("../middleware/verifyToken");
+const verifyUser = require("../middleware/verifyUser");
 
 // routes for registering new customer
 router.post("/register", validData, async (req, res, next) => {
@@ -22,8 +23,11 @@ router.post("/register", validData, async (req, res, next) => {
         const salt = await bcrypt.genSalt(saltRound);
         const bcryptPassword = await bcrypt.hash(password, salt);
 
+        // capitalize the first letter of each word in the name
+        let capitalName = name.toUpperCase();
+
         // add new customer to database
-        const newCustomer = await Customer.create({ customerName: name, customerNumber: number, customerEmail: email, password: bcryptPassword });
+        const newCustomer = await Customer.create({ customerName: capitalName, customerNumber: number, customerEmail: email, password: bcryptPassword });
         await newCustomer.save();
         return res.status(200).json({ message: "New customer created" });
     } catch (err) {
@@ -58,4 +62,4 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
-export default router
+module.exports = router;

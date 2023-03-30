@@ -1,15 +1,16 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import moment from "moment";
-import Booking from "../database/models/booking.js"
-import Activity from "../database/models/activity.js";
-import Classes from "../database/models/classes.js";
-import Facility from "../database/models/facility.js";
-import Customer from "../database/models/customer.js";
-import Staff from "../database/models/staff.js";
-import StaffBooking from "../database/models/staffBooking.js";
-import verifyUser from "../middleware/verifyUser.js";
-import verifyStaff from "../middleware/verifyStaff.js";
+const moment = require('moment');
+const Booking  = require("../database/models/booking");
+const Activity  = require("../database/models/activity");
+const Classes  = require("../database/models/classes");
+const Facility = require("../database/models/facility");
+const Payment  = require("../database/models/payment");
+const Customer  = require("../database/models/customer");
+const Staff  = require("../database/models/staff");
+const StaffBooking  = require("../database/models/staffBooking");
+const verifyUser = require("../middleware/verifyUser");
+const verifyStaff = require("../middleware/verifyStaff");
 
 
 // For User to amend the booking
@@ -244,4 +245,4 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
   }
 });
 
-export default router
+module.exports=router;
