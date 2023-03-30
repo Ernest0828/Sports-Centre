@@ -45,7 +45,7 @@ function App() {
         <Route exact path="/" element={<Dashboard />} />
           <Route path="/register" element={user ? (<Dashboard/>): (<Register/>)} />
           <Route path="/login" element={user ? (<Dashboard/>) : (<Login/>)} />
-          <Route path="/profile" element={user ? (<Profile />) : (<Login/>)}  />
+          <Route path="/profile" element={user ? (<Profile/>) : (<Login/>)} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
           <Route exact path="/aerobics" element={<Aerobics/>}/>
@@ -74,14 +74,3 @@ function App() {
 }
 
 export default App;
-
-/*
-
-    <AuthProvider>
-      <Router>
-        <Routes>
-
-        </Routes>
-      </Router>
-    </Fragment>
-*/

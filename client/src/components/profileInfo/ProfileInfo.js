@@ -42,7 +42,7 @@ export default function MemberProfileInfo() {
 
         //Updates customerName, customerNumber, customerEmail
         try {
-            const res = await axios.put("http://localhost:5000/api/customer/"+user.details.customerId,{
+            const res = await axios.put("http://localhost:5000/api/customer/"+ user.details.customerId,{
                 customerName,
                 customerNumber,
                 customerEmail,
@@ -87,6 +87,7 @@ export default function MemberProfileInfo() {
       async function fetchMembershipDetails() {
         try{
             const res = await axios.get("http://localhost:5000/api/membership/membership-info/"+user.details.customerId);
+            console.log("here",res);
             setMembershipType(res.data.membership.membershipType);
             setMembershipStartDate(res.data.membership.startDate.split("T")[0]);
             setMembershipEndDate(res.data.membership.endDate.split("T")[0]);
