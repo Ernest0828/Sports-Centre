@@ -102,7 +102,7 @@ router.put("/:id", verifyUser, async (req, res, next) => {
 });
 
 // 3. Delete booking
-router.delete("/:id", verifyUser, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const booking = await Booking.findByPk(req.params.id);
         if(!booking) return res.status(404).json("Booking not found");

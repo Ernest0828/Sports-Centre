@@ -51,10 +51,17 @@ const MemberProfile = () => {
     }, [bookings]);
 
     //delete booking
-    const handleDelete = Id => {
-        const newBookings = bookings.filter(booking => booking.bookingId !== Id);
-        setBookings(newBookings);
-    };
+    const handleDelete = async (bookingId) => {
+        try {
+            const res = await axios.delete("http://localhost:5000/api/bookings/"+ bookingId);
+            console.log(res);
+            const newBookings = bookings.filter(booking => booking.bookingId !== bookingId);
+            setBookings(newBookings);
+          // Redirect to login page or show success message
+        } catch (err) {
+          console.log(err.response.data);
+        }
+      };
 
     return (
         <Fragment>
