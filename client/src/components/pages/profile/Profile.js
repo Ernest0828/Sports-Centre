@@ -26,7 +26,7 @@ const MemberProfile = () => {
           }
         }
         fetchUserBooking();
-    }, [user.details.customerId, bookings]);
+    }, [user.details.customerId]);
 
     //get booking activity inspired by gpt
     useEffect(() => {
@@ -44,7 +44,10 @@ const MemberProfile = () => {
             catch(err){
                 console.log(err.response.data);
             }
-        } fetchBookingActivity();
+        } 
+        if (bookings.length > 0) {
+            fetchBookingActivity();
+        }
     }, [bookings]);
 
     //delete booking
@@ -77,7 +80,7 @@ const MemberProfile = () => {
                                         <td>{booking.facilityName}</td>
                                         <td>{activityNames[index]}</td>
                                         <td>{booking.date.split("T")[0]}</td>
-                                        <td>{booking.startTime}</td>
+                                        <td>{booking.startTime.substring(0,5)}</td>
                                         <td><button className="profileDeleteBookingBtn" onClick={() => handleDelete(booking.bookingId)}>Delete</button></td>
                                         </tr>
                                     ))}
