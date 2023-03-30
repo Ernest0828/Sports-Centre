@@ -9,7 +9,8 @@ export default function MemberProfileInfo() {
     const {user} = useContext(Auth);
     // State: Edit mode for update profile
     const [isEditMode, setIsEditMode] = useState(false);
-
+        
+    //keeps track of whether changes made
 
     const handleEditMode = () => {
         setIsEditMode(!isEditMode);
@@ -26,13 +27,11 @@ export default function MemberProfileInfo() {
     const [updatedCustomerEmail, setUpdatedCustomerEmail] = useState(user.details.customerEmail);
 
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");    
 
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
         setIsEditMode(false);
         if ((password || confirmPassword) && (confirmPassword !== password)) {
             setError("Passwords do not match");
@@ -61,7 +60,7 @@ export default function MemberProfileInfo() {
                     "membershipType":res.data.membershipType,
                     "updatedAt":res.data.updatedAt,
                 }
-            }));            
+            })); 
         } 
         catch (err) {
             console.log(err.response.data);
@@ -76,7 +75,6 @@ export default function MemberProfileInfo() {
         } catch (err) {
             console.log(err.response.data);
         }
-        
     };
 
     const [membershipType, setMembershipType] = useState("NULL");
@@ -87,7 +85,7 @@ export default function MemberProfileInfo() {
       async function fetchMembershipDetails() {
         try{
             const res = await axios.get("http://localhost:5000/api/membership/membership-info/"+user.details.customerId);
-            console.log("here",res);
+            console.log(res);
             setMembershipType(res.data.membership.membershipType);
             setMembershipStartDate(res.data.membership.startDate.split("T")[0]);
             setMembershipEndDate(res.data.membership.endDate.split("T")[0]);
@@ -97,7 +95,18 @@ export default function MemberProfileInfo() {
         }
       }
       fetchMembershipDetails();
-    }, [user.details.customerId]);
+    }, [user.details.customerId],membershipType);
+
+    const cancelMembership = async () => {
+        //Cancel membership
+        try {
+            const res = await axios.post("http://localhost:5000/api/membership/cancel/"+ user.details.customerId);
+            console.log("here",res);  
+        } 
+        catch (err) {
+            console.log(err.response.data);
+        } 
+    };
 
 
     return (
@@ -141,9 +150,8 @@ export default function MemberProfileInfo() {
                         </div>
                         {isEditMode && <button className="updateProfileButton" type="submit">Update</button>}
                         {error && <span className="registerErrorMsg">{error}</span>}
-                        {success && <span className="registerSuccessMsg">{success}</span>}
                         {!isEditMode && <button className="editProfileButton" onClick={handleEditMode}>Edit Profile</button>}
-                        {!isEditMode && user.details.membershipType !== null &&<button className="cancelMembershipButton">Cancel membership</button>}
+                        {!isEditMode && membershipType !== "NULL" && <button className="cancelMembershipButton" onClick={cancelMembership}>Cancel membership</button>}
                     </form>
             </div>
         </Fragment>
