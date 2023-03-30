@@ -19,7 +19,7 @@ router.post("/facilityid", async (req, res, next) => {
 });
 
 // 2. Update an existing facility (only for manager)
-router.put("/:id", verifyManager, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateFacility = await Facility.findByPk(req.params.id);
         const updatedFacility = await updateFacility.update(req.body);

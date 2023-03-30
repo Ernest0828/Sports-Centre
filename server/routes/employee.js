@@ -6,7 +6,7 @@ import verifyStaff from "../middleware/verifyStaff.js";
 import verifyManager from "../middleware/verifyManager.js";
 
 // 1. Update staff info
-router.put("/:id", verifyStaff, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateStaff = await Staff.findByPk(req.params.id);
         const updatedStaff = await updateStaff.update(req.body);
@@ -27,7 +27,7 @@ router.get("/find/:id", async (req, res, next) => {
 });
 
 // 3. To get all staffs
-router.get("/", verifyManager, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
         const staff = await Staff.findAll();
         res.json(staff);

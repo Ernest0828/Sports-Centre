@@ -10,6 +10,7 @@ import db from "./database/db.js"
 import customerAuth from "./routes/customerRoutes.js";
 import customer from "./routes/customers.js";
 import staffAuth from "./routes/staffRoutes.js";
+import employee from "./routes/employee.js";
 import activityRoute from "./routes/activity.js";
 import classRoute from "./routes/classes.js";
 import facilityRoute from "./routes/facility.js";
@@ -18,7 +19,7 @@ import membershipRoute from "./routes/membership.js";
 
 const app = express();
 dotenv.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ||4000;
 
 // middleware
 app.use(cors());
@@ -29,6 +30,7 @@ app.use(cookieParser())
 app.use("/api/auth", customerAuth);
 app.use("/api/customer", customer);
 app.use("/auth/staff", staffAuth);
+app.use("/api/employee", employee);
 app.use("/api/activities", activityRoute);
 app.use("/api/classes", classRoute);
 app.use("/api/facilities", facilityRoute);
