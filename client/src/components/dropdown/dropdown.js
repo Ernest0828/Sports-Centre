@@ -1,41 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import "./dropdown.css"
 import axios from 'axios';
 import ReactDatePicker from '../Calendar/ReactDatePicker';
 import useFetch from '../managerPages/hooks/useFetch';
+import { Auth } from '../../context/Auth';
 
+
+
+
+// const[facilities, setFacilities]= useState([]);
+
+// useEffect(()={
+//   const fetchFacilities = async () =>{
+//     try{
+//       const res = await
+//       axios.get("http//localhost:5000/api/facilities/");
+//         setFacilities(res.data);
+//     }catch(err){
+//       console.error(err);
+//     }
+//   };
+//   fetchFacilities();
+// });
 
 
 function DropdownChoice(props) {
 
   //useFetch Hooks
-  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/"); 
-  // const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
-
+  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
+  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
 
   const [selectedOptionA, setSelectedOptionA] = useState('');
   const [selectedOptionB, setSelectedOptionB] = useState('');
   const [selectedOptionC, setSelectedOptionC] = useState('');
   const {selectedDate} = props;
+
+  const{user} = useContext(Auth);
   
 
-
-
   const optionBValues = {
-    "Climbing Wall": ['General use'],
-    "Fitness Room": ['General use'],
-    "Sports Hall": ['1-hour session', 'Team events'],
-    "Squash Court A": ['1-hour session'],
-    "Squash Court B": ['1-hour session'],
-    "Swimming Pool": ['General use', 'Lane Swimming', 'Lessons', 'Team events']
+    "Climbing wall": ['General use'],
+    "Fitness room": ['General use'],
+    "Sports hall": ['1-hour sessions', 'Team events'],
+    "Squash court A": ['1-hour sessions'],
+    "Squash court B": ['1-hour sessions'],
+    "Swimming pool": ['General use', 'Lane swimming', 'Lessons', 'Team events']
   };
 
   const optionCValues = {
     'General use': selectedOptionA === 'Swimming Pool' && selectedOptionB === 'General use' ? ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'] :selectedOptionA === 'Climbing Wall' && selectedOptionB === 'General use'? ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']: ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
-    '1-hour session': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
+    '1-hour sessions': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
     'Team events': selectedOptionA === 'Swimming Pool' && selectedOptionB === 'Team events' ? ['08:00'] : selectedOptionA === 'Sports Hall' && selectedOptionB === 'Team events' ? ['07:00', '09:00'] : [],
     'Lessons': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
-    'Lane Swimming': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
+    'Lane swimming': ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
   };
 
 const handleOptionAChange = (event)=> {
@@ -53,26 +70,26 @@ const handleOptionAChange = (event)=> {
   };
 
   const activityIDs = {
-    "Swimming Pool": {
+    "Swimming pool": {
       "General use": 1,
-      "Lane Swimming": 2,
+      "Lane swimming": 2,
       "Lessons": 3,
       "Team events": 4
     },
-    "Fitness Room": {
+    "Fitness room": {
       "General use": 5
     },
-    "Squash Court A": {
-      "1-hour session": 11
+    "Squash court A": {
+      "1-hour sessions": 10
     },
-    "Squash Court B": {
-      "1-hour session": 12
+    "Squash court B": {
+      "1-hour sessions": 11
     },
-    "Sports Hall": {
-      "1-hour session": 7,
+    "Sports hall": {
+      "1-hour sessions": 7,
       "Team events": 8
     },
-    "Climbing Wall": {
+    "Climbing wall": {
       "General use": 9
     }
     }
@@ -99,7 +116,7 @@ const handleOptionAChange = (event)=> {
       await axios.post('http://localhost:5000/api/bookings/bookingid', {
         date: selectedDate,
         start: selectedOptionC, 
-        customerId: "73e7892e-1466-424c-80ae-8cf84cd633b2", //Get the current ID 
+        customerId: user.details.customerId, //Get the current ID 
         activityId: activityID, //convert the selectedOptionB to activity number
         classId: null, //convert to ID instead of name
         facilityName: selectedOptionA 
@@ -119,23 +136,21 @@ const handleOptionAChange = (event)=> {
       <select value={selectedOptionA} onChange={handleOptionAChange}>
         <option value=''>Select a facility</option>
         {facilityData.map((facility) => (
-        <option key={facility.name} value={facility.name}>
+        <option key={facility.facilityName} value={facility.facilityName}>
         {facility.facilityName}
         </option>
         ))}
       </select>
-
         </div>
         <div className="dropdownActivity">
       <label>Activity :</label>
-      <select value={selectedOptionB} onChange={handleOptionBChange} disabled={!selectedOptionA}>
+      <select id="optionB" value={selectedOptionB} onChange={handleOptionBChange} disabled={!selectedOptionA}>
         <option value="">-- Please select an option --</option>
         {selectedOptionA && optionBValues[selectedOptionA].map((option) => (
           <option key={option} value={option}>{option}</option>
-        ))} 
+        ))}
       </select>
         </div>
-        
         <div className="dropdownTime">
       <label >Time :</label>
       <select id="optionC" value={selectedOptionC} onChange={handleOptionCChange} disabled={!selectedOptionA || !selectedOptionB}>
@@ -149,11 +164,5 @@ const handleOptionAChange = (event)=> {
     </div>
   );
 }
-
-
-// {activityData.map((activity) => (
-//   <option key={activity.activityId} value={activity.activityName}>
-//     {activity.activityName}
-//   </option>
 
 export default DropdownChoice

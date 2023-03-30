@@ -25,7 +25,7 @@ const Navbar = () => {
               <Link to = "/membership" className="navbar__link">Membership</Link>
             </li>
             <li className="navbar__item">
-              <Link to="/profile" style = {{color: 'orange'}} className="navbar__link">Brayden</Link>
+              <Link to="/profile" style = {{color: 'orange'}} className="navbar__link">Profile</Link>
             </li>
             <li className="navbar__item">
               <Link to = "/login" className="navbar__link">Logout</Link>
