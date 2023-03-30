@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 import verifyUser from "../middleware/verifyUser.js";
 
 // 1. Update customer info
-router.put("/:id", verifyUser, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateUser = await Customer.findByPk(req.params.id);
         const updatedCustomer = await updateUser.update(req.body);
@@ -36,7 +36,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // 4. Change password
-router.put("/change-password/:id", verifyUser, async (req, res, next) => {
+router.put("/change-password/:id", async (req, res, next) => {
         try {
         const { password } = req.body;
         let bcyrptPassword;
