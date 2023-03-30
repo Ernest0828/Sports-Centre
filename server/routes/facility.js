@@ -3,7 +3,7 @@ const router = express.Router();
 import Facility from "../database/models/facility.js";
 import verifyManager from "../middleware/verifyManager.js";
 // 1. Add new facilities (only for manager)
-router.post("/facilityid", verifyManager, async (req, res, next) => {
+router.post("/facilityid", async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
     try {
         // check if activity already exist

@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
-import db from "../db.js";
-import Staff from "./staff.js";
-import Booking from "./booking.js";
+const Sequelize = require("sequelize");
+const db = require("../db");
+const Staff = require("./staff");
+const Booking = require("./booking");
 
 const { INTEGER } = Sequelize;
 
@@ -17,4 +17,4 @@ const StaffBooking = db.define('StaffBooking', {
 StaffBooking.belongsTo(Staff, { foreignKey: 'staffId' });
 StaffBooking.belongsTo(Booking, { foreignKey: 'bookingId' });
 
-export default StaffBooking
+module.exports=StaffBooking;

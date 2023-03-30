@@ -50,7 +50,7 @@ router.post("/login", async (req, res, next) => {
 
         const { password, ...otherDetails } = customer.dataValues;
         res.cookie("token", token, {
-            httpOnly: true
+            httpOnly: true,
         })
         .json({details: {...otherDetails}});
     } catch (err) {

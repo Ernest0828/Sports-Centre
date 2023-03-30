@@ -1,0 +1,33 @@
+
+.classItem{
+  position: relative;
+  border-radius:10px ;
+  background-color: #1c768f;
+  z-index: 3;
+  max-width: 250px;
+  max-height: 250px;
+}
+
+.classItem:hover{
+  transform: scale(.99);
+  cursor:pointer
+}
+
+
+.className{
+  color: white;
+  z-index :2;
+  font-weight: 600;
+}
+
+/* 
+.className:hover{
+background-color: rgba(0, 0, 0, 0.1);
+} */
+
+.className > p{
+  margin-top: 100px;
+  font-size: 20px;
+  font-family: Arimo;
+}
+
