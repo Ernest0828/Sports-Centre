@@ -72,13 +72,12 @@ export default function MemberProfileInfo() {
             const res = await axios.put("http://localhost:5000/api/customer/change-password/"+user.details.customerId, 
                 {password}
             );  
-            console.log("here",res.data);
+            console.log(res.data);
         } catch (err) {
             console.log(err.response.data);
         }
         
     };
-   
 
     const [membershipType, setMembershipType] = useState("NULL");
     const [membershipStartDate, setMembershipStartDate] = useState("NULL");
