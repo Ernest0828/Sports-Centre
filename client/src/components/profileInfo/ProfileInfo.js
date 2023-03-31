@@ -101,7 +101,7 @@ export default function MemberProfileInfo() {
         //Cancel membership
         try {
             const res = await axios.post("http://localhost:5000/api/membership/cancel/"+ user.details.customerId);
-            console.log("here",res);  
+            alert("Membership cancelled");
         } 
         catch (err) {
             console.log(err.response.data);
