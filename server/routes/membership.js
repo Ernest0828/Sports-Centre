@@ -1,10 +1,10 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Customer from "../database/models/customer.js";
-import Membership from "../database/models/membership.js";
-import verifyManager from "../middleware/verifyManager.js";
-import verifyStaff from "../middleware/verifyStaff.js";
-import verifyUser from "../middleware/verifyUser.js";
+const Customer  = require("../database/models/customer");
+const Membership = require("../database/models/membership");
+const verifyManager  = require("../middleware/verifyManager");
+const verifyStaff  = require("../middleware/verifyStaff");
+const verifyUser  = require("../middleware/verifyUser");
 
 
 // 1. Buy a membership
@@ -24,10 +24,13 @@ router.post("/buy/:id", async (req, res, next) => {
     // Set membership start and end dates based on membership type
     let startDate = new Date();
     let endDate = new Date();
+    let price;
     if (membershipType === 'MONTHLY') {
       endDate.setDate(endDate.getDate() + 30);
-    } else if (membershipType === 'ANNUALLY') {
+      price = "35";
+    } else if (membershipType === 'ANNUAL') {
       endDate.setDate(endDate.getDate() + 365);
+      price = "300";
     }
 
     // Update customer's membership status and type
@@ -41,8 +44,9 @@ router.post("/buy/:id", async (req, res, next) => {
     await Membership.create({
       customerId: req.params.id,
       membershipType: membershipType,
-      startDate: startDate,
-      endDate: endDate
+      price,
+      startDate,
+      endDate,
     });
 
     res.status(200).json(customer);
@@ -106,7 +110,7 @@ router.put("/update/:id", async (req, res, next) => {
         // Set end date to 30 days after start date
         const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
         membership.endDate = endDate;
-      } else if (membershipType === "ANNUALLY") {
+      } else if (membershipType === "ANNUAL") {
         // Set start date to previous membership end date if available, current date otherwise
         const startDate = membership.endDate ? membership.endDate : new Date();
         membership.startDate = startDate;
@@ -167,4 +171,4 @@ router.get("/memberships", verifyStaff, async (req, res, next) => {
   }
 });
 
-export default router
+module.exports=router;

@@ -1,7 +1,8 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Facility from "../database/models/facility.js";
-import verifyManager from "../middleware/verifyManager.js";
+const Facility  = require("../database/models/facility");
+const verifyManager = require("../middleware/verifyManager");
+
 // 1. Add new facilities (only for manager)
 router.post("/facilityid", async (req, res, next) => {
     const { name, capacity, start, end } = req.body;
@@ -63,4 +64,4 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router

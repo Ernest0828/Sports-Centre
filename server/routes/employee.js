@@ -1,9 +1,9 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Staff from "../database/models/staff.js";
-import bcrypt from "bcrypt"
-import verifyStaff from "../middleware/verifyStaff.js";
-import verifyManager from "../middleware/verifyManager.js";
+const Staff  = require("../database/models/staff");
+const bcrypt = require("bcrypt");
+const verifyStaff = require("../middleware/verifyStaff");
+const verifyManager = require("../middleware/verifyManager");
 
 // 1. Update staff info
 router.put("/:id", async (req, res, next) => {
@@ -68,4 +68,4 @@ router.delete("/:id", verifyManager, async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;

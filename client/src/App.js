@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/" element={<Dashboard />} />
           <Route path="/register" element={user ? (<Dashboard/>): (<Register/>)} />
           <Route path="/login" element={user ? (<Dashboard/>) : (<Login/>)} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={user ? (<Profile/>) : (<Login/>)} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
 
@@ -43,6 +43,16 @@ function App() {
     </AuthProvider>
   // );
   );
-}
+// function App() {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/login" element={<Login/>}/>
+//         <Route path="/dashboard" element={<Dashboard/>}/>
+//       </Routes>
+//     </Router>
+//   );
+// }
+        }
 
 export default App;

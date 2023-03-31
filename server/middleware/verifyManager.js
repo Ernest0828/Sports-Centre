@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
-import verifyToken from './verifyToken.js';
+require('dotenv').config();
+const verifyToken = require('./verifyToken');
 
 // verify if a staff is type Manager
 const verifyManager = async (req, res, next) => {
@@ -18,4 +17,4 @@ const verifyManager = async (req, res, next) => {
     }
 };
 
-export default verifyManager
+module.exports=verifyManager;

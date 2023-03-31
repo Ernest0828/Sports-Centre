@@ -1,14 +1,18 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import Customer from "../database/models/customer.js"
-import bcrypt from "bcrypt"
-import verifyUser from "../middleware/verifyUser.js";
+const Customer  = require("../database/models/customer");
+const bcrypt = require("bcrypt");
+const verifyUser = require("../middleware/verifyUser");
 
 // 1. Update customer info
 router.put("/:id", async (req, res, next) => {
     try {
         const updateUser = await Customer.findByPk(req.params.id);
-        const updatedCustomer = await updateUser.update(req.body);
+        const { customerName, ...rest } = req.body;
+        const updatedCustomer = await updateUser.update({
+            customerName: customerName.toUpperCase(),
+            ...rest
+        });
         res.status(200).json(updatedCustomer);
     } catch (err) {
         next(err);
@@ -67,4 +71,4 @@ router.delete("/:id", verifyUser, async (req, res, next) => {
     }
 });
 
-export default router
+module.exports=router;

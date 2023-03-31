@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize";
-import db from "../db.js";
-import Facility from "./facility.js";
+const Sequelize = require("sequelize");
+const db = require("../db");
+const Facility = require("./facility")
 
 const { INTEGER, STRING, FLOAT, TIME } = Sequelize;
 
@@ -37,4 +37,4 @@ const Activity = db.define('Activity', {
 // add foreign key constraint to facilityId column
 Activity.belongsTo(Facility, { foreignKey: 'facilityName' });
 
-export default Activity
+module.exports = Activity;
