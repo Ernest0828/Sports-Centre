@@ -1,18 +1,17 @@
 import React, {Fragment, useState, useEffect, useContext} from "react";
-import "./navbar.css"
+import "./navbarLoggedIn.css"
 import { Link } from 'react-router-dom';
 import {Auth} from "../../context/Auth"
 
 
 const Navbar = () => {
   const {dispatch} = useContext(Auth);
-  const {user} = useContext(Auth);
 
   return (
     <nav className="navbar">
       <ul className="navbar__list">
         <li className="navbar__item--title">
-          <Link to="/dashboard" class="navbar__linkTitle">GymCorp</Link>
+          <Link to="/" class="navbar__linkTitle">GymCorp</Link>
         </li>
 
         <li className = "navbar_right">
