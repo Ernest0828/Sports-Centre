@@ -40,14 +40,13 @@ const classes = [
 ];
 
 const customers = [
-
 ];
 
 const memberships = [];
 const bookings = [];
 const staffBookings = [];
 const staffs = [
-    {staffName: "Brayden Jalleh", staffNumber: "0123847563", staffEmail: "sc22bmj@gmail.com", password: "abcedf", isManager: "true"}
+    
 ];
 
 
@@ -62,8 +61,8 @@ const staffs = [
     const createdCustomers = await Customers.bulkCreate(customers);
     const createdMemberships = await Memberships.bulkCreate(memberships);
     const createdBookings = await Bookings.bulkCreate(bookings);
-    const createdStaffBookings = await Bookings.bulkCreate(staffBookings);
-    const createdStaffs = await Bookings.bulkCreate(staffs);
+    const createdStaffBookings = await StaffBookings.bulkCreate(staffBookings);
+    const createdStaffs = await Staffs.bulkCreate(staffs);
 
     console.log("Models created");
     process.exit();
