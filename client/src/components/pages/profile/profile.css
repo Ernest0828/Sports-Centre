@@ -53,7 +53,7 @@ table{
     width: 100%;
 }
 
-th{
+.userBookingsTable th{
     padding: 10px;
     background-color: #032539;
     color: white;

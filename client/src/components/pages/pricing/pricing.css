@@ -49,14 +49,6 @@ body {
     border-radius: 10px;
 }
 
-th {
-    background-color: #1c768f;
-}
-
-.table {
-    margin-bottom: 70px;
-    max-width: 600px;
-}
 
 .join-button {
     padding: 20px;
