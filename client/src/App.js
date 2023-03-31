@@ -15,6 +15,7 @@ import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
 import Pricing from './components/pages/pricing/Pricing';
 
+
 function App() {
   const {user} = useContext(Auth);
 
@@ -30,21 +31,12 @@ function App() {
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </Router>
     </AuthProvider>
-  // );
+    
   );
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/login" element={<Login/>}/>
-//         <Route path="/dashboard" element={<Dashboard/>}/>
-//       </Routes>
-//     </Router>
-//   );
-// }
-        }
+}
 
 export default App;

@@ -1,6 +1,6 @@
 .navbar {
     position: fixed;
-    top: 0;
+    top: 0px;
     width: 100%;
     background-color: #033756;
     display: flex;
@@ -8,11 +8,12 @@
     align-content: center;
     height: 60px;
     padding: 40px;
-    z-index: 1;
+    z-index: 100;
 }
 
 
 .navbar__list {
+    padding: 0;
     display: flex;
     list-style: none;
 }
@@ -41,6 +42,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
+    margin-top: 15px;
 }
 
 
