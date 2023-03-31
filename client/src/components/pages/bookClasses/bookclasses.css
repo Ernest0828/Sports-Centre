@@ -11,7 +11,7 @@
 
 .classWrapper{
     width: 90%;
-    height: 98%;
+    height: auto;
     display: flex;
 }
 
