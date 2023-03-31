@@ -31,6 +31,7 @@ function App() {
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -4,38 +4,48 @@ import { Link} from "react-router-dom";
 import Basket from "../../basket/HaveAccBasket";
 import ClassItem from "../../classItem/ClassItem";
 import NoAccBasket from "../../basket/NoAccBasket"
+import Navbar from "../../navbar/navbar";
 import axios from "axios"
   
 const BookClasses = () => {
-  const [classItem, setClassItem] = useState([]);
+  const [classes, setClasses] = useState([]);
+
   useEffect(() => {
-    const fetchClassItem = async ()=>{
-      const res = await axios.get("/api/classes")
-      console.log(res)
+  const fetchClasses = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/classes/");
+      const uniqueClasses = Array.from(new Set(res.data.map(c => c.className))).map(cn => {
+        return res.data.find(c => c.className === cn);
+      });
+      setClasses(uniqueClasses);
+    } catch (err) {
+      console.error(err);
     }
-    fetchClassItem();
+  };
 
-  },[])
+  fetchClasses();
+}, []);
 
-  
-  return (
+   return (
     <Fragment>
-        <div className="bookClasses">
-            <div className="classWrapper">
-                {/* <Classes/> */}
-              <div className="classes">
-                <div className="bookClassesDescription">
-                  <h3>Book a class</h3>
-                  <p>Select a class to view timetables and availability.</p>
-                </div>
-                <div className="gridFormat">
-                  <ClassItem/>
-                </div>
-              </div>
-              <NoAccBasket/>
+    <Navbar/>
+      <div className="bookClasses">
+        <div className="classWrapper">
+          <div className="classes">
+            <div className="bookClassesDescription">
+              <h3>Book a class</h3>
+              <p>Select a class to view timetables and availability.</p>
             </div>
+            <div className="gridFormat">
+              {classes.map((classes) => (
+                <ClassItem key={classes.className} classes={classes}/>
+              ))}
+            </div>
+          </div>
+          <NoAccBasket />
+        </div>
       </div>
     </Fragment>
-  );
+  )
 };
 export default BookClasses;

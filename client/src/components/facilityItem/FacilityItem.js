@@ -1,18 +1,13 @@
 import React,{Fragment, useState} from "react";
 import "./facilityItem.css";
-import { Link} from "react-router-dom";
-
   
-const Facilities = () => {
+const Facilities = ({ facility }) => {
   return (
-    <Fragment>
-      <div className="facilityItem">
-        <div className="facilityName">
-          <p>Swimming Pool</p>
-        </div>
+    <div className="facilityItem">
+      <div className="facilityName">
+        <p>{facility.facilityName}</p>
       </div>
-
-    </Fragment>
+    </div>
   );
 };
 export default Facilities;
