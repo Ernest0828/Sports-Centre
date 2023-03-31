@@ -105,11 +105,12 @@ const FacilityDetails = () => {
         axios.put(`http://localhost:4000/api/facilities/${selectedFacility.name}`, {
         //name: formInputs.name,
         capacity: formInputs.capacity,
-        start: formInputs.start,
-        end: formInputs.end,
+        startTime: formInputs.start,
+        endTime: formInputs.end,
         })
         .then(response => {
         console.log(response.data);
+        handleClose();
         })
         .catch(error => {
         console.log(error);
@@ -132,22 +133,6 @@ const FacilityDetails = () => {
             });
         });
 
-       /*// Send updated activity details to server
-        formInputs.activities.forEach((activity) => {
-          axios.put(`http://localhost:4000/api/activities/${activity.activityId}`, {
-            activityName: activity.activityName,
-            price: activity.price,
-          })
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-            alert('Failed to save activity data');
-          });
-        });*/
-
-    
         // Close modal
         handleClose();
     };

@@ -7,7 +7,18 @@ const validateData = function(req, res, next) {
   }
   
   // function to check if phone number is valid (10 digits && starts with 0)
+  /*function validatePhoneNumber(phoneNumber) {
+    // remove any non-digit characters from the phone number
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+    return /^0\d{9}$/.test(phoneNumber);
+  }*/
+  
   function validatePhoneNumber(phoneNumber) {
+    // check if phoneNumber is null or undefined
+    if (phoneNumber == null) {
+      return false;
+    }
+    
     // remove any non-digit characters from the phone number
     phoneNumber = phoneNumber.replace(/\D/g, '');
     return /^0\d{9}$/.test(phoneNumber);

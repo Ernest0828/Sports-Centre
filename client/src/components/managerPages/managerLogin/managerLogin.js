@@ -1,13 +1,13 @@
 import React,{Fragment, useState, useContext} from "react";
-import "./login.css";
+import "./managerLogin.css";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { Auth } from "../../../context/Auth";
 
-const Login = () => {
+const ManagerLogin = () => {
 
     const [credentials, setCredentials] = useState({
-        customerEmail: "",
+        staffEmail: "",
         password: "",
     });
 
@@ -23,10 +23,10 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await axios.post("http://localhost:4000/api/auth/login", credentials);
+        const res = await axios.post("http://localhost:4000/auth/staff/login", credentials);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-        navigate('/')
+        navigate('/manager-profile')
     } catch (err) {
         console.log(err.response.data);
         dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
@@ -40,19 +40,16 @@ const Login = () => {
                 <div className="loginWrapper">
                     <div className="loginLeft">
                         <h3 className="loginLogo">GymCorp</h3>
-                        <span className="loginDesc">Log in or register and start booking with GymCorp!</span>
+                        <span className="loginDesc">HAVE A GREAT DAY AT WORK!</span>
                     </div>
                     <div className="loginRight">
                         <div className="loginBox">
                             <span className="loginBoxDesc">Login</span>
-                            <input id="customerEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
+                            <input id="staffEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
                             <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
                             <button disabled={loading} onClick={handleClick} className="loginButton">Log In</button>
                             {error && <span className="loginErrorMsg">{error.message}</span>}
                             <span className="loginForgot">Forgot Password?</span>
-                            <Link to="/register" className="loginRegisterLink">
-                                <button className="buttonInLink">Create a New Account</button>
-                            </Link>
                         </div>
                     </div>
                 </div>
@@ -60,4 +57,4 @@ const Login = () => {
         </Fragment>
     );
 };
-export default Login;
+export default ManagerLogin;

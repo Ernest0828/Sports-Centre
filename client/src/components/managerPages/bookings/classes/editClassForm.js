@@ -15,52 +15,64 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
       return (
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Staff</Modal.Title>
+          <Modal.Title>Edit Class</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
       
-            <Form.Group controlId="formStaffName">
-              <Form.Label>Staff Name</Form.Label>
+            <Form.Group controlId="formClassName">
+              <Form.Label>Class Name</Form.Label>
               <Form.Control
                 type="text"
-                name="staffName"
-                value={formInputs.staffName}
+                name="className"
+                value={formInputs.className}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff name"
-              />
-            </Form.Group>
-      
-            <Form.Group controlId="formStaffNumber">
-              <Form.Label>Staff Number</Form.Label>
-              <Form.Control
-                type="number"
-                name="staffNumber"
-                value={formInputs.staffNumber}
-                onChange={handleFormInputChange}
-                placeholder="Enter staff number"
-              />
-            </Form.Group>
-      
-            <Form.Group controlId="formStaffEmail">
-              <Form.Label>Staff Email</Form.Label>
-              <Form.Control
-                type="text"
-                name="staffEmail"
-                value={formInputs.staffEmail}
-                onChange={handleFormInputChange}
-                placeholder="Enter staff email"
+                placeholder="Enter class name"
               />
             </Form.Group>
 
-            <Form.Group controlId="formIsManager">
-              <Form.Label>Manager?</Form.Label>
+            <Form.Group controlId="formPrice">
+              <Form.Label>Price</Form.Label>
               <Form.Control
-                type="boolean"
-                name="isManager"
-                value={formInputs.isManager}
+                type="number"
+                step="0.01"
+                name="price"
+                value={formInputs.price}
                 onChange={handleFormInputChange}
-                placeholder="Employee ? Manager"
+                placeholder="enter price"
+              />
+            </Form.Group>
+      
+            <Form.Group controlId="formDay">
+              <Form.Label>Day</Form.Label>
+              <Form.Control
+                type="text"
+                name="day"
+                value={formInputs.day}
+                onChange={handleFormInputChange}
+                placeholder="Enter day"
+              />
+            </Form.Group>
+      
+            <Form.Group controlId="formStartTime">
+              <Form.Label>Start Time</Form.Label>
+              <Form.Control
+                type="time"
+                name="startTime"
+                value={formInputs.startTime}
+                onChange={handleFormInputChange}
+                placeholder="Enter start time"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formEndTime">
+              <Form.Label>End Time</Form.Label>
+              <Form.Control
+                type="time"
+                name="endTime"
+                value={formInputs.endTime}
+                onChange={handleFormInputChange}
+                placeholder="enter end time"
               />
             </Form.Group>
       

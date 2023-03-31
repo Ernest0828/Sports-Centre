@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
+const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
   
     const handleFormInputChange = (event) => {
         setFormInputs({
@@ -13,12 +13,12 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
       };
       
       return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={showAdd} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Staff</Modal.Title>
+          <Modal.Title>Add Staff</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleAddSubmit}>
       
             <Form.Group controlId="formStaffName">
               <Form.Label>Staff Name</Form.Label>
@@ -34,7 +34,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
             <Form.Group controlId="formStaffNumber">
               <Form.Label>Staff Number</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 name="staffNumber"
                 value={formInputs.staffNumber}
                 onChange={handleFormInputChange}
@@ -50,6 +50,17 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
                 value={formInputs.staffEmail}
                 onChange={handleFormInputChange}
                 placeholder="Enter staff email"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="text"
+                name="password"
+                value={formInputs.password}
+                onChange={handleFormInputChange}
+                placeholder="Enter staff password"
               />
             </Form.Group>
 
@@ -73,4 +84,4 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
     );
   };
 
-export default EditStaffForm;
+export default AddStaffForm;
