@@ -13,7 +13,7 @@ import EditClassForm from "./editClassForm";
 const ClassDetails = () => {
 
     //useFetch Hooks
-    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:5000/api/classes/");
 
     const [classDetails, setClassDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
@@ -98,7 +98,7 @@ const ClassDetails = () => {
       });
 
       // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/classes/${selectedClass.classId}`, {
+      axios.put(`http://localhost:5000/api/classes/${selectedClass.classId}`, {
 
         name: formInputs.className,
         day: formInputs.day,
@@ -136,7 +136,7 @@ const ClassDetails = () => {
         });
     
       // Send new staff details to server
-      axios.post('http://localhost:4000/api/classes/classid', {
+      axios.post('http://localhost:5000/api/classes/classid', {
         name: formInputs.className,
         day: formInputs.day,
         start: formInputs.startTime,

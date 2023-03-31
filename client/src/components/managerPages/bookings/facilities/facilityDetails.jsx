@@ -12,8 +12,8 @@ import EditFacilityForm from "./editFacilityForm";
 const FacilityDetails = () => {
 
   //useFetch Hooks
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
+    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
 
   //States
     const [facilityDetails, setFacilityDetails] = useState();
@@ -102,7 +102,7 @@ const FacilityDetails = () => {
 
     
         // Send updated facility details to server
-        axios.put(`http://localhost:4000/api/facilities/${selectedFacility.name}`, {
+        axios.put(`http://localhost:5000/api/facilities/${selectedFacility.name}`, {
         //name: formInputs.name,
         capacity: formInputs.capacity,
         startTime: formInputs.start,
@@ -120,7 +120,7 @@ const FacilityDetails = () => {
         // Update activityName and price in activity database
         selectedFacility.activities.forEach((activity, index) => {
           axios
-            .put(`http://localhost:4000/api/activities/${activity.activityId}`, {
+            .put(`http://localhost:5000/api/activities/${activity.activityId}`, {
               activityName: formInputs.activityName[index],
               price: formInputs.price[index],
             })

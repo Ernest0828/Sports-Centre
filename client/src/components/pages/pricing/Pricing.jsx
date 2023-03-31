@@ -74,7 +74,7 @@ const PricingClass = () => {
                 </div>
                 <div className="classes-container">
                     <h2 className="title">Classes</h2>
-                    <p className="header">We held our classes every week at the Studio.</p>
+                    <p className="header">We hold our classes every week at the Studio.</p>
                     <div className="class-list">
                     {classData.map((classes) => (
                         <div key={classes.classId} className="class-item">

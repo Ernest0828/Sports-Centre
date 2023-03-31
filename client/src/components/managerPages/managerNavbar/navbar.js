@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Auth } from "../../context/Auth";
+import { Auth } from "../../../context/Auth";
 import "./navbar.css";
 
 const Navbar = () => {
@@ -15,25 +15,25 @@ const Navbar = () => {
         </Link>
         <ul className="navList">
           <li className="navItem">
-            <Link to="/" className="navLink">
-              Home
+            <Link to="/facilitydetails" className="navLink">
+              Facilities
             </Link>
           </li>
           <li className="navItem">
-            <Link to="/book-facility" className="navLink">
-              Facility
-            </Link>
-          </li>
-          <li className="navItem">
-            <Link to="/book-class" className="navLink">
+            <Link to="/classdetails" className="navLink">
               Classes
             </Link>
           </li>
           <li className="navItem">
+            <Link to="/staff" className="navLink">
+              Staff
+            </Link>
+          </li>
+          {/*<li className="navItem">
             <Link to="/pricing" className="navLink">
               Pricing
             </Link>
-          </li>
+            </li>*/}
         </ul>
       </div>
     
@@ -41,37 +41,22 @@ const Navbar = () => {
         {user && 
         <ul className="navList">
           <li className="navItem">
-            <Link to="/profile" className="navLink">
+            <Link to="/manager-profile" className="navLink">
               Profile
             </Link>
           </li>
         </ul>
         }
         
-        {user ? (
+        {user && 
+        <ul className="navList">
+          <li className="navItem">
           <Link to="/" className="navLink navLogout" onClick={() => dispatch({ type: "LOGOUT" })}>
             Logout
           </Link>
-        ):(
-          <div className="navDropdown">
-          <Link to="/login" className="navDropdownTrigger">
-            Login
-          </Link>
-          <ul className="navDropdownList">
-            <li className="navItem">
-              <Link to="/login" className="navLink">
-                User
-              </Link>
-            </li>
-            <li className="navItem">
-              {/* Change to staff link later */}
-              <Link to="/manager-login" className="navLink">
-                Staff
-              </Link>
-            </li>
-          </ul>
-        </div>
-        )}
+          </li>
+        </ul>
+        }
         
       </div>
     </nav>

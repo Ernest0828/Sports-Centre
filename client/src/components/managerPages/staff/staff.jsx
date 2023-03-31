@@ -43,6 +43,7 @@ const Staff = () => {
     }, [staffData]);
 
     const [formInputs, setFormInputs] = useState({
+      staffId: "",
       staffName: "",
       staffNumber: "",
       staffEmail: "",
@@ -175,7 +176,7 @@ const Staff = () => {
         });
     
       // Send new staff details to server
-      axios.post('http://localhost:4000/auth/staff/register', {
+      axios.post('http://localhost:5000/auth/staff/register', {
         name: formInputs.staffName,
         number: formInputs.staffNumber,
         email: formInputs.staffEmail,
@@ -196,7 +197,7 @@ const Staff = () => {
 
     const handleDelete = () => {
       if (window.confirm("Are you sure you want to delete this staff member?")) {
-        axios.delete(`http://localhost:4000/api/employee/${selectedStaff.staffId}`)
+        axios.delete(`http://localhost:5000/api/employee/${selectedStaff.staffId}`)
           .then(() => {
             // remove the deleted staff member from staffDetails state
             setStaffDetails(staffDetails.filter(staff => staff.staffId !== selectedStaff.staffId));
