@@ -1,9 +1,8 @@
 import React,{Fragment, useEffect, useState} from "react";
 import "./bookclasses.css";
 import { Link} from "react-router-dom";
-import Basket from "../../basket/HaveAccBasket";
+import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
-import NoAccBasket from "../../basket/NoAccBasket"
 import Navbar from "../../navbar/navbar";
 import axios from "axios"
   
@@ -42,7 +41,7 @@ const BookClasses = () => {
               ))}
             </div>
           </div>
-          <NoAccBasket />
+          <Basket />
         </div>
       </div>
     </Fragment>

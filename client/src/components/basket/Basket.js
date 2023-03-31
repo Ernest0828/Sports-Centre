@@ -1,10 +1,13 @@
-import React, { Fragment, useState } from "react";
-import "./haveAccBasket.css";
+import React, { Fragment, useState, useContext} from "react";
+import "./basket.css";
 import { Link } from "react-router-dom";
 import {Auth} from "../../context/Auth"
 
 //used chatgpt for inspiration on the remove function
 export default function Basket() {
+
+  const {user} = useContext(Auth);
+
   const [items, setItems] = useState([
     { description: "Swimming Pool — 1 Hour", cost: 8.0 },
     { description: "Swimming Pool — 1 Hour", cost: 8.0 },
@@ -24,7 +27,8 @@ export default function Basket() {
       <div className="basket">
         <span className="basketTitle">Basket</span>
         <div className="userBasket">
-          {items.map((item, index) => (
+          {user ? ( 
+            items.map((item, index) => (
             <div className="itemInBasket" key={index}>
               <div className="itemDescription">
                 <p>{item.description}</p>
@@ -41,7 +45,15 @@ export default function Basket() {
                 </button>
               </div>
             </div>
-          ))}
+          ))
+          ) : (
+            <div className="basketLoginPrompt">
+              <div className="basketLoginPromptDescription">Log in to add items to your basket.</div>
+              <Link to="../login">
+                <button className="basketLoginButton">Login</button>
+              </Link>
+            </div>
+          )}
         </div>
         <div className="basketBottom">
           <div className="basketTotalCost">

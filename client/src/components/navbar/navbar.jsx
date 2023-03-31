@@ -5,7 +5,8 @@ import {Auth} from "../../context/Auth"
 
 
 const Navbar = () => {
-  const {dispatch } = useContext(Auth);
+  const {dispatch} = useContext(Auth);
+  const {user} = useContext(Auth);
 
   return (
     <nav className="navbar">

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./bookfacility.css";
-import Basket from "../../basket/HaveAccBasket";
+import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from "../../navbar/navbar";
 import axios from "axios";
