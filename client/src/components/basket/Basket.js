@@ -9,10 +9,10 @@ export default function Basket() {
   const {user} = useContext(Auth);
 
   const [items, setItems] = useState([
-    { description: "Swimming Pool — 1 Hour", cost: 8.0 },
-    { description: "Swimming Pool — 1 Hour", cost: 8.0 },
-    { description: "Swimming Pool — 1 Hour", cost: 8.0 },
-    { description: "Swimming Pool — 1 Hour", cost: 8.0 },
+    { description: "Swimming Pool - General use", cost: 8.0 },
+    { description: "Swimming Pool - General use", cost: 8.0 },
+    { description: "Swimming Pool - General use", cost: 8.0 },
+    { description: "Swimming Pool - General use", cost: 8.0 },
     { description: "Fitness room  - 1 Hour", cost: 8.0},
   ]);
 
