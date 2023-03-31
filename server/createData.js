@@ -40,14 +40,13 @@ const classes = [
 ];
 
 const customers = [
+
 ];
 
 const memberships = [];
 const bookings = [];
 const staffBookings = [];
-const staffs = [
-    
-];
+const staffs = [];
 
 
 

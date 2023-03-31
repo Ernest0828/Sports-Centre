@@ -1,0 +1,135 @@
+body {
+    font-family: "Arimo";
+}
+
+.title {
+    align-self: center;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+}
+
+.header {
+    text-align: center;
+}
+
+.scrollable-container {
+    overflow-y: scroll;
+    height: 100vh;
+    width: 100vw;
+}
+
+.pricing-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.membership-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 70px;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.grid-item {
+    text-align: center;
+    padding: 70px;
+    background-color: #eee;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+
+.join-button {
+    padding: 20px;
+    background-color: #1c768f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+.price {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.class-list {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.class-item {
+    text-align: center;
+    padding: 20px;
+    background-color: #eee;
+    margin: 5px;
+    border-radius: 10px;
+    margin-right: 50px;
+    margin-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 280px;
+    height: 250px;
+}
+
+.facility-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 70px;
+}
+
+.facility-list {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.facility {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.facility-price {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.facility-item {
+    text-align: center;
+    padding: 20px;
+    background-color: #eee;
+    margin: 5px;
+    border-radius: 10px;
+    margin-right: 50px;
+    margin-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 330px;
+    height: 280px;
+}
+
+

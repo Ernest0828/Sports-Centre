@@ -1,27 +1,45 @@
-import React,{Fragment, useState} from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./bookfacility.css";
-import { Link} from "react-router-dom";
-import Basket from "../../basket/HaveAccBasket";
+import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
-import NoAccBasket from "../../basket/NoAccBasket"
+import Navbar from "../../navbar/Navbar";
+import axios from "axios";
 
   
 const BookFacility = () => {
+
+  const [facilities, setFacilities] = useState([]);
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/facilities/");
+        setFacilities(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchFacilities();
+  }, []);
   return (
     <Fragment>
-        <div className="bookFacilities">
-            <div className="facWrapper">
-              <div className="facilities">
-                <div className="bookFacilityDescription">
-                  <h3>Book a facility</h3>
-                  <p>Select a facility to view timetables and availability.</p>
-                </div>
-                <div className="gridFormat">
-                  <FacilityItem/>
-                </div>
-              </div>
-              <Basket/>
+    <Navbar />
+      <div className="bookFacilities">
+        <div className="facWrapper">
+          <div className="facilities">
+            <div className="bookFacilityDescription">
+              <h3>Book a facility</h3>
+              <p>Select a facility to view timetables and availability.</p>
             </div>
+            <div className="gridFormat">
+              {facilities.map((facility) => (
+              <FacilityItem key={facility.facilityName} facility={facility} />
+              ))}
+            </div>
+          </div>
+          <Basket />
+        </div>
       </div>
     </Fragment>
   );

@@ -11,8 +11,9 @@
 
 .classWrapper{
     width: 90%;
-    height: 98%;
+    height: 100%;
     display: flex;
+    margin-top: 140px;
 }
 
 

@@ -13,6 +13,8 @@ import Register from "./components/pages/register/Register";
 import Profile from "./components/pages/profile/Profile";
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
+import Pricing from './components/pages/pricing/Pricing';
+
 
 import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails";
 import Staff from "./components/managerPages/staff/staff";
@@ -41,21 +43,13 @@ function App() {
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </Router>
     </AuthProvider>
-  // );
+    
   );
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/login" element={<Login/>}/>
-//         <Route path="/dashboard" element={<Dashboard/>}/>
-//       </Routes>
-//     </Router>
-//   );
-// }
-        }
+}
 
 export default App;
