@@ -32,7 +32,6 @@ import Pilates from './components/pages/individual classes/Pilates';
 import Yoga from './components/pages/individual classes/Yoga';
 import MyComponent from './components/dropdown/dropdown';
 import DropdownChoice from './components/dropdown/dropdown';
-import ReactDatePicker from './components/Calendar/ReactDatePicker';
 
 function App() {
   const {user} = useContext(Auth);

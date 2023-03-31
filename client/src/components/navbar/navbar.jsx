@@ -1,9 +1,16 @@
-import React from 'react';
+import {useContext} from 'react';
 import "./navbar.css"
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+import { Auth } from '../../context/Auth';
 
 
 const Navbar = () => {
+  const {dispatch } = useContext(Auth);
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
   return (
     <nav className="navbar">
       <ul className="navbar__list">
@@ -28,7 +35,7 @@ const Navbar = () => {
               <Link to="/profile" style = {{color: 'orange'}} className="navbar__link">Profile</Link>
             </li>
             <li className="navbar__item">
-              <Link to = "/login" className="navbar__link">Logout</Link>
+              <Link to="/login" onClick={handleLogout} className="navbar__link">Logout</Link>
             </li>
         </li>
 
@@ -38,15 +45,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-/*
-    <div class="topnav">
-  <a class="active" href="#home">Home</a>
-  <a href="#news">News</a>
-  <a href="#contact">Contact</a>
-  <div class="topnav-right">
-    <a href="#search">Search</a>
-    <a href="#about">About</a>
-  </div>
-</div>
-*/
