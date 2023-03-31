@@ -3,7 +3,7 @@ import "./bookclasses.css";
 import { Link} from "react-router-dom";
 import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
-import Navbar from "../../navbar/navbarLoggedIn";
+import Navbar from "../../navbar/Navbar";
 import axios from "axios"
   
 const BookClasses = () => {

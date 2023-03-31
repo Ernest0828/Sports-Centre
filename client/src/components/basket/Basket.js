@@ -57,9 +57,16 @@ export default function Basket() {
         </div>
         <div className="basketBottom">
           <div className="basketTotalCost">
+          {user ? (
             <p>
               Total: £{items.reduce((total, item) => total + item.cost, 0).toFixed(2)}
             </p>
+          ):(
+            <p>
+              Total: £0.00
+            </p>
+          )}
+            
           </div>
           <button className="checkoutButton">Check Out</button>
         </div>

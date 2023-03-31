@@ -1,5 +1,4 @@
 .bookClasses{
-    margin-top: 20px;
     width: 100vw;
     height: 100vh;
     background: #f9f9f9;
@@ -12,8 +11,9 @@
 
 .classWrapper{
     width: 90%;
-    height: auto;
+    height: 100%;
     display: flex;
+    margin-top: 140px;
 }
 
 

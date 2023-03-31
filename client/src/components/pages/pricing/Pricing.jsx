@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./pricing.css";
 import { Link } from "react-router-dom";
-import Navbar from "../../navbar/navbarLoggedIn";
+import Navbar from "../../navbar/Navbar";
 import axios from "axios";
 
 const PricingClass = () => {
