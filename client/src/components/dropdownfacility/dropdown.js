@@ -5,25 +5,6 @@ import ReactDatePicker from '../Calendar/ReactDatePicker';
 import useFetch from '../managerPages/hooks/useFetch';
 import { Auth } from '../../context/Auth';
 
-
-
-
-// const[facilities, setFacilities]= useState([]);
-
-// useEffect(()={
-//   const fetchFacilities = async () =>{
-//     try{
-//       const res = await
-//       axios.get("http//localhost:5000/api/facilities/");
-//         setFacilities(res.data);
-//     }catch(err){
-//       console.error(err);
-//     }
-//   };
-//   fetchFacilities();
-// });
-
-
 function DropdownChoice(props) {
 
   //useFetch Hooks

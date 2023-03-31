@@ -30,8 +30,8 @@ import Studio from './components/pages/individual facilities/Studio';
 import Aerobics from './components/pages/individual classes/Aerobics';
 import Pilates from './components/pages/individual classes/Pilates';
 import Yoga from './components/pages/individual classes/Yoga';
-import MyComponent from './components/dropdown/dropdown';
-import DropdownChoice from './components/dropdown/dropdown';
+import MyComponent from './components/dropdownfacility/dropdown';
+import DropdownChoice from './components/dropdownfacility/dropdown';
 
 function App() {
   const {user} = useContext(Auth);

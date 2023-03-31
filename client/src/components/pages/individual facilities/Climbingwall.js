@@ -1,10 +1,10 @@
 import React,{ useState, useEffect } from 'react'
 import "./climbingwall.css"
 import Navbar from "../../navbar/navbar"
-import DropdownChoice from '../../dropdown/dropdown';
+import DropdownChoice from '../../dropdownfacility/dropdown';
 // import ReactDatePicker from '../../Calendar/ReactDatePicker';
 import Basket from "../../basket/HaveAccBasket";
-import Datepicker from 'react-datepicker'
+import Datepicker from 'react-datepicker';
 
 
 
