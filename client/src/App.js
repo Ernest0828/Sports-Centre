@@ -32,6 +32,7 @@ import Pilates from './components/pages/individual classes/Pilates';
 import Yoga from './components/pages/individual classes/Yoga';
 import MyComponent from './components/dropdownfacility/dropdown';
 import DropdownChoice from './components/dropdownfacility/dropdown';
+import successPage from './components/pages/success/successPage';
 
 function App() {
   const {user} = useContext(Auth);
@@ -62,6 +63,8 @@ function App() {
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
+          <Route exact path="/success" element={<successPage/>}/>
+          
 
           
 

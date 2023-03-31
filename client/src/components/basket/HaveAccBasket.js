@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import "./haveAccBasket.css";
 import { Link } from "react-router-dom";
+import PayButton from "../paybutton/PayButton";
 
 //used chatgpt for inspiration on the remove function
 export default function Basket() {
@@ -48,7 +49,7 @@ export default function Basket() {
               Total: £{items.reduce((total, item) => total + item.cost, 0).toFixed(2)}
             </p>
           </div>
-          <button className="checkoutButton">Check Out</button>
+            <PayButton items={items}/>
         </div>
       </div>
     </Fragment>
