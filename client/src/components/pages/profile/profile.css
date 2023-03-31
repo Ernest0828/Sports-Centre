@@ -10,6 +10,7 @@
 }
 
 .profileWrapper{
+    margin-top: 140px;
     width:90%;
     height: 90%;
     display: flex;

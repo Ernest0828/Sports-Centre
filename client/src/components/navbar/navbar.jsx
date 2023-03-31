@@ -31,7 +31,7 @@ const Navbar = () => {
               <Link to="/profile" className="navbar__link">Profile</Link>
             </li>
             <li className="navbar__item">
-              <Link to = "/login" className="navbar__link" onClick={ ()=> dispatch({type: "LOGOUT"})}>Logout</Link>
+              <Link to = "/" className="navbar__link" onClick={ ()=> dispatch({type: "LOGOUT"})}>Logout</Link>
             </li>
         </li>
 

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ProfileInfo from "../../profileInfo/ProfileInfo";
 import {Auth} from "../../../context/Auth"
 import axios from "axios";
+import Navbar from "../../navbar/navbar";
 
 
 const MemberProfile = () => {
@@ -65,6 +66,7 @@ const MemberProfile = () => {
 
     return (
         <Fragment>
+        <Navbar />
             <div className="profile">
                 <div className="profileWrapper">
                     <ProfileInfo />

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import "./haveAccBasket.css";
 import { Link } from "react-router-dom";
+import {Auth} from "../../context/Auth"
 
 //used chatgpt for inspiration on the remove function
 export default function Basket() {
