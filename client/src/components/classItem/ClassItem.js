@@ -1,13 +1,13 @@
 import React,{Fragment, useState} from "react";
 import "./classItem.css";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
   
-const Classes = () => {
+const Classes = ({ classes }) => {
   return (
     <Fragment>
       <div className="classItem">
         <div className="className">
-          <p>Pilates</p>
+          <p>{classes.className}</p>
         </div>
       </div>
     </Fragment>

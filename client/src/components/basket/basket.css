@@ -97,3 +97,39 @@
 	color: white;
 }
 
+
+/* for not logged in basket */
+
+.basketLoginPrompt{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.basketLoginPromptDescription{
+    padding: 10px;
+    text-align: center;
+}
+
+.basketLoginButton{
+    align-self: center;
+    font-weight: 600;
+	width: 150px;
+	border: none;
+	border-radius: 20px;
+	padding: 10px;
+	margin: 10px;
+	cursor: pointer;
+	color: white;
+    background-color: #fa991c;
+}
+
+.basketLoginButton:hover{
+	transform: scale(.98);
+	background-color: #DE7F05 ;
+	color: white;
+}

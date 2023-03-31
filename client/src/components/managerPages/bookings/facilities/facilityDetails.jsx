@@ -5,194 +5,172 @@ import Navbar from "../../managerNavbar/navbar";
 import useFetch from "../../hooks/useFetch"
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import EditFacilityForm from "./editFacilityForm";
+//import EditForm from "./editForm";
 
 const FacilityDetails = () => {
 
-    const location = useLocation();
-    const path = location.pathname.split("/")[1];
-
   //useFetch Hooks
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("/activities/");
+    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
+    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
 
   //States
-    const [facilityDetails, setFacilityDetails] = useState()
+    const [facilityDetails, setFacilityDetails] = useState();
+    const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
-    /*const [newRow, setNewRow] = useState ({
+    const [editDetails, setEditDetails] = useState({});
+    const [selectedFacility, setSelectedFacility] = useState(null);
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+
+
+    useEffect(() => {
+      setFacilityDetails(facilityData.map((facility) => {
+        const filteredActivities = activityData.filter(activity => activity.facilityName === facility.facilityName);
+        const activities = filteredActivities.map(activity => ({
+          activityName: activity.activityName,
+          price: activity.price
+        }));
+        return {
+          ...facility,
+          name: facility.facilityName,
+          capacity: facility.capacity,
+          start: facility.startTime,
+          end: facility.endTime,
+          activities
+        };
+      }));
+    }, [facilityData, activityData]);
+
+    const [formInputs, setFormInputs] = useState({
       name: "",
       capacity: "",
       start: "",
       end: "",
-      activity:[]
-    });*/
+      activityName: "",
+      price: "",
+    });
 
-    useEffect(() => {
-      setFacilityDetails(facilityData)
-    }, [facilityData])
-
-  //Delete row
-  /*const onDelete = (id) => {
-    const updatedData = facilityDetails.filter((item) => item.id !== id);
-    setFacilityDetails(updatedData);
-  };*/
-
-  /*const onDelete = async(id) => {
-    try {
-      await axios.delete("facilities/id")
-      setFacilityDetails(facilityDetails.filter((item) => item._id !== id));
-    } catch (error) {
-     
-    }
-  };*/
-
-  const onDelete = async (id) => {
-    try {
-      // Delete the facility
-      await axios.delete(`/facilities/${id}`);
-  
-      // Filter the activityData to get the activities associated with the deleted facility
-      const activitiesToDelete = activityData.filter(
-        (activity) => activity.facilityName === id
-      );
-  
-      // Delete each activity associated with the deleted facility
-      activitiesToDelete.forEach(async (activity) => {
-        await axios.delete(`/activities/${activity._id}`);
+    const handleShow = () => {
+      setShow(true);
+      const selectedFacilityDetails = facilityDetails.find(facility => facility.name === selectedFacility.name);
+      const selectedActivities = selectedFacilityDetails.activities;
+      const activityName = selectedActivities.map(activity => activity.activityName);
+      const price = selectedActivities.map(activity => activity.price);
+      setFormInputs({
+        name: selectedFacility.name,
+        capacity: selectedFacility.capacity,
+        start: selectedFacility.start,
+        end: selectedFacility.end,
+        activityName,
+        price
       });
-  
-      // Remove the deleted facility from the facilityDetails state
-      setFacilityDetails((prevState) =>
-        prevState.filter((facility) => facility._id !== id)
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-
-  //Edit table 
-    /*const onChangeInput = (f, id) => {
-        const { name, value } = f.target
-    
-        const editData = facilityDetails.map((item) =>
-          item.id === id && name ? { ...item, [name]: value } : item
-        )
-    
-        setFacilityDetails(editData)
-      }*/
-
-      const onChangeInput = (f, id) => {
-        const { name, value } = f.target;
+     const handleSubmit = (event) => {
+        event.preventDefault();
+        // Update facility details with formInputs values
         setFacilityDetails((prevState) => {
-          const newState = [...prevState];
-          const index = newState.findIndex((facility) => facility.id === id);
-          if (name.startsWith("activity")) {
-            const [, activityIndex, activityProp] = name.split(".");
-            newState[index].activity[activityIndex][activityProp] = value;
-          } else {
-            newState[index][name] = value;
-          }
-          return newState;
+        const updatedDetails = [...prevState];
+        const index = updatedDetails.findIndex(
+            (facility) => facility.name === selectedFacility.name
+        );
+        updatedDetails[index].name = formInputs.name;
+        updatedDetails[index].capacity = formInputs.capacity;
+        updatedDetails[index].start = formInputs.start;
+        updatedDetails[index].end = formInputs.end;
+        updatedDetails[index].activities = updatedDetails[index].activities.map(
+          (activity, id) => ({
+            activityName: formInputs.activityName[id],
+            price: formInputs.price[id],
+            ...activity,
+          })
+        );
+        return updatedDetails;
         });
-      };
-
-  //Add new row of facility
-  let newRow = { id: 0, facility: "", capacity: "", startTime:"", endTime:"", activity: [{ name: "", price: ""}]};
-
-  const onAddRow = () => {
-    const newId = facilityDetails.length + 1; // generate new ID
-    const newRow = { id: newId, facility: "", capacity: "", startTime:"", endTime:"", activity: [{ name: "", price: ""}]};
-    const updatedFacilityDetails = [...facilityDetails, newRow];
-    setFacilityDetails(updatedFacilityDetails);
-  };
-
-      
-      /*const onAddRow = () => {
-        const newId = facilityDetails.length + 1; // generate new ID
-        newRow = { ...newRow, id: newId };
-        setFacilityDetails([...facilityDetails, newRow]);
-      };*/
-
-      /*const onAddRow = () => {
-        setFacilityDetails((prevState) => [
+        
+        /*// Update activityName and price values in formInputs
+        const updatedActivityNames = facilityDetails.find(facility => facility.name === selectedFacility.name).activities.map(activity => activity.activityName);
+        const updatedPrices = facilityDetails.find(facility => facility.name === selectedFacility.name).activities.map(activity => activity.price);
+        setFormInputs(prevState => ({
           ...prevState,
-          {
-            facilityId: prevState.length + 1,
-            facilityName: newRow.name,
-            capacity: newRow.capacity,
-            startTime: newRow.start,
-            endTime: newRow.end,
-            activity: newRow.activity
-          }
-        ]);
+          activityName: updatedActivityNames,
+          price: updatedPrices
+        }));*/
 
-        setNewRow({
-          name:"",
-          capacity: "",
-          start: "",
-          end:"",
-          activity:[]
+    
+        // Send updated facility details to server
+        axios.put(`http://localhost:5000/api/facilities/${selectedFacility.name}`, {
+        //name: formInputs.name,
+        capacity: formInputs.capacity,
+        startTime: formInputs.start,
+        endTime: formInputs.end,
+        })
+        .then(response => {
+        console.log(response.data);
+        handleClose();
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
         });
-      }*/
 
+        // Update activityName and price in activity database
+        selectedFacility.activities.forEach((activity, index) => {
+          axios
+            .put(`http://localhost:5000/api/activities/${activity.activityId}`, {
+              activityName: formInputs.activityName[index],
+              price: formInputs.price[index],
+            })
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+              alert("Failed to update activity details");
+            });
+        });
 
-
-  //Save data 
-      const onSave = async() => {
-
-    
-        try {
-          const { facility, capacity, startTime, endTime } = newRow;
-          const response =  await fetch("/facilities/facilityid",{
-            method: "POST",
-            headers: {
-              "Content-type": "application/json"
-            },
-            body: JSON.stringify({name: facility, capacity: capacity, start: startTime, end: endTime})
-          });
-          if (!response.ok) {
-            throw new Error("Failed to create new facility");
-          }
-          const responseData = await response.json();
-          console.log(responseData);
-        } catch (error) {
-          console.log("Error: ", error.message);
-        }
-      }
-
-  //Delete functions
-      const onDeleteFacilityRow = (id, index) => {
-        const updatedData = facilityDetails.map((item) =>
-            item.id === id
-      ? {
-        ...item,
-        activity: item.activity.filter((_, i) => i !== index),
-        }
-      : item
-  );
-
-    
-        // check if the facility has any activities left
-        const hasActivities = updatedData.find((item) => item.id === id)?.activity.length > 0;
-    
-        // delete the whole row of facility only if there are no activities left
-        if (!hasActivities) {
-            onDeleteFacilityRow(id);
-        } else {
-            setFacilityDetails(updatedData);
-        }
+        // Close modal
+        handleClose();
     };
     
-  //Toggle edit mode (for add, edit, delete)
-      const toggleEdit = () => {
-        setIsEditable(!isEditable);
-      };
 
+    const onDelete = async(id) => {
+      try {
+        await axios.delete("facilities/id")
+        setFacilityDetails(facilityDetails.filter((item) => item._id !== id));
+      } catch (error) {
+      
+      }
+    };
+
+    /*const onSave = async () => {
+      const updatedFacilities = {facilityName, capacity, startTime, endTime}
+  
+      try {
+        await axios.put(`/facilities/${facilityName}`, updatedFacilities);
+        // Update the facilityData state with the updated data
+      } catch (error) {
+        console.error(error);
+        alert('Failed to save data')
+      }
+    };*/
 
     return (
     //<Fragment>
       <div>
         <Navbar />
+        <EditFacilityForm 
+          show={show}
+          handleClose={handleClose}
+          handleSubmit={handleSubmit}
+          facility={selectedFacility}
+          formInputs={formInputs}
+          setFormInputs={setFormInputs}
+        />
         {facilityLoading ? (
           "Page is loading please wait"
           ) : ( 
@@ -208,118 +186,123 @@ const FacilityDetails = () => {
                                         <th>Opening Time</th>
                                         <th>Closing Time</th>
                                         <th className="activity-price">Activity & Price</th>
-                                        {isEditable && <th> </th>}
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {facilityData.map(({facilityId : id, facilityName:name, capacity, startTime: start, endTime : end }) => (
-                                    <tr key = {id}>
+                                    {facilityData.map(({facilityName:name, capacity, startTime: start, endTime : end }) => (
+                                    <tr key = {name}>
                                         <td>
-                                            <input
-                                                name='name'
+                                        {!isEditable ? (
+                                              <span>{name}</span>
+                                        ) : (
+                                          <input
+                                                name="name"
                                                 value={name}
                                                 type="text"
-                                                onChange={(f) => onChangeInput(f, id)}
                                                 placeholder="facility"
-                                                disabled={!isEditable}
-                                            />
-                                          
+                                              />
+                                        )}
                                         </td>
                                         <td>
+                                        {!isEditable ? (
+                                              <span>{capacity}</span>
+                                        ) : (
                                             <input
                                                 name='capacity'
                                                 value={capacity}
                                                 type="number"
-                                                onChange={(f) => onChangeInput(f, id)}
+                                                //onChange={(event) => onChangeInput(event, name)}
                                                 placeholder="capacity"
-                                                disabled={!isEditable}
                                             />
+                                            )}
                                         </td>
                                         <td>
+                                          {!isEditable ? (
+                                              <span>{start}</span>
+                                        ) : (
                                             <input
                                                 name='start'
                                                 value={start}
                                                 type="time"
-                                                onChange={(f) => onChangeInput(f, id)}
+                                                //onChange={(f) => onChangeInput(f, name)}
                                                 placeholder="1800"
-                                                disabled={!isEditable}
+                                                disabled={!editableRows[name]}
                                             />
+                                            )}
                                         </td>
                                         <td>
+                                          {!isEditable ? (
+                                              <span>{end}</span>
+                                        ) : (
                                             <input
                                                 name='end'
                                                 value={end}
                                                 type="time"
-                                                onChange={(f) => onChangeInput(f, id)}
+                                                //onChange={(f) => onChangeInput(f, name)}
                                                 placeholder="1700"
-                                                disabled={!isEditable}
+                                                disabled={!editableRows[name]}
                                             />
+                                            )}
                                         </td>
-                                        {activityData.filter(activity => activity.facilityName === id).map((activity, index) => (
+                                        {activityData.filter(activity => activity.facilityName === name).map((activity, index) => (
                                         <tr key = {index}>
                                             <td>
+                                            {!isEditable ? (
+                                              <span>{activity.activityName}</span>
+                                            ) : (
                                             <input
                                                 name={`activity[index].name`}
                                                 value={activity.activityName}
                                                 type="text"
-                                                onChange={(event) =>
+                                                onChange={(f) =>
                                                   setFacilityDetails((prevState) => {
                                                     const newState = [...prevState];
-                                                    newState[id - 1].activity[index].name = event.target.value;
+                                                    newState[name - 1].activity[index].name = f.target.value;
                                                     return newState;
                                                   })
                                                 }
                                                 placeholder="activity"
-                                                disabled={!isEditable}
+                                                disabled={!editableRows[name]}
                                             />
+                                            )}
                                             </td>
                                             <td>
+                                            {!isEditable ? (
+                                            <span>{activity.price}</span>
+                                            ) : (
                                             <input
                                                 name={`activity[index].price`}
                                                 value={activity.price}
                                                 type="number"
                                                 step="0.01"
-                                                onChange={(event) =>
+                                                onChange={(f) =>
                                                   setFacilityDetails((prevState) => {
                                                     const newState = [...prevState];
-                                                    newState[id - 1].activity[index].price = event.target.value;
+                                                    newState[name - 1].activity[index].price = f.target.value;
                                                     return newState;
                                                   })
                                                 }
                                                 placeholder="price"
-                                                disabled={!isEditable}
+                                                disabled={!editableRows[name]}
                                             />
+                                            )}
                                             </td>
-                                            {/*{isEditable && (
-                                              <td>
-                                                <button className="deleteButton" onClick={() => onDeleteFacilityRow(id)}>
-                                                Delete
-                                                </button>
-                                              </td>
-                                            )}*/}
                                         </tr>
                                         ))}
                                         <td>
-                                        {isEditable && (
-                                              <button className="deleteButton" onClick={() => onDelete(id)}>
-                                              Delete
-                                                </button> 
-                                            )}
+                                        <button className="editButton" onClick={() => {setSelectedFacility({name, capacity, start, end}); handleShow();}}>
+                                          {editableRows[name] ? "Done" : "Edit"}
+                                        </button>
                                         </td>
                                     </tr>
                                     ))}
                                 </tbody>
                             </table>
                             <div>
-                            <button className="editButton" onClick={toggleEdit}>
-                            {isEditable ? "Done" : "Edit"}
-                            </button>
-                            {isEditable && (
-                                <button className="button" /*onClick={onAddRow}*/>Add</button>
-                            )}
-                            {!isEditable && (
-                                <button className="button" /*onClick={onSave}*/>Save</button>
-                            )}
+                            {/*{!isEditable && (*/}
+                                <button className="button" >Save</button>
+                            {/*})}*/}
                           </div>
                       </div>
                   </div>

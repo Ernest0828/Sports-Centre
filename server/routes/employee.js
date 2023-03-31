@@ -6,7 +6,7 @@ const verifyStaff = require("../middleware/verifyStaff");
 const verifyManager = require("../middleware/verifyManager");
 
 // 1. Update staff info
-router.put("/:id", verifyStaff, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateStaff = await Staff.findByPk(req.params.id);
         const updatedStaff = await updateStaff.update(req.body);
@@ -27,7 +27,7 @@ router.get("/find/:id", async (req, res, next) => {
 });  
 
 // 3. To get all staffs
-router.get("/", verifyManager, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
         const staff = await Staff.findAll();
         res.json(staff);
@@ -55,7 +55,7 @@ router.put("/change-password/:id", verifyStaff, async (req, res, next) => {
 });
 
 // 5. For staff to delete account
-router.delete("/:id", verifyManager, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const staff = await Staff.findByPk(req.params.id);
         if(!staff) return res.status(404).json("Staff not found");

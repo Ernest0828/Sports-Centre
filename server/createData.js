@@ -60,8 +60,27 @@ const staffs = [];
     const createdCustomers = await Customers.bulkCreate(customers);
     const createdMemberships = await Memberships.bulkCreate(memberships);
     const createdBookings = await Bookings.bulkCreate(bookings);
-    const createdStaffBookings = await Bookings.bulkCreate(staffBookings);
-    const createdStaffs = await Bookings.bulkCreate(staffs);
+    const createdStaffBookings = await StaffBookings.bulkCreate(staffBookings);
+    const createdStaffs = await Staffs.bulkCreate(staffs);
+
+    console.log("Models created");
+    process.exit();
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+})();
+
+
+
+
+
+
+
+
+
+
+
 
     console.log("Models created");
     process.exit();

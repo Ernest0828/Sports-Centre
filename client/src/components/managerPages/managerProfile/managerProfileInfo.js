@@ -26,21 +26,21 @@ export default function ManagerProfileInfo() {
                         {/*<img src="./images/picture.jpg" alt="Profile Photo" /> {}*/}
                             <label>Name</label>
                             {isEditMode ? (
-                                <input type="text" defaultValue="Najmi Shahir" />
+                                <input type="text" defaultValue="Edmund Chia" />
                             ) : (
-                                <p>Najmi</p>
+                                <p>Edmund Chia</p>
                             )}
                             <label>Email</label>
                             {isEditMode ? (
-                                <input type="email" defaultValue="sc21ewkc@leeds.ac.uk" />
+                                <input type="email" defaultValue="edmundchia@gmail.com" />
                             ) : (
-                                <p>sc21ewkc@leeds.ac.uk</p>
+                                <p>edmundchia@gmail.com</p>
                             )}
                             <label>Number</label>
                             {isEditMode ? (
-                                <input defaultValue="07867274700" />
+                                <input defaultValue="0447583940" />
                             ) : (
-                                <p>07867274700</p>
+                                <p>0447583940</p>
                             )}
                             {isEditMode && (
                             <div className="editModePassword">

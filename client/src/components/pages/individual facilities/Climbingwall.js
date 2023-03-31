@@ -3,8 +3,9 @@ import "./climbingwall.css"
 import Navbar from "../../navbar/navbar"
 import DropdownChoice from '../../dropdownfacility/dropdown';
 // import ReactDatePicker from '../../Calendar/ReactDatePicker';
-import Basket from "../../basket/HaveAccBasket";
+import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
+import ICalendar from '../../ICalendar/ICalendar';
 
 
 
@@ -17,6 +18,7 @@ const Climbingwall = () => {
             <Navbar/>
                 <div className="climbingWallContainer">
                     <div className="climbingWallWrapper">
+                        <ICalendar />
                             {/* <button className="bookNow">Reserve or book now</button> */}
                             <h1 className="climbingWallTitle"> Book Facility</h1>
                             <div className="climbingWallDetails">                                                    

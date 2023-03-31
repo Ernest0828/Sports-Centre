@@ -1,105 +1,172 @@
 import React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import "./classDetails.css";
 import Navbar from "../../managerNavbar/navbar";
+import { Link } from 'react-router-dom';
+import useFetch from "../../hooks/useFetch"
+import axios from 'axios';
+import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import EditClassForm from "./editClassForm";
+//import AddClassForm from "./addClassForm";
 
-const data = [
-    {
-      classId     : '01',
-      className: 'Pilates',
-      price: 10,
-      dayTime: [
-        {
-        day: 'Mondays',
-        startTime: '18:00',
-        endTime: '19:00'
-        }
-      ]
-    },
-    {
-      classId     : '02',
-      className: 'Aerobics',
-      price: 10,
-      dayTime: [
-        {
-        day: 'Tuesdays',
-        startTime: '10:00',
-        endTime: '11:00'
-        },
-        {
-        day: 'Thursdays',
-        startTime: '19:00',
-        endTime: '20:00'
-        },
-        {
-        day: 'Saturday',
-        startTime: '10:00',
-        endTime: '11:00'
-        },
-
-      ]
-    },
-    {
-      classId     : '03',
-      className: 'Yoga',
-      price: 10,
-      dayTime: [
-        {
-        day: 'Fridays',
-        startTime: '19:00',
-        endTime: '20:00'
-        },
-        {
-        day: 'Sundays',
-        startTime: '09:00',
-        endTime: '10:00'
-        },
-      ]
-    },
-]
 
 const ClassDetails = () => {
 
-    const [classDetails, setClassDetails] = useState(data)
+    //useFetch Hooks
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:5000/api/classes/");
+
+    const [classDetails, setClassDetails] = useState()
+    const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
+
+    const [selectedClass, setSelectedClass] = useState(null);
+
+    const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const handleClose = () => {
+      setShow(false);
+      setShowAdd(false);
+    }
+
+    useEffect(() => {
+      setClassDetails(classData.map(({ classId, className, price, day, startTime, endTime }) => {
+        return {
+          classId,
+          className,
+          price,
+          dayTime: [{ day, startTime, endTime }]
+        };
+      }));      
+    }, [classData]);
+
+    const [formInputs, setFormInputs] = useState({
+      className: "",
+      price: "",
+      day: "",
+      startTime: "",
+      endTime: "",
+      facilityName:""
+    });
+
+    const handleShow = () => {
+      setShow(true);
+      if (selectedClass) {
+      setFormInputs({
+        classId: selectedClass.classId,
+        className: selectedClass.className,
+        price: selectedClass.price,
+        dayTime: selectedClass.dayTime.map((dt) => ({
+          day: dt.day,
+          startTime: dt.startTime,
+          endTime: dt.endTime,
+        })),
+        facilityName: selectedClass.facilityName
+      });
+    }
+    };
+
+    const handleAdd = () => {
+      setShowAdd(true);
+      if (selectedClass) {
+      setFormInputs({
+        className: "",
+        day: "",
+        startTime: "",
+        endTime: "",
+        price: "",
+        //facilityName:""
+      });
+    }
+    };
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      // Update facility details with formInputs values
+      setClassDetails((prevState) => {
+      const updatedDetails = [...prevState];
+      const index = updatedDetails.findIndex(
+          (classes) => classes.classId === selectedClass.classId
+      );
+      updatedDetails[index].classId = formInputs.classId;
+      updatedDetails[index].className = formInputs.className;
+      updatedDetails[index].day = formInputs.day;
+      updatedDetails[index].startTime = formInputs.startTime;
+      updatedDetails[index].endTime =  formInputs.endTime;
+      updatedDetails[index].price =  formInputs.price;
+
+      return updatedDetails;
+      });
+
+      // Send updated facility details to server
+      axios.put(`http://localhost:5000/api/classes/${selectedClass.classId}`, {
+
+        name: formInputs.className,
+        day: formInputs.day,
+        start: formInputs.startTime,
+        end: formInputs.endTime,
+        price: formInputs.price,
+        //facilityName:  formInputs.isManager
+        })
+        .then(response => {
+        console.log(response.data);
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+        });
+
+      // Close modal
+      handleClose();
+    };
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      setClassDetails((prevState) => {
+        const updatedDetails = [...prevState];
+        
+        //updatedDetails[index].staffId = formInputs.staffId;
+        updatedDetails.className = formInputs.className;
+        updatedDetails.day = formInputs.day;
+        updatedDetails.startTime = formInputs.startTime;
+        updatedDetails.price =  formInputs.price;
+        updatedDetails.facilityName =  formInputs.faciltyName;
+  
+        return updatedDetails;
+        });
     
-    const onChangeInput = (c, classId) => {
-        const { name, value } = c.target
+      // Send new staff details to server
+      axios.post('http://localhost:5000/api/classes/classid', {
+        name: formInputs.className,
+        day: formInputs.day,
+        start: formInputs.startTime,
+        end: formInputs.endTime,
+        price: formInputs.price,
+      })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Failed to save data');
+        });
     
-        const editData = classDetails.map((item) =>
-          item.classId === classId && name ? { ...item, [name]: value } : item
-        )
-    
-        setClassDetails(editData)
-      }
-
-
-      {/*const onAddRow = () => {
-        const newId = classDetails.length + 1; // generate new ID
-        const newRow = { classId: newId, className: "", price: "", dayTime: [""] };
-        setClassDetails([...classDetails, newRow]);
-      };*/}
-
-      const onAddRow = () => {
-        const newId = classDetails.length + 1; // generate new ID
-        const newRow = { classId: newId, className: "", price: "", dayTime: [{ day: "", startTime: "", endTime: "" }] };
-        setClassDetails([...classDetails, newRow]);
-      };
-
-      const onDeleteStaff = (classId) => {
-        const updatedData = classDetails.filter((item) => item.classId !== classId);
-        setClassDetails(updatedData);
-      };
-
-      const toggleEdit = () => {
-        setIsEditable(!isEditable);
-      };
-
+      // Close modal
+      handleClose();
+    };
 
 
     return(
         <div>
             <Navbar/>
+            <EditClassForm 
+              show={show}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              class={selectedClass}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
             <div className="classDetails">
                     <h1 className="classDetailsTitle">GymCorp Classes</h1>
                     <div className="classDetailsTable">
@@ -109,18 +176,18 @@ const ClassDetails = () => {
                                     <th>Class</th>
                                     <th>Price</th>   
                                     <th>Day & Time</th>
-                                    {isEditable && <th> </th>}
+                                    <th> </th>
+                                    <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {classDetails.map(({ classId, className, price, dayTime }, index) => (
+                                {classDetails && classDetails.map(({ classId, className, price, dayTime }, index) => (
                                 <tr key = {classId}>
                                     <td>
                                         <input
                                             name='className'
                                             value={className}
                                             type="text"
-                                            onChange={(c) => onChangeInput(c, classId)}
                                             placeholder="class name"
                                             disabled = {!isEditable}
                                         />
@@ -131,7 +198,6 @@ const ClassDetails = () => {
                                             value={price}
                                             type="number"
                                             step="0.01"
-                                            onChange={(c) => onChangeInput(c, classId)}
                                             placeholder="class price"
                                             disabled = {!isEditable}
                                         />
@@ -143,13 +209,6 @@ const ClassDetails = () => {
                                             name='dayTime[${index}].day'
                                             value={dayTime.day}
                                             type="text"
-                                            onChange={(event) =>
-                                              setClassDetails((prevState) => {
-                                                const newState = [...prevState];
-                                                newState[classId - 1].dayTime[index].day = event.target.value;
-                                                return newState;
-                                              })
-                                            }
                                             placeholder="Monday"
                                             disabled = {!isEditable}
                                         />
@@ -159,13 +218,6 @@ const ClassDetails = () => {
                                             name='dayTime[${index}].startTime'
                                             value={dayTime.startTime}
                                             type="time"
-                                            onChange={(event) =>
-                                              setClassDetails((prevState) => {
-                                                const newState = [...prevState];
-                                                newState[classId - 1].dayTime[index].startTime = event.target.value;
-                                                return newState;
-                                              })
-                                            }
                                             placeholder="09:00"
                                             disabled = {!isEditable}
                                         />
@@ -175,13 +227,6 @@ const ClassDetails = () => {
                                             name='dayTime[${index}].endTime'
                                             value={dayTime.endTime}
                                             type="time"
-                                            onChange={(event) =>
-                                              setClassDetails((prevState) => {
-                                                const newState = [...prevState];
-                                                newState[classId - 1].dayTime[index].endTime = event.target.value;
-                                                return newState;
-                                              })
-                                            }
                                             placeholder="10:00"
                                             disabled = {!isEditable}
                                         />
@@ -190,21 +235,23 @@ const ClassDetails = () => {
                                     ))}
                                     {isEditable && (
                                     <td>
-                                    <button className="deleteButton" onClick={() => onDeleteStaff(classId)}>
+                                    <button className="deleteButton" >
                                         Delete class
                                     </button>
                                     </td>
                                      )}
+                                    <td>
+                                    <button className="editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime}); handleShow();}}>
+                                    {editableRows[classId] ? "Done" : "Edit"}
+                                    </button>
+                                    </td>
                                 </tr>
                                 ))}
                             </tbody>
                         </table>
                         <div>
-                        <button className="editButton" onClick={toggleEdit}>
-                        {isEditable ? "Save" : "Edit"}
-                        </button>
                         {isEditable && (
-                                <button class="button" onClick={onAddRow}>Add</button>
+                                <button class="button" >Add</button>
                         )}
                         </div>
                     </div>

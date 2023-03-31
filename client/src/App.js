@@ -13,11 +13,16 @@ import Register from "./components/pages/register/Register";
 import Profile from "./components/pages/profile/Profile";
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
-import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails"
-import Staff from "./components/managerPages/staff/staff"
-import ClassDetails from "./components/managerPages/bookings/classes/classDetails"
-import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo"
-import ManagerProfile from "./components/managerPages/managerProfile/managerProfile"
+import Pricing from './components/pages/pricing/Pricing';
+
+
+import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails";
+import Staff from "./components/managerPages/staff/staff";
+import ClassDetails from "./components/managerPages/bookings/classes/classDetails";
+import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
+import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
+import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
+
 import Dashboard from "./components/pages/dashboard/Dashboard"
 
 
@@ -48,6 +53,14 @@ function App() {
           <Route path="/profile" element={user ? (<Profile/>) : (<Login/>)} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
+
+          <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
+          <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
+          <Route exact path="/classdetails" element={<ClassDetails/>}/>
+          <Route exact path="/staff" element={<Staff/>}/>
+          <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route exact path="/aerobics" element={<Aerobics/>}/>
           <Route exact path="/pilates" element={<Pilates/>}/>
           <Route exact path="/yoga" element={<Yoga/>}/>
@@ -71,8 +84,8 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
-
-  )  
+    
+  );
 }
 
 export default App;

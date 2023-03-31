@@ -58,7 +58,7 @@ router.put("/change-password/:id", async (req, res, next) => {
 });
 
 // 5. For customer to delete account
-router.delete("/:id", verifyUser, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const customer = await Customer.findByPk(req.params.id);
         if(!customer) return res.status(404).json("Customer not found");

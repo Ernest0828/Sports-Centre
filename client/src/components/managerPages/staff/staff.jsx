@@ -1,123 +1,233 @@
 import React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import "./staff.css";
 import Navbar from "../managerNavbar/navbar";
 import { Link } from 'react-router-dom';
-
-//temporary data
-const data = [
-    {
-      staffId     : '01',
-      staffName: 'Ernest Kong',
-      staffNumber: '201583940',
-      staffEmail: 'sc21ezqk@leeds.ac.uk',
-      staffPassword: 'abcde',
-      isManager: false
-    },
-    {
-      staffId     : '02',
-      staffName: 'Zayden',
-      staffNumber: '201637435',
-      staffEmail: 'sc21wma@leeds.ac.uk',
-      staffPassword: 'abcde',
-      isManager: false
-    },
-]
+import useFetch from "../hooks/useFetch"
+import axios from 'axios';
+import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import EditStaffForm from "./editStaffForm";
+import AddStaffForm from "./addStaffForm";
 
 const Staff = () => {
 
-    const [staffDetails, setStaffDetails] = useState(data)
+    //useFetch Hooks
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:5000/api/employee/");
+
+    const [staffDetails, setStaffDetails] = useState()
+    const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
-    
-    const onChangeInput = (s, staffId) => {
-        const { name, value } = s.target
-    
-        const editData = staffDetails.map((item) =>
-          item.staffId === staffId && name ? { ...item, [name]: value } : item
-        )
-    
-        setStaffDetails(editData)
-      }
 
-      const onDeleteStaff = (staffId) => {
-        const updatedData = staffDetails.filter((item) => item.staffId !== staffId);
-        setStaffDetails(updatedData);
-      };
+    const [selectedStaff, setSelectedStaff] = useState(null);
 
-      const toggleEdit = () => {
-        setIsEditable(!isEditable);
-      };
+    const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const handleClose = () => {
+      setShow(false);
+      setShowAdd(false);
+    }
 
-      const onAddRow = async() => {
-        const newId = staffDetails.length + 1; // generate new ID
-        const newRow = { staffId: newId, staffName: "", staffNumber: "", staffEmail: "", staffPassword: "", isManager: ""};
-        setStaffDetails([...staffDetails, newRow]);}
+    useEffect(() => {
+      setStaffDetails(staffData.map((staff) => {
+        return {
+          ...staff,
+          staffId: staff.staffId,
+          staffName: staff.staffName,
+          staffNumber: staff.staffNumber,
+          staffEmail: staff.staffEmail,
+          password: staff.password,
+          isManager: staff.isManager
+        };
+      }));
+    }, [staffData]);
 
-        //send post request to /register endpoint
-        /*try {
-          const response = await fetch ('/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              name: newRow.staffName,
-              number: newRow.staffNumber,
-              email: newRow.staffEmail,
-              password: newRow.staffPassword, // replace this with the actual password for each staff member
-              isManager: newRow.isManager,
-            })
-          }
-          );
-          if (!response.ok){
-            throw new Error('Failed to create new staff member');
-          }
+    const [formInputs, setFormInputs] = useState({
+      staffId: "",
+      staffName: "",
+      staffNumber: "",
+      staffEmail: "",
+      password: "",
+      isManager: "",
+    });
 
-          console.log('New staff member created')
-        } catch (error) {
-          console.error(error.message('server error'));
-        }
-      };*/ 
-
-    const saveData = async() => {
-      // Loop through staffDetails and make a POST request to /register for each staff member
-      staffDetails.forEach(async (staff) => {
-        try {
-          const response = await fetch('/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name: staff.staffName,
-              number: staff.staffNumber,
-              email: staff.staffEmail,
-              password: staff.staffPassword, // replace this with the actual password for each staff member
-              isManager: staff.isManager, // replace this with the actual value for each staff member
-            }),
-          });
-
-          const data = await response.json();
-
-          console.log('Data:', data);
-
-          setIsSaved(true);
-
-          if (!response.ok){
-            throw new Error('Failed to create new staff member');
-          }
-
-          console.log('New staff member created')
-        } catch (err) {
-          console.error(err.message('Server error;'));
-        }
+    const handleShow = () => {
+      setShow(true);
+      if (selectedStaff) {
+      setFormInputs({
+        staffId: selectedStaff.staffId,
+        staffName: selectedStaff.staffName,
+        staffNumber: selectedStaff.staffNumber,
+        staffEmail: selectedStaff.staffEmail,
+        password: selectedStaff.password,
+        isManager: selectedStaff.isManager,
       });
+    }
     };
 
+    const handleAdd = () => {
+      setShowAdd(true);
+      if (selectedStaff) {
+      setFormInputs({
+        staffName: "",
+        staffNumber: "",
+        staffEmail: "",
+        password: "",
+        isManager: "",
+      });
+    }
+    };
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      // Update facility details with formInputs values
+      setStaffDetails((prevState) => {
+      const updatedDetails = [...prevState];
+      const index = updatedDetails.findIndex(
+          (staff) => staff.staffId === selectedStaff.staffId
+      );
+      updatedDetails[index].staffId = formInputs.staffId;
+      updatedDetails[index].staffName = formInputs.staffName;
+      updatedDetails[index].staffNumber = formInputs.staffNumber;
+      updatedDetails[index].staffEmail = formInputs.staffEmail;
+      //updatedDetails[index].password =  formInputs.password;
+      updatedDetails[index].isManager =  formInputs.isManager;
+
+      return updatedDetails;
+      });
+
+      // Send updated facility details to server
+      axios.put(`http://localhost:5000/api/employee/${selectedStaff.staffId}`, {
+
+        //staffId: formInputs.staffId,
+        staffName: formInputs.staffName,
+        staffNumber: formInputs.staffNumber,
+        staffEmail: formInputs.staffEmail,
+        //password: formInputs.password,
+        isManager:  formInputs.isManager
+        })
+        .then(response => {
+        console.log(response.data);
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+        });
+
+      // Close modal
+      handleClose();
+    };
+
+    /*const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      setStaffDetails((prevState) => {
+        const updatedDetails = [...prevState];
+        const index = updatedDetails.findIndex(
+            (staff) => staff.staffId === formInputs.staffId
+        );
+        updatedDetails[index].staffId = formInputs.staffId;
+        updatedDetails[index].staffName = formInputs.staffName;
+        updatedDetails[index].staffNumber = formInputs.staffNumber;
+        updatedDetails[index].staffEmail = formInputs.staffEmail;
+        updatedDetails[index].password =  formInputs.password;
+        updatedDetails[index].isManager =  formInputs.isManager;
+  
+        return updatedDetails;
+        });
+
+      // Send new staff details to server
+      axios.post(`http://localhost:4000/auth/staff/register`, {
+        staffName: formInputs.staffName,
+        staffNumber: formInputs.staffNumber,
+        staffEmail: formInputs.staffEmail,
+        password: formInputs.password,
+        isManager: formInputs.isManager
+      })
+      .then(response => {
+        console.log(response.data);
+        // Update staff details with newly added staff
+        setStaffDetails([...staffDetails, response.data]);
+      })
+      .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+      });
+    
+      // Close modal
+      handleClose();
+    };*/
+    
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      setStaffDetails((prevState) => {
+        const updatedDetails = [...prevState];
+        
+        //updatedDetails[index].staffId = formInputs.staffId;
+        updatedDetails.staffName = formInputs.staffName;
+        updatedDetails.staffNumber = formInputs.staffNumber;
+        updatedDetails.staffEmail = formInputs.staffEmail;
+        updatedDetails.password =  formInputs.password;
+        updatedDetails.isManager =  formInputs.isManager;
+  
+        return updatedDetails;
+        });
+    
+      // Send new staff details to server
+      axios.post('http://localhost:5000/auth/staff/register', {
+        name: formInputs.staffName,
+        number: formInputs.staffNumber,
+        email: formInputs.staffEmail,
+        password: formInputs.password,
+        isManager: formInputs.isManager,
+      })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Failed to save data');
+        });
+    
+      // Close modal
+      handleClose();
+    };
+
+    const handleDelete = () => {
+      if (window.confirm("Are you sure you want to delete this staff member?")) {
+        axios.delete(`http://localhost:5000/api/employee/${selectedStaff.staffId}`)
+          .then(() => {
+            // remove the deleted staff member from staffDetails state
+            setStaffDetails(staffDetails.filter(staff => staff.staffId !== selectedStaff.staffId));
+            setIsSaved(true); // set a flag to show that the data has been saved
+          })
+          .catch(err => console.error('Failed to delete staff', err));
+      }
+    };
+    
+    
+
     return(
-        <body className="staffBody">
+        <body>
             <Navbar/>
+            <EditStaffForm 
+              show={show}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              staff={selectedStaff}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
+            <AddStaffForm 
+              showAdd={showAdd}
+              handleClose={handleClose}
+              handleAddSubmit={handleAddSubmit}
+              //staff={selectedStaff}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
             <div  className="staffDetails">
                 <h1 className="staffDetailsTitle">GymCorp Staff</h1>
                     <div className="staffDetailsTable">
@@ -127,85 +237,99 @@ const Staff = () => {
                                     <th>Staff name</th>
                                     <th>Staff number</th>   
                                     <th>Staff email</th>
-                                    <th>Password</th>
-                                    <th>Manager</th>
-                                    {isEditable && <th> </th>}
+                                    <th>Title</th>
+                                    <th>Actions</th>
+                                    <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {staffDetails.map(({ staffId, staffName, staffNumber, staffEmail, staffPassword, isManager }) => (
+                                {staffData.map(({staffId, staffName, staffNumber, staffEmail, isManager }) => (
                                 <tr key = {staffId}>
                                     <td>
+                                    {!isEditable ? (
+                                              <span>{staffName}</span>
+                                        ) : (
                                         <input
                                             name='staffName'
                                             value={staffName}
                                             type="text"
-                                            onChange={(s) => onChangeInput(s, staffId)}
+                                            //onChange={(s) => onChangeInput(s, staffId)}
                                             placeholder="staff name"
                                             disabled={!isEditable}
                                         />
+                                        )}
                                     </td>
                                     <td>
+                                      {!isEditable ? (
+                                              <span>{staffNumber}</span>
+                                        ) : (
                                         <input
                                             name='staffNumber'
                                             value={staffNumber}
                                             type="text"
-                                            onChange={(s) => onChangeInput(s, staffId)}
+                                            //onChange={(s) => onChangeInput(s, staffId)}
                                             placeholder="staff number"
                                             disabled={!isEditable}
                                         />
+                                        )}
                                     </td>
                                     <td>
+                                      {!isEditable ? (
+                                              <span>{staffEmail}</span>
+                                        ) : (
                                         <input
                                             name='staffEmail'
                                             value={staffEmail}
                                             type="text"
-                                            onChange={(s) => onChangeInput(s, staffId)}
+                                            //onChange={(s) => onChangeInput(s, staffId)}
                                             placeholder="staff email"
                                             disabled={!isEditable}
                                         />
+                                        )}
                                     </td>
                                     <td>
-                                        <input
-                                            name='staffPassword'
-                                            value={staffPassword}
-                                            type="text"
-                                            onChange={(s) => onChangeInput(s, staffId)}
-                                            placeholder="staff email"
-                                            disabled={!isEditable}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            name='isManager'
-                                            value={isManager}
-                                            type="boolean"
-                                            onChange={(s) => onChangeInput(s, staffId)}
-                                            placeholder="manmager or not"
-                                            disabled={!isEditable}
-                                        />
+                                    {!isEditable ? (
+                                      <span>{isManager ? "Manager" : "Staff"}</span>
+                                    ) : (
+                                      <select
+                                        name='isManager'
+                                        value={isManager}
+                                        //onChange={(e) => onChangeInput(e, staffId)}
+                                        disabled={!isEditable}
+                                      >
+                                        <option value={true}>Manager</option>
+                                        <option value={false}>Staff</option>
+                                      </select>
+                                    )}
                                     </td>
                                     {isEditable && (
                                     <td>
-                                    <button className="deleteButton" onClick={() => onDeleteStaff(staffId)}>
+                                    <button className="deleteButton" >
                                         Delete
                                     </button>
                                     </td>
                                      )}
+                                    <td>
+                                    <button className="editButton" onClick={() => {setSelectedStaff({staffId, staffName, staffNumber, staffEmail, isManager}); handleShow();}}>
+                                    {editableRows[staffId] ? "Done" : "Edit"}
+                                    </button>
+                                    </td>
+                                    <td>
+                                    <button className="editButton" onClick={() => {setSelectedStaff({staffId, staffName, staffNumber, staffEmail, isManager}); handleDelete();}}>
+                                    {editableRows[staffId] ? "Delete" : "Delete"}
+                                    </button>
+                                    </td>
                                 </tr>
                                 ))}
                             </tbody>
                         </table>
                         <div>
-                          <button className="editButton" onClick={toggleEdit}>
-                          {isEditable ? " Done "  : " Edit "}
+                          <button className="button" onClick={() => { handleAdd();}}>
+                            Add
                           </button>
-                          {isEditable && (
+                          {/*{isEditable && (
                                   <button class="button" onClick={onAddRow}>Add</button>
-                          )}
-                          {!isEditable && (
-                                  <button class="button" onClick={saveData}>Save</button>
-                          )}
+                          )}*/}
                         </div>
                     </div>
                 </div>
