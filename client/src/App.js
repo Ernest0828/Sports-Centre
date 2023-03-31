@@ -13,6 +13,8 @@ import Register from "./components/pages/register/Register";
 import Profile from "./components/pages/profile/Profile";
 import BookFacility from './components/pages/bookFacility/BookFacility';
 import BookClasses from './components/pages/bookClasses/BookClasses';
+import Pricing from './components/pages/pricing/Pricing';
+
 
 function App() {
   const {user} = useContext(Auth);
@@ -28,6 +30,7 @@ function App() {
           <Route path="/profile" element={user ? (<Profile/>) : (<Login/>)} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </Router>
     </AuthProvider>
