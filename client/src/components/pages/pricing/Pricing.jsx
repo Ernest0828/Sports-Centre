@@ -85,7 +85,7 @@ const PricingClass = () => {
                             const hour12 = hour % 12 || 12;
                             return (
                                 <div key={`${day}-${startTime}`}>
-                                <p>{day}: {hour12}:{minute} {suffix}</p>
+                                <p>{day} at {hour12}:{minute} {suffix}</p>
                                 </div>);
                         })}        
                         <p className="price">£{classes.price}.00</p>        
@@ -102,7 +102,7 @@ const PricingClass = () => {
                         <h3>{facility.facilityName}</h3>
                         <p>{activityData.filter((activity) => activity.facilityName === facility.facilityName).map((activity) => (
                             <p key={activity.activityId}>
-                            {activity.activityName}: <p className="facility-price">£{activity.price}.00</p>
+                            {activity.activityName}: <span className="facility-price">£{activity.price}.00</span>
                             </p>
                         ))}
                         </p>    
