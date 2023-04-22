@@ -11,7 +11,7 @@ const Staffs = require("./database/models/staff");
 
 const facilities = [
     { facilityName: "Studio", capacity: 25, startTime: "08:00:00", endTime: "22:00:00" },
-    { facilityName: "Swimming pool", capacity: 30, startTime: "08:00:00", endTime: "20:00:00" },
+    { facilityName: "Swimming pool", capacity: 3, startTime: "08:00:00", endTime: "20:00:00" },
     { facilityName: "Fitness room", capacity: 35, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Sports hall", capacity: 45, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Squash court", capacity: 4, startTime: "08:00:00", endTime: "22:00:00" },
@@ -39,35 +39,27 @@ const classes = [
     { className: "Yoga", day: "Sunday", startTime: "09:00:00", endTime: "10:00:00", price: "10", facilityName: "Studio" }
 ];
 
-const customers = [
-
-];
-
+const customers = [];
 const memberships = [];
 const bookings = [];
 const staffBookings = [];
 const staffs = [];
 
-
-
-
 (async () => {
   try {
     await db.sync({ force: true });
-    const createdFacilities = await Facility.bulkCreate(facilities);
-    const createdActivities = await Activity.bulkCreate(activities);
-    const createdClasses = await Classes.bulkCreate(classes);
-    const createdCustomers = await Customers.bulkCreate(customers);
-    const createdMemberships = await Memberships.bulkCreate(memberships);
-    const createdBookings = await Bookings.bulkCreate(bookings);
-    const createdStaffBookings = await StaffBookings.bulkCreate(staffBookings);
-    const createdStaffs = await Staffs.bulkCreate(staffs);
+    await Facility.bulkCreate(facilities);
+    await Activity.bulkCreate(activities);
+    await Classes.bulkCreate(classes);
+    await Customers.bulkCreate(customers);
+    await Memberships.bulkCreate(memberships);
+    await Bookings.bulkCreate(bookings);
+    await StaffBookings.bulkCreate(staffBookings);
+    await Staffs.bulkCreate(staffs);
 
     console.log("Models created");
-    process.exit();
   } catch (error) {
     console.error(error);
-    process.exit(1);
   }
 })();
 
