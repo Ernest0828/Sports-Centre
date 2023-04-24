@@ -12,7 +12,7 @@ import AddStaffForm from "./addStaffForm";
 const Staff = () => {
 
     //useFetch Hooks
-    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:5000/api/employee/");
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
 
     const [staffDetails, setStaffDetails] = useState()
     const [editableRows, setEditableRows] = useState({});

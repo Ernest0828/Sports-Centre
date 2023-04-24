@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import "./aerobics.css"
 import Navbar from "../../navbar/Navbar"
-import DropDownClasses from '../../dropdownclasses/DropDownClasses'
+import DropDownClasses from '../../dropDownClasses/DropDownClasses'
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
-import MyCalendar from '../../myCalendar/MyCalendar'
+import MyCalendar from '../../myCalendar/myCalendar'
 import ICalendar from '../../ICalendar/ICalendar';
 
 const Aerobics = () => {

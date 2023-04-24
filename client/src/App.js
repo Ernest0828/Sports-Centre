@@ -37,9 +37,9 @@ import Studio from './components/pages/individual-facilities/Studio';
 import Aerobics from './components/pages/individual-classes/Aerobics';
 import Pilates from './components/pages/individual-classes/Pilates';
 import Yoga from './components/pages/individual-classes/Yoga';
-import MyComponent from './components/dropDownFacility/DropDownFacility';
-import DropdownChoice from './components/dropDownFacility/DropDownFacility';
-import successPage from './components/pages/success/successPage';
+//import MyComponent from './components/dropDownFacility/DropDownFacility';
+//import DropdownChoice from './components/dropDownFacility/DropDownFacility';
+//import successPage from './components/pages/success/successPage';
 
 function App() {
   const {user} = useContext(Auth);
