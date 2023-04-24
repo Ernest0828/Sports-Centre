@@ -14,7 +14,7 @@ const PricingClass = () => {
     useEffect(() => {
         async function fetchClassesData() {
             try {
-                const res = await axios.get("http://localhost:5000/api/classes/");
+                const res = await axios.get("http://localhost:4000/api/classes/");
                 const groupedClasses = res.data.reduce((accumulator, classes) => {
                     const { classId, className, day, startTime, price } = classes;
                     if (accumulator[className]) {
@@ -31,7 +31,7 @@ const PricingClass = () => {
         }
             async function fetchFacilitiesData() {
                 try {
-                    const res = await axios.get("http://localhost:5000/api/facilities/");
+                    const res = await axios.get("http://localhost:4000/api/facilities/");
                     setFacilityData(res.data);
                 } catch(err) {
                     console.log(err.response.data);
@@ -39,7 +39,7 @@ const PricingClass = () => {
             }
             async function fetchActivityData() {
                 try {
-                    const res = await axios.get("http://localhost:5000/api/activities/");
+                    const res = await axios.get("http://localhost:4000/api/activities/");
                     setActivityData(res.data);
                 } catch(err) {
                     console.log(err.response.data);

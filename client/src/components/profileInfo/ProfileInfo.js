@@ -41,7 +41,7 @@ export default function MemberProfileInfo() {
 
         //Updates customerName, customerNumber, customerEmail
         try {
-            const res = await axios.put("http://localhost:5000/api/customer/"+ user.details.customerId,{
+            const res = await axios.put("http://localhost:4000/api/customer/"+ user.details.customerId,{
                 customerName,
                 customerNumber,
                 customerEmail,
@@ -68,7 +68,7 @@ export default function MemberProfileInfo() {
 
         //Updates password
         try {
-            const res = await axios.put("http://localhost:5000/api/customer/change-password/"+user.details.customerId, 
+            const res = await axios.put("http://localhost:4000/api/customer/change-password/"+user.details.customerId, 
                 {password}
             );  
             console.log(res.data);
@@ -84,7 +84,7 @@ export default function MemberProfileInfo() {
     useEffect(() => {
       async function fetchMembershipDetails() {
         try{
-            const res = await axios.get("http://localhost:5000/api/membership/membership-info/"+user.details.customerId);
+            const res = await axios.get("http://localhost:4000/api/membership/membership-info/"+user.details.customerId);
             console.log(res);
             setMembershipType(res.data.membership.membershipType);
             setMembershipStartDate(res.data.membership.startDate.split("T")[0]);
@@ -100,7 +100,7 @@ export default function MemberProfileInfo() {
     const cancelMembership = async () => {
         //Cancel membership
         try {
-            const res = await axios.post("http://localhost:5000/api/membership/cancel/"+ user.details.customerId);
+            const res = await axios.post("http://localhost:4000/api/membership/cancel/"+ user.details.customerId);
             alert("Membership cancelled");
         } 
         catch (err) {

@@ -51,7 +51,9 @@ const Staff = () => {
       isManager: "",
     });
 
-    const handleShow = () => {
+    const handleShow = (staffId) => {
+      const selectedStaff = staffDetails.find(staff => staff.staffId === staffId);
+      setSelectedStaff(selectedStaff);
       setShow(true);
       if (selectedStaff) {
       setFormInputs({
@@ -117,46 +119,6 @@ const Staff = () => {
       // Close modal
       handleClose();
     };
-
-    /*const handleAddSubmit = (event) => {
-      event.preventDefault();
-
-      setStaffDetails((prevState) => {
-        const updatedDetails = [...prevState];
-        const index = updatedDetails.findIndex(
-            (staff) => staff.staffId === formInputs.staffId
-        );
-        updatedDetails[index].staffId = formInputs.staffId;
-        updatedDetails[index].staffName = formInputs.staffName;
-        updatedDetails[index].staffNumber = formInputs.staffNumber;
-        updatedDetails[index].staffEmail = formInputs.staffEmail;
-        updatedDetails[index].password =  formInputs.password;
-        updatedDetails[index].isManager =  formInputs.isManager;
-  
-        return updatedDetails;
-        });
-
-      // Send new staff details to server
-      axios.post(`http://localhost:4000/auth/staff/register`, {
-        staffName: formInputs.staffName,
-        staffNumber: formInputs.staffNumber,
-        staffEmail: formInputs.staffEmail,
-        password: formInputs.password,
-        isManager: formInputs.isManager
-      })
-      .then(response => {
-        console.log(response.data);
-        // Update staff details with newly added staff
-        setStaffDetails([...staffDetails, response.data]);
-      })
-      .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-      });
-    
-      // Close modal
-      handleClose();
-    };*/
     
 
     const handleAddSubmit = (event) => {
@@ -176,7 +138,7 @@ const Staff = () => {
         });
     
       // Send new staff details to server
-      axios.post('http://localhost:5000/auth/staff/register', {
+      axios.post('http://localhost:4000/auth/staff/register', {
         name: formInputs.staffName,
         number: formInputs.staffNumber,
         email: formInputs.staffEmail,
@@ -195,9 +157,12 @@ const Staff = () => {
       handleClose();
     };
 
-    const handleDelete = () => {
+    const handleDelete = (staffId) => {
+      const selectedStaff = staffDetails.find(staff => staff.staffId === staffId);
+      setSelectedStaff(selectedStaff);
+      
       if (window.confirm("Are you sure you want to delete this staff member?")) {
-        axios.delete(`http://localhost:5000/api/employee/${selectedStaff.staffId}`)
+        axios.delete(`http://localhost:4000/api/employee/${selectedStaff.staffId}`)
           .then(() => {
             // remove the deleted staff member from staffDetails state
             setStaffDetails(staffDetails.filter(staff => staff.staffId !== selectedStaff.staffId));
@@ -210,7 +175,7 @@ const Staff = () => {
     
 
     return(
-        <body>
+        <div>
             <Navbar/>
             <EditStaffForm 
               show={show}
@@ -238,65 +203,27 @@ const Staff = () => {
                                     <th>Staff number</th>   
                                     <th>Staff email</th>
                                     <th>Title</th>
-                                    <th>Actions</th>
+                                    <th></th>
                                     <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {staffData.map(({staffId, staffName, staffNumber, staffEmail, isManager }) => (
+                                {staffDetails && staffDetails.map(({staffId, staffName, staffNumber, staffEmail, isManager }) => (
                                 <tr key = {staffId}>
                                     <td>
-                                    {!isEditable ? (
                                               <span>{staffName}</span>
-                                        ) : (
-                                        <input
-                                            name='staffName'
-                                            value={staffName}
-                                            type="text"
-                                            //onChange={(s) => onChangeInput(s, staffId)}
-                                            placeholder="staff name"
-                                            disabled={!isEditable}
-                                        />
-                                        )}
                                     </td>
                                     <td>
-                                      {!isEditable ? (
                                               <span>{staffNumber}</span>
-                                        ) : (
-                                        <input
-                                            name='staffNumber'
-                                            value={staffNumber}
-                                            type="text"
-                                            //onChange={(s) => onChangeInput(s, staffId)}
-                                            placeholder="staff number"
-                                            disabled={!isEditable}
-                                        />
-                                        )}
                                     </td>
                                     <td>
-                                      {!isEditable ? (
                                               <span>{staffEmail}</span>
-                                        ) : (
-                                        <input
-                                            name='staffEmail'
-                                            value={staffEmail}
-                                            type="text"
-                                            //onChange={(s) => onChangeInput(s, staffId)}
-                                            placeholder="staff email"
-                                            disabled={!isEditable}
-                                        />
-                                        )}
                                     </td>
                                     <td>
                                     {!isEditable ? (
                                       <span>{isManager ? "Manager" : "Staff"}</span>
                                     ) : (
-                                      <select
-                                        name='isManager'
-                                        value={isManager}
-                                        //onChange={(e) => onChangeInput(e, staffId)}
-                                        disabled={!isEditable}
-                                      >
+                                      <select>
                                         <option value={true}>Manager</option>
                                         <option value={false}>Staff</option>
                                       </select>
@@ -310,30 +237,27 @@ const Staff = () => {
                                     </td>
                                      )}
                                     <td>
-                                    <button className="editButton" onClick={() => {setSelectedStaff({staffId, staffName, staffNumber, staffEmail, isManager}); handleShow();}}>
+                                    <button className="editStaffButton" onClick={() => {handleShow(staffId);}}>
                                     {editableRows[staffId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
                                     <td>
-                                    <button className="editButton" onClick={() => {setSelectedStaff({staffId, staffName, staffNumber, staffEmail, isManager}); handleDelete();}}>
+                                    <button className="editStaffButton" onClick={() => {handleDelete(staffId);}}>
                                     {editableRows[staffId] ? "Delete" : "Delete"}
                                     </button>
                                     </td>
                                 </tr>
                                 ))}
                             </tbody>
+                            <div>
+                              <button className="addButton" onClick={() => { handleAdd();}}>
+                                Add
+                              </button>
+                            </div>
                         </table>
-                        <div>
-                          <button className="button" onClick={() => { handleAdd();}}>
-                            Add
-                          </button>
-                          {/*{isEditable && (
-                                  <button class="button" onClick={onAddRow}>Add</button>
-                          )}*/}
-                        </div>
                     </div>
                 </div>
-        </body>
+        </div>
     )
 }
 

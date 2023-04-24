@@ -1,9 +1,10 @@
 import { Form, Button } from "react-bootstrap"
+import useFetch from "../../../hooks/useFetch"
 import axios from 'axios'
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
+const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
 
   const [facilities, setFacilities] = useState([]);
 
@@ -17,32 +18,67 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
           });
       }, []);
   
-    const handleFormInputChange = (event) => {
-        setFormInputs({
-          ...formInputs,
-          [event.target.name]: event.target.value
-        });
-      };
-      
-      return (
+
+  const handleFormInputChange = (event) => {
+    setFormInputs({
+      ...formInputs,
+      [event.target.name]: event.target.value
+    });
+  };
+  
+
+    return (
         <Modal show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Edit Class</Modal.Title>
+          <Modal.Title>Edit Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-      
-            <Form.Group controlId="formClassName">
-              <Form.Label>Class Name</Form.Label>
+            <Form.Group controlId="formActivity">
+              <Form.Label>Activity</Form.Label>
               <Form.Control
                 type="text"
-                name="className"
-                value={formInputs.className}
+                name="activityName"
+                value={formInputs.activityName}
                 onChange={handleFormInputChange}
-                placeholder="Enter class name"
+                placeholder="General Use"
+                //disabled = {true}
+              />
+            </Form.Group>
+      
+            <Form.Group controlId="formDay">
+              <Form.Label>Day</Form.Label>
+              <Form.Control
+                type="day"
+                name="day"
+                value={formInputs.day}
+                onChange={handleFormInputChange}
+                placeholder="Wednesday"
+              />
+            </Form.Group>
+      
+            <Form.Group controlId="formStart">
+              <Form.Label>Start Time</Form.Label>
+              <Form.Control
+                type="time"
+                name="startTime"
+                value={formInputs.startTime}
+                onChange={handleFormInputChange}
+                placeholder="08:00"
+              />
+            </Form.Group>
+      
+            <Form.Group controlId="formEnd">
+              <Form.Label>End Time</Form.Label>
+              <Form.Control
+                type="time"
+                name="endTime"
+                value={formInputs.endTime}
+                onChange={handleFormInputChange}
+                placeholder="20:00"
               />
             </Form.Group>
 
@@ -50,56 +86,11 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
-                step="0.01"
+                step= "0.01"
                 name="price"
                 value={formInputs.price}
                 onChange={handleFormInputChange}
-                placeholder="enter price"
-              />
-            </Form.Group>
-      
-            <Form.Group controlId="formDay">
-            <div style={{display: 'block'}}>
-              <Form.Label>Day</Form.Label>
-            </div>
-            <div>
-              <Form.Select
-                name="day"
-                value={formInputs.day}
-                onChange={handleFormInputChange}
-              >
-                <option value="">Select day</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-              </Form.Select>
-              </div>
-            </Form.Group>
-
-      
-            <Form.Group controlId="formStartTime">
-              <Form.Label>Start Time</Form.Label>
-              <Form.Control
-                type="time"
-                name="startTime"
-                value={formInputs.startTime}
-                onChange={handleFormInputChange}
-                placeholder="Enter start time"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formEndTime">
-              <Form.Label>End Time</Form.Label>
-              <Form.Control
-                type="time"
-                name="endTime"
-                value={formInputs.endTime}
-                onChange={handleFormInputChange}
-                placeholder="enter end time"
+                placeholder="8.00"
               />
             </Form.Group>
 
@@ -122,7 +113,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
             </div>
           </Form.Group>
       
-            <Button style= {{marginTop: "10px"}} variant="primary" type="submit">
+            <Button style={{marginTop: "10px"}} variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>
@@ -131,4 +122,5 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
     );
   };
 
-export default EditStaffForm;
+export default EditActivityForm;
+  

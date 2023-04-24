@@ -7,13 +7,13 @@ import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditClassForm from "./editClassForm";
-//import AddClassForm from "./addClassForm";
+import AddClassForm from "./addClassForm";
 
 
 const ClassDetails = () => {
 
     //useFetch Hooks
-    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:5000/api/classes/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
     const [classDetails, setClassDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
@@ -29,12 +29,13 @@ const ClassDetails = () => {
     }
 
     useEffect(() => {
-      setClassDetails(classData.map(({ classId, className, price, day, startTime, endTime }) => {
+      setClassDetails(classData.map(({ classId, className, price, day, startTime, endTime, facilityName }) => {
         return {
           classId,
           className,
           price,
-          dayTime: [{ day, startTime, endTime }]
+          dayTime: [{ day, startTime, endTime }],
+          facilityName
         };
       }));      
     }, [classData]);
@@ -48,18 +49,19 @@ const ClassDetails = () => {
       facilityName:""
     });
 
-    const handleShow = () => {
+    const handleShow = (classId) => {
+      const selectedClass = classDetails.find(classes => classes.classId === classId);
+      setSelectedClass(selectedClass);
       setShow(true);
+
       if (selectedClass) {
       setFormInputs({
         classId: selectedClass.classId,
         className: selectedClass.className,
         price: selectedClass.price,
-        dayTime: selectedClass.dayTime.map((dt) => ({
-          day: dt.day,
-          startTime: dt.startTime,
-          endTime: dt.endTime,
-        })),
+        day: selectedClass.dayTime[0].day, // set the day value from the dayTime array
+        startTime: selectedClass.dayTime[0].startTime, // set the startTime value from the dayTime array
+        endTime: selectedClass.dayTime[0].endTime,
         facilityName: selectedClass.facilityName
       });
     }
@@ -74,7 +76,7 @@ const ClassDetails = () => {
         startTime: "",
         endTime: "",
         price: "",
-        //facilityName:""
+        facilityName:""
       });
     }
     };
@@ -89,23 +91,24 @@ const ClassDetails = () => {
       );
       updatedDetails[index].classId = formInputs.classId;
       updatedDetails[index].className = formInputs.className;
-      updatedDetails[index].day = formInputs.day;
-      updatedDetails[index].startTime = formInputs.startTime;
-      updatedDetails[index].endTime =  formInputs.endTime;
+      updatedDetails[index].dayTime[0].day = formInputs.day;
+      updatedDetails[index].dayTime[0].startTime = formInputs.startTime;
+      updatedDetails[index].dayTime[0].endTime =  formInputs.endTime;
       updatedDetails[index].price =  formInputs.price;
+      updatedDetails[index].facilityName =  formInputs.facilityName;
 
       return updatedDetails;
       });
 
       // Send updated facility details to server
-      axios.put(`http://localhost:5000/api/classes/${selectedClass.classId}`, {
+      axios.put(`http://localhost:4000/api/classes/${selectedClass.classId}`, {
 
-        name: formInputs.className,
+        className: formInputs.className,
         day: formInputs.day,
-        start: formInputs.startTime,
-        end: formInputs.endTime,
+        startTime: formInputs.startTime,
+        endTime: formInputs.endTime,
         price: formInputs.price,
-        //facilityName:  formInputs.isManager
+        facilityName: formInputs.facilityName
         })
         .then(response => {
         console.log(response.data);
@@ -129,27 +132,32 @@ const ClassDetails = () => {
         updatedDetails.className = formInputs.className;
         updatedDetails.day = formInputs.day;
         updatedDetails.startTime = formInputs.startTime;
+        updatedDetails.endTime = formInputs.endTime;
         updatedDetails.price =  formInputs.price;
-        updatedDetails.facilityName =  formInputs.faciltyName;
+        updatedDetails.facilityName =  formInputs.facilityName;
   
         return updatedDetails;
         });
-    
-      // Send new staff details to server
-      axios.post('http://localhost:5000/api/classes/classid', {
-        name: formInputs.className,
-        day: formInputs.day,
-        start: formInputs.startTime,
-        end: formInputs.endTime,
-        price: formInputs.price,
-      })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-          alert('Failed to save data');
+
+        const newClassDetails = {
+          className: formInputs.className,
+          price: formInputs.price,
+          dayTime: [{ day: formInputs.day, startTime: formInputs.startTime, endTime: formInputs.endTime }],
+          facilityName: formInputs.facilityName
+        };
+
+        setClassDetails((prevState) => {
+          return [...prevState, newClassDetails];
         });
+
+        axios.post('http://localhost:4000/api/classes/classid', newClassDetails)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+            alert('Failed to save data');
+          });
     
       // Close modal
       handleClose();
@@ -167,6 +175,13 @@ const ClassDetails = () => {
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
+            <AddClassForm 
+            showAdd={showAdd}
+            handleClose={handleClose}
+            handleAddSubmit={handleAddSubmit}
+            formInputs={formInputs}
+            setFormInputs={setFormInputs}
+          />
             <div className="classDetails">
                     <h1 className="classDetailsTitle">GymCorp Classes</h1>
                     <div className="classDetailsTable">
@@ -175,64 +190,32 @@ const ClassDetails = () => {
                                 <tr>
                                     <th>Class</th>
                                     <th>Price</th>   
-                                    <th>Day & Time</th>
-                                    <th> </th>
+                                    <th className="dayTimeColumn">Day & Time</th>
+                                    <th>Facility</th>  
                                     <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {classDetails && classDetails.map(({ classId, className, price, dayTime }, index) => (
+                                {classDetails && classDetails.map(({ classId, className, price, dayTime, facilityName}, index) => (
                                 <tr key = {classId}>
                                     <td>
-                                        <input
-                                            name='className'
-                                            value={className}
-                                            type="text"
-                                            placeholder="class name"
-                                            disabled = {!isEditable}
-                                        />
+                                      <span>{className}</span>
                                     </td>
                                     <td>
-                                        <input
-                                            name='price'
-                                            value={price}
-                                            type="number"
-                                            step="0.01"
-                                            placeholder="class price"
-                                            disabled = {!isEditable}
-                                        />
+                                      <span>{price}</span>
                                     </td>
-                                    {dayTime.map((dayTime, index) => (
-                                    <tr key = {index}>
-                                        <td>
-                                        <input
-                                            name='dayTime[${index}].day'
-                                            value={dayTime.day}
-                                            type="text"
-                                            placeholder="Monday"
-                                            disabled = {!isEditable}
-                                        />
-                                        </td>
-                                        <td>
-                                        <input
-                                            name='dayTime[${index}].startTime'
-                                            value={dayTime.startTime}
-                                            type="time"
-                                            placeholder="09:00"
-                                            disabled = {!isEditable}
-                                        />
-                                        </td>
-                                        <td>
-                                        <input
-                                            name='dayTime[${index}].endTime'
-                                            value={dayTime.endTime}
-                                            type="time"
-                                            placeholder="10:00"
-                                            disabled = {!isEditable}
-                                        />
-                                        </td>
-                                    </tr>
-                                    ))}
+                                    <td className="dayTimeColumn">
+                                      {dayTime.map(({ day, startTime, endTime }) => (
+                                        <div key={`${day}-${startTime}-${endTime}`}>
+                                          <span>{day}: </span>
+                                          <span>{startTime} - </span>
+                                          <span>{endTime}</span>
+                                        </div>
+                                      ))}
+                                    </td>
+                                    <td>
+                                      <span>{facilityName}</span>
+                                    </td>
                                     {isEditable && (
                                     <td>
                                     <button className="deleteButton" >
@@ -241,19 +224,19 @@ const ClassDetails = () => {
                                     </td>
                                      )}
                                     <td>
-                                    <button className="editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime}); handleShow();}}>
+                                    <button className="editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleShow(classId);}}>
                                     {editableRows[classId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
                                 </tr>
                                 ))}
                             </tbody>
+                            {/*<div>
+                            <button className="addButton" onClick={() => { handleAdd();}}>
+                              Add
+                            </button>
+                            </div>*/}
                         </table>
-                        <div>
-                        {isEditable && (
-                                <button class="button" >Add</button>
-                        )}
-                        </div>
                     </div>
                 </div>
         </div>

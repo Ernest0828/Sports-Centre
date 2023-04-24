@@ -79,8 +79,7 @@ td{
 	color: white;
 }
 
-.editButton{
-    width: 100px;
+.editStaffButton{
     margin-top: 10px;
     margin-left: 10px;
 	border: none;
@@ -91,6 +90,26 @@ td{
     box-sizing: border-box;
 }
 
+button.editStaffButton {
+  width: 80%;
+}
+
+.addButton{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.addButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
 
 
 .profileDeleteBookingBtn{

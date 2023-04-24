@@ -23,7 +23,7 @@ const ManagerLogin = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await axios.post("http://localhost:5000/auth/staff/login", credentials);
+        const res = await axios.post("http://localhost:4000/auth/staff/login", credentials);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate('/facilitydetails')
