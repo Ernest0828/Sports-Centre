@@ -5,9 +5,8 @@
   position: relative;
   border-radius:10px ;
   background-color: #1c768f;
-  z-index: 3;
-  max-width: 250px;
-  max-height: 250px;
+  width: 250px;
+  height: 250px;
 }
 
 .facilityItem:hover{
@@ -18,15 +17,10 @@
 
 .facilityName{
   color: white;
-  z-index :2;
   align-self: flex-end;
   font-weight: 600;
 }
 
-/* 
-.facilityName:hover{
-  background-color: rgba(0, 0, 0, 0.1);
-} */
 
 .facilityName > p{
   font-size: 20px;

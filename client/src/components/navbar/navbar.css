@@ -8,6 +8,8 @@
     padding: 0 50px;
     font-family: 'Arimo', sans-serif;
     font-size: 18px;
+    position: fixed;
+    z-index: 1000;
   }
   
   .navLeft {
@@ -22,6 +24,13 @@
     text-decoration: none;
     margin-right: 50px;
   }
+
+  .navLogo:hover {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+    transform: scale(.99);
+  }
   
   .navList {
     list-style: none;
@@ -33,7 +42,7 @@
   .navItem {
     margin-right: 20px;
   }
-  
+
   .navLink {
     color: white;
     text-decoration: none;
@@ -41,6 +50,17 @@
   }
   
   .navLink:hover {
+    color: #fa991c;
+    text-decoration: none;
+  }
+  
+  .navDropdownList li {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .navDropdownList li:hover {
     color: #fa991c;
   }
   
@@ -83,6 +103,7 @@
     opacity: 1;
     visibility: visible;
     align-items: center;
+    cursor:pointer;
   }
   
   .navDropdownItem {

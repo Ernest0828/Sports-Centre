@@ -40,8 +40,8 @@ const Navbar = () => {
       <div className="navRight">
         {user && 
         <ul className="navList">
-          <li className="navItem" onClick={() => window.location.reload()}>
-            <Link to="/profile" className="navLink">
+          <li className="navItem">
+            <Link to="/profile" className="navLink" onClick={() => window.location.href="/profile"}>
               Profile
             </Link>
           </li>
@@ -54,19 +54,15 @@ const Navbar = () => {
           </Link>
         ):(
           <div className="navDropdown">
-          <Link to="/login" className="navDropdownTrigger">
+          <Link to="/login" className="navDropdownTrigger navLink" onClick={() => window.location.href="/login"}>
             Login
           </Link>
           <ul className="navDropdownList">
-            <li className="navItem" onClick={() => window.location.reload()}>
-              <Link to="/login" className="navLink">
+            <li className="navItem" onClick={() => window.location.href="/login"}>
                 User
-              </Link>
             </li>
-            <li className="navItem" onClick={() => window.location.reload()}>
-              <Link to="/manager-login" className="navLink">
+            <li className="navItem" onClick={() => window.location.href="/manager-login"}>
                 Staff
-              </Link>
             </li>
           </ul>
         </div>
