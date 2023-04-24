@@ -26,7 +26,7 @@ const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
     });
   };
   
-
+  
     return (
         <Modal show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
