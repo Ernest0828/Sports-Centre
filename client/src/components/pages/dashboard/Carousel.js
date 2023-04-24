@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./carousel.css";
+import "./Carousel.css";
 
 function Carousel({ images, height, width, autoPlayDuration }) {
   const [current, setCurrent] = useState(0);

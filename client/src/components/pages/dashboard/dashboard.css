@@ -17,6 +17,7 @@
   font-size: 30px;
   font-family: 'Arimo', sans-serif;
   font-weight: bold;
+  margin: 1;
 }
 
 @media only screen and (max-width: 768px) {
@@ -95,7 +96,3 @@
   padding: 0;
   margin: 0;
 }
-
-/* .footer-item li {
-  margin-bottom: 10px;
-} */
