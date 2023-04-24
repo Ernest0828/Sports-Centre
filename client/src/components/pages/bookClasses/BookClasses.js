@@ -3,11 +3,17 @@ import "./bookclasses.css";
 import { Link} from "react-router-dom";
 import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
-import Navbar from "../../navbar/Navbar";
+import Navbar from '../../navbar/Navbar';
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
   
 const BookClasses = () => {
   const [classes, setClasses] = useState([]);
+  const navigate =useNavigate();
+  const handleClick = () =>{
+    navigate('/aerobics');
+  }
+
 
   useEffect(() => {
   const fetchClasses = async () => {
@@ -35,7 +41,7 @@ const BookClasses = () => {
               <h3>Book a class</h3>
               <p>Select a class to view timetables and availability.</p>
             </div>
-            <div className="gridFormat">
+            <div className="gridFormat" onClick={handleClick}>
               {classes.map((classes) => (
                 <ClassItem key={classes.className} classes={classes}/>
               ))}

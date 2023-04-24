@@ -4,7 +4,7 @@ const db = new Sequelize("gymCorp", "postgres", "hogwarts6393",
 {
   host : "localhost",
   dialect : "postgres",
-  port : 5432
+  port : 5432,
 });
 
 module.exports = db;

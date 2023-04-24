@@ -4,11 +4,16 @@ import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from "../../navbar/Navbar";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
   
 const BookFacility = () => {
 
   const [facilities, setFacilities] = useState([]);
+  const navigate =useNavigate();
+  const handleClick = () =>{
+    navigate('/climbingwall');
+  }
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -19,9 +24,14 @@ const BookFacility = () => {
         console.error(err);
       }
     };
-
     fetchFacilities();
   }, []);
+    
+  // Filter out the "Studio" facility
+  const filteredFacilities = facilities.filter(
+    (facility) => facility.facilityName !== "Studio"
+  );
+
   return (
     <Fragment>
     <Navbar />
@@ -32,9 +42,9 @@ const BookFacility = () => {
               <h3>Book a facility</h3>
               <p>Select a facility to view timetables and availability.</p>
             </div>
-            <div className="gridFormat">
-              {facilities.map((facility) => (
-              <FacilityItem key={facility.facilityName} facility={facility} />
+            <div className="gridFormat" onClick={handleClick}>
+              {filteredFacilities.map((facility) => (
+              <FacilityItem key={facility.facilityName} facility={facility}/>
               ))}
             </div>
           </div>

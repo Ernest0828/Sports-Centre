@@ -62,14 +62,3 @@ const staffs = [];
     console.error(error);
   }
 })();
-
-
-
-
-
-
-
-
-
-
-

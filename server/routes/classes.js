@@ -5,7 +5,7 @@ const Facility  = require("../database/models/facility.js");
 const verifyManager = require("../middleware/verifyManager.js");
 
 // 1. Add new classes (only for manager)
-router.post("/classid", verifyManager, async (req, res, next) => {
+router.post("/classid", /*verifyManager*/ async (req, res, next) => {
     const { name, day, start, end, price, facilityName } = req.body;
     try {
         
@@ -41,7 +41,7 @@ router.delete("/:id", verifyManager, async (req, res, next) => {
         const classes = await Classes.findByPk(req.params.id);
         if(!classes) return res.status(404).json("Classes not found");
         else { 
-            await classes.destroy(req.body);
+            await classes.destroy();
             res.status(200).json("Class deleted");
         }
     } catch (err) {

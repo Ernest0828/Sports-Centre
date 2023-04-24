@@ -26,6 +26,6 @@ const Payment = db.define('Payment', {
 });
 
 // add foreign key constraint to customerId column
-Payment.belongsTo(Customer, { foreignKey: 'customerId' });
+// Payment.belongsTo(Customer, { foreignKey: 'customerId' });
 
 module.exports=Payment;
