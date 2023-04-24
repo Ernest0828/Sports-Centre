@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import Datepicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import DropdownChoice from '../dropdownfacility/DropDownFacility'
+import DropdownChoice from '../dropDownFacility/DropDownFacility'
 
 function ReactDatePicker() {
     const[selectedDate, setSelectedDate] = useState(null)    
