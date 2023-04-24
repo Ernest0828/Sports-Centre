@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const { INTEGER, UUID, UUIDV4, STRING, BOOLEAN } = Sequelize;
+const { UUID, UUIDV4, STRING, BOOLEAN } = Sequelize;
 
 const Staff = db.define('Staff', {
   staffId: {
@@ -15,12 +15,13 @@ const Staff = db.define('Staff', {
     allowNull: false
   },
   staffNumber: {
-    type: INTEGER,
-    allowNull: false
+    type: STRING(11),
+    allowNull: false,
   },
   staffEmail: {
     type: STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   password: {
     type: STRING,
