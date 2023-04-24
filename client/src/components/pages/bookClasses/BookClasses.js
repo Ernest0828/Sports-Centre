@@ -18,7 +18,7 @@ const BookClasses = () => {
   useEffect(() => {
   const fetchClasses = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/classes/");
+      const res = await axios.get("http://localhost:4000/api/classes/");
       const uniqueClasses = Array.from(new Set(res.data.map(c => c.className))).map(cn => {
         return res.data.find(c => c.className === cn);
       });

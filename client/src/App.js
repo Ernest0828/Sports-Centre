@@ -17,6 +17,7 @@ import Pricing from './components/pages/pricing/Pricing';
 
 
 import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails";
+import ActivityDetails from "./components/managerPages/bookings/facilities/activities/activityDetails";
 import Staff from "./components/managerPages/staff/staff";
 import ClassDetails from "./components/managerPages/bookings/classes/classDetails";
 import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
@@ -56,9 +57,11 @@ function App() {
 
           <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
           <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
+          <Route exact path="/activitydetails" element={<ActivityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
+
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route exact path="/aerobics" element={<Aerobics/>}/>

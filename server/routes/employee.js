@@ -55,7 +55,7 @@ router.put("/change-password/:id", verifyStaff, async (req, res, next) => {
 });
 
 // 5. For staff to delete account
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", verifyManager, async (req, res, next) => {
     try {
         const staff = await Staff.findByPk(req.params.id);
         if(!staff) return res.status(404).json("Staff not found");

@@ -1,5 +1,5 @@
 .upper-container {
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .quote-container {
@@ -11,14 +11,12 @@
   background-color: #033756;;
   border-top: 5px solid #fa991c;
   border-bottom: 5px solid #fa991c;
-  margin-left: 0;
 }
 
 .quote-container p {
   font-size: 30px;
   font-family: 'Arimo', sans-serif;
   font-weight: bold;
-  margin: 0;
 }
 
 @media only screen and (max-width: 768px) {

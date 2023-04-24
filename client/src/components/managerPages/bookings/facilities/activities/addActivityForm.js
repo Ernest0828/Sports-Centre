@@ -3,35 +3,22 @@ import axios from 'axios'
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
+const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
   
-  const handleFormInputChange = (event) => {
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    const name = event.target.name;
-
-    if (name === 'isManager') {
-      setFormInputs({
-        ...formInputs,
-        [name]: value === 'Manager' ? true : false
-      });
-    } else {
-      setFormInputs({
-        ...formInputs,
-        [name]: value
-      });
-    }
-  };
+    const handleFormInputChange = (event) => {
+        setFormInputs({
+          ...formInputs,
+          [event.target.name]: event.target.value
+        });
+      };
       
       return (
-        <Modal show={show} onHide={handleClose}>
-        <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Edit Staff</Modal.Title>
-          <button className="btn-close" onClick={handleClose}>
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <Modal show={showAdd} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Staff</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleAddSubmit}>
       
             <Form.Group controlId="formStaffName">
               <Form.Label>Staff Name</Form.Label>
@@ -47,7 +34,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
             <Form.Group controlId="formStaffNumber">
               <Form.Label>Staff Number</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 name="staffNumber"
                 value={formInputs.staffNumber}
                 onChange={handleFormInputChange}
@@ -66,23 +53,29 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
               />
             </Form.Group>
 
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="text"
+                name="password"
+                value={formInputs.password}
+                onChange={handleFormInputChange}
+                placeholder="Enter staff password"
+              />
+            </Form.Group>
+
             <Form.Group controlId="formIsManager">
-            <div style={{display: 'block'}}>
-            <Form.Label>Manager?</Form.Label>
-            </div>
-            <div>
-            <Form.Select
-              name="isManager"
-              value={formInputs.isManager ? 'Manager' : 'Staff'}
-              onChange={handleFormInputChange}
-            >
-              <option>Manager</option>
-              <option>Staff</option>
-            </Form.Select>
-            </div>
-          </Form.Group>
+              <Form.Label>Manager?</Form.Label>
+              <Form.Control
+                type="boolean"
+                name="isManager"
+                value={formInputs.isManager}
+                onChange={handleFormInputChange}
+                placeholder="Employee ? Manager"
+              />
+            </Form.Group>
       
-            <Button style={{marginTop: "10px"}}variant="primary" type="submit">
+            <Button variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>
@@ -91,4 +84,4 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
     );
   };
 
-export default EditStaffForm;
+export default AddStaffForm;

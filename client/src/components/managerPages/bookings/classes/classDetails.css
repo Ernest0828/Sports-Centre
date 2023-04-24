@@ -1,34 +1,41 @@
-.classDetailsTitle{
-    color: black;
-
-    font-size: 20px ;
-    font-weight: 600;
-}
-
 .classDetailsTable{
-    padding: 0px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+    width: 95%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: black;
-    padding: 70px;
+    justify-content: center;
+    background-color: #f9f9f9;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    margin-top: 1%;
+    padding: 20px;
+    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+        border-radius: 10px;
+        color: black;
 }
 
+.classDetailsTitle{
+    color: black;
+    padding: 20px 20px 0;
+    font-size: 20px ;
+    font-weight: 600;
+    margin-top: 80px
+}
 
 table{
     border-collapse: collapse;
-    width: 80%;
+    width: 90%;
+    margin: 0 auto;
 }
 
 th{
     padding: 10px;
     text-align: left;
-    background-color: #1C768F;
+    background-color: #033756 ;
     color: white;
 }
+
+.dayTimeColumn {
+    width: 40%;
+  }
 
 
 td{
@@ -38,9 +45,19 @@ td{
 }
 
 .button{
-    width: 5%;
-    margin-top: 10px;
-    margin-left: 10px;
+    width: 50%;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.button:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
 }
 
 .deleteButton{
@@ -52,9 +69,18 @@ td{
 }
 
 .editButton{
-    width: 5%;
     margin-top: 10px;
     margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
+}
+
+button.editButton {
+  width: 40%;
 }
 
 

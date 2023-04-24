@@ -5,50 +5,35 @@ import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const EditFacilityForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
   
-    const handleFormInputChange = (event) => {
-        setFormInputs({
-          ...formInputs,
-          [event.target.name]: event.target.value
-        });
-      };
 
-    /*const handleSubmit = (event) => {
-        event.preventDefault();
-        // Update facility details with formInputs values
-        setFacilityDetails((prevState) => {
-        const newState = [...prevState];
-        const index = newState.findIndex(
-            (facility) => facility.name === selectedFacility.name
-        );
-        newState[index].name = formInputs.name;
-        newState[index].capacity = formInputs.capacity;
-        newState[index].start = formInputs.start;
-        newState[index].end = formInputs.end;
-        return newState;
-        });
-    
-        // Send updated facility details to server
-        axios.put(`/api/facilities/${selectedFacility.id}`, {
-        name: formInputs.name,
-        capacity: formInputs.capacity,
-        start: formInputs.start,
-        end: formInputs.end,
-        })
-        .then(response => {
-        console.log(response.data);
-        })
-        .catch(error => {
-        console.log(error);
-        });
-    
-        // Close modal
-        handleClose();
-    };*/
+      const handleFormInputChange = (event, index) => {
+        const { name, value } = event.target;
+        if (name.startsWith("activities[")) {
+          const activities = [...formInputs.activities];
+          const split = name.split(".");
+          const activityIndex = parseInt(split[0].substring(11), 10);
+          const data = split[1];
+          activities[activityIndex][data] = value;
+          setFormInputs({
+            ...formInputs,
+            activities,
+          });
+        } else {
+          setFormInputs({
+            ...formInputs,
+            [name]: value,
+          });
+        }
+      };
   
+
     return (
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Facility</Modal.Title>
+          <button className="btn-close" onClick={handleClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -57,9 +42,10 @@ const EditFacilityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
               <Form.Control
                 type="text"
                 name="name"
-                value={formInputs.name}
+                value={formInputs.facilityName}
                 onChange={handleFormInputChange}
                 placeholder="Enter facility name"
+                disabled = {true}
               />
             </Form.Group>
       
@@ -78,8 +64,8 @@ const EditFacilityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
               <Form.Label>Opening Time</Form.Label>
               <Form.Control
                 type="time"
-                name="start"
-                value={formInputs.start}
+                name="startTime"
+                value={formInputs.startTime}
                 onChange={handleFormInputChange}
                 placeholder="Enter opening time"
               />
@@ -89,37 +75,42 @@ const EditFacilityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
               <Form.Label>Closing Time</Form.Label>
               <Form.Control
                 type="time"
-                name="end"
-                value={formInputs.end}
+                name="endTime"
+                value={formInputs.endTime}
                 onChange={handleFormInputChange}
                 placeholder="Enter closing time"
               />
             </Form.Group>
 
-            <Form.Group controlId="formActivityName">
+            {formInputs.activities && formInputs.activities.map((activity, index) => (
+            <div key={index}>
+            <Form.Group controlId="formActivityName${index}">
               <Form.Label>Activity Name</Form.Label>
               <Form.Control
                 type="text"
-                name="activityName"
-                value={formInputs.activityName}
-                onChange={handleFormInputChange}
+                name= {`activities[${index}].activityName`}
+                value={activity.activityName}
+                onChange={(event) => handleFormInputChange(event, index)}
                 placeholder="Enter activity name"
+                disabled = {true}
               />
             </Form.Group>
 
-            <Form.Group controlId="formPrice">
+            <Form.Group controlId="formPrice${index}">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
                 step="0.01"
-                name="price"
-                value={formInputs.price}
-                onChange={handleFormInputChange}
+                name= {`activities[${index}].price`}
+                value={activity.price}
+                onChange={(event) => handleFormInputChange(event, index)}
                 placeholder="Enter price"
               />
             </Form.Group>
+            </div>
+          ))}
       
-            <Button variant="primary" type="submit">
+            <Button style={{marginTop: "10px"}} variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>

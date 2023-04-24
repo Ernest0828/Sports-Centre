@@ -23,7 +23,7 @@ const ManagerLogin = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await axios.post("http://localhost:5000/auth/staff/login", credentials);
+        const res = await axios.post("http://localhost:4000/auth/staff/login", credentials);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate('/facilitydetails')
@@ -44,7 +44,7 @@ const ManagerLogin = () => {
                     </div>
                     <div className="loginRight">
                         <div className="loginBox">
-                            <span className="loginBoxDesc">Login</span>
+                            <span className="loginBoxDesc">Staff Login</span>
                             <input id="staffEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
                             <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
                             <button disabled={loading} onClick={handleClick} className="loginButton">Log In</button>
