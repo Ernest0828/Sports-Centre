@@ -1,3 +1,7 @@
+.classDetails {
+    margin-top: 120px;
+}
+
 .classDetailsTable{
     width: 95%;
     display: flex;
@@ -17,7 +21,6 @@
     padding: 20px 20px 0;
     font-size: 20px ;
     font-weight: 600;
-    margin-top: 80px
 }
 
 table{

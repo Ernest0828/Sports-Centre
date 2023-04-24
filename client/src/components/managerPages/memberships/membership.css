@@ -2,18 +2,18 @@
     background-color: red;
 }
 
-.staffDetails {
+.customerDetails {
     margin-top: 120px;
 }
 
-.staffDetailsTitle{
+.customerDetailsTitle{
     color: black;
     padding: 20px 20px 0;
     font-size: 20px ;
     font-weight: 600;
 }
 
-.staffDetailsTable{
+.customerDetailsTable{
     display: flex;
     height: 100%;
     width: 100%;
@@ -64,7 +64,7 @@ td{
 	color: white;
 }
 
-.deleteButton{
+.deleteCustomerButton{
     width: 80px;
 	border: none;
 	border-radius: 20px;
@@ -74,13 +74,13 @@ td{
     background-color: grey;
 }
 
-.deleteButton:hover{
+.deleteCustomerButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
 }
 
-.editStaffButton{
+.editCustomerButton{
     margin-top: 10px;
     margin-left: 10px;
 	border: none;
@@ -91,7 +91,7 @@ td{
     box-sizing: border-box;
 }
 
-button.editStaffButton {
+button.editCustomerButton {
   width: 80%;
 }
 

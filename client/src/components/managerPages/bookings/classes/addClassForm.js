@@ -60,14 +60,25 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             </Form.Group>
       
             <Form.Group controlId="formDay">
-              <Form.Label>Available Days</Form.Label>
-              <Form.Control
-                type="day"
+            <div style={{display: 'block'}}>
+              <Form.Label>Day</Form.Label>
+            </div>
+            <div>
+              <Form.Select
                 name="day"
                 value={formInputs.day}
                 onChange={handleFormInputChange}
-                placeholder="Monday"
-              />
+              >
+                <option value="">Select day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </Form.Select>
+              </div>
             </Form.Group>
 
             <Form.Group controlId="formStartTime">

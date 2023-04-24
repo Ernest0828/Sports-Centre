@@ -14,10 +14,10 @@ const ManagerProfile = () => {
     return (
         <Fragment>
             <Navbar/>
-            <div className="profile">
-                <div className="profileWrapper">
+            <div className="manager-profile">
+                <div className="managerProfileWrapper">
                     < ManagerProfileInfo/>
-                    <div className="profileRight">
+                    <div className="managerProfileRight">
                         <span className="userBookingsTitle">Usage and Sales</span>
                         <div className="userBookingsTable">
                             <table>

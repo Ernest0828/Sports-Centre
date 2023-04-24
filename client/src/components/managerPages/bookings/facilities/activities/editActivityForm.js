@@ -18,12 +18,28 @@ const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
           });
       }, []);
   
-
+  
   const handleFormInputChange = (event) => {
-    setFormInputs({
-      ...formInputs,
-      [event.target.name]: event.target.value
-    });
+    const { name, value } = event.target;
+    if (name === "startTime" || name === "endTime") {
+      // Check if the user deletes the time value
+      if (value === "") {
+        setFormInputs((prevState) => ({
+          ...prevState,
+          [name]: null,
+        }));
+      } else {
+        setFormInputs((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormInputs((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
   
   
@@ -50,14 +66,25 @@ const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
             </Form.Group>
       
             <Form.Group controlId="formDay">
+            <div style={{display: 'block'}}>
               <Form.Label>Day</Form.Label>
-              <Form.Control
-                type="day"
+            </div>
+            <div>
+              <Form.Select
                 name="day"
                 value={formInputs.day}
                 onChange={handleFormInputChange}
-                placeholder="Wednesday"
-              />
+              >
+                <option value="">Select day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </Form.Select>
+              </div>
             </Form.Group>
       
             <Form.Group controlId="formStart">

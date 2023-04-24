@@ -178,9 +178,9 @@ const FacilityDetails = () => {
           "Page is loading please wait"
           ) : ( 
           <>
-          <div className="facilityactivityDetails">
-                <h1 className="facilityactivityDetailsTitle">Facility Details</h1>
-                      <div className="facilityactivityDetailsTable">
+          <div className="facilityActivityDetails">
+                <h1 className="facilityActivityDetailsTitle">Facility Details</h1>
+                      <div className="facilityActivityDetailsTable">
                             <table>
                                 <thead>
                                     <tr>
