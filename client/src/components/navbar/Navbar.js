@@ -40,8 +40,8 @@ const Navbar = () => {
       <div className="navRight">
         {user && 
         <ul className="navList">
-          <li className="navItem" onClick={() => window.location.reload()}>
-            <Link to="/profile" className="navLink">
+          <li className="navItem">
+            <Link to="/profile" className="navLink" onClick={() => window.location.href="/profile"}>
               Profile
             </Link>
           </li>
