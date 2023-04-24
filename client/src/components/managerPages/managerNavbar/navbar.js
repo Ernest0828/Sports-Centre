@@ -34,11 +34,6 @@ const Navbar = () => {
               Staff
             </Link>
           </li>
-          {/*<li className="navItem">
-            <Link to="/pricing" className="navLink">
-              Pricing
-            </Link>
-            </li>*/}
         </ul>
       </div>
     
@@ -46,7 +41,7 @@ const Navbar = () => {
         {user && 
         <ul className="navList">
           <li className="navItem">
-            <Link to="/manager-profile" className="navLink">
+            <Link to="/manager-profile" className="navLink" >
               Profile
             </Link>
           </li>
@@ -56,7 +51,7 @@ const Navbar = () => {
         {user && 
         <ul className="navList">
           <li className="navItem">
-          <Link to="/" className="navLink navLogout" onClick={() => dispatch({ type: "LOGOUT" })}>
+          <Link to="/" className="navLink navLogout" onClick={() => dispatch({ type: "LOGOUT" }) && window.location.reload()}>
             Logout
           </Link>
           </li>

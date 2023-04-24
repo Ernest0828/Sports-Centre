@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ManagerProfileInfo from "./managerProfileInfo";
 import Navbar from "../../managerPages/managerNavbar/navbar"
 
-const MemberProfile = () => {
+const ManagerProfile = () => {
     const [bookings, setBookings] = useState([
         { id: 1, facility: "Sports Hall", classes: "Volleyball" },
         { id: 2, facility: "Swimming Pool", classes: "Lap Swim" },
@@ -47,4 +47,4 @@ const MemberProfile = () => {
      );
 };
 
-export default MemberProfile;
+export default ManagerProfile;
