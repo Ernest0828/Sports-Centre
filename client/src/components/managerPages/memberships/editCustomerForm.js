@@ -14,11 +14,6 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormI
         ...formInputs,
         [name]: value === 'Member' ? true : false
       });
-    } else if (name === 'membershipType') {
-        setFormInputs({
-            ...formInputs,
-            [name]: value === '<Monthly>' ?  "MONTHLY" : "ANNUAL"
-          });
     } else {
       setFormInputs({
         ...formInputs,
@@ -88,19 +83,18 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormI
             </Form.Group>
 
             <Form.Group controlId="formMembershipType">
-                <div style={{display: 'block'}}>
-                <Form.Label>Membership Type</Form.Label>
-                </div>
-                <div>
-                <Form.Select
+            <div style={{display: 'block'}}>
+            <Form.Label>Membership Type</Form.Label>
+            </div>
+            <Form.Select
                 name="membershipType"
                 value={formInputs.membershipType}
                 onChange={handleFormInputChange}
-                >
-                <option>Monthly</option>
-                <option>Annual</option>
-                </Form.Select>
-                </div>
+            >
+                <option value="">Please choose an option</option>
+                <option value="MONTHLY">Monthly</option>
+                <option value="ANNUAL">Annual</option>
+            </Form.Select>
             </Form.Group>
       
             <Button style={{marginTop: "10px"}}variant="primary" type="submit">

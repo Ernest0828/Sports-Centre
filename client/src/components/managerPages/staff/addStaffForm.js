@@ -70,7 +70,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type="bcryptpassword"
                 name="password"
                 value={formInputs.password}
                 onChange={handleFormInputChange}
@@ -80,7 +80,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
 
             <Form.Group controlId="formIsManager">
             <div style={{display: 'block'}}>
-            <Form.Label>Manager?</Form.Label>
+            <Form.Label>Title</Form.Label>
             </div>
             <div>
             <Form.Select
@@ -88,7 +88,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
               value={formInputs.isManager}
               onChange={handleFormInputChange}
             >
-              <option value="">Please choose an option</option>
+              <option selected>Please select an option</option>
               <option value="Manager">Manager</option>
               <option value="Staff">Staff</option>
             </Form.Select>

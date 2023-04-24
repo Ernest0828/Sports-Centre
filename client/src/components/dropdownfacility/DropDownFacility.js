@@ -8,8 +8,8 @@ import { Auth } from '../../context/Auth';
 function DropdownChoice(props) {
 
   //useFetch Hooks
-  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
-  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
+  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
 
   const [selectedOptionA, setSelectedOptionA] = useState('');
   const [selectedOptionB, setSelectedOptionB] = useState('');
@@ -89,7 +89,7 @@ const handleOptionAChange = (event)=> {
       if (activityID === null) {
         throw new Error("Invalid option combination"); // throw an error if there is no matching activity ID
       }
-      await axios.post('http://localhost:5000/api/bookings/bookingid', {
+      await axios.post('http://localhost:4000/api/bookings/bookingid', {
         date: selectedDate,
         start: selectedOptionC, 
         customerId: user.details.customerId, //Get the current ID 

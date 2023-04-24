@@ -99,7 +99,7 @@ const Staff = () => {
       });
 
       // Send updated facility details to server
-      axios.put(`http://localhost:5000/api/employee/${selectedStaff.staffId}`, {
+      axios.put(`http://localhost:4000/api/employee/${selectedStaff.staffId}`, {
 
         //staffId: formInputs.staffId,
         staffName: formInputs.staffName,
@@ -155,7 +155,7 @@ const Staff = () => {
     
       // Close modal
       handleClose();
-      window.location.reload()
+      window.location.reload();
     };
 
     const handleDelete = (staffId) => {
