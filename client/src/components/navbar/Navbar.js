@@ -40,7 +40,7 @@ const Navbar = () => {
       <div className="navRight">
         {user && 
         <ul className="navList">
-          <li className="navItem">
+          <li className="navItem" onClick={() => window.location.reload()}>
             <Link to="/profile" className="navLink">
               Profile
             </Link>
@@ -58,13 +58,12 @@ const Navbar = () => {
             Login
           </Link>
           <ul className="navDropdownList">
-            <li className="navItem">
+            <li className="navItem" onClick={() => window.location.reload()}>
               <Link to="/login" className="navLink">
                 User
               </Link>
             </li>
-            <li className="navItem">
-              {/* Change to staff link later */}
+            <li className="navItem" onClick={() => window.location.reload()}>
               <Link to="/manager-login" className="navLink">
                 Staff
               </Link>
