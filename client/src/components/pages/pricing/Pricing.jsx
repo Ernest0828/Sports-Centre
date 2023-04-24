@@ -52,8 +52,8 @@ const PricingClass = () => {
 
     return (
         <Fragment>
-            <Navbar />
-            <div className="scrollable-container">
+        <Navbar />
+            <div className="pricing">
                 <div className="pricing-container">
                     <div className="membership-container">
                         <h2 className="title">GymCorp Membership</h2>
