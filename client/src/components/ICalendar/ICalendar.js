@@ -1,13 +1,12 @@
 import React, { Fragment } from "react";
 import "./ICalendar.css";
-import Navbar from "../../navbar/navbar";
+
 
 const ICalendar = () => {
   return (
     <div className="Cal-container">
-      <Navbar />
       <div className="Calendar">
-        <h1 className="title">Pool Timetable</h1>
+        <h1 className="title"> Timetable</h1>
         <table className="timetable">
           <tr>
             <th>Time</th>

@@ -31,12 +31,12 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // 3. Delete facility (only for manager)
-router.delete("/:id", verifyManager, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(req.params.id);
         if(!facility) return res.status(404).json("Facility not found");
         else { 
-            await facility.destroy(req.body);
+            await facility.destroy();
             res.status(200).json("Facility deleted");
         }
     } catch (err) {

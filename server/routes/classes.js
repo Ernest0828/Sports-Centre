@@ -41,7 +41,7 @@ router.delete("/:id", verifyManager, async (req, res, next) => {
         const classes = await Classes.findByPk(req.params.id);
         if(!classes) return res.status(404).json("Classes not found");
         else { 
-            await classes.destroy(req.body);
+            await classes.destroy();
             res.status(200).json("Class deleted");
         }
     } catch (err) {

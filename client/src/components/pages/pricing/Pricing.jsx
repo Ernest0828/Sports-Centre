@@ -8,8 +8,6 @@ const PricingClass = () => {
     const [classData, setClassData] = useState([]);
     const [facilityData, setFacilityData] = useState([]);
     const [activityData, setActivityData] = useState([]);
-    
-
 
     useEffect(() => {
         async function fetchClassesData() {
@@ -49,6 +47,10 @@ const PricingClass = () => {
         fetchFacilitiesData();
         fetchActivityData();
     }, []);
+
+    // Filter out the "Studio" facility
+    const filteredFacilities = facilityData.filter(
+        (facility) => facility.facilityName !== "Studio");
 
     return (
         <Fragment>
@@ -97,7 +99,7 @@ const PricingClass = () => {
                     <h2 className="title">Activities</h2>
                     <p className="header">Check out all activities that we offer at each of our facilities.</p>
                     <div className="facility-list">
-                    {facilityData.filter(facility => facility.facilityName !== "Studio" && activityData.some(activity => activity.facilityName === facility.facilityName)).map((facility) => (
+                    {filteredFacilities.map((facility) => (
                         <div key={facility.facilityName} className="facility-item">
                         <h3>{facility.facilityName}</h3>
                         <p>{activityData.filter((activity) => activity.facilityName === facility.facilityName).map((activity) => (

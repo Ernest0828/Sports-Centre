@@ -1,0 +1,30 @@
+.dropdownWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-direction: column;
+    /* align-items: start; */
+  }
+
+  .dropdownFacility label,
+  .dropdownActivity label,
+  .dropdownTime label {
+    margin-right: 10px; /* Add spacing between label and dropdown */
+    width: 100%;
+  }
+  
+select {
+  width: 50%; /* Increase dropdown size */
+  padding: 5px; /* Add padding to dropdown */
+}
+
+.dropdownWrapper>button{
+  border:none;
+  padding: 10px 20px;
+  background-color: #033756;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
