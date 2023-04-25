@@ -31,7 +31,7 @@ const Navbar = () => {
           </li>
           <li className="managerNavItem">
             <Link to="/staff" className="managerNavLink">
-              Staff
+              Employees
             </Link>
           </li>
           <li className="managerNavItem">

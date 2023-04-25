@@ -44,7 +44,7 @@ const ManagerLogin = () => {
                     </div>
                     <div className="loginRight">
                         <div className="loginBox">
-                            <span className="loginBoxDesc">Staff Login</span>
+                            <span className="loginBoxDesc">Employee Login</span>
                             <input id="staffEmail" placeholder="Email" className="loginInput" onChange={handleChange}/>
                             <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
                             <button disabled={loading} onClick={handleClick} className="loginButton">Log In</button>

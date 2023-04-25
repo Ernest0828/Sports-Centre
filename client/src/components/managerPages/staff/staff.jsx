@@ -155,7 +155,7 @@ const Staff = () => {
     
       // Close modal
       handleClose();
-      window.location.reload();
+      //window.location.reload();
     };
 
     const handleDelete = (staffId) => {

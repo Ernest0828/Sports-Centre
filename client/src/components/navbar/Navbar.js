@@ -62,7 +62,7 @@ const Navbar = () => {
                 User
             </li>
             <li className="navItem" onClick={() => window.location.href="/manager-login"}>
-                Staff
+                Employee
             </li>
           </ul>
         </div>
