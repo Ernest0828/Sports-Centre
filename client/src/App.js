@@ -24,6 +24,7 @@ import ManagerProfileInfo from "./components/managerPages/managerProfile/manager
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
 import MembershipDetails from './components/managerPages/memberships/membershipDetails';
+import BookingDetails from './components/managerPages/bookings/bookings/bookings';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
 
@@ -62,6 +63,7 @@ function App() {
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
+          <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
 
           <Route path="/pricing" element={<Pricing />} />

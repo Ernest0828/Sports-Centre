@@ -9,7 +9,7 @@ const verifyManager = require("../middleware/verifyManager");
 //ROUTES//
 
 // routes for creating new staff
-router.post("/register", verifyManager, validData, async (req, res, next) => {
+router.post("/register", validData, async (req, res, next) => {
     // destructure req.body (name, number, email, password)
     const { name, number, email, password, isManager } = req.body;
 

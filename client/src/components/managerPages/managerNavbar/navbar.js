@@ -6,37 +6,52 @@ import "./navbar.css";
 const Navbar = () => {
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
+  const {isManager} = useContext(Auth);
+
 
   return (
     <nav className="managerNavbar">
       <div className="managerNavLeft">
-        <Link to="/" className="managerNavLogo">
+        <Link to="/manager-profile" className="managerNavLogo">
           GymCorp
         </Link>
         <ul className="managerNavList">
+        {isManager &&
           <li className="managerNavItem">
             <Link to="/facilitydetails" className="managerNavLink">
               Facilities
             </Link>
           </li>
+        }
+        {isManager &&
           <li className="managerNavItem">
             <Link to="/activitydetails" className="managerNavLink">
               Activities
             </Link>
           </li>
+        }   
+        {isManager &&
           <li className="managerNavItem">
             <Link to="/classdetails" className="managerNavLink">
               Classes
             </Link>
           </li>
+        }
+        {isManager &&
           <li className="managerNavItem">
             <Link to="/staff" className="managerNavLink">
               Employees
             </Link>
           </li>
+        }
           <li className="managerNavItem">
             <Link to="/membershipdetails" className="managerNavLink">
               Memberships
+            </Link>
+          </li>
+          <li className="managerNavItem">
+            <Link to="/bookingdetails" className="managerNavLink">
+              Bookings
             </Link>
           </li>
         </ul>
