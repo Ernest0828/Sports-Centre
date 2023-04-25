@@ -195,8 +195,8 @@ const Staff = () => {
               setFormInputs={setFormInputs}
             />
             <div  className="staffDetails">
-                <h1 className="staffDetailsTitle">GymCorp Staff</h1>
-                    <div className="staffDetailsTable">
+              <div className="staffDetailsTable">
+                  <h1 className="staffDetailsTitle">Employees</h1>
                         <table>
                             <thead>
                                 <tr>

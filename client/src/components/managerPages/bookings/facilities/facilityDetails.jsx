@@ -179,8 +179,8 @@ const FacilityDetails = () => {
           ) : ( 
           <>
           <div className="facilityActivityDetails">
-                <h1 className="facilityActivityDetailsTitle">Facility Details</h1>
-                      <div className="facilityActivityDetailsTable">
+                <div className="facilityActivityDetailsTable">
+                      <h1 className="facilityActivityDetailsTitle">Facilities</h1>
                             <table>
                                 <thead>
                                     <tr>

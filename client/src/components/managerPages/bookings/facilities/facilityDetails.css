@@ -1,10 +1,13 @@
 .facilityActivityDetails{
     margin-top: 120px;
+    justify-content: center;
+    align-items: center;
 }
 
 .facilityActivityDetailsTable{
     width: 95%;
     display: flex;
+    margin: 0 auto;
     flex-direction: column;
     justify-content: center;
     background-color: #f9f9f9;
@@ -20,6 +23,8 @@
     padding: 20px 20px 0;
     font-size: 20px ;
     font-weight: 600;
+    margin-bottom: 2%;
+    margin-left: 1%;
 }
 
 table{

@@ -1,9 +1,7 @@
-.pageBackground {
-    background-color: red;
-}
-
 .customerDetails {
     margin-top: 120px;
+    justify-content: center;
+    align-items: center;
 }
 
 .customerDetailsTitle{
@@ -11,12 +9,13 @@
     padding: 20px 20px 0;
     font-size: 20px ;
     font-weight: 600;
+    margin-bottom: 2%;
+    margin-left: 1%;
 }
 
 .customerDetailsTable{
     display: flex;
-    height: 100%;
-    width: 100%;
+    width: 95%;
     padding: 70px;
     padding-left: 50px;
     background-color: #f9f9f9;

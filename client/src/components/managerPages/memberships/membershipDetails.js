@@ -136,8 +136,8 @@ const MembershipDetails = () => {
               setFormInputs={setFormInputs}
             />
             <div  className="customerDetails">
-                <h1 className="customerDetailsTitle">GymCorp Customers</h1>
-                    <div className="customerDetailsTable">
+              <div className="customerDetailsTable">
+                <h1 className="customerDetailsTitle">Customers</h1>
                         <table>
                             <thead>
                                 <tr>
