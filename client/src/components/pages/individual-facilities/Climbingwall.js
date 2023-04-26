@@ -2,7 +2,6 @@ import React,{ useState, useEffect } from 'react'
 import "./climbingwall.css"
 import Navbar from "../../navbar/Navbar"
 import DropdownChoice from '../../dropDownFacility/DropDownFacility';
-// import ReactDatePicker from '../../Calendar/ReactDatePicker';
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import ICalendar from '../../ICalendar/ICalendar';

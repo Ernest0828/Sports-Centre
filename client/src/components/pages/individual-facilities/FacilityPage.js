@@ -1,5 +1,5 @@
 import React,{ useState, useEffect, useContext } from 'react'
-import Navbar from "../../navbar/navbar"
+import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import ICalendar from '../../ICalendar/ICalendar';
