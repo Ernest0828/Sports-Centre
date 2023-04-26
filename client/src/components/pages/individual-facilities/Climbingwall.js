@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import "./climbingwall.css"
 import Navbar from "../../navbar/Navbar"
-import DropdownChoice from '../../dropDownFacility/DropDownFacility';
+import DropdownChoice from '../../dropdownfacility/DropDownFacility';
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import ICalendar from '../../ICalendar/ICalendar';
