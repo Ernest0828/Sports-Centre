@@ -14,7 +14,7 @@ const Aerobics = () => {
     <div>
       <Navbar/>
 					<div className="aerobicsContainer">
-            {/* <MyCalendar /> */}
+
 					<div className="aerobicsWrapper">
                 <ICalendar/>
 									{/* <button className="bookNow">Reserve or book now</button> */}
