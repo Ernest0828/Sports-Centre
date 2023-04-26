@@ -61,7 +61,6 @@ const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
                 value={formInputs.activityName}
                 onChange={handleFormInputChange}
                 placeholder="General Use"
-                //disabled = {true}
               />
             </Form.Group>
       

@@ -65,7 +65,7 @@ td{
 }
 
 .deleteBookingButton{
-    width: 80px;
+    width: 100%;
 	border: none;
 	border-radius: 20px;
 	padding: 5px;
@@ -92,11 +92,11 @@ td{
 }
 
 button.editBookingButton {
-  width: 80%;
+  width: 100%;
 }
 
 .addBookingButton{
-    width: 80px;
+    width: 110px;
 	border: none;
 	border-radius: 20px;
     margin-top: 5px;
