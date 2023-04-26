@@ -27,17 +27,13 @@ import Dashboard from "./components/pages/dashboard/Dashboard"
 
 
 import Climbingwall from './components/pages/individual facilities/Climbingwall';
-import Fitnessroom from './components/pages/individual facilities/Fitnessroom';
-import Sportshall from './components/pages/individual facilities/Sportshall';
-import Swimmingpool from './components/pages/individual facilities/Swimmingpool';
-import Squashcourt from './components/pages/individual facilities/Squashcourt';
-import Studio from './components/pages/individual facilities/Studio';
+
 import Aerobics from './components/pages/individual classes/Aerobics';
-import Pilates from './components/pages/individual classes/Pilates';
-import Yoga from './components/pages/individual classes/Yoga';
 import MyComponent from './components/dropdownfacility/dropdown';
 import DropdownChoice from './components/dropdownfacility/dropdown';
-import successPage from './components/pages/success/successPage';
+import SuccessPage from './components/pages/success/SuccessPage';
+import CancelPage from './components/pages/cancel/CancelPage';
+import FacilityPage from './components/pages/individual facilities/FacilityPage';
 
 function App() {
   const {user} = useContext(Auth);
@@ -60,23 +56,17 @@ function App() {
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
           <Route path="/pricing" element={<Pricing />} />
-          <Route path="/pricing" element={<Pricing />} />
           <Route exact path="/aerobics" element={<Aerobics/>}/>
-          <Route exact path="/pilates" element={<Pilates/>}/>
-          <Route exact path="/yoga" element={<Yoga/>}/>
 
-          <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
           <Route exact path="/climbingwall" element={<Climbingwall/>}/>
-          <Route exact path="/fitnessroom" element={<Fitnessroom/>}/>
-          <Route exact path="/sportshall" element={<Sportshall/>}/>
-          <Route exact path="/swimmingpool" element={<Swimmingpool/>}/>
-          <Route exact path="/squashcourt" element={<Squashcourt/>}/>
-          <Route exact path="/studio" element={<Studio/>}/>
+
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-          <Route exact path="/success" element={<successPage/>}/>
+          <Route exact path ="/successful" element={<SuccessPage/>}/>
+          <Route exact path="/cancelled" element={<CancelPage/>}/>
+          <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
           
 
           

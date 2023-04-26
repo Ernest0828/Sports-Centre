@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { Link } from "react-router-dom";
 import Navbar from "../../navbar/navbar";
-import "./dashboard.css";
+import "./Dashboard.css";
 import Carousel from "./Carousel";
 import {sports} from "./Data";
 

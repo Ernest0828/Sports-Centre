@@ -1,14 +1,15 @@
 import axios from "axios";
 import { Auth } from '../../context/Auth';
 import React, { useContext } from 'react';
-
+const url = "http://localhost:5000/api";
 
  const PayButton = ({items}) => {
 
     const{user} = useContext(Auth);
 
     const handleCheckout= async() =>{
-        axios.post("http://localhost:5000/api/create-checkout-session",{
+        console.log(items);
+        axios.post(`${url}/stripe/create-checkout-session`,{
             items,
            customerId: user.details.customerId
         }).then((res) => {

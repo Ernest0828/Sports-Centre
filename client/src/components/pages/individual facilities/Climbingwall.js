@@ -2,7 +2,6 @@ import React,{ useState, useEffect } from 'react'
 import "./climbingwall.css"
 import Navbar from "../../navbar/navbar"
 import DropdownChoice from '../../dropdownfacility/dropdown';
-// import ReactDatePicker from '../../Calendar/ReactDatePicker';
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import ICalendar from '../../ICalendar/ICalendar';
@@ -11,8 +10,11 @@ import ICalendar from '../../ICalendar/ICalendar';
 
 
 const Climbingwall = () => {
-    const[selectedDate, setSelectedDate] = useState(null)
+    const[selectedDate, setSelectedDate] = useState(new Date())
+    const[selectedFacilityAndActivity, setSelectedFacilityAndActivity] = useState('');
+
     
+
     return (
         <div>
             <Navbar/>
@@ -28,18 +30,10 @@ const Climbingwall = () => {
                                             minDate={new Date()} // set minimum date to today's date
                                              maxDate={new Date(Date.now() + 12096e5)} // set maximum date to 2 weeks from today 
                                              />        
-                                            <DropdownChoice selectedDate={selectedDate} />                                                                                                            
-                                                {/* <h2>
-                                                    Special requests
-                                                </h2> */}
-                                                {/* <textarea placeholder="Any special requests?"></textarea> */}
-                                                {/* <h2>
-                                                <b>$999</b> (per hour)
-                                            </h2> */}
-                                                {/* <button> Book now</button> */}
+                                            <DropdownChoice selectedDate={selectedDate} setSelectedFacilityAndActivity={setSelectedFacilityAndActivity} />                                                                                                            
                                     </div>
                             </div>  
-                            <Basket/>                                                              
+                            <Basket selectedFacilityAndActivity = {selectedFacilityAndActivity}/>                                                              
                     </div>
                 </div>
         </div>    

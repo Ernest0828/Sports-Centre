@@ -15,6 +15,7 @@ function DropdownChoice(props) {
   const [selectedOptionB, setSelectedOptionB] = useState('');
   const [selectedOptionC, setSelectedOptionC] = useState('');
   const {selectedDate} = props;
+  // const [selectedFacilityAndActivity, setSelectedFacilityAndActivity] = useState('');
 
   const{user} = useContext(Auth);
   
@@ -88,31 +89,37 @@ const handleOptionAChange = (event)=> {
     setSelectedOptionC('');
   }, [selectedOptionA, selectedOptionB]);
 
-  const handleBooking = async () => {
-    try {
-      const activityID = getActivityID(selectedOptionA, selectedOptionB);
-      if (activityID === null) {
-        throw new Error("Invalid option combination"); // throw an error if there is no matching activity ID
-      }
-      await axios.post('http://localhost:5000/api/bookings/bookingid', {
-        date: selectedDate,
-        start: selectedOptionC, 
-        customerId: user.details.customerId, //Get the current ID 
-        activityId: activityID, //convert the selectedOptionB to activity number
-        classId: null, //convert to ID instead of name
-        facilityName: selectedOptionA 
-      });
-      alert('Booking successful!');
-    } catch (err) {
-      console.log(err);
-      alert("Booking unsuccessful!");
-    }
-  };
+  // const handleBooking = async () => {
+  //   const setselectedFacilityAndActivity = `${selectedOptionA} - ${selectedOptionB}`;
+  // };
+
+  // THIS IS TO SEND STUFF TO BOOKING TABLE DIRECTLY
+  // const handleBooking = async () => {
+  //   try {
+  //     const activityID = getActivityID(selectedOptionA, selectedOptionB);
+  //     if (activityID === null) {
+  //       throw new Error("Invalid option combination"); // throw an error if there is no matching activity ID
+  //     }
+  //     await axios.post('http://localhost:5000/api/bookings/bookingid', {
+  //       date: selectedDate,
+  //       start: selectedOptionC, 
+  //       customerId: user.details.customerId, //Get the current ID 
+  //       activityId: activityID, //convert the selectedOptionB to activity number
+  //       classId: null, //convert to ID instead of name
+  //       facilityName: selectedOptionA 
+  //     });
+  //     alert('Booking successful!');
+  //   } catch (err) {
+  //     console.log(err);
+  //     alert("Booking unsuccessful!");
+  //   }
+  // };
 
 
   return (
     <div className='dropdownWrapper'>
         <div className="dropdownFacility">
+        <p>{selectedDate.toLocaleDateString()}</p>
       <label>Facility :</label>
       <select value={selectedOptionA} onChange={handleOptionAChange}>
         <option value=''>Select a facility</option>
@@ -141,7 +148,7 @@ const handleOptionAChange = (event)=> {
         ))}
       </select>
       </div>
-      <button onClick={handleBooking}>Book now</button>
+      <button /*onClick={handleBooking}*/>Add to cart</button>
     </div>
   );
 }

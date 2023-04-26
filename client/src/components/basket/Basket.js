@@ -1,26 +1,20 @@
-import React, { Fragment, useState, useContext} from "react";
+import React, { Fragment, useState, useContext, useEffect} from "react";
 import "./basket.css";
 import { Link } from "react-router-dom";
 import {Auth} from "../../context/Auth"
+import PayButton from "../paybutton/PayButton";
 
-//used chatgpt for inspiration on the remove function
-export default function Basket() {
+export default function Basket({basketItems = [], removeItem}) {
 
   const {user} = useContext(Auth);
 
-  const [items, setItems] = useState([
-    { description: "Swimming Pool - General use", cost: 8.0 },
-    { description: "Swimming Pool - General use", cost: 8.0 },
-    { description: "Swimming Pool - General use", cost: 8.0 },
-    { description: "Swimming Pool - General use", cost: 8.0 },
-    { description: "Fitness room  - 1 Hour", cost: 8.0},
-  ]);
+  
+  //Need to make this array dynamic such that it takes in the info/data from the booking details
+  const [items, setItems] = useState([]);
 
-  const removeItem = (index) => {
-    const newItems = [...items];
-    newItems.splice(index, 1);
-    setItems(newItems);
-  };
+  useEffect(() => {
+    setItems(basketItems);
+  }, [basketItems]);
 
   return (
     <Fragment>
@@ -68,7 +62,7 @@ export default function Basket() {
           )}
             
           </div>
-          <button className="checkoutButton">Check Out</button>
+          <PayButton items = {items}/>
         </div>
       </div>
     </Fragment>
