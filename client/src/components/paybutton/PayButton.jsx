@@ -8,7 +8,7 @@ import React, { useContext } from 'react';
     const{user} = useContext(Auth);
 
     const handleCheckout= async() =>{
-        axios.post("http://localhost:5000/api/create-checkout-session",{
+        axios.post("http://localhost:4000/api/create-checkout-session",{
             items,
            customerId: user.details.customerId
         }).then((res) => {

@@ -174,8 +174,8 @@ const ActivityDetails = () => {
               setFormInputs={setFormInputs}
             />
             <div className="activityDetails">
-                    <h1 className="activityDetailsTitle">Activities</h1>
-                    <div className="activityDetailsTable">
+                <div className="activityDetailsTable">
+                  <h1 className="activityDetailsTitle">Activities</h1>
                         <table>
                             <thead>
                                 <tr>

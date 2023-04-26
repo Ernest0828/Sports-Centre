@@ -68,7 +68,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
 
             <Form.Group controlId="formIsManager">
             <div style={{display: 'block'}}>
-            <Form.Label>Manager?</Form.Label>
+            <Form.Label>Title</Form.Label>
             </div>
             <div>
             <Form.Select

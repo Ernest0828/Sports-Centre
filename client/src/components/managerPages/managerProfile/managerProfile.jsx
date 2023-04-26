@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ManagerProfileInfo from "./managerProfileInfo";
 import Navbar from "../../managerPages/managerNavbar/navbar"
 
-const MemberProfile = () => {
+const ManagerProfile = () => {
     const [bookings, setBookings] = useState([
         { id: 1, facility: "Sports Hall", classes: "Volleyball" },
         { id: 2, facility: "Swimming Pool", classes: "Lap Swim" },
@@ -14,10 +14,10 @@ const MemberProfile = () => {
     return (
         <Fragment>
             <Navbar/>
-            <div className="profile">
-                <div className="profileWrapper">
+            <div className="manager-profile">
+                <div className="managerProfileWrapper">
                     < ManagerProfileInfo/>
-                    <div className="profileRight">
+                    <div className="managerProfileRight">
                         <span className="userBookingsTitle">Usage and Sales</span>
                         <div className="userBookingsTable">
                             <table>
@@ -47,4 +47,4 @@ const MemberProfile = () => {
      );
 };
 
-export default MemberProfile;
+export default ManagerProfile;

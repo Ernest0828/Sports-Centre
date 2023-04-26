@@ -198,7 +198,7 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
       activityId,
       classId,
       facilityName,
-      paymentId,
+      //paymentId,
     } = req.body;
 
     // Check if the specified activity or class exists

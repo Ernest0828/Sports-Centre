@@ -1,10 +1,10 @@
-.activityDetails {
+.customerDetails {
     margin-top: 120px;
     justify-content: center;
     align-items: center;
 }
 
-.activityDetailsTitle{
+.customerDetailsTitle{
     color: black;
     padding: 20px 20px 0;
     font-size: 20px ;
@@ -13,18 +13,18 @@
     margin-left: 1%;
 }
 
-.activityDetailsTable{
+.customerDetailsTable{
     display: flex;
     margin: 0 auto;
     width: 95%;
-    padding: 20px;
+    padding: 70px;
+    padding-left: 50px;
     background-color: #f9f9f9;
     border-radius: 10px;
     flex-direction: column;
     justify-content: center;
+    color: black;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
-        border-radius: 10px;
-        color: black;
 }
 
 
@@ -64,7 +64,7 @@ td{
 	color: white;
 }
 
-.deleteButton{
+.deleteCustomerButton{
     width: 80px;
 	border: none;
 	border-radius: 20px;
@@ -74,14 +74,13 @@ td{
     background-color: grey;
 }
 
-.deleteButton:hover{
+.deleteCustomerButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
 }
 
-.editActivityButton{
-    width: 100px;
+.editCustomerButton{
     margin-top: 10px;
     margin-left: 10px;
 	border: none;
@@ -92,8 +91,25 @@ td{
     box-sizing: border-box;
 }
 
-button.editButton {
-  width: 100%;
+button.editCustomerButton {
+  width: 80%;
+}
+
+.addButton{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.addButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
 }
 
 

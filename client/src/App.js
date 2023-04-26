@@ -23,22 +23,24 @@ import ClassDetails from "./components/managerPages/bookings/classes/classDetail
 import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
+import MembershipDetails from './components/managerPages/memberships/membershipDetails';
+import BookingDetails from './components/managerPages/bookings/bookings/bookings';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
 
 
-import Climbingwall from './components/pages/individual facilities/Climbingwall';
-import Fitnessroom from './components/pages/individual facilities/Fitnessroom';
-import Sportshall from './components/pages/individual facilities/Sportshall';
-import Swimmingpool from './components/pages/individual facilities/Swimmingpool';
-import Squashcourt from './components/pages/individual facilities/Squashcourt';
-import Studio from './components/pages/individual facilities/Studio';
-import Aerobics from './components/pages/individual classes/Aerobics';
-import Pilates from './components/pages/individual classes/Pilates';
-import Yoga from './components/pages/individual classes/Yoga';
-import MyComponent from './components/dropdownfacility/DropDownFacility';
-import DropdownChoice from './components/dropdownfacility/DropDownFacility';
-import successPage from './components/pages/success/successPage';
+import Climbingwall from './components/pages/individual-facilities/Climbingwall';
+import Fitnessroom from './components/pages/individual-facilities/Fitnessroom';
+import Sportshall from './components/pages/individual-facilities/Sportshall';
+import Swimmingpool from './components/pages/individual-facilities/Swimmingpool';
+import Squashcourt from './components/pages/individual-facilities/Squashcourt';
+import Studio from './components/pages/individual-facilities/Studio';
+import Aerobics from './components/pages/individual-classes/Aerobics';
+import Pilates from './components/pages/individual-classes/Pilates';
+import Yoga from './components/pages/individual-classes/Yoga';
+//import MyComponent from './components/dropDownFacility/DropDownFacility';
+//import DropdownChoice from './components/dropDownFacility/DropDownFacility';
+//import successPage from './components/pages/success/successPage';
 
 function App() {
   const {user} = useContext(Auth);
@@ -60,6 +62,8 @@ function App() {
           <Route exact path="/activitydetails" element={<ActivityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
+          <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
+          <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
 
           <Route path="/pricing" element={<Pricing />} />

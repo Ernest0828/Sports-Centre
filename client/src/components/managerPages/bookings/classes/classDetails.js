@@ -183,8 +183,8 @@ const ClassDetails = () => {
             setFormInputs={setFormInputs}
           />
             <div className="classDetails">
-                    <h1 className="classDetailsTitle">GymCorp Classes</h1>
-                    <div className="classDetailsTable">
+              <div className="classDetailsTable">
+                    <h1 className="classDetailsTitle">Classes</h1>
                         <table>
                             <thead>
                                 <tr>

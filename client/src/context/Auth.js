@@ -2,6 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem("user")) || null,
+  isManager: JSON.parse(localStorage.getItem("user"))?.isManager || false,
   loading: false,
   error: null,
 };
@@ -34,6 +35,11 @@ const AuthReducer = (state, action) => {
         loading: false,
         error: null,
       };
+    case "SET_MANAGER":
+      return {
+        ...state,
+        manager: action.payload,
+      };
     default:
       return state;
   }
@@ -43,12 +49,15 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(state.user));
-  }, [state.user]);
+    localStorage.setItem("manager", JSON.stringify(state.isManager));
+  }, [state.user, state.isManager]);
+  
 
   return (
     <Auth.Provider
       value={{
         user: state.user,
+        isManager: state.isManager,
         loading: state.loading,
         error: state.error,
         dispatch,

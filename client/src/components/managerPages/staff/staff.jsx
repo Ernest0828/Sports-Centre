@@ -12,7 +12,7 @@ import AddStaffForm from "./addStaffForm";
 const Staff = () => {
 
     //useFetch Hooks
-    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:5000/api/employee/");
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
 
     const [staffDetails, setStaffDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
@@ -99,7 +99,7 @@ const Staff = () => {
       });
 
       // Send updated facility details to server
-      axios.put(`http://localhost:5000/api/employee/${selectedStaff.staffId}`, {
+      axios.put(`http://localhost:4000/api/employee/${selectedStaff.staffId}`, {
 
         //staffId: formInputs.staffId,
         staffName: formInputs.staffName,
@@ -155,6 +155,7 @@ const Staff = () => {
     
       // Close modal
       handleClose();
+      window.location.reload();
     };
 
     const handleDelete = (staffId) => {
@@ -194,8 +195,8 @@ const Staff = () => {
               setFormInputs={setFormInputs}
             />
             <div  className="staffDetails">
-                <h1 className="staffDetailsTitle">GymCorp Staff</h1>
-                    <div className="staffDetailsTable">
+              <div className="staffDetailsTable">
+                  <h1 className="staffDetailsTitle">Employees</h1>
                         <table>
                             <thead>
                                 <tr>

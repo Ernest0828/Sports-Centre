@@ -20,10 +20,10 @@ const Pilates = () => {
         src: "https://complete-pilates.co.uk/wp-content/uploads/2020/12/Types-of-Pilates-Complete-Pilates.jpg"
     },
     {
-        src: "https://www.byrdie.com/thmb/L0Jej-SzI4OZHwXCCCpgq0xJzVM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Stocksy_txp3448e50fXAw200_Medium_1360014-92c45c70d3d14564b4e4a84a53534e33.jpg"
+        src: "https://www.byrdie.com/thmb/L0Jej-SzI4OZHwXCCCpgq0xJzVM=/1500x0/filters:no_upscale():max_bytes(140000):strip_icc()/Stocksy_txp3448e50fXAw200_Medium_1360014-92c45c70d3d14564b4e4a84a53534e33.jpg"
     },
     {
-        src: "https://www.verywellfit.com/thmb/qSnr8iklI2D7ABQqAZoz9DXKaa8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/78317902-56b35e393df78cdfa004c51f.JPG"
+        src: "https://www.verywellfit.com/thmb/qSnr8iklI2D7ABQqAZoz9DXKaa8=/1500x0/filters:no_upscale():max_bytes(140000):strip_icc()/78317902-56b35e393df78cdfa004c51f.JPG"
     },
     {
         src: "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F34%2F2021%2F10%2F14%2Fpilates-group-fitness-getty-1021-2000.jpg"
