@@ -12,7 +12,7 @@ router.post("/activityid", /*verifyManager,*/ async (req, res, next) => {
         if (!facility) 
             return res.status(404).send("Facility not found");
 
-        // check if activity already exist
+                // check if activity already exist
         let existingActivity;
         if (!day && !start){
             existingActivity = await Activity.findOne({ where: {activityName: name, facilityName:facilityName}});
@@ -53,7 +53,7 @@ router.delete("/:id", async (req, res, next) => {
         const activity = await Activity.findByPk(req.params.id);
         if(!activity) return res.status(404).send("Activity not found");
         else { 
-            await activity.destroy(req.body);
+            await activity.destroy();
             res.status(200).json("Activity deleted");
         }
     } catch (err) {
@@ -79,6 +79,24 @@ router.get("/", async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+// 6. Get all activities and their corresponding facilities
+router.get('/facilites', async (req, res) => {
+  try {
+    const availableActivities = await Activity.findAll({
+      attributes: ['activityName'],
+      include: [{
+        model: Facility,
+        attributes: ['facilityName']
+      }],
+      group: ['activityName', 'Facility.facilityName']
+    });
+    res.json(availableActivities);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 module.exports=router;

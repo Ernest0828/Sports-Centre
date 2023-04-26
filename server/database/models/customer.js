@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const { STRING, UUID, UUIDV4, INTEGER, BOOLEAN, ENUM } = Sequelize;
+const { STRING, UUID, UUIDV4, BOOLEAN, ENUM } = Sequelize;
 
 const Customer = db.define('Customer', {
   customerId: {
@@ -15,12 +15,13 @@ const Customer = db.define('Customer', {
     allowNull: false
   },
   customerNumber: {
-    type: INTEGER,
-    allowNull: false
+    type: STRING(11),
+    allowNull: false,
   },
   customerEmail: {
     type: STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   password: {
     type: STRING,

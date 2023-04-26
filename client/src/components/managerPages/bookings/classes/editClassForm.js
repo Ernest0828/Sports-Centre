@@ -1,9 +1,21 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
+
+  const [facilities, setFacilities] = useState([]);
+
+  useEffect(() => {
+        axios.get('http://localhost:4000/api/facilities')
+          .then(response => {
+            setFacilities(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }, []);
   
     const handleFormInputChange = (event) => {
         setFormInputs({
@@ -14,8 +26,11 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
       
       return (
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Class</Modal.Title>
+          <button className="btn-close" onClick={handleClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -44,15 +59,27 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
             </Form.Group>
       
             <Form.Group controlId="formDay">
+            <div style={{display: 'block'}}>
               <Form.Label>Day</Form.Label>
-              <Form.Control
-                type="text"
+            </div>
+            <div>
+              <Form.Select
                 name="day"
                 value={formInputs.day}
                 onChange={handleFormInputChange}
-                placeholder="Enter day"
-              />
+              >
+                <option value="">Select day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </Form.Select>
+              </div>
             </Form.Group>
+
       
             <Form.Group controlId="formStartTime">
               <Form.Label>Start Time</Form.Label>
@@ -75,8 +102,27 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
                 placeholder="enter end time"
               />
             </Form.Group>
+
+            <Form.Group controlId="formFacility">
+            <div style={{display: 'block'}}>
+            <Form.Label>Facility</Form.Label>
+            </div>
+            <div>
+            <Form.Select
+              name="facilityName"
+              value={formInputs.facilityName}
+              onChange={handleFormInputChange}
+            >
+              {facilities.map(facility => (
+                <option key={facility.facilityName} value={facility.facilityName}>
+                  {facility.facilityName}
+                </option>
+              ))}
+            </Form.Select>
+            </div>
+          </Form.Group>
       
-            <Button variant="primary" type="submit">
+            <Button style= {{marginTop: "10px"}} variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>

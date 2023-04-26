@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import "./bookfacility.css";
 import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
-import Navbar from "../../navbar/navbar";
+import Navbar from "../../navbar/Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -18,16 +18,20 @@ const BookFacility = () => {
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/facilities/");
+        const res = await axios.get("http://localhost:4000/api/facilities/");
         setFacilities(res.data);
       } catch (err) {
         console.error(err);
       }
     };
-
-
     fetchFacilities();
   }, []);
+    
+  // Filter out the "Studio" facility
+  const filteredFacilities = facilities.filter(
+    (facility) => facility.facilityName !== "Studio"
+  );
+
   return (
     <Fragment>
     <Navbar />

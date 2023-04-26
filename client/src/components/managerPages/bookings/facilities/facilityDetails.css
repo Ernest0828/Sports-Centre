@@ -1,68 +1,90 @@
-/*.profile{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
+.facilityActivityDetails{
+    margin-top: 120px;
     justify-content: center;
-    font-family: Arimo;
-    overflow: auto;
-    background-color: black;
-}*/
+    align-items: center;
+}
 
-.facilityactivityDetailsTable{
+.facilityActivityDetailsTable{
+    width: 95%;
     display: flex;
+    margin: 0 auto;
     flex-direction: column;
     justify-content: center;
     background-color: #f9f9f9;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
-    margin-top: 7%;
     padding: 20px;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         color: black;
 }
 
-.facilityactivityDetailsTitle{
+.facilityActivityDetailsTitle{
     color: black;
+    padding: 20px 20px 0;
     font-size: 20px ;
     font-weight: 600;
-
+    margin-bottom: 2%;
+    margin-left: 1%;
 }
 
-/*table{
+table{
     border-collapse: collapse;
-    width: 100%;
-    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
-        border-radius: 100px;
-}
-
-thead {
-    text-align: center;
+    width: 90%;
+    margin: 0 auto;
 }
 
 th{
     padding: 10px;
-    background-color: #1C768F;
+    text-align: left;
+    background-color: #033756 ;
     color: white;
 }
 
-td{
-    background-color: white;
-    border-bottom: 1px solid #E4E3DF;
-    text-align: center;
-    padding: 10px;
-}*/
 
-.button{
-    width: 5%;
-    margin-top: 10px;
-    margin-left: 10px;
+td{
+    border-bottom: 1px solid #E4E3DF;
+    text-align: left;
+    padding: 10px;
 }
 
-.editButton{
-    width: 2%;
+.button{
+    width: 50%;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.button:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
+.editFacilityButton{
+    width: 80px;
     margin-top: 10px;
     margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
+}
+
+.viewActivityButton{
+    width: 50%;
+    margin-top: 10px;
+    margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
 }
 
 .deleteButton{
