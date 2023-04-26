@@ -10,8 +10,8 @@ import { Auth } from '../../../context/Auth';
 
 function FacilityPage() {
 	const[selectedDate, setSelectedDate] = useState(new Date());
-  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
-  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
+  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
   const location = useLocation();
   const { facility } = location.state;
   const [selectedOptionB, setSelectedOptionB] = useState('');
@@ -102,7 +102,7 @@ const handleBooking = async () => {
   }
   //Check if user, if not then throw an alert saying not logged in.
     // try {
-    //   await axios.post('http://localhost:5000/api/bookings/bookingid', {
+    //   await axios.post('http://localhost:4000/api/bookings/bookingid', {
     //     date: selectedDate,
     //     start: selectedOptionC, //Start time
     //     customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN

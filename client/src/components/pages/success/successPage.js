@@ -13,7 +13,7 @@ function SuccessPage() {
         const sessionId = new URLSearchParams(location.search).get('session_id');
 
         // Make the API call to your backend to create the booking
-        const response = await axios.post('http://localhost:5000/api/bookings/create', {
+        const response = await axios.post('http://localhost:4000/api/bookings/create', {
           sessionId,
           // Pass any other required data
         });
