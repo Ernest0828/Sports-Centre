@@ -1,19 +1,25 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import "./bookings.css";
 import Navbar from "../../managerNavbar/navbar";
+import {Auth} from "../../../../context/Auth"
 import { Link } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
-//import EditBookingForm from "./editBookingForm";
-//import AddBookingForm from "./AddBookingForm";
+import EditBookingForm from "./editBookingForm";
+import AddBookingForm from "./addBookingForm";
 
 const BookingDetails = () => {
 
     //useFetch Hooks
     const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
+    const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
+    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
+    const { user } = useContext(Auth);
     const [bookingDetails, setBookingDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
@@ -30,31 +36,50 @@ const BookingDetails = () => {
 
     useEffect(() => {
         setBookingDetails(bookingData.map((booking) => {
-        return {
-          ...booking,
-          bookingId: booking.bookingId,
-          noOfPeople: booking.noOfPeople,
-          date: booking.date,
-          startTime: booking.startTime,
-          endTime: booking.endTime,
-          bookingType: booking.bookingType,
-          customerId: booking.customerId,
-          staffId: booking.staffId,
-          activityId: booking.activityId,
-          classId: booking.classId,
-          facilityName: booking.facilityName
-        };
-      }));
-    }, [bookingData]);
+            const customer = customerData.find((customer) => customer.customerId === booking.customerId);
+            const staff = staffData.find((staff) => staff.staffId === booking.staffId);
+            const activity = activityData.find((activity) => activity.activityId === booking.activityId);
+            const classes = classData.find((classes) => classes.classId === booking.classId);
+            return {
+            ...booking,
+            bookingId: booking.bookingId,
+            noOfPeople: booking.noOfPeople,
+            date: new Date(booking.date).toISOString().slice(0, 10),
+            startTime: booking.startTime,
+            endTime: booking.endTime,
+            bookingType: booking.bookingType,
+
+            customerId: booking.customerId,
+            customerName: customer ? customer.customerName : '',
+
+            staffId: booking.staffId,
+            staffName: staff ? staff.staffName : '',
+
+            activityId: booking.activityId,
+            activityName: activity ? activity.activityName : '',
+
+            classId: booking.classId,
+            className: classes ? classes.className : '',
+
+            facilityName: booking.facilityName
+            };
+        }));
+        }, [bookingData]);
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
+      customerName:"",
       staffId: "",
+      staffName:"",
       noOfPeople: "",
+      bookingType:"",
       date: "",
-      start: "",
+      startTime: "",
+      endTime:"",
       activityId: "",
+      activityName:"",
       classId: "",
+      className:"",
       facilityName: "",
     });
 
@@ -64,13 +89,15 @@ const BookingDetails = () => {
       setShow(true);
       if (selectedBooking) {
       setFormInputs({
-        customerId: selectedBooking.customerId,
-        staffId: selectedBooking.staffId,
+        customerName: selectedBooking.customerName,
+        staffName: selectedBooking.staffName,
+        bookingType: selectedBooking.bookingType,
         noOfPeople: selectedBooking.noOfPeople,
         date: selectedBooking.date,
-        start: selectedBooking.start,
-        activityId: selectedBooking.activityId,
-        classId: selectedBooking.classId,
+        startTime: selectedBooking.startTime,
+        endTime: selectedBooking.endTime,
+        activityName: selectedBooking.activityName,
+        className: selectedBooking.className,
         facilityName: selectedBooking.facilityName,
       });
     }
@@ -83,7 +110,7 @@ const BookingDetails = () => {
         customerId: "",
         staffId: "",
         date: "",
-        start: "",
+        startTime: "",
         activityId: "",
         classId: "",
         facilityName: "",
@@ -93,6 +120,22 @@ const BookingDetails = () => {
 
     const handleSubmit = (event) => {
       event.preventDefault();
+
+      const selectedCustomer = customerData.find((customer) => customer.customerName === formInputs.customerName);
+      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
+
+      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+      const staffId = selectedStaff ? selectedStaff.staffId : null;
+
+      const selectedActivity = activityData.find((activity) => 
+      activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+      const activityId = selectedActivity ? selectedActivity.activityId : null;
+
+      const date = new Date(formInputs.date);
+      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+      const classId = selectedClass ? selectedClass.classId : null;
+
       // Update facility details with formInputs values
       setBookingDetails((prevState) => {
       const updatedDetails = [...prevState];
@@ -102,7 +145,7 @@ const BookingDetails = () => {
       updatedDetails[index].customerId = formInputs.customerId;
       updatedDetails[index].staffId = formInputs.staffId;
       updatedDetails[index].date = formInputs.date;
-      updatedDetails[index].start = formInputs.start;
+      updatedDetails[index].startTime = formInputs.startTime;
       updatedDetails[index].activityId =  formInputs.activityId;
       updatedDetails[index].classId =  formInputs.classId;
       updatedDetails[index].facilityName =  formInputs.facilityName;
@@ -113,12 +156,12 @@ const BookingDetails = () => {
       // Send updated facility details to server
       axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
 
-        customerId: formInputs.customerId,
-        staffId: formInputs.staffId,
+        customerId: customerId,
+        staffId: staffId,
         date: formInputs.date,
-        start: formInputs.start,
-        activityId: formInputs.activityId,
-        classId:  formInputs.classId,
+        startTime: formInputs.startTime,
+        activityId: activityId,
+        classId: classId,
         facilityName:  formInputs.facilityName
         })
         .then(response => {
@@ -137,15 +180,35 @@ const BookingDetails = () => {
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
+      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
+      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
+
+      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+      const staffId = selectedStaff ? selectedStaff.staffId : null;
+
+      // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
+      const [day, month, year] = formInputs.date.split("/");
+      const date = `${year}/${month}/${day}`;
+
+      const selectedActivity = activityData.find((activity) => 
+      activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+      const activityId = selectedActivity ? selectedActivity.activityId : null;
+
+      const dateofDay = new Date(formInputs.date);
+      const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
+      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+      const classId = selectedClass ? selectedClass.classId : null;
+
       setBookingDetails((prevState) => {
         const updatedDetails = [...prevState];
         
-        updatedDetails.customerId = formInputs.customerId;
-        updatedDetails.staffId = formInputs.staffId;
-        updatedDetails.date = formInputs.date;
-        updatedDetails.start = formInputs.start;
-        updatedDetails.activityId =  formInputs.activityId;
-        updatedDetails.classId =  formInputs.classId;
+        updatedDetails.customerId = customerId;
+        updatedDetails.staffId = staffId;
+        updatedDetails.date = date;
+        updatedDetails.startTime = formInputs.startTime;
+        updatedDetails.activityId =  activityId;
+        updatedDetails.classId =  classId;
         updatedDetails.facilityName =  formInputs.facilityName;
   
         return updatedDetails;
@@ -153,12 +216,12 @@ const BookingDetails = () => {
     
       // Send new staff details to server
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
-        customerId: formInputs.customerId,
-        staffId: formInputs.staffId,
-        date: formInputs.date,
-        start: formInputs.start,
-        activityId: formInputs.activityId,
-        classId: formInputs.classId,
+        customerId: customerId,
+        staffId: staffId,
+        date: date,
+        start: formInputs.startTime,
+        activityId: activityId,
+        classId: classId,
         facilityName: formInputs.facilityName,
       })
         .then(response => {
@@ -171,7 +234,7 @@ const BookingDetails = () => {
     
       // Close modal
       handleClose();
-      window.location.reload();
+      //window.location.reload();
     };
 
     const handleDelete = (bookingId) => {
@@ -194,47 +257,55 @@ const BookingDetails = () => {
     return(
         <div>
             <Navbar/>
-            {/*<EditStaffForm 
+            <EditBookingForm 
               show={show}
               handleClose={handleClose}
               handleSubmit={handleSubmit}
-              staff={selectedStaff}
+              booking={selectedBooking}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
-            <AddStaffForm 
+            <AddBookingForm 
               showAdd={showAdd}
               handleClose={handleClose}
               handleAddSubmit={handleAddSubmit}
               //staff={selectedStaff}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
-    />*/}
+            />
             <div  className="bookingDetails">
               <div className="bookingDetailsTable">
                   <h1 className="bookingDetailsTitle">Bookings</h1>
                         <table className ="bookingTable">
                             <thead>
                                 <tr>
-                                    <th>No. of People</th>   
+                                    <th>Customer</th>
+                                    <th>Type</th>
+                                    <th>Activity</th>
+                                    <th>Class</th>
                                     <th>Date</th>
                                     <th>Start Time</th>
                                     <th>End Time</th>
-                                    <th>Booking Type</th>
-                                    <th>Customer ID</th>
-                                    <th>Staff ID</th>
-                                    <th>Activity ID</th>
-                                    <th>Class ID</th>
                                     <th>Facility Name</th>
+                                    <th>Employee</th>
                                     <th> </th>
                                     <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookingDetails && bookingDetails.map(({bookingId, noOfPeople, date, startTime, endTime, bookingType, customerId, staffId, activityId, classId, facilityName}) => (
+                                {bookingDetails && bookingDetails.map(({bookingId, date, startTime, endTime, bookingType, customerName, staffName, activityName, className, facilityName}) => (
                                 <tr key = {bookingId}>
                                     <td>
-                                              <span>{noOfPeople}</span>
+                                              <span>{customerName}</span>
+                                    </td>
+                                    <td>
+                                              <span>{bookingType}</span>
+                                    </td>
+                                    <td>
+                                              <span>{activityName}</span>
+                                    </td>
+                                    <td>
+                                              <span>{className}</span>
                                     </td>
                                     <td>
                                               <span>{date}</span>
@@ -246,22 +317,10 @@ const BookingDetails = () => {
                                               <span>{endTime}</span>
                                     </td>
                                     <td>
-                                              <span>{bookingType}</span>
-                                    </td>
-                                    <td>
-                                              <span>{customerId}</span>
-                                    </td>
-                                    <td>
-                                              <span>{staffId}</span>
-                                    </td>
-                                    <td>
-                                              <span>{activityId}</span>
-                                    </td>
-                                    <td>
-                                              <span>{classId}</span>
-                                    </td>
-                                    <td>
                                               <span>{facilityName}</span>
+                                    </td>
+                                    <td>
+                                              <span>{staffName}</span>
                                     </td>
                                     {isEditable && (
                                     <td>
@@ -270,11 +329,6 @@ const BookingDetails = () => {
                                     </button>
                                     </td>
                                      )}
-                                    <td>
-                                    <button className="editBookingButton" onClick={() => {handleShow(bookingId);}}>
-                                    {editableRows[bookingId] ? "Done" : "Edit"}
-                                    </button>
-                                    </td>
                                     <td>
                                     <button className="editBookingButton" onClick={() => {handleDelete(bookingId);}}>
                                     {editableRows[bookingId] ? "Delete" : "Delete"}
@@ -285,7 +339,7 @@ const BookingDetails = () => {
                             </tbody>
                             <div>
                               <button className="addBookingButton" onClick={() => { handleAdd();}}>
-                                Add
+                                Create
                               </button>
                             </div>
                         </table>
