@@ -4,7 +4,6 @@ import Navbar from "../../navbar/Navbar"
 import DropDownClasses from '../../dropDownClasses/DropDownClasses'
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
-import MyCalendar from '../../myCalendar/myCalendar'
 import ICalendar from '../../ICalendar/ICalendar';
 
 const Aerobics = () => {
