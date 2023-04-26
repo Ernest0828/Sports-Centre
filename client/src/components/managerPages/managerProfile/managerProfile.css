@@ -10,13 +10,12 @@
 }
 
 .managerProfileWrapper{
-    width:90%;
-    height: 90%;
+    height: 90%; 
     display: flex;
     margin-top: 150px;
 }
 
-.managerProfileRight{
+/* .managerProfileRight{
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -82,4 +81,4 @@ td{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
-}
+} */

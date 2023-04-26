@@ -11,8 +11,8 @@ const BookFacility = () => {
 
   const [facilities, setFacilities] = useState([]);
   const navigate =useNavigate();
-  const handleClick = () =>{
-    navigate('/climbingwall');
+  const handleClick = (facility) =>{
+    navigate('/FacilityPage', { state: {facility} });
   }
 
   useEffect(() => {
@@ -42,11 +42,13 @@ const BookFacility = () => {
               <h3>Book a facility</h3>
               <p>Select a facility to view timetables and availability.</p>
             </div>
-            <div className="gridFormat" onClick={handleClick}>
-              {filteredFacilities.map((facility) => (
-              <FacilityItem key={facility.facilityName} facility={facility}/>
-              ))}
-            </div>
+            <div className="gridFormat">
+            {facilities.map((facility) => (
+              <div className="griddy" key={facility.facilityName} onClick={() => handleClick(facility)}>
+                <FacilityItem facility={facility} />
+              </div>
+            ))}
+          </div>
           </div>
           <Basket />
         </div>

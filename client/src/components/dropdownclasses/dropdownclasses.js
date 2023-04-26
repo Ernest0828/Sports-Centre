@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import "./dropDownClasses.css"
 import axios from 'axios';
-import ReactDatePicker from '../Calendar/ReactDatePicker';
 import useFetch from '../managerPages/hooks/useFetch';
 import { Auth } from '../../context/Auth';
 

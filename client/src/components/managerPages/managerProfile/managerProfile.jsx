@@ -17,7 +17,7 @@ const ManagerProfile = () => {
             <div className="manager-profile">
                 <div className="managerProfileWrapper">
                     < ManagerProfileInfo/>
-                    <div className="managerProfileRight">
+                    {/* <div className="managerProfileRight">
                         <span className="userBookingsTitle">Usage and Sales</span>
                         <div className="userBookingsTable">
                             <table>
@@ -40,7 +40,7 @@ const ManagerProfile = () => {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </Fragment>

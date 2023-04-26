@@ -11,7 +11,7 @@ const Staffs = require("./database/models/staff");
 
 const facilities = [
     { facilityName: "Studio", capacity: 25, startTime: "08:00:00", endTime: "22:00:00" },
-    { facilityName: "Swimming pool", capacity: 3, startTime: "08:00:00", endTime: "20:00:00" },
+    { facilityName: "Swimming pool", capacity: 30, startTime: "08:00:00", endTime: "20:00:00" },
     { facilityName: "Fitness room", capacity: 35, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Sports hall", capacity: 45, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Squash court", capacity: 4, startTime: "08:00:00", endTime: "22:00:00" },
@@ -23,10 +23,12 @@ const activities = [
     { activityName: "Lane swimming", price: "8", facilityName: "Swimming pool" },
     { activityName: "Lessons", price: "10", facilityName: "Swimming pool" },
     { activityName: "Team events", day: "Friday", startTime: "08:00:00", endTime: "10:00:00", price: "20", facilityName: "Swimming pool" },
+    { activityName: "Team events", day: "Sunday", startTime: "08:00:00", endTime: "10:00:00", price: "20", facilityName: "Swimming pool" },
     { activityName: "General use", price: "8", facilityName: "Fitness room" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Squash court" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Sports hall" },
-    { activityName: "Team events", day: "Thurdsay", startTime: "19:00:00", endTime: "21:00:00", price: "20", facilityName: "Sports hall" },
+    { activityName: "Team events", day: "Thursday", startTime: "19:00:00", endTime: "21:00:00", price: "20", facilityName: "Sports hall" },
+    { activityName: "Team events", day: "Saturday", startTime: "09:00:00", endTime: "11:00:00", price: "20", facilityName: "Sports hall" },
     { activityName: "General use", price: "8", facilityName: "Climbing wall" }
 ];
 
