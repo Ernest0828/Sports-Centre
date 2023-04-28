@@ -8,13 +8,11 @@ const PricingClass = () => {
     const [classData, setClassData] = useState([]);
     const [facilityData, setFacilityData] = useState([]);
     const [activityData, setActivityData] = useState([]);
-    
-
 
     useEffect(() => {
         async function fetchClassesData() {
             try {
-                const res = await axios.get("http://localhost:5000/api/classes/");
+                const res = await axios.get("http://localhost:4000/api/classes/");
                 const groupedClasses = res.data.reduce((accumulator, classes) => {
                     const { classId, className, day, startTime, price } = classes;
                     if (accumulator[className]) {
@@ -31,7 +29,7 @@ const PricingClass = () => {
         }
             async function fetchFacilitiesData() {
                 try {
-                    const res = await axios.get("http://localhost:5000/api/facilities/");
+                    const res = await axios.get("http://localhost:4000/api/facilities/");
                     setFacilityData(res.data);
                 } catch(err) {
                     console.log(err.response.data);
@@ -39,7 +37,7 @@ const PricingClass = () => {
             }
             async function fetchActivityData() {
                 try {
-                    const res = await axios.get("http://localhost:5000/api/activities/");
+                    const res = await axios.get("http://localhost:4000/api/activities/");
                     setActivityData(res.data);
                 } catch(err) {
                     console.log(err.response.data);
@@ -50,10 +48,14 @@ const PricingClass = () => {
         fetchActivityData();
     }, []);
 
+    // Filter out the "Studio" facility
+    const filteredFacilities = facilityData.filter(
+        (facility) => facility.facilityName !== "Studio");
+
     return (
         <Fragment>
-            <Navbar />
-            <div className="scrollable-container">
+        <Navbar />
+            <div className="pricing">
                 <div className="pricing-container">
                     <div className="membership-container">
                         <h2 className="title">GymCorp Membership</h2>
@@ -97,7 +99,7 @@ const PricingClass = () => {
                     <h2 className="title">Activities</h2>
                     <p className="header">Check out all activities that we offer at each of our facilities.</p>
                     <div className="facility-list">
-                    {facilityData.filter(facility => facility.facilityName !== "Studio" && activityData.some(activity => activity.facilityName === facility.facilityName)).map((facility) => (
+                    {filteredFacilities.map((facility) => (
                         <div key={facility.facilityName} className="facility-item">
                         <h3>{facility.facilityName}</h3>
                         <p>{activityData.filter((activity) => activity.facilityName === facility.facilityName).map((activity) => (

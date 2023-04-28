@@ -1,112 +1,120 @@
 import React from 'react';
+import axios from 'axios';
 import {useEffect, useState} from 'react';
 import "./facilityDetails.css";
 import Navbar from "../../managerNavbar/navbar";
 import useFetch from "../../hooks/useFetch"
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditFacilityForm from "./editFacilityForm";
-//import EditForm from "./editForm";
 
 const FacilityDetails = () => {
 
   //useFetch Hooks
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:5000/api/activities/");
+    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+
 
   //States
     const [facilityDetails, setFacilityDetails] = useState();
     const [editableRows, setEditableRows] = useState({});
-    const [isEditable, setIsEditable] = useState(false);
-    const [editDetails, setEditDetails] = useState({});
-    const [selectedFacility, setSelectedFacility] = useState(null);
+    const [selectedFacility, setSelectedFacility] = useState(null); 
+    const [selectedActivity, setSelectedActivity] = useState(null); 
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
 
+    // Create a mapping of activityIds based on facilityName and activityName
+    const activityIdMap = activityData.reduce((map, activity) => {
+      map[`${activity.facilityName}-${activity.activityName}`] = activity.activityId;
+      return map;
+    }, {});
 
     useEffect(() => {
+
+      // Create a mapping of activityIds based on facilityName and activityName
+      const activityIdMap = activityData.reduce((map, activity) => {
+        map[`${activity.facilityName}-${activity.activityName}`] = activity.activityId;
+        return map;
+      }, {});
+
       setFacilityDetails(facilityData.map((facility) => {
         const filteredActivities = activityData.filter(activity => activity.facilityName === facility.facilityName);
         const activities = filteredActivities.map(activity => ({
+          activityId: activityIdMap[`${activity.facilityName}-${activity.activityName}`],
           activityName: activity.activityName,
           price: activity.price
         }));
         return {
           ...facility,
-          name: facility.facilityName,
+          facilityName: facility.facilityName,
           capacity: facility.capacity,
-          start: facility.startTime,
-          end: facility.endTime,
+          startTime: facility.startTime,
+          endTime: facility.endTime,
           activities
         };
       }));
     }, [facilityData, activityData]);
 
     const [formInputs, setFormInputs] = useState({
-      name: "",
+      facilityName: "",
       capacity: "",
-      start: "",
-      end: "",
-      activityName: "",
-      price: "",
+      startTime: "",
+      endTime: "",
+      activities: [
+        {
+          activityName: "",
+          price: "",
+        }
+      ]
     });
 
-    const handleShow = () => {
+    const handleShow = (facilityName) => {
+      const selectedFacility = facilityDetails.find(facility => facility.facilityName === facilityName);
+      setSelectedFacility(selectedFacility);
       setShow(true);
-      const selectedFacilityDetails = facilityDetails.find(facility => facility.name === selectedFacility.name);
-      const selectedActivities = selectedFacilityDetails.activities;
-      const activityName = selectedActivities.map(activity => activity.activityName);
-      const price = selectedActivities.map(activity => activity.price);
+
+      if (selectedFacility) {
+      const { facilityName, capacity, startTime, endTime, activities } = selectedFacility;
       setFormInputs({
-        name: selectedFacility.name,
-        capacity: selectedFacility.capacity,
-        start: selectedFacility.start,
-        end: selectedFacility.end,
-        activityName,
-        price
+        facilityName,
+        capacity,
+        startTime,
+        endTime,
+        activities: activities.map(activity => ({
+          activityName: activity.activityName,
+          price: activity.price
+        }))
       });
+      setSelectedActivity(activities); 
+    }
     };
+
+    
 
      const handleSubmit = (event) => {
         event.preventDefault();
+
         // Update facility details with formInputs values
         setFacilityDetails((prevState) => {
         const updatedDetails = [...prevState];
         const index = updatedDetails.findIndex(
-            (facility) => facility.name === selectedFacility.name
-        );
-        updatedDetails[index].name = formInputs.name;
+          (facility) => facility.facilityName === selectedFacility.facilityName
+      );
+        
+        updatedDetails[index].facilityName = formInputs.facilityName;
         updatedDetails[index].capacity = formInputs.capacity;
-        updatedDetails[index].start = formInputs.start;
-        updatedDetails[index].end = formInputs.end;
-        updatedDetails[index].activities = updatedDetails[index].activities.map(
-          (activity, id) => ({
-            activityName: formInputs.activityName[id],
-            price: formInputs.price[id],
-            ...activity,
-          })
-        );
+        updatedDetails[index].startTime = formInputs.startTime;
+        updatedDetails[index].endTime = formInputs.endTime;
+        updatedDetails[index].activities = formInputs.activities;
+        
         return updatedDetails;
         });
-        
-        /*// Update activityName and price values in formInputs
-        const updatedActivityNames = facilityDetails.find(facility => facility.name === selectedFacility.name).activities.map(activity => activity.activityName);
-        const updatedPrices = facilityDetails.find(facility => facility.name === selectedFacility.name).activities.map(activity => activity.price);
-        setFormInputs(prevState => ({
-          ...prevState,
-          activityName: updatedActivityNames,
-          price: updatedPrices
-        }));*/
-
     
         // Send updated facility details to server
-        axios.put(`http://localhost:5000/api/facilities/${selectedFacility.name}`, {
+        axios.put(`http://localhost:4000/api/facilities/${selectedFacility.facilityName}`, {
         //name: formInputs.name,
         capacity: formInputs.capacity,
-        startTime: formInputs.start,
-        endTime: formInputs.end,
+        startTime: formInputs.startTime,
+        endTime: formInputs.endTime,
         })
         .then(response => {
         console.log(response.data);
@@ -117,25 +125,31 @@ const FacilityDetails = () => {
         alert('Failed to save data')
         });
 
-        // Update activityName and price in activity database
-        selectedFacility.activities.forEach((activity, index) => {
-          axios
-            .put(`http://localhost:5000/api/activities/${activity.activityId}`, {
-              activityName: formInputs.activityName[index],
-              price: formInputs.price[index],
-            })
-            .then((response) => {
-              console.log(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-              alert("Failed to update activity details");
-            });
+        // Update activity details with formInputs values
+        formInputs.activities.forEach((activity) => {
+
+          const activityId = activityIdMap[`${selectedFacility.facilityName}-${activity.activityName}`];
+        
+            axios.put(`http://localhost:4000/api/activities/${activityId}`, {
+                //facilityName: formInputs.facilityName,
+                activityName: activity.activityName,
+                price: activity.price,
+              })
+              .then((response) => {
+                console.log(response.data);
+              })
+              .catch((error) => {
+                console.log(error);
+                alert('Failed to save data');
+              });
+          
+              
         });
 
         // Close modal
         handleClose();
     };
+    
     
 
     const onDelete = async(id) => {
@@ -147,17 +161,6 @@ const FacilityDetails = () => {
       }
     };
 
-    /*const onSave = async () => {
-      const updatedFacilities = {facilityName, capacity, startTime, endTime}
-  
-      try {
-        await axios.put(`/facilities/${facilityName}`, updatedFacilities);
-        // Update the facilityData state with the updated data
-      } catch (error) {
-        console.error(error);
-        alert('Failed to save data')
-      }
-    };*/
 
     return (
     //<Fragment>
@@ -175,9 +178,9 @@ const FacilityDetails = () => {
           "Page is loading please wait"
           ) : ( 
           <>
-          <div className="facilityactivityDetails">
-                <div className="facilityactivityDetailsTable">
-                      <h1 className="facilityactivityDetailsTitle">Facility/Activity Details</h1>
+          <div className="facilityActivityDetails">
+                <div className="facilityActivityDetailsTable">
+                      <h1 className="facilityActivityDetailsTitle">Facilities</h1>
                             <table>
                                 <thead>
                                     <tr>
@@ -185,125 +188,42 @@ const FacilityDetails = () => {
                                         <th>Capacity</th>
                                         <th>Opening Time</th>
                                         <th>Closing Time</th>
-                                        <th className="activity-price">Activity & Price</th>
-                                        <th></th>
+                                        <th>Activity & Price</th>
+                                        <th> </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {facilityData.map(({facilityName:name, capacity, startTime: start, endTime : end }) => (
-                                    <tr key = {name}>
+                                    {facilityDetails && facilityDetails.map(({facilityName, capacity, startTime, endTime, activities}) => (
+                                    <tr key = {facilityName}>
                                         <td>
-                                        {!isEditable ? (
-                                              <span>{name}</span>
-                                        ) : (
-                                          <input
-                                                name="name"
-                                                value={name}
-                                                type="text"
-                                                placeholder="facility"
-                                              />
-                                        )}
+                                              <span>{facilityName}</span>
                                         </td>
                                         <td>
-                                        {!isEditable ? (
                                               <span>{capacity}</span>
-                                        ) : (
-                                            <input
-                                                name='capacity'
-                                                value={capacity}
-                                                type="number"
-                                                //onChange={(event) => onChangeInput(event, name)}
-                                                placeholder="capacity"
-                                            />
-                                            )}
                                         </td>
                                         <td>
-                                          {!isEditable ? (
-                                              <span>{start}</span>
-                                        ) : (
-                                            <input
-                                                name='start'
-                                                value={start}
-                                                type="time"
-                                                //onChange={(f) => onChangeInput(f, name)}
-                                                placeholder="1800"
-                                                disabled={!editableRows[name]}
-                                            />
-                                            )}
+                                              <span>{startTime}</span>
                                         </td>
                                         <td>
-                                          {!isEditable ? (
-                                              <span>{end}</span>
-                                        ) : (
-                                            <input
-                                                name='end'
-                                                value={end}
-                                                type="time"
-                                                //onChange={(f) => onChangeInput(f, name)}
-                                                placeholder="1700"
-                                                disabled={!editableRows[name]}
-                                            />
-                                            )}
+                                              <span>{endTime}</span>
                                         </td>
-                                        {activityData.filter(activity => activity.facilityName === name).map((activity, index) => (
-                                        <tr key = {index}>
-                                            <td>
-                                            {!isEditable ? (
-                                              <span>{activity.activityName}</span>
-                                            ) : (
-                                            <input
-                                                name={`activity[index].name`}
-                                                value={activity.activityName}
-                                                type="text"
-                                                onChange={(f) =>
-                                                  setFacilityDetails((prevState) => {
-                                                    const newState = [...prevState];
-                                                    newState[name - 1].activity[index].name = f.target.value;
-                                                    return newState;
-                                                  })
-                                                }
-                                                placeholder="activity"
-                                                disabled={!editableRows[name]}
-                                            />
-                                            )}
-                                            </td>
-                                            <td>
-                                            {!isEditable ? (
-                                            <span>{activity.price}</span>
-                                            ) : (
-                                            <input
-                                                name={`activity[index].price`}
-                                                value={activity.price}
-                                                type="number"
-                                                step="0.01"
-                                                onChange={(f) =>
-                                                  setFacilityDetails((prevState) => {
-                                                    const newState = [...prevState];
-                                                    newState[name - 1].activity[index].price = f.target.value;
-                                                    return newState;
-                                                  })
-                                                }
-                                                placeholder="price"
-                                                disabled={!editableRows[name]}
-                                            />
-                                            )}
-                                            </td>
-                                        </tr>
-                                        ))}
                                         <td>
-                                        <button className="editButton" onClick={() => {setSelectedFacility({name, capacity, start, end}); handleShow();}}>
-                                          {editableRows[name] ? "Done" : "Edit"}
+                                          {activities.map(({ activityName, price }, index) => (
+                                            <div key={index}>
+                                              <span>{activityName}:&nbsp;&nbsp;</span>
+                                              <span>{` ${price}`}</span>
+                                            </div>
+                                          ))}
+                                        </td>
+                                        <td>
+                                        <button className="editFacilityButton" onClick={() => {handleShow(facilityName);}}>
+                                          {editableRows[facilityName] ? "Done" : "Edit"}
                                         </button>
                                         </td>
                                     </tr>
                                     ))}
                                 </tbody>
                             </table>
-                            <div>
-                            {/*{!isEditable && (*/}
-                                <button className="button" >Save</button>
-                            {/*})}*/}
-                          </div>
                       </div>
                   </div>
                   </>)}

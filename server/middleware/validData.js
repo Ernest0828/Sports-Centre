@@ -6,22 +6,15 @@ const validateData = function(req, res, next) {
     return /^[^\s@]+@(gmail\.com|yahoo\.com|hotmail\.com)$/.test(email);
   }
   
-  // function to check if phone number is valid (10 digits && starts with 0)
-  /*function validatePhoneNumber(phoneNumber) {
-    // remove any non-digit characters from the phone number
-    phoneNumber = phoneNumber.replace(/\D/g, '');
-    return /^0\d{9}$/.test(phoneNumber);
-  }*/
-  
+  // function to check if phone number is valid (11 digits && starts with 0)
   function validatePhoneNumber(phoneNumber) {
     // check if phoneNumber is null or undefined
     if (phoneNumber == null) {
       return false;
     }
-    
     // remove any non-digit characters from the phone number
     phoneNumber = phoneNumber.replace(/\D/g, '');
-    return /^0\d{9}$/.test(phoneNumber);
+    return /^0\d{10}$/.test(phoneNumber);
   }
 
   // for register route

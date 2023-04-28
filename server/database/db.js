@@ -7,4 +7,4 @@ const db = new Sequelize("gymCorp", "postgres", "Pok@2013Chezz",
   port : 5432,
 });
 
-module.exports = db;
+module.exports = db

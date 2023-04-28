@@ -5,17 +5,30 @@ import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
   
-    const handleFormInputChange = (event) => {
-        setFormInputs({
-          ...formInputs,
-          [event.target.name]: event.target.value
-        });
-      };
+  const handleFormInputChange = (event) => {
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    const name = event.target.name;
+
+    if (name === 'isManager') {
+      setFormInputs({
+        ...formInputs,
+        [name]: value === 'Manager' ? true : false
+      });
+    } else {
+      setFormInputs({
+        ...formInputs,
+        [name]: value
+      });
+    }
+  };
       
       return (
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Staff</Modal.Title>
+          <button className="btn-close" onClick={handleClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -54,17 +67,22 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
             </Form.Group>
 
             <Form.Group controlId="formIsManager">
-              <Form.Label>Manager?</Form.Label>
-              <Form.Control
-                type="boolean"
-                name="isManager"
-                value={formInputs.isManager}
-                onChange={handleFormInputChange}
-                placeholder="Employee ? Manager"
-              />
-            </Form.Group>
+            <div style={{display: 'block'}}>
+            <Form.Label>Title</Form.Label>
+            </div>
+            <div>
+            <Form.Select
+              name="isManager"
+              value={formInputs.isManager ? 'Manager' : 'Staff'}
+              onChange={handleFormInputChange}
+            >
+              <option>Manager</option>
+              <option>Staff</option>
+            </Form.Select>
+            </div>
+          </Form.Group>
       
-            <Button variant="primary" type="submit">
+            <Button style={{marginTop: "10px"}}variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>

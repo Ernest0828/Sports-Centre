@@ -6,42 +6,59 @@ import "./navbar.css";
 const Navbar = () => {
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
+  const {isManager} = useContext(Auth);
+
 
   return (
-    <nav className="navbar">
-      <div className="navLeft">
-        <Link to="/" className="navLogo">
+    <nav className="managerNavbar">
+      <div className="managerNavLeft">
+        <Link to="/manager-profile" className="managerNavLogo">
           GymCorp
         </Link>
-        <ul className="navList">
-          <li className="navItem">
-            <Link to="/facilitydetails" className="navLink">
+        <ul className="managerNavList">
+        {isManager &&
+        <div className="managerNavDropdown">
+        <Link to="/facilitydetails" className="managerNavDropdownTrigger managerNavLink" onClick={() => window.location.href="/facilitydetails"}>
+          Amenities
+        </Link>
+        <ul className="managerNavDropdownList">
+          <li className="managerNavItem" onClick={() => window.location.href="/facilitydetails"}>
               Facilities
-            </Link>
           </li>
-          <li className="navItem">
-            <Link to="/classdetails" className="navLink">
+          <li className="managerNavItem" onClick={() => window.location.href="/activitydetails"}>
+              Activities
+          </li>
+          <li className="managerNavItem" onClick={() => window.location.href="/classdetails"}>
               Classes
+          </li>
+        </ul>
+      </div>
+        }
+        {isManager &&
+          <li className="managerNavItem">
+            <Link to="/staff" className="managerNavLink">
+              Employees
             </Link>
           </li>
-          <li className="navItem">
-            <Link to="/staff" className="navLink">
-              Staff
+        }
+          <li className="managerNavItem">
+            <Link to="/membershipdetails" className="managerNavLink">
+              Memberships
             </Link>
           </li>
-          {/*<li className="navItem">
-            <Link to="/pricing" className="navLink">
-              Pricing
+          <li className="managerNavItem">
+            <Link to="/bookingdetails" className="managerNavLink">
+              Bookings
             </Link>
-            </li>*/}
+          </li>
         </ul>
       </div>
     
-      <div className="navRight">
+      <div className="managerNavRight">
         {user && 
-        <ul className="navList">
-          <li className="navItem">
-            <Link to="/manager-profile" className="navLink">
+        <ul className="managerNavList">
+          <li className="managerNavItem">
+            <Link to="/manager-profile" className="managerNavLink" >
               Profile
             </Link>
           </li>
@@ -49,9 +66,9 @@ const Navbar = () => {
         }
         
         {user && 
-        <ul className="navList">
-          <li className="navItem">
-          <Link to="/" className="navLink navLogout" onClick={() => dispatch({ type: "LOGOUT" })}>
+        <ul className="managerNavList">
+          <li className="managerNavItem">
+          <Link to="/" className="managerNavLink managerNavLogout" onClick={() => dispatch({ type: "LOGOUT" }) && window.location.reload()}>
             Logout
           </Link>
           </li>

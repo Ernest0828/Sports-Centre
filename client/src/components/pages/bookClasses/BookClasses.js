@@ -3,7 +3,7 @@ import "./bookclasses.css";
 import { Link} from "react-router-dom";
 import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
-import Navbar from "../../navbar/Navbar";
+import Navbar from '../../navbar/Navbar';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
   
@@ -18,7 +18,7 @@ const BookClasses = () => {
   useEffect(() => {
   const fetchClasses = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/classes/");
+      const res = await axios.get("http://localhost:4000/api/classes/");
       const uniqueClasses = Array.from(new Set(res.data.map(c => c.className))).map(cn => {
         return res.data.find(c => c.className === cn);
       });

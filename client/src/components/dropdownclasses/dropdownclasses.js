@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import "./dropdownclasses.css"
+import "./dropDownClasses.css"
 import axios from 'axios';
-import ReactDatePicker from '../Calendar/ReactDatePicker';
 import useFetch from '../managerPages/hooks/useFetch';
 import { Auth } from '../../context/Auth';
 
@@ -66,7 +65,7 @@ const handleOptionAChange = (event)=> {
       if (classID === null) {
         throw new Error("Invalid option combination"); // throw an error if there is no matching activity ID
       }
-      await axios.post('http://localhost:5000/api/bookings/bookingid', {
+      await axios.post('http://localhost:4000/api/bookings/bookingid', {
         date: selectedDate,
         start: selectedOptionC, 
         customerId: user.details.customerId, //Get the current ID 

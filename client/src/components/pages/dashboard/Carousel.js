@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import "./Carousel.css";
+import { useEffect, useState } from "react";
+import "./carousel.css";
 
-function Carousel({ images }) {
+function Carousel({ images, height, width, autoPlayDuration }) {
   const [current, setCurrent] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   let timeOut = null;
@@ -12,20 +11,25 @@ function Carousel({ images }) {
       autoPlay &&
       setTimeout(() => {
         slideRight();
-      }, 2500);
-  });
+      }, autoPlayDuration || 2500);
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [current, autoPlay, autoPlayDuration]);
 
   const slideRight = () => {
-    setCurrent(current === images.length - 1 ? 0 : current + 1);
+    setCurrent((current + 1) % images.length);
   };
 
   const slideLeft = () => {
     setCurrent(current === 0 ? images.length - 1 : current - 1);
   };
-  console.log(current);
+
   return (
     <div
       className="carousel"
+      style={{ height: height || "500px", width: width || "80%", margin: "0 auto" }}
       onMouseEnter={() => {
         setAutoPlay(false);
         clearTimeout(timeOut);
@@ -37,12 +41,10 @@ function Carousel({ images }) {
       <div className="carousel_wrapper">
         {images.map((image, index) => {
           return (
-            /* (condition) ? true : false */
-
             <div
               key={index}
               className={
-                index == current
+                index === current
                   ? "carousel_card carousel_card-active"
                   : "carousel_card"
               }
@@ -66,7 +68,7 @@ function Carousel({ images }) {
               <div
                 key={index}
                 className={
-                  index == current
+                  index === current
                     ? "pagination_dot pagination_dot-active"
                     : "pagination_dot"
                 }

@@ -37,7 +37,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // 4. Change password
-router.put("/change-password/:id", verifyStaff, async (req, res, next) => {
+router.put("/change-password/:id", async (req, res, next) => {
         try {
         const { password } = req.body;
         let bcyrptPassword;

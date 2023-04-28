@@ -17,7 +17,7 @@ const MemberProfile = () => {
     useEffect(() => {
         async function fetchUserBooking() {
           try{
-                const res = await axios.get("http://localhost:5000/api/bookings/bookings/"+ user.details.customerId);
+                const res = await axios.get("http://localhost:4000/api/bookings/bookings/"+ user.details.customerId);
                 setBookings(res.data);
                 // console.log("bookings",bookings[0]);
                 console.log(res.data);
@@ -35,7 +35,7 @@ const MemberProfile = () => {
             try{
                 //maps each arr in bookings and gets the activity name
                 const activityName = bookings.map(async booking => {
-                    const res = await axios.get("http://localhost:5000/api/activities/find/"+booking.activityId);
+                    const res = await axios.get("http://localhost:4000/api/activities/find/"+booking.activityId);
                     return res.data.activityName;
                 });
                 //array of activity names. Promise.all resolves each promise (name of each booking)
@@ -53,14 +53,16 @@ const MemberProfile = () => {
 
     //delete booking
     const handleDelete = async (bookingId) => {
+        if (window.confirm("Are you sure you want to delete this staff member?")) {
         try {
-            const res = await axios.delete("http://localhost:5000/api/bookings/"+ bookingId);
+            const res = await axios.delete("http://localhost:4000/api/bookings/"+ bookingId);
             console.log(res);
             const newBookings = bookings.filter(booking => booking.bookingId !== bookingId);
             setBookings(newBookings);
           // Redirect to login page or show success message
         } catch (err) {
           console.log(err.response.data);
+        }
         }
       };
 

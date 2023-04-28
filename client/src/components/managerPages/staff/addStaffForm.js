@@ -5,17 +5,31 @@ import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
   
-    const handleFormInputChange = (event) => {
-        setFormInputs({
-          ...formInputs,
-          [event.target.name]: event.target.value
-        });
+
+      const handleFormInputChange = (event) => {
+        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        const name = event.target.name;
+    
+        if (name === 'isManager') {
+          setFormInputs({
+            ...formInputs,
+            [name]: value === 'Manager' ? true : false
+          });
+        } else {
+          setFormInputs({
+            ...formInputs,
+            [name]: value
+          });
+        }
       };
       
       return (
         <Modal show={showAdd} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Staff</Modal.Title>
+        <Modal.Header style={{ background: "none", border: "none" }}>
+          <Modal.Title>Add New Staff</Modal.Title>
+          <button className="btn-close" onClick={handleClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
@@ -56,7 +70,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type="bcryptpassword"
                 name="password"
                 value={formInputs.password}
                 onChange={handleFormInputChange}
@@ -65,18 +79,24 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             </Form.Group>
 
             <Form.Group controlId="formIsManager">
-              <Form.Label>Manager?</Form.Label>
-              <Form.Control
-                type="boolean"
-                name="isManager"
-                value={formInputs.isManager}
-                onChange={handleFormInputChange}
-                placeholder="Employee ? Manager"
-              />
-            </Form.Group>
+            <div style={{display: 'block'}}>
+            <Form.Label>Title</Form.Label>
+            </div>
+            <div>
+            <Form.Select
+              name="isManager"
+              value={formInputs.isManager ? 'Manager' : 'Staff'}
+              onChange={handleFormInputChange}
+            >
+              <option value="">Please select an option</option>
+              <option value="Manager">Manager</option>
+              <option value="Staff">Staff</option>
+            </Form.Select>
+            </div>
+          </Form.Group>
       
-            <Button variant="primary" type="submit">
-              Save Changes
+            <Button style={{marginTop: "10px"}} variant="primary" type="submit">
+              Add New Staff
             </Button>
           </Form>
         </Modal.Body>

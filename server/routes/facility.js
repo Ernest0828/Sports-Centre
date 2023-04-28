@@ -36,7 +36,7 @@ router.delete("/:id", async (req, res, next) => {
         const facility = await Facility.findByPk(req.params.id);
         if(!facility) return res.status(404).json("Facility not found");
         else { 
-            await facility.destroy(req.body);
+            await facility.destroy();
             res.status(200).json("Facility deleted");
         }
     } catch (err) {
