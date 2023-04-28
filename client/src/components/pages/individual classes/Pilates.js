@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./pilates.css"
 
-import Navbar from "../../navbar/navbar"
+import Navbar from "../../navbar/Navbar"
 
 const Pilates = () => {
   const [slideNumber, setSlideNumber] = useState(0);

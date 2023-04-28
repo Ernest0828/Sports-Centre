@@ -38,6 +38,8 @@ import Yoga from './components/pages/individual classes/Yoga';
 import MyComponent from './components/dropdownfacility/dropdown';
 import DropdownChoice from './components/dropdownfacility/dropdown';
 import successPage from './components/pages/success/successPage';
+import FacilityPage from './components/pages/individual facilities/FacilityPage';
+import FacilityBookingDetails from './components/ICalendar/FacilityBooking';
 
 function App() {
   const {user} = useContext(Auth);
@@ -77,6 +79,8 @@ function App() {
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
           <Route exact path="/success" element={<successPage/>}/>
+          <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
+          <Route exact path="/FacilityBookingDetails" element={<FacilityBookingDetails/>}/>
           
 
           

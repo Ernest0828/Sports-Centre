@@ -1,12 +1,12 @@
 import React,{ useState, useEffect } from 'react'
 import "./climbingwall.css"
-import Navbar from "../../navbar/navbar"
+import Navbar from "../../navbar/Navbar"
 import DropdownChoice from '../../dropdownfacility/dropdown';
 // import ReactDatePicker from '../../Calendar/ReactDatePicker';
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
-import ICalendar from '../../ICalendar/ICalendar';
-
+import ClimbCal from '../../ICalendar/ClimbCal';
+import axios from 'axios';
 
 
 
@@ -18,7 +18,7 @@ const Climbingwall = () => {
             <Navbar/>
                 <div className="climbingWallContainer">
                     <div className="climbingWallWrapper">
-                        <ICalendar />
+                        <ClimbCal />
                             {/* <button className="bookNow">Reserve or book now</button> */}
                             <h1 className="climbingWallTitle"> Book Facility</h1>
                             <div className="climbingWallDetails">                                                    

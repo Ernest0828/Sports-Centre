@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { useEffect } from "react";
 import { useState } from "react"
 import { Link } from "react-router-dom";
-import Navbar from "../../navbar/navbar";
-import "./dashboard.css";
+import Navbar from "../../navbar/Navbar";
+import "./Dashboard.css";
 import Carousel from "./Carousel";
 import {sports} from "./Data";
 

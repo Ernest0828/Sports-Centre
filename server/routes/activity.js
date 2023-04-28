@@ -12,10 +12,15 @@ router.post("/activityid", /*verifyManager,*/ async (req, res, next) => {
         if (!facility) 
             return res.status(404).send("Facility not found");
 
-        // check if activity already exist
-        const existingActivity = await Activity.findOne({ where: {activityName: name, facilityName:facilityName}});
-        if (existingActivity) 
-            return res.status(401).send("Activity already exists");
+         // check if activity already exist
+         let existingActivity;
+         if (!day && !start){
+             existingActivity = await Activity.findOne({ where: {activityName: name, facilityName:facilityName}});
+         }else {
+             existingActivity = await Activity.findOne({ where: {activityName: name, facilityName:facilityName, day:day, startTime: start, endTime: end}});
+         }
+         if (existingActivity) 
+             return res.status(401).send("Activity already exists");
 
         const newActivity = await Activity.create({ 
             activityName: name, 

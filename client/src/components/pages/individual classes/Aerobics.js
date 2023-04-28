@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import "./aerobics.css"
-import Navbar from "../../navbar/navbar"
+import Navbar from "../../navbar/Navbar"
 import DropDownClasses from '../../dropdownclasses/dropdownclasses'
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import MyCalendar from '../../mycalendar/mycalendar'
-import ICalendar from '../../ICalendar/ICalendar';
+import SwimmingCal from '../../ICalendar/SwimmingCal';
 
 const Aerobics = () => {
   const[selectedDate, setSelectedDate] = useState(null)
@@ -17,7 +17,7 @@ const Aerobics = () => {
 					<div className="aerobicsContainer">
             {/* <MyCalendar /> */}
 					<div className="aerobicsWrapper">
-                <ICalendar/>
+                <SwimmingCal/>
 									{/* <button className="bookNow">Reserve or book now</button> */}
 									<h1 className="aerobicsTitle">Book Classes</h1>
 

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./yoga.css"
 
-import Navbar from "../../navbar/navbar"
+import Navbar from "../../navbar/Navbar"
 
 const Yoga = () => {
 

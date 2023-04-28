@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProfileInfo from "../../profileInfo/ProfileInfo";
 import {Auth} from "../../../context/Auth"
 import axios from "axios";
-import Navbar from "../../navbar/navbar";
+import Navbar from "../../navbar/Navbar";
 
 
 const MemberProfile = () => {
