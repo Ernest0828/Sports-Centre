@@ -33,7 +33,7 @@ import Dashboard from "./components/pages/dashboard/Dashboard"
 
 // import Aerobics from './components/pages/individual classes/Aerobics';
 // import MyComponent from './components/dropdownfacility/dropdown';
-import DropDownChoice from './components/dropdownfacility/DropDownFacility';
+import DropDownChoice from './components/dropDownFacility/DropDownFacility';
 import SuccessPage from './components/pages/success/SuccessPage';
 import CancelPage from './components/pages/cancel/CancelPage';
 import FacilityPage from './components/pages/individual-facilities/FacilityPage';
