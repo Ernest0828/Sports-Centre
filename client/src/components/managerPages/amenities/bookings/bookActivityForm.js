@@ -1,32 +1,25 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../hooks/useFetch"
-import axios from 'axios'
+import "./bookings.css";
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import BookingDatePicker from "./datepicker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays, isThursday } from "date-fns";
+import FacilityDetails from "../facilities/facilityDetails";
 
-const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
-
-
+const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
 
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
-    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
 
-    const [facilityDetails, setFacilityDetails] = useState();
     const [selectedFacility, setSelectedFacility] = useState("");
     const [selectedActivity, setSelectedActivity] = useState("");
-    const [selectedClass, setSelectedClass] = useState("");
+    const [selectedCustomer, setSelectedCustomer] = useState("");
     const [activityNames, setActivityNames] = useState([]);
-    const [classNames, setClassNames] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
-
-    const today = new Date();
-    const minDate = addDays(today, 10); // Minimum date is 2 weeks in advance
-    const maxDate = addDays(minDate, 0); // Maximum date is 1 week from minDate
 
   // Filter function to show only Thursdays
     const filterThursday = (date) => isThursday(date);
@@ -62,25 +55,6 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
         return map;
       }, {});
     
-      setFacilityDetails(
-        facilityData.map((facility) => {
-          const activities = filteredActivities
-            .filter((activity) => activity.facilityName === facility.facilityName)
-            .map((activity) => ({
-              activityId: activityIdMap[`${activity.facilityName}-${activity.activityName}`],
-              activityName: activity.activityName,
-              price: activity.price
-            }));
-          return {
-            ...facility,
-            facilityName: facility.facilityName,
-            capacity: facility.capacity,
-            startTime: facility.startTime,
-            endTime: facility.endTime,
-            activities
-          };
-        })
-      );
     }, [facilityData, activityData, selectedFacility]);
 
       const handleFormInputChange = (event) => {
@@ -100,15 +74,11 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
         }
       };
       
-      const handleDateFormInputChange = (name, value) => {
-        setFormInputs({ ...formInputs, [name]: value });
-      };
-
       
       return (
         <Modal show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Make Booking</Modal.Title>
+          <Modal.Title>Book Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
             <span aria-hidden="true">&times;</span>
           </button>
@@ -116,15 +86,31 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
       
-            <Form.Group controlId="formCustomer">
+          <Form.Group controlId="formCustomer">
               <Form.Label>Customer</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="customerName"
-                value={formInputs.customerName}
-                onChange={handleFormInputChange}
-                placeholder="Jane"
-              />
+                value={selectedCustomer}
+                onChange={(e) => {
+                  setSelectedCustomer(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    customerName: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Customer</option>
+                {customerData &&
+                  customerData.map((customer) => (
+                    <option
+                      key={customer.customerId}
+                      value={customer.customerName}
+                    >
+                      {customer.customerName}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
 
 
@@ -143,8 +129,8 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
                 }}
               >
                 <option value="">Select Facility</option>
-                {facilityDetails &&
-                  facilityDetails.map((facility) => (
+                {facilityData &&
+                  facilityData.map((facility) => (
                     <option
                       key={facility.facilityName}
                       value={facility.facilityName}
@@ -180,33 +166,6 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
               </Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="formClasses">
-              <Form.Label>Class</Form.Label>
-              <Form.Control
-                as="select"
-                name="className"
-                value={selectedClass}
-                onChange={(e) => {
-                  setSelectedClass(e.target.value);
-                  setFormInputs({
-                    ...formInputs,
-                    className: e.target.value
-                  });
-                }}
-              >
-                <option value="">Select Class</option>
-                {classData &&
-                  classData.map((classes) => (
-                    <option
-                      key={classes.classId}
-                      value={classes.className}
-                    >
-                      {classes.className}
-                    </option>
-                  ))}
-              </Form.Control>
-            </Form.Group>
-
             <Form.Group controlId="formDate">
               <Form.Label>Date</Form.Label>
               <Form.Control
@@ -218,32 +177,26 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
               />
             </Form.Group>
 
-            {/*<Form.Group controlId="formDate">
-              <Form.Label>Date</Form.Label>
-              <DatePicker
-              selected={selectedDate}
-              onChange={(date) => {
-                setSelectedDate(date);
-                handleDateFormInputChange("date", date);
-              }}
-              minDate={minDate}
-              maxDate={maxDate}
-              //filterDate={filterThursday}
-              dateFormat="yyyy/MM/dd"
-              placeholderText=" "
-            />
-            </Form.Group>*/}
-
 
             <Form.Group controlId="formStartTime">
-              <Form.Label>Start</Form.Label>
+              <Form.Label>Time</Form.Label>
               <Form.Control
-                type="time"
+                as="select"
                 name="startTime"
                 value={formInputs.startTime}
                 onChange={handleFormInputChange}
-                placeholder=" "
-              />
+              >
+                <option value="">Select Time</option>
+                {[...Array(15).keys()].map((hour) => {
+                  const startHour = hour + 8;
+                  const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
+                  return (
+                    <option>
+                      <option value={`${formattedStartHour}:00`}>{`${formattedStartHour}:00`}</option>
+                    </option>
+                  );
+                })}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="formStaff">
@@ -257,13 +210,48 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
               />
             </Form.Group>
       
-            <Button style={{marginTop: "10px"}}variant="primary" type="submit">
-              Save Changes
+            <Button className="addBookingButton" style={{marginTop: "10px", marginBottom: "10px"}}variant="primary" type="submit">
+              Book
             </Button>
           </Form>
+
+          <table>
+            <thead>
+              <tr>
+              <th>Activity</th>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Price</th>
+              <th>Facility</th>
+              </tr>
+            </thead>
+            <tbody>
+            {activityData && activityData.map(({ activityId, activityName, day, startTime, endTime, price, facilityName }) => (
+                                <tr key = {activityId}>
+                                    <td>
+                                      <span>{activityName}</span>
+                                    </td>
+                                    <td>
+                                      <span>{day}</span>
+                                    </td>
+                                    <td>
+                                      <span>{startTime}-{endTime}</span>
+                                    </td>
+                                    <td>
+                                      <span>{price}</span>
+                                    </td>
+                                    <td>
+                                      <span>{facilityName}</span>
+                                    </td>
+                                </tr>
+            ))}
+            </tbody>
+          </table>
+
+
         </Modal.Body>
       </Modal>
     );
   };
 
-export default AddBookingForm;
+export default BookActivityForm;

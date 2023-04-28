@@ -8,7 +8,7 @@ import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditBookingForm from "./editBookingForm";
-import AddBookingForm from "./addBookingForm";
+import BookActivityForm from "./bookActivityForm";
 
 const BookingDetails = () => {
 
@@ -232,7 +232,7 @@ const BookingDetails = () => {
         })
         .catch(error => {
           console.log(error);
-          alert('Failed to save data');
+          alert('No available activity/classes within the selected day and time');
         });
     
       // Close modal
@@ -268,7 +268,7 @@ const BookingDetails = () => {
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
-            <AddBookingForm 
+            <BookActivityForm 
               showAdd={showAdd}
               handleClose={handleClose}
               handleAddSubmit={handleAddSubmit}
@@ -340,7 +340,7 @@ const BookingDetails = () => {
                             </tbody>
                             <div>
                               <button className="addBookingButton" onClick={() => { handleAdd();}}>
-                                Create
+                                Book Activity
                               </button>
                             </div>
                         </table>
