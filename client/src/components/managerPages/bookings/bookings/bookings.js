@@ -111,6 +111,7 @@ const BookingDetails = () => {
         staffId: "",
         date: "",
         startTime: "",
+        endTime:"",
         activityId: "",
         classId: "",
         facilityName: "",
@@ -146,6 +147,7 @@ const BookingDetails = () => {
       updatedDetails[index].staffId = formInputs.staffId;
       updatedDetails[index].date = formInputs.date;
       updatedDetails[index].startTime = formInputs.startTime;
+      updatedDetails[index].endTime = formInputs.endTime;
       updatedDetails[index].activityId =  formInputs.activityId;
       updatedDetails[index].classId =  formInputs.classId;
       updatedDetails[index].facilityName =  formInputs.facilityName;
@@ -160,6 +162,7 @@ const BookingDetails = () => {
         staffId: staffId,
         date: formInputs.date,
         startTime: formInputs.startTime,
+        endTime: formInputs.endTime,
         activityId: activityId,
         classId: classId,
         facilityName:  formInputs.facilityName
@@ -322,13 +325,11 @@ const BookingDetails = () => {
                                     <td>
                                               <span>{staffName}</span>
                                     </td>
-                                    {isEditable && (
-                                    <td>
-                                    <button className="deleteBookingButton" >
-                                        Delete
+                                     <td>
+                                    <button className="editBookingButton" onClick={() => {handleShow(bookingId);}}>
+                                    {editableRows[bookingId] ? "Edit" : "Edit"}
                                     </button>
                                     </td>
-                                     )}
                                     <td>
                                     <button className="editBookingButton" onClick={() => {handleDelete(bookingId);}}>
                                     {editableRows[bookingId] ? "Delete" : "Delete"}

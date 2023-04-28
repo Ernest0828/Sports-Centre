@@ -64,6 +64,23 @@ td{
 	color: white;
 }
 
+.addActivityButton{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.addActivityButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
 .deleteButton{
     width: 80px;
 	border: none;
@@ -81,7 +98,6 @@ td{
 }
 
 .editActivityButton{
-    width: 100px;
     margin-top: 10px;
     margin-left: 10px;
 	border: none;
@@ -92,8 +108,8 @@ td{
     box-sizing: border-box;
 }
 
-button.editButton {
-  width: 100%;
+button.editActivityButton {
+  width: 90%;
 }
 
 

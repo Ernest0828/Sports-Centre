@@ -7,6 +7,7 @@ import useFetch from "../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditCustomerForm from "./editCustomerForm";
+import AddCustomerForm from "./addCustomerForm";
 
 const MembershipDetails = () => {
 
@@ -22,8 +23,10 @@ const MembershipDetails = () => {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
     const handleClose = () => {
       setShow(false);
+      setShowAdd(false);
     }
 
     useEffect(() => {
@@ -107,6 +110,55 @@ const MembershipDetails = () => {
       handleClose();
     };
 
+    const handleAdd = () => {
+      setShowAdd(true);
+      if (selectedCustomer) {
+      setFormInputs({
+        customerName: "",
+        customerNumber: "",
+        customerEmail: "",
+        password: "",
+      });
+    }
+    };
+
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      setCustomerDetails((prevState) => {
+        const updatedDetails = [...prevState];
+        
+        //updatedDetails[index].staffId = formInputs.staffId;
+        updatedDetails.customerName = formInputs.customerName;
+        updatedDetails.customerNumber = formInputs.customerNumber;
+        updatedDetails.customerEmail = formInputs.customerEmail;
+        updatedDetails.password =  formInputs.password;
+  
+        return updatedDetails;
+
+        });
+    
+      // Send new staff details to server
+      axios.post('http://localhost:4000/api/auth/register', {
+        name: formInputs.customerName,
+        number: formInputs.customerNumber,
+        email: formInputs.customerEmail,
+        password: formInputs.password,
+      })
+        .then(response => {
+          console.log(response.data);
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Failed to save data');
+        });
+    
+      // Close modal
+      handleClose();
+    };
+
     const handleDelete = (customerId) => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
       setSelectedCustomer(selectedCustomer);
@@ -132,6 +184,13 @@ const MembershipDetails = () => {
               handleClose={handleClose}
               handleSubmit={handleSubmit}
               customer={selectedCustomer}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
+            <AddCustomerForm 
+              showAdd={showAdd}
+              handleClose={handleClose}
+              handleAddSubmit={handleAddSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
@@ -188,6 +247,11 @@ const MembershipDetails = () => {
                                 </tr>
                                 ))}
                             </tbody>
+                            <div>
+                              <button className="addCustomerButton" onClick={() => { handleAdd();}}>
+                                Register Customer
+                              </button>
+                            </div>
                         </table>
                     </div>
                 </div>

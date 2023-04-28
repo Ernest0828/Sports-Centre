@@ -95,8 +95,8 @@ button.editCustomerButton {
   width: 80%;
 }
 
-.addButton{
-    width: 80px;
+.addCustomerButton{
+    width: 150px;
 	border: none;
 	border-radius: 20px;
     margin-top: 5px;
@@ -106,7 +106,7 @@ button.editCustomerButton {
     background-color: grey;
 }
 
-.addButton:hover{
+.addCustomerButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;

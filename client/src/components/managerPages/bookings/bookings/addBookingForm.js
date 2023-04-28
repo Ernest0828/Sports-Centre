@@ -3,6 +3,10 @@ import useFetch from "../../hooks/useFetch"
 import axios from 'axios'
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import BookingDatePicker from "./datepicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays, isThursday } from "date-fns";
 
 const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
 
@@ -15,7 +19,17 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
     const [facilityDetails, setFacilityDetails] = useState();
     const [selectedFacility, setSelectedFacility] = useState("");
     const [selectedActivity, setSelectedActivity] = useState("");
+    const [selectedClass, setSelectedClass] = useState("");
     const [activityNames, setActivityNames] = useState([]);
+    const [classNames, setClassNames] = useState([]);
+    const [selectedDate, setSelectedDate] = useState("");
+
+    const today = new Date();
+    const minDate = addDays(today, 10); // Minimum date is 2 weeks in advance
+    const maxDate = addDays(minDate, 0); // Maximum date is 1 week from minDate
+
+  // Filter function to show only Thursdays
+    const filterThursday = (date) => isThursday(date);
 
     useEffect(() => {
       // Filter the activity data based on the selected facility name
@@ -28,6 +42,18 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
 
       // Update the state with the activity names
       setActivityNames(names);
+      
+
+      /*const uniqueClasses = new Map();
+      classData.forEach((classes) => {
+        if (!uniqueClasses.has(classes.className)) {
+          uniqueClasses.set(classes.className, classes);
+        }
+      });
+      const classes = Array.from(uniqueClasses.values());
+
+      // Update the state with the unique class names
+      setClassNames(classes);*/
 
       // Create a mapping of activityIds based on facilityName and activityName
       const activityIdMap = filteredActivities.reduce((map, activity) => {
@@ -73,6 +99,11 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
           });
         }
       };
+      
+      const handleDateFormInputChange = (name, value) => {
+        setFormInputs({ ...formInputs, [name]: value });
+      };
+
       
       return (
         <Modal show={showAdd} onHide={handleClose}>
@@ -139,7 +170,7 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
                   });
                 }}
               >
-                <option value="">Activity</option>
+                <option value="">Select Activity</option>
                 {activityNames &&
                   activityNames.map((activityName) => (
                     <option key={activityName} value={activityName}>
@@ -149,15 +180,31 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
               </Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="formClass">
+            <Form.Group controlId="formClasses">
               <Form.Label>Class</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="className"
-                value={formInputs.className}
-                onChange={handleFormInputChange}
-                placeholder=""
-              />
+                value={selectedClass}
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    className: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Class</option>
+                {classData &&
+                  classData.map((classes) => (
+                    <option
+                      key={classes.classId}
+                      value={classes.className}
+                    >
+                      {classes.className}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="formDate">
@@ -170,6 +217,23 @@ const AddBookingForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setF
                 placeholder=" "
               />
             </Form.Group>
+
+            {/*<Form.Group controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <DatePicker
+              selected={selectedDate}
+              onChange={(date) => {
+                setSelectedDate(date);
+                handleDateFormInputChange("date", date);
+              }}
+              minDate={minDate}
+              maxDate={maxDate}
+              //filterDate={filterThursday}
+              dateFormat="yyyy/MM/dd"
+              placeholderText=" "
+            />
+            </Form.Group>*/}
+
 
             <Form.Group controlId="formStartTime">
               <Form.Label>Start</Form.Label>

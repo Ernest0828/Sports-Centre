@@ -119,7 +119,7 @@ router.post('/bookingid', async (req, res, next) => {
 });
 
 // 2. Update an existing booking
-router.put("/:id", verifyManager, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const updateBooking = await Booking.findByPk(req.params.id);
     const updatedBooking = await updateBooking.update(req.body);

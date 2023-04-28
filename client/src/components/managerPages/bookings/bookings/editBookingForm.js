@@ -4,6 +4,7 @@ import axios from 'axios'
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
+
 const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
   
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");

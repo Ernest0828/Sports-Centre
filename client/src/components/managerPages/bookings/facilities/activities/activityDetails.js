@@ -7,7 +7,7 @@ import useFetch from "../../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditActivityForm from "./editActivityForm";
-//import AddClassForm from "./addClassForm";
+import AddActivityForm from "./addActivityForm";
 
 
 const ActivityDetails = () => {
@@ -135,17 +135,17 @@ const ActivityDetails = () => {
         updatedDetails.startTime = formInputs.startTime;
         updatedDetails.endTime = formInputs.endTime;
         updatedDetails.price =  formInputs.price;
-        updatedDetails.facilityName =  formInputs.faciltyName;
+        updatedDetails.facilityName =  formInputs.facilityName;
   
         return updatedDetails;
         });
     
       // Send new staff details to server
       axios.post('http://localhost:4000/api/activities/activityId', {
-        activityName: formInputs.activityName,
+        name: formInputs.activityName,
         day: formInputs.day,
-        startTime: formInputs.startTime,
-        endTime: formInputs.endTime,
+        start: formInputs.startTime,
+        end: formInputs.endTime,
         price: formInputs.price,
         facilityName: formInputs.facilityName,
       })
@@ -159,6 +159,21 @@ const ActivityDetails = () => {
     
       // Close modal
       handleClose();
+      window.location.reload();
+    };
+
+    const handleDelete = (activityId) => {
+      const selectedActivity = activityDetails.find(activity => activity.activityId === activityId);
+      setSelectedActivity(selectedActivity);
+      
+      if (window.confirm("Are you sure you want to delete this staff member?")) {
+        axios.delete(`http://localhost:4000/api/activities/${selectedActivity.activityId}`)
+          .then(() => {
+            // remove the deleted staff member from staffDetails state
+            setActivityDetails(activityDetails.filter(activity => activity.activityId !== selectedActivity.activityId));
+          })
+          .catch(err => console.error('Failed to delete activity', err));
+      }
     };
 
 
@@ -170,6 +185,13 @@ const ActivityDetails = () => {
               handleClose={handleClose}
               handleSubmit={handleSubmit}
               activity={selectedActivity}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
+            <AddActivityForm 
+              showAdd={showAdd}
+              handleClose={handleClose}
+              handleAddSubmit={handleAddSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
@@ -185,6 +207,7 @@ const ActivityDetails = () => {
                                     <th>End Time</th>
                                     <th>Price</th>
                                     <th>Facility</th>
+                                    <th> </th>
                                     <th> </th>
                                 </tr>
                             </thead>
@@ -221,15 +244,20 @@ const ActivityDetails = () => {
                                     {editableRows[activityId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
+                                    <td>
+                                    <button className="editActivityButton" onClick={() => {handleDelete(activityId);}}>
+                                    {editableRows[activityId] ? "Delete" : "Delete"}
+                                    </button>
+                                    </td>
                                 </tr>
                                 ))}
                             </tbody>
+                            <div>
+                              <button className="addActivityButton" onClick={() => { handleAdd();}}>
+                                Add
+                              </button>
+                            </div>
                         </table>
-                        <div>
-                        {isEditable && (
-                                <button class="button" >Add</button>
-                        )}
-                        </div>
                     </div>
                 </div>
         </div>

@@ -1,81 +1,136 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
 import {useContext, useState} from 'react';
+import useFetch from "../../../hooks/useFetch"
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
+const AddActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
+
+  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+  const [selectedFacility, setSelectedFacility] = useState("");
   
-    const handleFormInputChange = (event) => {
-        setFormInputs({
-          ...formInputs,
-          [event.target.name]: event.target.value
-        });
-      };
+  const handleFormInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "day" && value === "") {
+      setFormInputs({
+        ...formInputs,
+        day: null
+      });
+    } else {
+      setFormInputs({
+        ...formInputs,
+        [name]: value
+      });
+    }
+  };
+  
       
       return (
         <Modal show={showAdd} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Staff</Modal.Title>
+        <Modal.Header style={{ background: "none", border: "none" }}>
+          <Modal.Title>Add Activity</Modal.Title>
+          <button className="btn-close" onClick={handleClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
       
-            <Form.Group controlId="formStaffName">
-              <Form.Label>Staff Name</Form.Label>
+            <Form.Group controlId="formActivityName">
+              <Form.Label>Activity Name</Form.Label>
               <Form.Control
                 type="text"
-                name="staffName"
-                value={formInputs.staffName}
+                name="activityName"
+                value={formInputs.activityName}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff name"
+                placeholder=""
               />
             </Form.Group>
       
-            <Form.Group controlId="formStaffNumber">
-              <Form.Label>Staff Number</Form.Label>
-              <Form.Control
-                type="text"
-                name="staffNumber"
-                value={formInputs.staffNumber}
+            <Form.Group controlId="formDay">
+            <div style={{display: 'block'}}>
+              <Form.Label>Day</Form.Label>
+            </div>
+            <div>
+              <Form.Select
+                name="day"
+                value={formInputs.day}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff number"
-              />
+              >
+                <option value="">Select day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </Form.Select>
+              </div>
             </Form.Group>
       
-            <Form.Group controlId="formStaffEmail">
-              <Form.Label>Staff Email</Form.Label>
+            <Form.Group controlId="formStartTime">
+              <Form.Label>Start Time</Form.Label>
               <Form.Control
-                type="text"
-                name="staffEmail"
-                value={formInputs.staffEmail}
+                type="time"
+                name="startTime"
+                value={formInputs.startTIme}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff email"
+                placeholder=""
               />
             </Form.Group>
 
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
+            <Form.Group controlId="formEndTime">
+              <Form.Label>End Time</Form.Label>
               <Form.Control
-                type="text"
-                name="password"
-                value={formInputs.password}
+                type="time"
+                name="endTime"
+                value={formInputs.endTime}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff password"
+                placeholder=""
               />
             </Form.Group>
 
-            <Form.Group controlId="formIsManager">
-              <Form.Label>Manager?</Form.Label>
+            <Form.Group controlId="formPrice">
+              <Form.Label>Price</Form.Label>
               <Form.Control
-                type="boolean"
-                name="isManager"
-                value={formInputs.isManager}
+                type="number"
+                step= "0.01"
+                name="price"
+                value={formInputs.price}
                 onChange={handleFormInputChange}
-                placeholder="Employee ? Manager"
+                placeholder=""
               />
             </Form.Group>
+
+            <Form.Group controlId="formFacility">
+              <Form.Label>Facility</Form.Label>
+              <Form.Control
+                as="select"
+                name="facilityName"
+                value={selectedFacility}
+                onChange={(e) => {
+                  setSelectedFacility(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    facilityName: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Facility</option>
+                {facilityData &&
+                  facilityData.map((facility) => (
+                    <option
+                      key={facility.facilityName}
+                      value={facility.facilityName}
+                    >
+                      {facility.facilityName}
+                    </option>
+                  ))}
+              </Form.Control>
+            </Form.Group>
       
-            <Button variant="primary" type="submit">
+            <Button style={{marginTop: "10px"}} variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>
@@ -84,4 +139,4 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
     );
   };
 
-export default AddStaffForm;
+export default AddActivityForm;
