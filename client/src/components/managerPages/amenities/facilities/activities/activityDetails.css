@@ -1,10 +1,10 @@
-.bookingDetails {
+.activityDetails {
     margin-top: 120px;
     justify-content: center;
     align-items: center;
 }
 
-.bookingDetailsTitle{
+.activityDetailsTitle{
     color: black;
     padding: 20px 20px 0;
     font-size: 20px ;
@@ -13,15 +13,15 @@
     margin-left: 1%;
 }
 
-.bookingDetailsTable{
-    width: 95%;
+.activityDetailsTable{
     display: flex;
     margin: 0 auto;
+    width: 95%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
     flex-direction: column;
     justify-content: center;
-    background-color: #f9f9f9;
-    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
-    padding: 20px;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         color: black;
@@ -64,38 +64,7 @@ td{
 	color: white;
 }
 
-.deleteBookingButton{
-    width: 80px;
-	border: none;
-	border-radius: 20px;
-	padding: 5px;
-    cursor: pointer;
-	color: white;
-    background-color: grey;
-}
-
-.deleteBookingButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
-
-.editBookingButton{
-    margin-top: 10px;
-    margin-left: 10px;
-	border: none;
-	border-radius: 20px;
-    cursor: pointer;
-	color: white;
-    background-color: grey;
-    box-sizing: border-box;
-}
-
-button.editBookingButton {
-  width: 80%;
-}
-
-.addBookingButton{
+.addActivityButton{
     width: 80px;
 	border: none;
 	border-radius: 20px;
@@ -106,7 +75,57 @@ button.editBookingButton {
     background-color: grey;
 }
 
-.addBookingButton:hover{
+.addActivityButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
+.deleteButton{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.deleteButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
+.editActivityButton{
+    margin-top: 10px;
+    margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
+}
+
+button.editActivityButton {
+  width: 90%;
+}
+
+
+.profileDeleteBookingBtn{
+    width: 80px;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+
+
+.profileDeleteBookingBtn:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;

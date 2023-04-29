@@ -5,7 +5,8 @@ const Staff = require("./staff")
 const Activity = require("./activity")
 const Customer = require("./customer")
 const Payment = require("./payment")
-const Classes = require("./classes")
+const Classes = require("./classes");
+const Basket = require("./basket");
 
 const { INTEGER, DATE, TIME, ENUM } = Sequelize;
 
@@ -44,6 +45,6 @@ Booking.belongsTo(Staff, { foreignKey: 'staffId', allowNull: true });
 Booking.belongsTo(Activity, { foreignKey: 'activityId', allowNull: true });
 Booking.belongsTo(Classes, { foreignKey: 'classId', allowNull: true });
 Booking.belongsTo(Facility, { foreignKey: 'facilityName' });
-// Booking.belongsTo(Payment, { foreignKey: 'paymentId' });
+Booking.belongsTo(Basket, { foreignKey: 'basketId' });
 
 module.exports=Booking;

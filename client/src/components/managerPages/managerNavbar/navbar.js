@@ -17,25 +17,22 @@ const Navbar = () => {
         </Link>
         <ul className="managerNavList">
         {isManager &&
-          <li className="managerNavItem">
-            <Link to="/facilitydetails" className="managerNavLink">
+        <div className="managerNavDropdown">
+        <Link to="/facilitydetails" className="managerNavDropdownTrigger managerNavLink" onClick={() => window.location.href="/facilitydetails"}>
+          Amenities
+        </Link>
+        <ul className="managerNavDropdownList">
+          <li className="managerNavItem" onClick={() => window.location.href="/facilitydetails"}>
               Facilities
-            </Link>
           </li>
-        }
-        {isManager &&
-          <li className="managerNavItem">
-            <Link to="/activitydetails" className="managerNavLink">
+          <li className="managerNavItem" onClick={() => window.location.href="/activitydetails"}>
               Activities
-            </Link>
           </li>
-        }   
-        {isManager &&
-          <li className="managerNavItem">
-            <Link to="/classdetails" className="managerNavLink">
+          <li className="managerNavItem" onClick={() => window.location.href="/classdetails"}>
               Classes
-            </Link>
           </li>
+        </ul>
+      </div>
         }
         {isManager &&
           <li className="managerNavItem">

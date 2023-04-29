@@ -14,17 +14,17 @@
 }
 
 .customerDetailsTable{
+    width: 95%;
     display: flex;
     margin: 0 auto;
-    width: 95%;
-    padding: 70px;
-    padding-left: 50px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
     flex-direction: column;
     justify-content: center;
-    color: black;
+    background-color: #f9f9f9;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    padding: 20px;
+    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+        border-radius: 10px;
+        color: black;
 }
 
 
@@ -95,8 +95,8 @@ button.editCustomerButton {
   width: 80%;
 }
 
-.addButton{
-    width: 80px;
+.addCustomerButton{
+    width: 150px;
 	border: none;
 	border-radius: 20px;
     margin-top: 5px;
@@ -106,7 +106,25 @@ button.editCustomerButton {
     background-color: grey;
 }
 
-.addButton:hover{
+.addCustomerButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
+.cancelMembershipButton{
+    width: 80px;
+    text-decoration: none;
+	border: none;
+	border-radius: 20px;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.cancelMembershipButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
