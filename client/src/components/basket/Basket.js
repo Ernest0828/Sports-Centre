@@ -1,11 +1,12 @@
-import React, { useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
+import useFetch from "../../hooks/useFetch";
 import "./basket.css";
 import { Link } from "react-router-dom";
 import {Auth} from "../../context/Auth"
 import axios from "axios";
 import PayButton from "../paybutton/PayButton";
 
-export default function Basket({ removeItem }) {
+export default function Basket() {
   const { user } = useContext(Auth);
   const [items, setItems] = useState([]);
   const [discount, setDiscount] = useState(0);
@@ -38,6 +39,9 @@ export default function Basket({ removeItem }) {
     fetchBasketItems();
   }, [user.details.customerId]);
 
+  const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
+    const selectedCustomer = customerData.find((customer) => customer.customerId === user.details.customerId) ?? {}
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -63,6 +67,9 @@ export default function Basket({ removeItem }) {
   }, []);
 
   const calculateTotalCost = () => {
+    if (selectedCustomer.isMembership === true) {
+      return 0;
+    }
     const total = items.reduce((total, item) => total + item.price, 0);
     const discountedTotal = total * (1 - discount);
     if (items.length < 3) {
@@ -103,7 +110,7 @@ export default function Basket({ removeItem }) {
             </div>
             <div className="belowDescription">
               <div className="itemCost">
-                <p>£{item.price.toFixed(2)}</p>
+                <p>£{selectedCustomer.isMembership === true ? "0.00" : item.price.toFixed(2)}</p>
               </div>
               <button className="removeBookingButton" onClick={() => handleRemoveItem(item.basketId)}>Remove</button>
             </div>
