@@ -9,6 +9,7 @@ const Payment = require("./models/payment");
 const Classes = require("./models/classes");
 const Membership = require("./models/membership");
 const Basket = require("./models/basket");
+const Discount = require("./models/discount");
 
 // relation between tables
 // 1. Customer has many to one relation with Booking
@@ -72,5 +73,6 @@ module.exports = db,
     Activity,
     Facility,
     Basket,
+    Discount,
     Classes,
     Membership;
