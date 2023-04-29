@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState, useContext} from 'react';
 import "./bookings.css";
-import Navbar from "../../managerNavbar/navbar";
+import Navbar from "../../managerNavbar/ManagerNavbar";
 import {Auth} from "../../../../context/Auth"
 import { Link } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch"

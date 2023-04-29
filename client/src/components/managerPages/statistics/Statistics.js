@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./statistics.css";
-import Navbar from "../managerNavbar/navbar";
+import Navbar from "../managerNavbar/ManagerNavbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"

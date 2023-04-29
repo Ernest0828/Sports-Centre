@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import "./managerProfile.css";
 import { Link } from "react-router-dom";
 import ManagerProfileInfo from "./managerProfileInfo";
-import Navbar from "../../managerPages/managerNavbar/navbar"
+import Navbar from "../../managerPages/managerNavbar/ManagerNavbar"
 
 const ManagerProfile = () => {
     const [bookings, setBookings] = useState([

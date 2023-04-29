@@ -2,7 +2,7 @@ import React,{ useState, useEffect, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
-import ICalendar from '../../ICalendar/ICalendar';
+//import ICalendar from '../../ICalendar/ICalendar';
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
