@@ -6,16 +6,33 @@ import Navbar from "../../navbar/Navbar";
 import "./dashboard.css";
 import Carousel from "./Carousel";
 import {sports} from "./Data";
+import axios from "axios";
+
 
 const Dashboard = () => {
+  const [discount, setDiscount] = useState(0);
+  
+  useEffect(() => {
+    axios.get("http://localhost:4000/api/discount/")
+    .then(response => { 
+      setDiscount(response.data.discount);
+    })
+    .catch(error => {
+      console.error("Failed to fetch discount:", error);
+    });
+  }, []);
+
   return (
     <Fragment>
       <Navbar/>
       <div className="first-container">
         <div className="upper-container">
-          <Carousel images={sports} height="500px" width="100%" autoPlayDuration={3000} />
-          <div className="quote-container">
+        <div className="quote-container">
             <p>Welcome to GymCorp</p>
+          </div>
+          <Carousel images={sports} height="500px" width="100%" autoPlayDuration={3000} />
+          <div className="quote-container-2">
+            <p>Book 3 sessions within 7 day period to enjoy {discount * 100 }% discount</p>
           </div>
           <div className="bottom-container">
             <Link to="/climbingwall" className="dashItem">
