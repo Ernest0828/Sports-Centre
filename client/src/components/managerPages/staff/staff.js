@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import "./staff.css";
-import Navbar from "../managerNavbar/navbar";
+import Navbar from "../managerNavbar/ManagerNavbar";
 import { Link } from 'react-router-dom';
 import useFetch from "../hooks/useFetch"
 import axios from 'axios';
@@ -231,13 +231,6 @@ const Staff = () => {
                                       </select>
                                     )}
                                     </td>
-                                    {isEditable && (
-                                    <td>
-                                    <button className="deleteButton" >
-                                        Delete
-                                    </button>
-                                    </td>
-                                     )}
                                     <td>
                                     <button className="editStaffButton" onClick={() => {handleShow(staffId);}}>
                                     {editableRows[staffId] ? "Done" : "Edit"}

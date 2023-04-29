@@ -1,0 +1,143 @@
+.statistics{
+    height: max-content;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arimo;
+  }
+  
+.statsWrapper{
+    margin-top:110px;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin-bottom: 30px;
+    background-color: white;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    border-radius: 10px;
+}
+
+.statsDescription{
+    margin-top: 25px;
+    text-align: center;
+}
+    
+.statsDescription > h3{
+    color: #032539;
+    font-weight: 800;
+}
+  
+/* .statsChooseDate{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    align-self: center;
+}
+   */
+
+
+.statsChooseDate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+    max-width: 800px;
+    padding: 16px;
+}
+  
+.statsChooseDate p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: black;
+}
+  
+.statsDateArrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin: 0 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+  
+.statsDateArrow:hover {
+    transform: scale(1.1);
+    color: black;
+}
+  
+.statsDateArrow button {
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555555;
+    cursor: pointer;
+    outline: none;
+}
+
+
+.statsBottom{
+    margin-top: 10px;
+    margin-bottom: 40px;
+    align-self: center;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.statsLeft{
+    background-color: #ffff;
+    flex-basis: 20%;
+}
+
+.statsNavList{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.statsNavButton {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: black;
+    text-align: left;
+}
+
+.statsNavButton:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.statsNavItem{
+    /* text-align: center; */
+    padding: 5px;
+    border-bottom:1px solid #E4E3DF;
+    border-right: 1px solid #E4E3DF;
+}
+
+
+.statsNavItem:hover {
+    transition: color 0.2s ease-in-out;
+    background-color: #1C768F;
+    color: white;
+    /* background-color: #fa991c; */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+.statsRight{
+    flex-basis: 80%;
+    align-items: center;
+    text-align: center;
+    margin-left:10px ;
+}
+

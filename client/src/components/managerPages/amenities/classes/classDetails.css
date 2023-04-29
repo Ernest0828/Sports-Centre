@@ -67,13 +67,6 @@ td{
 	color: white;
 }
 
-.deleteButton{
-    font-size: 10px;
-    padding: 4px 8px;
-    border-radius: 5 px;
-    margin-left: 10px;
-    margin-top: 0px;
-}
 
 .editButton{
     margin-top: 10px;
@@ -87,9 +80,38 @@ td{
 }
 
 button.editButton {
+  width: 80%;
+}
+
+.addClassButton{
+    margin-top: 10px;
+    margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
+}
+
+button.addClassButton {
   width: 40%;
 }
 
+.deleteClassButton{
+    margin-top: 10px;
+    margin-left: 10px;
+	border: none;
+	border-radius: 20px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+    box-sizing: border-box;
+}
+
+button.deleteClassButton {
+  width: 80%;
+}
 
 .updateProfileButton{
     align-self: center;

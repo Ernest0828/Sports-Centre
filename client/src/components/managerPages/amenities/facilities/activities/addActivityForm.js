@@ -11,10 +11,10 @@ const AddActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, set
   
   const handleFormInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === "day" && value === "") {
+    if ((name === "day" || name === "startTime" || name === "endTime") && value === "") {
       setFormInputs({
         ...formInputs,
-        day: null
+        [name]: null
       });
     } else {
       setFormInputs({
@@ -74,18 +74,48 @@ const AddActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, set
               <Form.Control
                 type="time"
                 name="startTime"
-                value={formInputs.startTIme}
+                value={formInputs.startTime || ""}
                 onChange={handleFormInputChange}
                 placeholder=""
               />
             </Form.Group>
+
+            {/*<Form.Group controlId="formStartTime">
+            <div style={{display: 'block'}}>
+              <Form.Label>Start Time</Form.Label>
+            </div>
+              <Form.Select
+                type="time"
+                name="startTime"
+                value={formInputs.startTime || ""}
+                onChange={handleFormInputChange}
+                placeholder=""
+              >
+              <option value="">--:--</option>
+              <option value="08:00">08:00</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="12:00">12:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+              <option value="20:00">20:00</option>
+              <option value="21:00">21:00</option>
+              <option value="22:00">22:00</option>
+              </Form.Select>
+            </Form.Group>*/}
 
             <Form.Group controlId="formEndTime">
               <Form.Label>End Time</Form.Label>
               <Form.Control
                 type="time"
                 name="endTime"
-                value={formInputs.endTime}
+                value={formInputs.endTime || ""}
                 onChange={handleFormInputChange}
                 placeholder=""
               />

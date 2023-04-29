@@ -88,7 +88,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
                 name="startTime"
                 value={formInputs.startTime}
                 onChange={handleFormInputChange}
-                placeholder="08:00"
+                placeholder=""
               />
             </Form.Group>
 
@@ -99,7 +99,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
                 name="endTime"
                 value={formInputs.endTime}
                 onChange={handleFormInputChange}
-                placeholder="20:00"
+                placeholder=""
               />
             </Form.Group>
 
@@ -113,6 +113,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
               value={formInputs.facilityName}
               onChange={handleFormInputChange}
             >
+              <option value="">Select Facility</option>
               {facilities.map(facility => (
                 <option key={facility.facilityName} value={facility.facilityName}>
                   {facility.facilityName}
@@ -123,7 +124,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
           </Form.Group>
       
             <Button style={{marginTop: "10px"}} variant="primary" type="submit">
-              Add New Class
+              Add Class
             </Button>
           </Form>
         </Modal.Body>
