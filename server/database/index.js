@@ -55,7 +55,7 @@ Payment.hasOne(Membership, { foreignKey: "paymentId" });
 Membership.belongsTo(Payment, { foreignKey: "paymentId" });
 
 db
-    .sync()
+    .sync({force:true})
     .then((result) => {
         console.log(result);
     })

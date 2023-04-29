@@ -18,13 +18,13 @@ const Dashboard = () => {
             <p>Welcome to GymCorp</p>
           </div>
           <div className="bottom-container">
-            <Link to="/climbingwall" className="dashItem">
+            <Link to="/book-facility" className="dashItem">
               <img className="dashImage" alt="" src="https://cdn.pixabay.com/photo/2013/03/20/14/47/sports-hall-95270_960_720.jpg"/>
               <div className="dashName">
                 <p>Book a Facility</p>
               </div>
             </Link>
-            <Link to="/climbingwall" className="dashItem">
+            <Link to="/book-class" className="dashItem">
               <img className="dashImage" alt="" src="https://cdn.pixabay.com/photo/2022/08/13/12/13/yoga-7383498_960_720.jpg"/>
               <div className="dashName">
                 <p>Book a Class</p>

@@ -1,38 +1,63 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Auth } from '../../../context/Auth';
+import { useNavigate } from 'react-router-dom';
+
 
 function SuccessPage() {
 
-  const location = useLocation();
+  const{user} = useContext(Auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const createBooking = async () => {
       try {
-        // Retrieve session_id from the URL query string
-        const sessionId = new URLSearchParams(location.search).get('session_id');
-
-        // Make the API call to your backend to create the booking
-        const response = await axios.post('http://localhost:4000/api/bookings/create', {
-          sessionId,
-          // Pass any other required data
-        });
-
-        if (response.data.success) {
-          console.log('Booking created successfully');
-        } else {
-          console.log('Failed to create booking');
+        const items = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+        for (const item of items) {
+          // Get the required data for the API call
+          const selectedDate = item.date; 
+          const selectedTime = item.time; 
+          const activityId = item.activityId;  
+          const facilityName = item.facilityName;
+          console.log(selectedDate, selectedTime, activityId, facilityName);
+          const response = await axios.post("http://localhost:4000/api/bookings/bookingid", {
+            date: selectedDate,
+            start: selectedTime,
+            customerId: user.details.customerId,
+            activityId: activityId,
+            classId: null,
+            facilityName: facilityName,
+          });
+  
+          if (response.data.success) {
+            console.log("Booking created successfully");
+            alert("Booking successful!");
+          } else {
+            console.log("Failed to create booking");
+            alert("Booking unsuccessful!");
+          }
         }
       } catch (err) {
-        console.log('Error:', err.message);
+        console.log("Error:", err.message);
+        alert("Booking unsuccessful!");
       }
     };
-
+  
     createBooking();
-  }, [location]);
+  }, []);
+
+const handleClick = () =>{
+ navigate('/');
+}
+
   return (
-    <div>Success!!</div>
+    <div>
+      <h1>BOOKING SUCCESSFUL!!</h1>
+      <button onClick={handleClick}>Back to home</button>
+    </div>
   )
 }
 
 export default SuccessPage
+

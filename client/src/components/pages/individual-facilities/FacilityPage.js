@@ -2,6 +2,7 @@ import React,{ useState, useEffect, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'
 import ICalendar from '../../ICalendar/ICalendar';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
@@ -88,15 +89,23 @@ function FacilityPage() {
 const handleBooking = async () => {
   if (user) {
     const item = {
-      description: `${facility.facilityName} - ${selectedOptionB}\n${selectedDate.toLocaleDateString()} - ${selectedOptionC}`,
+      description: `${facility.facilityName} - ${selectedOptionB} ${selectedDate.toLocaleDateString()} - ${selectedOptionC}`,
       facilityName: facility.facilityName,
       activityName: selectedOptionB,
       date: selectedDate,
       time: selectedOptionC,
       cost: selectedActivity.price,
+      activityId: activityId,
     };
+    // Get the current cartItems from localStorage
+    const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-    addToBasket(item);
+    // Append the new item to the current cartItems
+    currentCartItems.push(item);
+
+    // Store the updated cartItems back to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(currentCartItems));    
+    addToBasket(item);  
   } else {
     alert('You must be logged in to book an activity.');
   }
@@ -150,7 +159,7 @@ const handleBooking = async () => {
                     </div>
                     <div className="dropDownTime">
                         <label>Time: </label>
-                        <select id="optionC" value={selectedOptionC} onChange={handleOptionCChange} disabled={!selectedOptionB}>
+                        <select id="optionC" value={selected  OptionC} onChange={handleOptionCChange} disabled={!selectedOptionB}>
                           <option value="">-- Please select an option --</option>
                           {filteredTimeOptions(selectedDate, selectedOptionB).map(time => (
                             <option key={time} value={time}>{time}</option>

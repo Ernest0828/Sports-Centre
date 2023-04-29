@@ -20,6 +20,7 @@ const AuthReducer = (state, action) => {
     case "LOGIN_SUCCESS":
       return {
         user: action.payload,
+        isMembership: action.payload.isMembership,
         loading: false,
         error: null,
       };
