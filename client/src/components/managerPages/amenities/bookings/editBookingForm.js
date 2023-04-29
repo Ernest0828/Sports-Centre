@@ -1,14 +1,38 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../hooks/useFetch"
 import axios from 'axios'
-import {useContext, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
 const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
   
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
-  
+    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+
+
+    const [selectedStaff, setSelectedStaff] = useState("");
+    const [selectedFacility, setSelectedFacility] = useState("");
+    const [selectedActivity, setSelectedActivity] = useState("");
+    const [selectedClass, setSelectedClass] = useState("");
+    const [activityNames, setActivityNames] = useState([]);
+
+    useEffect(() => {
+      // Filter the activity data based on the selected facility name
+      const filteredActivities = activityData.filter(
+        (activity) => activity.facilityName === selectedFacility
+      );
+
+      const uniqueNames = new Set(filteredActivities.map((activity) => activity.activityName));
+      const names = Array.from(uniqueNames);
+
+      // Update the state with the activity names
+      setActivityNames(names);
+    
+    }, [facilityData, activityData, selectedFacility]);
+
     const handleFormInputChange = (event) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     const name = event.target.name;
@@ -51,45 +75,76 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
             <Form.Group controlId="formFacility">
               <Form.Label>Facility</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="facilityName"
                 value={formInputs.facilityName}
-                onChange={handleFormInputChange}
-                placeholder="Swimming pool"
-              />
-            </Form.Group>
-      
-            <Form.Group controlId="formBookingType">
-              <Form.Label>Type</Form.Label>
-              <Form.Control
-                type="text"
-                name="bookingType"
-                value={formInputs.bookingType}
-                onChange={handleFormInputChange}
-                placeholder="activity/class"
-              />
+                onChange={(e) => {
+                  setSelectedFacility(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    facilityName: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Facility</option>
+                {facilityData &&
+                  facilityData.map((facility) => (
+                    <option
+                      key={facility.facilityName}
+                      value={facility.facilityName}
+                    >
+                      {facility.facilityName}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
       
             <Form.Group controlId="formActivity">
               <Form.Label>Activity</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="activityName"
                 value={formInputs.activityName}
-                onChange={handleFormInputChange}
-                placeholder="General use"
-              />
+                onChange={(e) => {
+                  setSelectedActivity(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    activityName: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Activity</option>
+                {activityNames &&
+                  activityNames.map((activityName) => (
+                    <option key={activityName} value={activityName}>
+                      {activityName}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="formClass">
               <Form.Label>Class</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="className"
                 value={formInputs.className}
-                onChange={handleFormInputChange}
-                placeholder=""
-              />
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    className: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Class</option>
+                {classData &&
+                  classData.map((classes) => (
+                    <option key={classes.classId} value={classes.className}>
+                      {classes.className}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="formDate">
@@ -128,12 +183,28 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
             <Form.Group controlId="formStaff">
               <Form.Label>Employee</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 name="staffName"
-                value={formInputs.staffName}
-                onChange={handleFormInputChange}
-                placeholder=""
-              />
+                value={selectedStaff}
+                onChange={(e) => {
+                  setSelectedStaff(e.target.value);
+                  setFormInputs({
+                    ...formInputs,
+                    staffName: e.target.value
+                  });
+                }}
+              >
+                <option value="">Select Staff</option>
+                {staffData &&
+                  staffData.map((staff) => (
+                    <option
+                      key={staff.staffId}
+                      value={staff.staffId}
+                    >
+                      {staff.staffName}
+                    </option>
+                  ))}
+              </Form.Control>
             </Form.Group>
       
             <Button style={{marginTop: "10px"}}variant="primary" type="submit">

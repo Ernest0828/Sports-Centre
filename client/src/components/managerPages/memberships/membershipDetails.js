@@ -106,8 +106,74 @@ const MembershipDetails = () => {
         alert('Failed to save data')
         });
 
+      if (formInputs.isMembership === true) {
+        const hasMembership = membershipData.some(membership => membership.customerId === selectedCustomer.customerId);
+        
+        if (hasMembership) {
+          axios.put(`http://localhost:4000/api/membership/update/${selectedCustomer.customerId}`, {
+          membershipType:  formInputs.membershipType
+          })
+          .then(response => {
+          console.log(response.data);
+          })
+          .catch(error => {
+          console.log(error);
+          alert('Failed to change membership type')
+          });
+        } else {
+          axios.post(`http://localhost:4000/api/membership/buy/${selectedCustomer.customerId}`, {
+          membershipType:  formInputs.membershipType
+        })
+          .then(response => {
+            console.log(response.data);
+            })
+            .catch(error => {
+            console.log(error);
+            alert('Please choose membership type')
+            })
+        }
+      }
+
+      if (formInputs.isMembership === false) {
+        axios.post(`http://localhost:4000/api/membership/cancel/${selectedCustomer.customerId}`)
+        .then(response => {
+          console.log(response.data);
+          })
+          .catch(error => {
+          console.log(error);
+          alert('Failed to cancel membership')
+          });
+      }
+
       // Close modal
       handleClose();
+    };
+
+    const handleSubmitCancel = () => {
+      if (window.confirm("Are you sure you want to cancel membership for this customer?")) {
+        axios.post(`http://localhost:4000/api/membership/cancel/${selectedCustomer.customerId}`)
+        .then(response => {
+          console.log(response.data);
+
+          setCustomerDetails((prevState) => {
+            const updatedDetails = [...prevState];
+            const index = updatedDetails.findIndex(
+                (customer) => customer.customerId === selectedCustomer.customerId
+            );
+            updatedDetails[index].isMembership =  customerDetails.isMembership;
+            updatedDetails[index].membershipType =  customerDetails.membershipType;
+      
+            return updatedDetails;
+            });
+
+          handleClose()
+          })
+          .catch(error => {
+          console.log(error);
+          alert('Failed to cancel membership')
+          });
+      }
+      //update customerDetails table
     };
 
     const handleAdd = () => {
@@ -183,6 +249,7 @@ const MembershipDetails = () => {
               show={show}
               handleClose={handleClose}
               handleSubmit={handleSubmit}
+              handleSubmitCancel={handleSubmitCancel}
               customer={selectedCustomer}
               formInputs={formInputs}
               setFormInputs={setFormInputs}

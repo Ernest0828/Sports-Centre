@@ -3,34 +3,24 @@ import useFetch from "../../hooks/useFetch"
 import "./bookings.css";
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { addDays, isThursday } from "date-fns";
 
-const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
+const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, setFormInputs}) => {
 
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+
 
     const [selectedFacility, setSelectedFacility] = useState("");
-    const [selectedActivity, setSelectedActivity] = useState("");
+    const [selectedClass, setSelectedClass] = useState("");
     const [selectedCustomer, setSelectedCustomer] = useState("");
     const [selectedStaff, setSelectedStaff] = useState("");
     const [activityNames, setActivityNames] = useState([]);
+    const [selectedDate, setSelectedDate] = useState("");
 
-
-    useEffect(() => {
-      // Filter the activity data based on the selected facility name
-      const filteredActivities = activityData.filter(
-        (activity) => activity.facilityName === selectedFacility
-      );
-
-      const uniqueNames = new Set(filteredActivities.map((activity) => activity.activityName));
-      const names = Array.from(uniqueNames);
-
-      // Update the state with the activity names
-      setActivityNames(names);
-    
-    }, [facilityData, activityData, selectedFacility]);
 
       const handleFormInputChange = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -51,7 +41,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
       
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal show={showClass} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Book Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
@@ -59,7 +49,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
           </button>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddSubmit}>
+          <Form onSubmit={handleClassSubmit}>
       
           <Form.Group controlId="formCustomer">
               <Form.Label>Customer</Form.Label>
@@ -88,13 +78,12 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               </Form.Control>
             </Form.Group>
 
-
             <Form.Group controlId="formFacility">
               <Form.Label>Facility</Form.Label>
               <Form.Control
                 as="select"
                 name="facilityName"
-                value={selectedFacility}
+                value={formInputs.facilityName}
                 onChange={(e) => {
                   setSelectedFacility(e.target.value);
                   setFormInputs({
@@ -105,6 +94,33 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               >
                 <option value="">Select Facility</option>
                 {facilityData &&
+                facilityData.map((facility) => {
+                    if (facility.facilityName === "Studio") {
+                    return (
+                        <option
+                        key={facility.facilityName}
+                        value={facility.facilityName}
+                        >
+                        {facility.facilityName}
+                        </option>
+                    );
+                    }
+                    return null;
+                })}
+              </Form.Control>
+            </Form.Group>
+
+
+            {/*<Form.Group controlId="formFacility">
+              <Form.Label>Facility</Form.Label>
+              <Form.Control
+                as="select"
+                name="facilityName"
+                value="Studio"
+                disabled={true}
+              >
+                <option disabled selected value="Studio">Studio</option>
+                {facilityData &&
                   facilityData.map((facility) => (
                     <option
                       key={facility.facilityName}
@@ -114,28 +130,28 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
                     </option>
                   ))}
               </Form.Control>
-            </Form.Group>
+            </Form.Group>*/}
 
       
-            <Form.Group controlId="formActivity">
-              <Form.Label>Activity</Form.Label>
+            <Form.Group controlId="formClass">
+              <Form.Label>Class</Form.Label>
               <Form.Control
                 as="select"
-                name="activityName"
-                value={selectedActivity}
+                name="className"
+                value={selectedClass}
                 onChange={(e) => {
-                  setSelectedActivity(e.target.value);
+                  setSelectedClass(e.target.value);
                   setFormInputs({
                     ...formInputs,
-                    activityName: e.target.value
+                    className: e.target.value
                   });
                 }}
               >
-                <option value="">Select Activity</option>
-                {activityNames &&
-                  activityNames.map((activityName) => (
-                    <option key={activityName} value={activityName}>
-                      {activityName}
+                <option value="">Select Class</option>
+                {classData &&
+                  classData.map((classes) => (
+                    <option key={classes.classId} value={classes.className}>
+                      {classes.className}
                     </option>
                   ))}
               </Form.Control>
@@ -174,23 +190,12 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               </Form.Control>
             </Form.Group>
 
-            {/*<Form.Group controlId="formStartTime">
-              <Form.Label>Start</Form.Label>
-              <Form.Control
-                type="time"
-                name="startTime"
-                value={formInputs.startTime}
-                onChange={handleFormInputChange}
-                placeholder=" "
-              />
-            </Form.Group>*/}
-
             <Form.Group controlId="formStaff">
               <Form.Label>Employee</Form.Label>
               <Form.Control
                 as="select"
                 name="staffName"
-                value={formInputs.staffName}
+                value={selectedStaff}
                 onChange={(e) => {
                   setSelectedStaff(e.target.value);
                   setFormInputs({
@@ -217,33 +222,33 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
             </Button>
           </Form>
 
-          <table className="activityTable">
+          <table>
             <thead>
               <tr>
-              <th>Activity</th>
-              <th>Day</th>
-              <th>Time</th>
-              <th>Price</th>
-              <th>Facility</th>
+              <th>Class</th>
+              <th>Price</th>   
+              <th>Day</th>   
+              <th style={{width: "40%"}}>Day & Time</th>
+              <th> </th>
               </tr>
             </thead>
             <tbody>
-            {activityData && activityData.map(({ activityId, activityName, day, startTime, endTime, price, facilityName }) => (
-                                <tr key = {activityId}>
+            {classData && classData.map(({ classId, className, price, day, startTime, endTime}) => (
+                                <tr key = {classId}>
                                     <td>
-                                      <span>{activityName}</span>
-                                    </td>
-                                    <td>
-                                      <span>{day}</span>
-                                    </td>
-                                    <td>
-                                      <span>{startTime}-{endTime}</span>
+                                      <span>{className}</span>
                                     </td>
                                     <td>
                                       <span>{price}</span>
                                     </td>
                                     <td>
-                                      <span>{facilityName}</span>
+                                      <span>{day}</span>
+                                    </td>
+                                    <td className="dayTimeColumn">
+                                        <div key={`${startTime}-${endTime}`}>
+                                          <span>{startTime}-</span>
+                                          <span>{endTime}</span>
+                                        </div>
                                     </td>
                                 </tr>
             ))}
@@ -256,4 +261,4 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
     );
   };
 
-export default BookActivityForm;
+export default BookClassForm;

@@ -7,6 +7,7 @@ import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
 import { useLocation } from "react-router-dom";
 import { Auth } from '../../../context/Auth';
+import 'react-datepicker/dist/react-datepicker.css'
 
 function FacilityPage() {
 	const[selectedDate, setSelectedDate] = useState(new Date());
