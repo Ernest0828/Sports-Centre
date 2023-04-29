@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Customer  = require("../database/models/customer");
+const Membership = require("../database/models/membership");
 const bcrypt = require("bcrypt");
 const verifyUser = require("../middleware/verifyUser");
 
@@ -8,9 +9,19 @@ const verifyUser = require("../middleware/verifyUser");
 router.put("/:id", async (req, res, next) => {
     try {
         const updateUser = await Customer.findByPk(req.params.id);
-        const { customerName, ...rest } = req.body;
+        const { customerName, customerNumber, customerEmail, ...rest } = req.body;
+        // check if number is 11 digits
+        if (customerNumber && customerNumber.length !== 11) {
+            return res.status(401).json( {message: "Invalid Phone Number"} );
+        }
+        // check if email is valid
+        if (!/^[^\s@]+@(gmail\.com|yahoo\.com|hotmail\.com)$/.test(customerEmail)) {
+            return res.status(401).json( {message: "Invalid Email"} );
+        }
         const updatedCustomer = await updateUser.update({
             customerName: customerName.toUpperCase(),
+            customerEmail,
+            customerNumber,
             ...rest
         });
         res.status(200).json(updatedCustomer);
@@ -62,7 +73,13 @@ router.delete("/:id", async (req, res, next) => {
     try {
         const customer = await Customer.findByPk(req.params.id);
         if(!customer) return res.status(404).json("Customer not found");
-        else { 
+        else {
+            const membership = await Membership.findOne({
+                where: {customerId: req.params.id},
+            });
+            if (membership) {
+                await membership.destroy();
+            }
             await customer.destroy(req.body);
             res.status(200).json("Account deleted");
         }
