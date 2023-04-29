@@ -27,12 +27,6 @@ import MembershipDetails from './components/managerPages/memberships/membershipD
 import BookingDetails from './components/managerPages/bookings/bookings/bookings';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
-
-
-// import Climbingwall from './components/pages/individual facilities/Climbingwall';
-
-// import Aerobics from './components/pages/individual classes/Aerobics';
-// import MyComponent from './components/dropdownfacility/dropdown';
 import DropDownChoice from './components/dropdownfacility/DropDownFacility';
 import SuccessPage from './components/pages/success/SuccessPage';
 import CancelPage from './components/pages/cancel/CancelPage';
@@ -62,9 +56,6 @@ function App() {
           <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
           <Route path="/pricing" element={<Pricing />} />
-          {/* <Route exact path="/aerobics" element={<Aerobics/>}/>
-          <Route exact path="/climbingwall" element={<Climbingwall/>}/> */}
-
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>

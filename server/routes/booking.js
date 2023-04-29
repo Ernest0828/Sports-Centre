@@ -5,7 +5,7 @@ const Booking  = require("../database/models/booking");
 const Activity  = require("../database/models/activity");
 const Classes  = require("../database/models/classes");
 const Facility = require("../database/models/facility");
-const Payment  = require("../database/models/payment");
+const Basket  = require("../database/models/basket");
 const Customer  = require("../database/models/customer");
 const Staff  = require("../database/models/staff");
 const StaffBooking  = require("../database/models/staffBooking");
@@ -16,104 +16,97 @@ const verifyStaff = require("../middleware/verifyStaff");
 // For User to amend the booking
 
 // 1. Make new booking by a customer
-router.post('/bookingid', async (req, res, next) => {
+router.post("/bookingid", async (req, res, next) => {
   try {
-    const {
-      date,
-      start,
-      customerId,
-      activityId,
-      classId,
-      facilityName,
-      paymentId } = req.body;
-      
-    // check if booking already exists for same customer and time slot
-    const existingBooking = await Booking.findOne({ where: {startTime: start, customerId, date}})
-    if (existingBooking) 
-      return res.status(401).json("You have already booked for this time slot");
+    const { customerId } = req.body;
 
-    // Check if facility exists
-    const facility = await Facility.findOne({ where: { facilityName } });
-    if (!facility) {
-      return res.status(404).json('Facility not found');
-    }
-    
-    // check if activity or class exists
-    let bookingType;
-    let bookingTypeId;
-    let end;
-    if (activityId) {
-      const activity = await Activity.findOne({ where: {activityId, facilityName} });
-      if (!activity) 
-        return res.status(404).json("This activity is not available at this facility");    
-      // set endTime for "Team events" to be +2hr after startTime
-      // other activities +1hr
-      if (activity.activityName === "Team events") {
-        const facility = await Facility.findOne({ where: { facilityName } });
-        if (!facility) {
-          return res.status(404).json('Facility not found');
-        }
-        number = facility.capacity;
-        end = moment.duration(start).add(moment.duration('02:00:00'));
-      } else {
-        number = "1";
-        end = moment.duration(start).add(moment.duration('01:00:00'));
-      }
-      bookingType = "activity";
-      bookingTypeId = activityId;
-    } 
-    else if (classId) {
-      const classes = await Classes.findOne({ where: {classId, facilityName} });
-      if (!classes) 
-        return res.status(404).json("This class is not available at this facility");
-      // set endTime for classes to be +1hr after startTime
-      end = moment.duration(start).add(moment.duration('01:00:00'));
-      bookingType = "class";
-      bookingTypeId = classId;
-    } 
-    else
-      return res.status(400).json("No bookings were made");
-      
     // check if customer exists
     const customer = await Customer.findByPk(customerId);
-    if (!customer) 
-      return res.status(404).json("Customer not found");
+    if(!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
 
-    // get the bookings for the given facility and time slot
-    const bookings = await Booking.findAll({where: {facilityName, date, startTime: start} });
-    let totalPeople = 0;
-    bookings.forEach((booking) => {
-      if (booking.noOfPeople) {
-        totalPeople += Number(booking.noOfPeople);
+    // get all items in the basket for the customer
+    const basketItems = await Basket.findAll({ where: { customerId } });
+    if (!basketItems || basketItems.length === 0) {
+      return res.status(404).json({ message: "Basket is empty" });
+    }
+
+    // create an array to store all the bookings created
+    const bookings = [];
+    // create a booking for each item in the basket
+    for (const basketItem of basketItems) {
+      let bookingType;
+      let bookingTypeId;
+      let number;
+      let end;
+      let facilityName;
+
+      // check if activity or class exists
+      if (basketItem.basketType === "activity") {
+        const activity = await Activity.findOne({ where: {activityId: basketItem.activityId } });
+        if (!activity) 
+          return res.status(404).json("This activity is not available at any facility");    
+        // set endTime for "Team events" to be +2hr after startTime
+        // other activities +1hr
+        if (activity.activityName === "Team events") {
+          const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
+          if (!facility) {
+            return res.status(404).json('Facility not found');
+          }
+          number = facility.capacity;
+          end = moment.duration(basketItem.startTime).add(moment.duration('02:00:00'));
+        } else {
+          number = "1";
+          end = moment.duration(basketItem.startTime).add(moment.duration('01:00:00'));
+        }
+        bookingType = "activity";
+        bookingTypeId = basketItem.itemId;
+        facilityName = basketItem.facilityName;
+      } 
+      else if (basketItem.basketType === "class") {
+        const classes = await Classes.findOne({ where: {classId: basketItem.classId, facilityName: basketItem.facilityName } });
+        if (!classes) {
+          return res.status(404).json("This class is not available at any facility");
+        }
+
+        // set endTime for classes to be +1hr after startTime
+        number = "1";
+        end = moment.duration(basketItem.startTime).add(moment.duration('01:00:00'));
+        bookingType = "class";
+        bookingTypeId = basketItem.itemId;
+        facilityName = basketItem.facilityName;
       } 
       else {
-        totalPeople += 1;
+        return res.status(400).json("No bookings were made");
       }
-    });
-    if (Number(facility.capacity) < totalPeople + Number(number)) {
-      return res.status(400).json("Capacity has been reached");
-    }
+
+      // format the endTime
+      end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
       
-    // format the endTime
-    end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
-    
-    // create the booking
-    const newBooking = await Booking.create({
-      noOfPeople: number,
-      date,
-      startTime: start,
-      endTime: end,
-      bookingType,
-      customerId,
-      ['${bookingType}Id']: bookingTypeId,
-      classId,
-      activityId,
-      facilityName,
-      paymentId 
-    });
-    return res.status(200).json(newBooking);
+      // create the new booking
+      const newBooking = await Booking.create({
+        noOfPeople: number,
+        date: basketItem.date,
+        startTime: basketItem.startTime,
+        endTime: end,
+        bookingType,
+        customerId,
+        [`${bookingType}Id`]: bookingTypeId,
+        activityId: basketItem.activityId,
+        classId: basketItem.classId,
+        facilityName: basketItem.facilityName
+      });
+      
+      // add the newly created booking to the array of bookings
+      bookings.push(newBooking);
+
+      // delete basket item
+      await Basket.destroy({ where: { basketId: basketItem.basketId } });
+    }
+    return res.status(200).json(bookings);
   } catch (err) {
-    next(err);
+    next(err)
   }
 });
 

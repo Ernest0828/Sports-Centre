@@ -1,15 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import "./bookfacility.css";
 import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from "../../navbar/Navbar";
+import {Auth} from "../../../context/Auth"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
   
 const BookFacility = () => {
 
+  const { user } = useContext(Auth);
   const [facilities, setFacilities] = useState([]);
+  const [basketItems, setBasketItems] = useState([]);
   const navigate =useNavigate();
   const handleClick = (facility) =>{
     navigate('/FacilityPage', { state: {facility} });
@@ -32,6 +35,14 @@ const BookFacility = () => {
     (facility) => facility.facilityName !== "Studio"
   );
 
+  const removeItem = async (itemId) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Fragment>
     <Navbar />
@@ -43,14 +54,14 @@ const BookFacility = () => {
               <p>Select a facility to view timetables and availability.</p>
             </div>
             <div className="gridFormat">
-            {facilities.map((facility) => (
+            {filteredFacilities.map((facility) => (
               <div className="griddy" key={facility.facilityName} onClick={() => handleClick(facility)}>
                 <FacilityItem facility={facility} />
               </div>
             ))}
           </div>
           </div>
-          <Basket />
+          <Basket removeItem={removeItem} />
         </div>
       </div>
     </Fragment>
