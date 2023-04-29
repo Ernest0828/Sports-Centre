@@ -38,6 +38,12 @@ export default function MemberProfileInfo() {
             setIsEditMode(true);
         }
 
+        if (customerNumber.length !== 11) {
+            setError("Phone number should be 11 digits long");
+            setIsEditMode(true);
+            return;
+        }
+
 
         //Updates customerName, customerNumber, customerEmail
         try {
@@ -68,10 +74,9 @@ export default function MemberProfileInfo() {
 
         //Updates password
         try {
-            const res = await axios.put("http://localhost:4000/api/customer/change-password/"+user.details.customerId, 
+            await axios.put("http://localhost:4000/api/customer/change-password/"+user.details.customerId, 
                 {password}
             );  
-            console.log(res.data);
         } catch (err) {
             console.log(err.response.data);
         }
@@ -85,7 +90,6 @@ export default function MemberProfileInfo() {
       async function fetchMembershipDetails() {
         try{
             const res = await axios.get("http://localhost:4000/api/membership/membership-info/"+user.details.customerId);
-            console.log(res);
             setMembershipType(res.data.membership.membershipType);
             setMembershipStartDate(res.data.membership.startDate.split("T")[0]);
             setMembershipEndDate(res.data.membership.endDate.split("T")[0]);
