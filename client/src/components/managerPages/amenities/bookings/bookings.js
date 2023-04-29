@@ -8,7 +8,8 @@ import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditBookingForm from "./editBookingForm";
-import AddBookingForm from "./addBookingForm";
+import BookActivityForm from "./bookActivityForm";
+import BookClassForm from "./bookClassForm";
 
 const BookingDetails = () => {
 
@@ -29,9 +30,11 @@ const BookingDetails = () => {
 
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
+    const [showClass, setShowClass] = useState(false);
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
+      setShowClass(false);
     }
 
     useEffect(() => {
@@ -119,68 +122,23 @@ const BookingDetails = () => {
     }
     };
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-
-      const selectedCustomer = customerData.find((customer) => customer.customerName === formInputs.customerName);
-      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
-
-      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
-      const staffId = selectedStaff ? selectedStaff.staffId : null;
-
-      const selectedActivity = activityData.find((activity) => 
-      activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
-      const activityId = selectedActivity ? selectedActivity.activityId : null;
-
-      const date = new Date(formInputs.date);
-      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
-      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
-      const classId = selectedClass ? selectedClass.classId : null;
-
-      // Update facility details with formInputs values
-      setBookingDetails((prevState) => {
-      const updatedDetails = [...prevState];
-      const index = updatedDetails.findIndex(
-          (booking) => booking.bookingId === selectedBooking.bookingId
-      );
-      updatedDetails[index].customerId = formInputs.customerId;
-      updatedDetails[index].staffId = formInputs.staffId;
-      updatedDetails[index].date = formInputs.date;
-      updatedDetails[index].startTime = formInputs.startTime;
-      updatedDetails[index].endTime = formInputs.endTime;
-      updatedDetails[index].activityId =  formInputs.activityId;
-      updatedDetails[index].classId =  formInputs.classId;
-      updatedDetails[index].facilityName =  formInputs.facilityName;
-
-      return updatedDetails;
+    const handleAddClass = () => {
+      setShowClass(true);
+      if (selectedBooking) {
+      setFormInputs({
+        customerId: "",
+        staffId: "",
+        date: "",
+        startTime: "",
+        endTime:"",
+        activityId: "",
+        classId: "",
+        facilityName: "",
       });
-
-      // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
-
-        customerId: customerId,
-        staffId: staffId,
-        date: formInputs.date,
-        startTime: formInputs.startTime,
-        endTime: formInputs.endTime,
-        activityId: activityId,
-        classId: classId,
-        facilityName:  formInputs.facilityName
-        })
-        .then(response => {
-        console.log(response.data);
-        })
-        .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
-
-      // Close modal
-      handleClose();
+    }
     };
-    
 
-    const handleAddSubmit = (event) => {
+    const handleClassSubmit = (event) => {
       event.preventDefault();
 
       const customerNameUpper = formInputs.customerName.toUpperCase();
@@ -194,8 +152,7 @@ const BookingDetails = () => {
       const [day, month, year] = formInputs.date.split("/");
       const date = `${year}/${month}/${day}`;
 
-      const selectedActivity = activityData.find((activity) => 
-      activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+      const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
 
       const dateofDay = new Date(formInputs.date);
@@ -229,15 +186,139 @@ const BookingDetails = () => {
       })
         .then(response => {
           console.log(response.data);
+          window.location.reload();
         })
         .catch(error => {
           console.log(error);
-          alert('Failed to save data');
+          alert('No available activity/classes within the selected day and time');
         });
     
       // Close modal
       handleClose();
-      //window.location.reload();
+      
+    };
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+
+      const selectedCustomer = customerData.find((customer) => customer.customerName === formInputs.customerName);
+      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
+
+      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+      const staffId = selectedStaff ? selectedStaff.staffId : null;
+
+      const selectedActivity = activityData.find((activity) => 
+      activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+      const activityId = selectedActivity ? selectedActivity.activityId : null;
+
+      const date = new Date(formInputs.date);
+      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+      const classId = selectedClass ? selectedClass.classId : null;
+      
+
+      // Update facility details with formInputs values
+      setBookingDetails((prevState) => {
+      const updatedDetails = [...prevState];
+      const index = updatedDetails.findIndex(
+          (booking) => booking.bookingId === selectedBooking.bookingId
+      );
+      updatedDetails[index].customerId = formInputs.customerId;
+      updatedDetails[index].staffId = formInputs.staffId;
+      updatedDetails[index].date = formInputs.date;
+      updatedDetails[index].startTime = formInputs.startTime;
+      updatedDetails[index].endTime = formInputs.endTime;
+      updatedDetails[index].activityId =  formInputs.activityId;
+      updatedDetails[index].classId =  formInputs.classId;
+      updatedDetails[index].facilityName =  formInputs.facilityName;
+
+      return updatedDetails;
+      });
+
+      // Send updated facility details to server
+      axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
+
+        customerId: customerId,
+        staffId: staffId,
+        date: formInputs.date,
+        startTime: formInputs.startTime,
+        endTime: formInputs.endTime,
+        activityId: activityId,
+        classId: classId,
+        facilityName:  formInputs.facilityName
+        })
+        .then(response => {
+        console.log(response.data);
+        window.location.reload();
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+        });
+
+      // Close modal
+      handleClose();
+    };
+    
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
+      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
+
+      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+      const staffId = selectedStaff ? selectedStaff.staffId : null;
+
+      // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
+      const [day, month, year] = formInputs.date.split("/");
+      const date = `${year}/${month}/${day}`;
+
+      const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+      const activityId = selectedActivity ? selectedActivity.activityId : null;
+
+      const dateofDay = new Date(formInputs.date);
+      const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
+      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+      const classId = selectedClass ? selectedClass.classId : null;
+
+      setBookingDetails((prevState) => {
+        const updatedDetails = [...prevState];
+        
+        updatedDetails.customerId = customerId;
+        updatedDetails.staffId = staffId;
+        updatedDetails.date = date;
+        updatedDetails.startTime = formInputs.startTime;
+        updatedDetails.activityId =  activityId;
+        updatedDetails.classId =  classId;
+        updatedDetails.facilityName =  formInputs.facilityName;
+  
+        return updatedDetails;
+        });
+    
+      // Send new staff details to server
+      axios.post('http://localhost:4000/api/bookings/staff-booking', {
+        customerId: customerId,
+        staffId: staffId,
+        date: date,
+        start: formInputs.startTime,
+        activityId: activityId,
+        classId: classId,
+        facilityName: formInputs.facilityName,
+      })
+        .then(response => {
+          console.log(response.data);
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+          alert('No available activity/classes within the selected day and time');
+        });
+    
+      // Close modal
+      handleClose();
+      
     };
 
     const handleDelete = (bookingId) => {
@@ -268,11 +349,18 @@ const BookingDetails = () => {
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
-            <AddBookingForm 
+            <BookActivityForm 
               showAdd={showAdd}
               handleClose={handleClose}
               handleAddSubmit={handleAddSubmit}
               //staff={selectedStaff}
+              formInputs={formInputs}
+              setFormInputs={setFormInputs}
+            />
+            <BookClassForm 
+              showClass={showClass}
+              handleClose={handleClose}
+              handleClassSubmit={handleClassSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
             />
@@ -338,9 +426,12 @@ const BookingDetails = () => {
                                 </tr>
                                 ))}
                             </tbody>
-                            <div>
-                              <button className="addBookingButton" onClick={() => { handleAdd();}}>
-                                Create
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <button className="addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
+                                Book Activity
+                              </button>
+                              <button className="addBookingButton" onClick={() => { handleAddClass();}}>
+                                Book Class
                               </button>
                             </div>
                         </table>

@@ -112,6 +112,24 @@ button.editCustomerButton {
 	color: white;
 }
 
+.cancelMembershipButton{
+    width: 80px;
+    text-decoration: none;
+	border: none;
+	border-radius: 20px;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: grey;
+}
+
+.cancelMembershipButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
 
 .profileDeleteBookingBtn{
     width: 80px;

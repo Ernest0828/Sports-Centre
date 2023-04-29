@@ -16,12 +16,15 @@ import BookClasses from './components/pages/bookClasses/BookClasses';
 import Pricing from './components/pages/pricing/Pricing';
 
 
-import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails";
+import FacilityDetails from "./components/managerPages/amenities/facilities/facilityDetails";
+import ActivityDetails from "./components/managerPages/amenities/facilities/activities/activityDetails";
 import Staff from "./components/managerPages/staff/staff";
-import ClassDetails from "./components/managerPages/bookings/classes/classDetails";
+import ClassDetails from "./components/managerPages/amenities/classes/classDetails";
 import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
+import MembershipDetails from './components/managerPages/memberships/membershipDetails';
+import BookingDetails from './components/managerPages/amenities/bookings/bookings';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
 

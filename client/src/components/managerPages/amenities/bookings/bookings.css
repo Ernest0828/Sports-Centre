@@ -111,3 +111,8 @@ button.editBookingButton {
 	background-color: black ;
 	color: white;
 }
+
+.activityTable {
+    max-height: 300px;
+    overflow-y: auto;
+}

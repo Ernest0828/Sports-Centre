@@ -151,22 +151,22 @@ const ActivityDetails = () => {
       })
         .then(response => {
           console.log(response.data);
+          window.location.reload();
         })
         .catch(error => {
           console.log(error);
-          alert('Failed to save data');
+          alert('Failed to add activity');
         });
     
       // Close modal
       handleClose();
-      window.location.reload();
     };
 
     const handleDelete = (activityId) => {
       const selectedActivity = activityDetails.find(activity => activity.activityId === activityId);
       setSelectedActivity(selectedActivity);
       
-      if (window.confirm("Are you sure you want to delete this staff member?")) {
+      if (window.confirm("Are you sure you want to delete this activity?")) {
         axios.delete(`http://localhost:4000/api/activities/${selectedActivity.activityId}`)
           .then(() => {
             // remove the deleted staff member from staffDetails state
