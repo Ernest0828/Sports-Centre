@@ -2,8 +2,7 @@ import React,{ useState, useEffect, useContext } from 'react'
 import { Form } from "react-bootstrap";
 import useFetch from '../../hooks/useFetch';
 import { useLocation } from "react-router-dom";
-import DatePicker from 'react-datepicker';
-
+import Datepicker from 'react-datepicker';
 
 const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
 
@@ -11,8 +10,8 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
     const facility = location.state ? location.state.facility : null;
     const[selectedDate, setSelectedDate] = useState(new Date());
 
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:5000/api/facilities/");
-    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:5000/api/classes/");
+    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
     
     const [selectedOptionB, setSelectedOptionB] = useState('General Use');
     const [selectedOptionC, setSelectedOptionC] = useState('');
@@ -57,7 +56,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
             </Form.Group>
             <Form.Group controlId="formDay">
                 <Form.Label>Date</Form.Label>
-                <DatePicker
+                <Datepicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 minDate={new Date()}
@@ -67,7 +66,6 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
                 }}
                 />
             </Form.Group>
-            
         </Form>
     );
 };

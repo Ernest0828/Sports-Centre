@@ -68,6 +68,7 @@ router.post('/bookingid', async (req, res, next) => {
       if (!classes) 
         return res.status(404).json("This class is not available at this facility");
       // set endTime for classes to be +1hr after startTime
+      number = "1";
       end = moment.duration(start).add(moment.duration('01:00:00'));
       bookingType = "class";
       bookingTypeId = classId;

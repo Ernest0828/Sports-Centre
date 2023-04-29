@@ -5,7 +5,7 @@ import {Auth} from "../../context/Auth"
 import PayButton from "../paybutton/PayButton";
 
 //used chatgpt for inspiration on the remove function
-export default function Basket() {
+export default function Basket({basketItems=[], removeItem}) {
 
   const {user} = useContext(Auth);
 

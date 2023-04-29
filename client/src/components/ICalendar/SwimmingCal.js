@@ -13,7 +13,7 @@ const SwimmingPoolSchedule = (props) => {
     async function getSwimmingPoolSchedule() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/facilities/"
+          "http://localhost:4000/api/facilities/"
         );
         const swimmingPool = response.data.find(
           (facility) => facility.facilityName === "Swimming pool"
@@ -32,7 +32,7 @@ const SwimmingPoolSchedule = (props) => {
     async function getSwimmingPoolActivities() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/activities/"
+          "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
           (a) => a.facilityName === "Swimming pool");

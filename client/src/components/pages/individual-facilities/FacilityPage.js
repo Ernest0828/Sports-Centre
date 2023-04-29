@@ -2,33 +2,38 @@ import React,{ useState, useEffect, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
-import ICalendar from '../../ICalendar/ICalendar';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
 import { useLocation } from "react-router-dom";
 import { Auth } from '../../../context/Auth';
+import SwimmingPoolSchedule from '../../ICalendar/SwimmingCal';
+import SportsHallSchedule from '../../ICalendar/SportsCal';
+import SquashCourtSchedule from '../../ICalendar/SquashCal';
+import ClimbingWallSchedule from '../../ICalendar/ClimbCal';
+import FitnessRoomSchedule from '../../ICalendar/FitnessCal';
+import StudioSchedule from '../../ICalendar/StudioCal';
 
 function FacilityPage() {
 	const[selectedDate, setSelectedDate] = useState(new Date());
   const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
   const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+  const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
   const location = useLocation();
-  const { facility } = location.state;
+  const facility = location.state ? location.state.facility : null;
   const [selectedOptionB, setSelectedOptionB] = useState('');
   const [selectedOptionC, setSelectedOptionC] = useState('');
   const{user} = useContext(Auth);
-  const selectedActivity = activityData.find((activity) => activity.activityName === selectedOptionB);
+  const selectedActivity = activityData ? activityData.find((activity) => activity.activityName === selectedOptionB) : null;
   const activityId = selectedActivity ? selectedActivity.activityId : null;
-  
-  const filteredActivities = activityData.filter(activity => activity.facilityName === facility.facilityName);
+  const filteredFacilities = facilityData.filter(facility => facility.facilityName === facility?.facilityName);
+
+  const filteredActivities = activityData.filter(activity => activity.facilityName === facility?.facilityName);
   const uniqueName = [...new Set(filteredActivities.map(activity => activity.activityName))];
   const [basketItems, setBasketItems] = useState([]);
 
-
-
   //For the time options, using a for loop to increment it the time
-  const startTime = parseInt(facility.startTime.split(':')[0], 10);
-  const endTime = parseInt(facility.endTime.split(':')[0], 10);
+  const startTime = parseInt(facility?.startTime?.split(':')[0], 10);
+  const endTime = parseInt(facility?.endTime?.split(':')[0], 10);
   const availableTime = [];
   for (let i = startTime; i < endTime; i++) {
     const time = i < 10 ? `0${i}:00` : `${i}:00`;
@@ -44,7 +49,30 @@ function FacilityPage() {
     newItems.splice(index, 1);
     setBasketItems(newItems);
   };
-  
+
+  let Timetable;
+  switch(facility.facilityName) {
+    case 'Swimming pool':
+        Timetable = <SwimmingPoolSchedule />;
+        break;
+    case 'Sports hall':
+        Timetable = <SportsHallSchedule />;
+        break;
+    case 'Squash court':
+        Timetable = <SquashCourtSchedule />;
+        break;
+    case 'Climbing wall':
+        Timetable = <ClimbingWallSchedule />;
+        break;
+    case 'Fitness room':
+        Timetable = <FitnessRoomSchedule />;
+        break;
+    case 'Studio':
+        Timetable = <StudioSchedule />;
+        break;
+    default:
+        Timetable = <div>No schedule available for this facility</div>;
+    }
 
   //Filtering time for the team events in sportshall and swimmingpool
   //Filtering time for the team events in sportshall and swimmingpool
@@ -100,9 +128,10 @@ const handleBooking = async () => {
   } else {
     alert('You must be logged in to book an activity.');
   }
+
   //Check if user, if not then throw an alert saying not logged in.
     // try {
-    //   await axios.post('http://localhost:4000/api/bookings/bookingid', {
+    //   await axios.post('http://localhost:5000/api/bookings/bookingid', {
     //     date: selectedDate,
     //     start: selectedOptionC, //Start time
     //     customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
@@ -123,7 +152,7 @@ const handleBooking = async () => {
         <div className="facilityPageContainer">
           <div className="facilityPageWrapper">
             <h1 className='Title'>{facility.facilityName}</h1>
-            <ICalendar />
+            {Timetable}
             {facility.facilityName !== "Studio" && (
               <div className="facilityBookingContainer">
                 <div className="facilityBookingDetails">

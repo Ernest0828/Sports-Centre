@@ -15,12 +15,12 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     data: facilityData,
     loading: facilityLoading,
     error: facilityError,
-  } = useFetch("http://localhost:5000/api/facilities/");
+  } = useFetch("http://localhost:4000/api/facilities/");
   const {
     data: activityData,
     loading: activityLoading,
     error: activityError,
-  } = useFetch("http://localhost:5000/api/activities/");
+  } = useFetch("http://localhost:4000/api/activities/");
 
   const [selectedOptionB, setSelectedOptionB] = useState("General Use");
 

@@ -9,7 +9,7 @@ const ClibmingWallSchedule = () => {
     const getClibmingWallSchedule = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/facilities/"
+          "http://localhost:4000/api/facilities/"
         );
         const ClibmingWall = response.data.find(
           (facility) => facility.facilityName === "Climbing wall"

@@ -10,7 +10,7 @@ const Staffs = require("./database/models/staff");
 
 
 const facilities = [
-    { facilityName: "Studio", capacity: 25, startTime: "08:00:00", endTime: "22:00:00" },
+    { facilityName: "Studio", capacity: 2, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Swimming pool", capacity: 3, startTime: "08:00:00", endTime: "20:00:00" },
     { facilityName: "Fitness room", capacity: 35, startTime: "08:00:00", endTime: "22:00:00" },
     { facilityName: "Sports hall", capacity: 45, startTime: "08:00:00", endTime: "22:00:00" },

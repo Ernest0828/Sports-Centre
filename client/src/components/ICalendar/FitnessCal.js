@@ -9,7 +9,7 @@ const FitnessRoomSchedule = () => {
     const getFitnessRoomSchedule = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/facilities/"
+          "http://localhost:4000/api/facilities/"
         );
         const FitnessRoom = response.data.find(
           (facility) => facility.facilityName === "Fitness room"

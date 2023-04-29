@@ -13,7 +13,7 @@ const SportsHallSchedule = () => {
     async function getSportsHallSchedule() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/facilities/"
+          "http://localhost:4000/api/facilities/"
         );
         const SportsHall = response.data.find(
           (facility) => facility.facilityName === "Sports hall"

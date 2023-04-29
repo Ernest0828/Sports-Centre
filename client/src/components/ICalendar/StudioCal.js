@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form} from "react-bootstrap";
-import Datepicker from 'react-datepicker';
+import { Modal, Button, Form } from "react-bootstrap";
+import Datepicker from "react-datepicker";
 import BookingDetails from "./ClassBooking";
+import useFetch from "../../hooks/useFetch";
 
 const StudioSchedule = () => {
   const [studioSchedule, setStudioSchedule] = useState([]);
@@ -13,7 +14,7 @@ const StudioSchedule = () => {
     async function getStudioSchedule() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/facilities/"
+          "http://localhost:4000/api/facilities/"
         );
         const studio = response.data.find(
           (facility) => facility.facilityName === "Studio"
@@ -31,9 +32,7 @@ const StudioSchedule = () => {
     }
     async function getStudioClasses() {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/classes/"
-        );
+        const response = await axios.get("http://localhost:4000/api/classes/");
         const classes = response.data.filter(
           (c) => c.facilityName === "Studio"
         );
@@ -51,6 +50,37 @@ const StudioSchedule = () => {
   const [selectedDay, setSelectedDay] = useState([]);
   const [selectedTime, setSelectedTime] = useState([]);
   const [selectedClass, setSelectedClass] = useState([]);
+  const {
+    data: bookingData,
+    loading: bookingLoading,
+    error: bookingError,
+  } = useFetch("http://localhost:4000/api/bookings/");
+
+  const formattedBookings = bookingData.map((booking) => {
+    const dateObj = new Date(booking.date);
+    const dayOfWeek = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(dateObj);
+    const formattedStartTime = booking.startTime.slice(0, -3);
+
+    return {
+      ...booking,
+      date: dayOfWeek,
+      startTime: formattedStartTime,
+    };
+  });
+
+  const bookingCount = bookingData.reduce((acc, booking) => {
+    const { dayOfWeek, formattedstartTime } = booking;
+    const key = `${dayOfWeek}_${formattedstartTime}`;
+    if (!acc[key]) {
+      acc[key] = { dayOfWeek, formattedstartTime, count: 0 };
+    }
+    acc[key].count += booking.noOfPeople;
+    return acc;
+  }, {});
+
+  const bookingCountArray = Object.values(bookingCount);
 
   const handleOpenModal = (day, time, className) => {
     setSelectedDay(day);
@@ -58,13 +88,21 @@ const StudioSchedule = () => {
     setSelectedClass(className);
     setShowModal(true);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const renderStudioSchedule = () => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
 
     return (
       <>
@@ -74,12 +112,25 @@ const StudioSchedule = () => {
             {weekdays.map((day) => (
               <td key={day}>
                 {studioClasses
-                  .filter((c) => c.day === day && c.startTime.slice(0, 5) === time.slice(0, 5))
-                  .map((c) => (
-                    <div key={c.className}>
-                      <button onClick={() => handleOpenModal(day, time.slice(0,5), c.className)}>{c.className}</button>
-                    </div>
-                  ))}
+                  .filter(
+                    (c) =>
+                      c.day === day &&
+                      c.startTime.slice(0, 5) === time.slice(0, 5)
+                  )
+                  .map((c) => {
+                    const countObj = bookingCountArray.find(
+                      (b) =>
+                        b.dayOfWeek === day &&
+                        b.formattedstartTime === c.startTime.slice(0, -3)
+                    );
+                    const count = countObj ? countObj.count : 0;
+                    return (
+                      <div key={c.className}>
+                        <button onClick={() => handleOpenModal(day, time.slice(0,5), c.className)}>{bookingCount[`${day}_${time.slice(0,5)}`]?.count || 0}</button>
+
+                      </div>
+                    );
+                  })}
               </td>
             ))}
           </tr>
@@ -105,24 +156,26 @@ const StudioSchedule = () => {
               <th>Sunday</th>
             </tr>
           </thead>
-          <tbody>
-            {studioSchedule.length > 0 && renderStudioSchedule()}
-          </tbody>
+          <tbody>{studioSchedule.length > 0 && renderStudioSchedule()}</tbody>
         </table>
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>Booking Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <BookingDetails selectedDay={selectedDay} selectedTime={selectedTime} selectedClass={selectedClass}/>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Booking Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <BookingDetails
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+            selectedClass={selectedClass}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
