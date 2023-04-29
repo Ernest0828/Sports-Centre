@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./aerobics.css"
 import Navbar from "../../navbar/Navbar"
-import DropDownClasses from '../../dropDownClasses/DropDownClasses'
+import DropDownClasses from '../../dropdownclasses/dropdownclasses'
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import ICalendar from '../../ICalendar/ICalendar';
@@ -14,7 +14,6 @@ const Aerobics = () => {
     <div>
       <Navbar/>
 					<div className="aerobicsContainer">
-
 					<div className="aerobicsWrapper">
                 <ICalendar/>
 									{/* <button className="bookNow">Reserve or book now</button> */}
