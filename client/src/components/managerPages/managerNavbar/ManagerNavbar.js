@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Auth } from "../../../context/Auth";
-import "./navbar.css";
+import "./manager-navbar.css";
 
-const Navbar = () => {
+const ManagerNavbar = () => {
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
   const {isManager} = useContext(Auth);
@@ -54,6 +54,13 @@ const Navbar = () => {
               Bookings
             </Link>
           </li>
+          {isManager &&
+          <li className="managerNavItem">
+            <Link to="/statistics" className="managerNavLink">
+              Statistics
+            </Link>
+          </li>
+        }
         </ul>
       </div>
     
@@ -83,4 +90,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default ManagerNavbar;
