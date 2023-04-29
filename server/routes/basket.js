@@ -26,10 +26,17 @@ router.post("/basketid", async (req, res, next) => {
         if (!customer){
             return res.status(404).json("Customer not found");
         }
+
         // check if same booking added to basket
         const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date}})
         if (sameItem) {
             return res.status(401).json("You have already booked for this time slot");
+        }
+
+        // check if same booking has already been made
+        const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date}})
+        if (sameBooking) {
+            return res.status(401).json("You have a booking session");
         }
         
         // check if activity or class exists
