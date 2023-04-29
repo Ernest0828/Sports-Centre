@@ -3,7 +3,7 @@ import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-import ICalendar from '../../ICalendar/ICalendar';
+// import ICalendar from '../../ICalendar/ICalendar';
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
@@ -187,7 +187,7 @@ const handleBooking = async () => {
                     </div>
                     <div className="dropDownTime">
                         <label>Time: </label>
-                        <select id="optionC" value={selected  OptionC} onChange={handleOptionCChange} disabled={!selectedOptionB}>
+                        <select id="optionC" value={selectedOptionC} onChange={handleOptionCChange} disabled={!selectedOptionB}>
                           <option value="">-- Please select an option --</option>
                           {filteredTimeOptions(selectedDate, selectedOptionB).map(time => (
                             <option key={time} value={time}>{time}</option>
