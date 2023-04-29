@@ -127,6 +127,24 @@ const Statistics = () => {
             return acc;
         }, initFacDay);
 
+        // chart data for activities
+        const activityData = bookingDetails.reduce((acc, curr) => {
+            //change date to day
+            const formatDate = new Date(curr.date);
+            formatDate.setUTCHours(0, 0, 0, 0);
+            const day = daysOfWeek[formatDate.getUTCDay()];
+            const {noOfPeople , activityId,facilityName} = curr;
+            const activityName = groupedActivities.findIndex(f => f.facilityName === facilityName);
+            console.log("curr",curr);
+            //activityIndex used for each activity
+            const activityIndex = acc.findIndex(a => a.day === day);
+            acc[activityIndex][activityName] += noOfPeople;     
+            console.log("acc",acc);
+            return acc;
+        }, initActivityDay);
+
+        selectedFacility === "Summary" ? setGraphData(summaryData) :
+        setGraphData(activityData)
 
 }, [bookingDetails,activityDetails,selectedFacility]);
 
