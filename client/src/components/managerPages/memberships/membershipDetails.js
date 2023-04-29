@@ -115,6 +115,7 @@ const MembershipDetails = () => {
           })
           .then(response => {
           console.log(response.data);
+          window.location.reload();
           })
           .catch(error => {
           console.log(error);
@@ -126,6 +127,7 @@ const MembershipDetails = () => {
         })
           .then(response => {
             console.log(response.data);
+            window.location.reload();
             })
             .catch(error => {
             console.log(error);
@@ -166,7 +168,8 @@ const MembershipDetails = () => {
             return updatedDetails;
             });
 
-          handleClose()
+          handleClose();
+          window.location.reload();
           })
           .catch(error => {
           console.log(error);

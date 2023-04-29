@@ -231,13 +231,6 @@ const Staff = () => {
                                       </select>
                                     )}
                                     </td>
-                                    {isEditable && (
-                                    <td>
-                                    <button className="deleteButton" >
-                                        Delete
-                                    </button>
-                                    </td>
-                                     )}
                                     <td>
                                     <button className="editStaffButton" onClick={() => {handleShow(staffId);}}>
                                     {editableRows[staffId] ? "Done" : "Edit"}

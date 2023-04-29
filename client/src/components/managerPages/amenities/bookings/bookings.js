@@ -54,6 +54,7 @@ const BookingDetails = () => {
 
             customerId: booking.customerId,
             customerName: customer ? customer.customerName : '',
+            //customerName: customer.customerName,
 
             staffId: booking.staffId,
             staffName: staff ? staff.staffName : '',
@@ -384,7 +385,7 @@ const BookingDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookingDetails && bookingDetails.map(({bookingId, date, startTime, endTime, bookingType, customerName, staffName, activityName, className, facilityName}) => (
+                                {bookingDetails && bookingDetails.map(({bookingId, customerName, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => (
                                 <tr key = {bookingId}>
                                     <td>
                                               <span>{customerName}</span>

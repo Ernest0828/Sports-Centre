@@ -36,7 +36,7 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // 3. Delete class (only for manager)
-router.delete("/:id", verifyManager, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const classes = await Classes.findByPk(req.params.id);
         if(!classes) return res.status(404).json("Classes not found");

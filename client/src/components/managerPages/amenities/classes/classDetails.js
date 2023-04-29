@@ -103,10 +103,10 @@ const ClassDetails = () => {
       // Send updated facility details to server
       axios.put(`http://localhost:4000/api/classes/${selectedClass.classId}`, {
 
-        className: formInputs.className,
+        name: formInputs.className,
         day: formInputs.day,
-        startTime: formInputs.startTime,
-        endTime: formInputs.endTime,
+        start: formInputs.startTime,
+        end: formInputs.endTime,
         price: formInputs.price,
         facilityName: formInputs.facilityName
         })
@@ -139,28 +139,39 @@ const ClassDetails = () => {
         return updatedDetails;
         });
 
-        const newClassDetails = {
-          className: formInputs.className,
-          price: formInputs.price,
-          dayTime: [{ day: formInputs.day, startTime: formInputs.startTime, endTime: formInputs.endTime }],
-          facilityName: formInputs.facilityName
-        };
-
-        setClassDetails((prevState) => {
-          return [...prevState, newClassDetails];
+        axios.post('http://localhost:4000/api/classes/classid', {
+        name: formInputs.className,
+        day: formInputs.day,
+        start: formInputs.startTime,
+        end: formInputs.endTime,
+        price: formInputs.price,
+        facilityName: formInputs.facilityName,
+      })
+        .then(response => {
+          console.log(response.data);
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Failed to save data');
         });
-
-        axios.post('http://localhost:4000/api/classes/classid', newClassDetails)
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-            alert('Failed to save data');
-          });
     
       // Close modal
       handleClose();
+    };
+
+    const handleDelete = (classId) => {
+      const selectedClass = classDetails.find(classes => classes.classId === classId);
+      setSelectedClass(selectedClass);
+      
+      if (window.confirm("Are you sure you want to delete this class?")) {
+        axios.delete(`http://localhost:4000/api/classes/${selectedClass.classId}`)
+          .then(() => {
+            // remove the deleted staff member from staffDetails state
+            setClassDetails(classDetails.filter(classes => classes.classId !== selectedClass.classId));
+          })
+          .catch(err => console.error('Failed to delete class', err));
+      }
     };
 
 
@@ -193,6 +204,7 @@ const ClassDetails = () => {
                                     <th className="dayTimeColumn">Day & Time</th>
                                     <th>Facility</th>  
                                     <th> </th>
+                                    <th> </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -216,26 +228,24 @@ const ClassDetails = () => {
                                     <td>
                                       <span>{facilityName}</span>
                                     </td>
-                                    {isEditable && (
-                                    <td>
-                                    <button className="deleteButton" >
-                                        Delete class
-                                    </button>
-                                    </td>
-                                     )}
                                     <td>
                                     <button className="editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleShow(classId);}}>
                                     {editableRows[classId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
+                                    <td>
+                                    <button className="deleteClassButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleDelete(classId);}}>
+                                    {editableRows[classId] ? "Delete" : "Delete"}
+                                    </button>
+                                    </td>
                                 </tr>
                                 ))}
                             </tbody>
-                            {/*<div>
-                            <button className="addButton" onClick={() => { handleAdd();}}>
+                            <div>
+                            <button className="addClassButton" onClick={() => { handleAdd();}}>
                               Add
                             </button>
-                            </div>*/}
+                            </div>
                         </table>
                     </div>
                 </div>
