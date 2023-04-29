@@ -104,7 +104,7 @@ const SwimmingPoolSchedule = (props) => {
   return (
     <div className="Cal-container">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="title">Swimming Pool Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

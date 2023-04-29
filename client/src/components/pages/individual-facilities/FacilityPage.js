@@ -129,14 +129,14 @@ const handleBooking = async () => {
     };
     // Get the current cartItems from localStorage
     // const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const currentCartItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+    // const currentCartItems = JSON.parse(localStorage.getItem('basketItems')) || [];
 
-    // Append the new item to the current cartItems
-    currentCartItems.push(item);
+    // // Append the new item to the current cartItems
+    // currentCartItems.push(item);
 
-    // Store the updated cartItems back to localStorage
-    localStorage.setItem('basketItems', JSON.stringify(currentCartItems));    
-    addToBasket(item);  
+    // // Store the updated cartItems back to localStorage
+    // localStorage.setItem('basketItems', JSON.stringify(currentCartItems));    
+    // addToBasket(item);  
   } else {
     alert('You must be logged in to book an activity.');
   }

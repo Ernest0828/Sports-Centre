@@ -5,12 +5,13 @@ import { useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import Basket from "../basket/Basket";
 import { Auth } from '../../context/Auth';
+import axios from 'axios'
 
 const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const {user} = useContext(Auth);
   const {
     data: facilityData,
     loading: facilityLoading,
@@ -50,7 +51,26 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
         return -1;
     }
   }
-
+ const handleClick = async() => {
+  if (user) {
+    try {
+        await axios.post('http://localhost:4000/api/basket/basketid', {
+          date: selectedDate,
+          start: selectedTime, //Start time
+          customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
+          activityId: activityId, //convert the selectedOptionB to activity number
+          classId: null,
+          facilityName: facility.facilityName 
+        });
+        alert('Item added to basket!');
+      } catch (err) {
+        console.log(err.message);
+        alert("Error adding item to basket!");
+      } 
+  } else {
+    alert('You must be logged in to book an activity.');
+  }
+ }
 
   return (
     <Form>
@@ -70,7 +90,7 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
           value={selectedOptionB}
           onChange={(e) => setSelectedOptionB(e.target.value)}
         >
-          <option value="" disabled selected hidden>
+          <option value="">
             Select an activity
           </option>
           {activityData && activityData
@@ -99,9 +119,10 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   }}
 />
       </Form.Group>
-      <Button variant="primary" style={{ marginTop: "15px" }}>
+      <Button variant="primary" style={{ marginTop: "15px" }} onClick={handleClick}>
         Submit
       </Button>
+      <p>{activityId}</p>
     </Form>
   );
 };
