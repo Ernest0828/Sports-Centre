@@ -1,9 +1,10 @@
 import { Form, Button } from "react-bootstrap"
+import "./membership.css";
 import axios from 'axios'
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
+const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, formInputs, setFormInputs}) => {
   
   const handleFormInputChange = (event) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -68,7 +69,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormI
 
             <Form.Group controlId="formIsMembership">
                 <div style={{display: 'block'}}>
-                <Form.Label>Manager?</Form.Label>
+                <Form.Label>Member Status</Form.Label>
                 </div>
                 <div>
                 <Form.Select
@@ -79,6 +80,11 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormI
                 <option>Member</option>
                 <option>Non-member</option>
                 </Form.Select>
+                </div>
+                <div>
+                <Button className= "cancelMembershipButton" style={{marginTop: "10px"}}variant="primary" onClick={handleSubmitCancel}>
+                  Cancel
+                </Button>
                 </div>
             </Form.Group>
 
@@ -97,7 +103,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, formInputs, setFormI
             </Form.Select>
             </Form.Group>
       
-            <Button style={{marginTop: "10px"}}variant="primary" type="submit">
+            <Button className= "addCustomerButton" style={{marginTop: "10px"}}variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>

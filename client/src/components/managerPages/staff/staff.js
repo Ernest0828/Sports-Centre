@@ -135,6 +135,7 @@ const Staff = () => {
         updatedDetails.isManager =  formInputs.isManager;
   
         return updatedDetails;
+
         });
     
       // Send new staff details to server
@@ -147,6 +148,7 @@ const Staff = () => {
       })
         .then(response => {
           console.log(response.data);
+          window.location.reload();
         })
         .catch(error => {
           console.log(error);
@@ -155,7 +157,6 @@ const Staff = () => {
     
       // Close modal
       handleClose();
-      window.location.reload();
     };
 
     const handleDelete = (staffId) => {

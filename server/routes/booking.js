@@ -11,6 +11,7 @@ const Staff  = require("../database/models/staff");
 const StaffBooking  = require("../database/models/staffBooking");
 const verifyUser = require("../middleware/verifyUser");
 const verifyStaff = require("../middleware/verifyStaff");
+const verifyManager = require("../middleware/verifyManager");
 
 
 // For User to amend the booking
@@ -111,7 +112,7 @@ router.post("/bookingid", async (req, res, next) => {
 });
 
 // 2. Update an existing booking
-router.put("/:id", verifyUser, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const updateBooking = await Booking.findByPk(req.params.id);
     const updatedBooking = await updateBooking.update(req.body);
@@ -181,7 +182,7 @@ router.get("/bookings/:customerId", async (req, res, next) => {
 });
 
 // 7. Add new bookings made by a staff member 
-router.post("/staff-booking", verifyStaff, async (req, res, next) => {
+router.post("/staff-booking", async (req, res, next) => {
   try {
     const {
       customerId,
@@ -191,7 +192,7 @@ router.post("/staff-booking", verifyStaff, async (req, res, next) => {
       activityId,
       classId,
       facilityName,
-      //paymentId,
+      paymentId,
     } = req.body;
 
     // Check if the specified activity or class exists

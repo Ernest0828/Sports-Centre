@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
+const AddCustomerForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
   
 
       const handleFormInputChange = (event) => {
@@ -26,7 +26,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
       return (
         <Modal show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Add New Staff</Modal.Title>
+          <Modal.Title>Register New Customer</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
             <span aria-hidden="true">&times;</span>
           </button>
@@ -35,35 +35,35 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
           <Form onSubmit={handleAddSubmit}>
       
             <Form.Group controlId="formStaffName">
-              <Form.Label>Staff Name</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="staffName"
-                value={formInputs.staffName}
+                name="customerName"
+                value={formInputs.customerName}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff name"
+                placeholder=""
               />
             </Form.Group>
       
             <Form.Group controlId="formStaffNumber">
-              <Form.Label>Staff Number</Form.Label>
+              <Form.Label>Number</Form.Label>
               <Form.Control
                 type="text"
-                name="staffNumber"
-                value={formInputs.staffNumber}
+                name="customerNumber"
+                value={formInputs.customerNumber}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff number"
+                placeholder=""
               />
             </Form.Group>
       
             <Form.Group controlId="formStaffEmail">
-              <Form.Label>Staff Email</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 type="text"
-                name="staffEmail"
-                value={formInputs.staffEmail}
+                name="customerEmail"
+                value={formInputs.customerEmail}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff email"
+                placeholder=""
               />
             </Form.Group>
 
@@ -74,29 +74,12 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
                 name="password"
                 value={formInputs.password}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff password"
+                placeholder=""
               />
             </Form.Group>
-
-            <Form.Group controlId="formIsManager">
-            <div style={{display: 'block'}}>
-            <Form.Label>Title</Form.Label>
-            </div>
-            <div>
-            <Form.Select
-              name="isManager"
-              value={formInputs.isManager ? 'Manager' : 'Staff'}
-              onChange={handleFormInputChange}
-            >
-              <option value="">Please select an option</option>
-              <option value="Manager">Manager</option>
-              <option value="Staff">Staff</option>
-            </Form.Select>
-            </div>
-          </Form.Group>
       
             <Button style={{marginTop: "10px"}} variant="primary" type="submit">
-              Add New Staff
+              Register Customer
             </Button>
           </Form>
         </Modal.Body>
@@ -104,4 +87,4 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
     );
   };
 
-export default AddStaffForm;
+export default AddCustomerForm;

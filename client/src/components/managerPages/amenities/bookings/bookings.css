@@ -1,10 +1,10 @@
-.activityDetails {
+.bookingDetails {
     margin-top: 120px;
     justify-content: center;
     align-items: center;
 }
 
-.activityDetailsTitle{
+.bookingDetailsTitle{
     color: black;
     padding: 20px 20px 0;
     font-size: 20px ;
@@ -13,15 +13,15 @@
     margin-left: 1%;
 }
 
-.activityDetailsTable{
+.bookingDetailsTable{
+    width: 95%;
     display: flex;
     margin: 0 auto;
-    width: 95%;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
     flex-direction: column;
     justify-content: center;
+    background-color: #f9f9f9;
+    box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    padding: 20px;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         color: black;
@@ -64,8 +64,8 @@ td{
 	color: white;
 }
 
-.deleteButton{
-    width: 80px;
+.deleteBookingButton{
+    width: 100%;
 	border: none;
 	border-radius: 20px;
 	padding: 5px;
@@ -74,14 +74,13 @@ td{
     background-color: grey;
 }
 
-.deleteButton:hover{
+.deleteBookingButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
 }
 
-.editActivityButton{
-    width: 100px;
+.editBookingButton{
     margin-top: 10px;
     margin-left: 10px;
 	border: none;
@@ -92,25 +91,28 @@ td{
     box-sizing: border-box;
 }
 
-button.editButton {
+button.editBookingButton {
   width: 100%;
 }
 
-
-.profileDeleteBookingBtn{
-    width: 80px;
+.addBookingButton{
+    width: 110px;
 	border: none;
 	border-radius: 20px;
+    margin-top: 5px;
 	padding: 5px;
     cursor: pointer;
 	color: white;
     background-color: grey;
 }
 
-
-
-.profileDeleteBookingBtn:hover{
+.addBookingButton:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
+}
+
+.activityTable {
+    max-height: 300px;
+    overflow-y: auto;
 }
