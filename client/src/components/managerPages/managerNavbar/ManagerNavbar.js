@@ -41,6 +41,13 @@ const Navbar = () => {
             </Link>
           </li>
         }
+        {isManager &&
+          <li className="managerNavItem">
+            <Link to="/statistics" className="managerNavLink">
+              Statistics
+            </Link>
+          </li>
+        }
           <li className="managerNavItem">
             <Link to="/membershipdetails" className="managerNavLink">
               Memberships

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import "./membership.css";
-import Navbar from "../managerNavbar/navbar";
+import Navbar from "../managerNavbar/ManagerNavbar";
 import { Link } from 'react-router-dom';
 import useFetch from "../hooks/useFetch"
 import axios from 'axios';
@@ -115,6 +115,7 @@ const MembershipDetails = () => {
           })
           .then(response => {
           console.log(response.data);
+          window.location.reload();
           })
           .catch(error => {
           console.log(error);
@@ -126,6 +127,7 @@ const MembershipDetails = () => {
         })
           .then(response => {
             console.log(response.data);
+            window.location.reload();
             })
             .catch(error => {
             console.log(error);
@@ -166,7 +168,8 @@ const MembershipDetails = () => {
             return updatedDetails;
             });
 
-          handleClose()
+          handleClose();
+          window.location.reload();
           })
           .catch(error => {
           console.log(error);

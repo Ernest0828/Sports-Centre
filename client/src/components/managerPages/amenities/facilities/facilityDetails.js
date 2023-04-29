@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import "./facilityDetails.css";
-import Navbar from "../../managerNavbar/navbar";
+import Navbar from "../../managerNavbar/ManagerNavbar";
 import useFetch from "../../hooks/useFetch"
 import EditFacilityForm from "./editFacilityForm";
 
