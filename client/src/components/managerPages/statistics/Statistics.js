@@ -228,10 +228,15 @@ const Statistics = () => {
             const activityName = bookingFindActivity.activityNames[bookingToIndex];
             // console.log("activityName:",activityName);
 
+            //get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
 
             console.log("acc test",acc);
             //dayIndex used for each activity
-            const dayIndex = acc.findIndex(a => a.day === day);
+            const dayIndex = acc.findIndex(a => a.day === daysOfWeek[previousDayIndex]);
             // console.log("acc day index:",acc[dayIndex]);
             
             acc[dayIndex][activityName] += noOfPeople;     

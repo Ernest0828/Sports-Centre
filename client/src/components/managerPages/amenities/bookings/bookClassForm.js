@@ -8,7 +8,6 @@ import { addDays, isThursday } from "date-fns";
 const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, setFormInputs}) => {
 
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
@@ -21,6 +20,15 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
     const [activityNames, setActivityNames] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
 
+    const [uniqueClassNames, setUniqueClassNames] = useState([]);
+
+    useEffect(() => {
+      if (classData) {
+        const classNames = classData.map((data) => data.className);
+        const uniqueClassNames = Array.from(new Set(classNames));
+        setUniqueClassNames(uniqueClassNames);
+      }
+    }, [classData]);
 
       const handleFormInputChange = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -148,12 +156,11 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
                 }}
               >
                 <option value="">Select Class</option>
-                {classData &&
-                  classData.map((classes) => (
-                    <option key={classes.classId} value={classes.className}>
-                      {classes.className}
-                    </option>
-                  ))}
+                {uniqueClassNames.map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
               </Form.Control>
             </Form.Group>
 

@@ -198,6 +198,7 @@ router.post("/staff-booking", async (req, res, next) => {
       classId,
       facilityName,
       paymentId,
+      price,
     } = req.body;
 
     // Check if the specified activity or class exists
@@ -244,7 +245,7 @@ router.post("/staff-booking", async (req, res, next) => {
     // format the endTime
     end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
     let number = 1;
-
+    
     // Create the booking and staff booking
     const booking = await Booking.create({
             noOfPeople: number,
@@ -258,7 +259,8 @@ router.post("/staff-booking", async (req, res, next) => {
             facilityName,
             paymentId,
             activityId,
-            classId
+            classId,
+            price,
     });
     
     await StaffBooking.create({
