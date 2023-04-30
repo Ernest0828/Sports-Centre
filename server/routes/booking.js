@@ -21,52 +21,6 @@ router.post("/bookingid", async (req, res, next) => {
   try {
     const { customerId } = req.body;
 
-<<<<<<< HEAD
-    // Check if facility exists
-    const facility = await Facility.findOne({ where: { facilityName } });
-    if (!facility) {
-      return res.status(404).json('Facility not found');
-    }
-    
-    // check if activity or class exists
-    let bookingType;
-    let bookingTypeId;
-    let end;
-    if (activityId) {
-      const activity = await Activity.findOne({ where: {activityId, facilityName} });
-      if (!activity) 
-        return res.status(404).json("This activity is not available at this facility");    
-      // set endTime for "Team events" to be +2hr after startTime
-      // other activities +1hr
-      if (activity.activityName === "Team events") {
-        const facility = await Facility.findOne({ where: { facilityName } });
-        if (!facility) {
-          return res.status(404).json('Facility not found');
-        }
-        number = facility.capacity;
-        end = moment.duration(start).add(moment.duration('02:00:00'));
-      } else {
-        number = "1";
-        end = moment.duration(start).add(moment.duration('01:00:00'));
-      }
-      bookingType = "activity";
-      bookingTypeId = activityId;
-    } 
-    else if (classId) {
-      const classes = await Classes.findOne({ where: {classId, facilityName} });
-      if (!classes) 
-        return res.status(404).json("This class is not available at this facility");
-      // set endTime for classes to be +1hr after startTime
-      number = "1";
-      end = moment.duration(start).add(moment.duration('01:00:00'));
-      bookingType = "class";
-      bookingTypeId = classId;
-    } 
-    else
-      return res.status(400).json("No bookings were made");
-      
-=======
->>>>>>> c594cdc62423d6d7a8b774f65b07784faa230649
     // check if customer exists
     const customer = await Customer.findByPk(customerId);
     if(!customer) {
@@ -88,7 +42,7 @@ router.post("/bookingid", async (req, res, next) => {
       let number;
       let end;
       let facilityName;
-      let price;
+      let prices;
 
       // check if activity or class exists
       if (basketItem.basketType === "activity") {
@@ -130,7 +84,7 @@ router.post("/bookingid", async (req, res, next) => {
       }
 
       // get price from basket
-      price = basketItem.price;
+      prices = basketItem.price;
 
       // format the endTime
       end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
@@ -147,7 +101,7 @@ router.post("/bookingid", async (req, res, next) => {
         activityId: basketItem.activityId,
         classId: basketItem.classId,
         facilityName: basketItem.facilityName,
-        price: price
+        price: prices
       });
       
       // add the newly created booking to the array of bookings
