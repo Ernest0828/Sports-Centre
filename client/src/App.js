@@ -16,31 +16,28 @@ import BookClasses from './components/pages/bookClasses/BookClasses';
 import Pricing from './components/pages/pricing/Pricing';
 
 
-import FacilityDetails from "./components/managerPages/bookings/facilities/facilityDetails";
-import ActivityDetails from "./components/managerPages/bookings/facilities/activities/activityDetails";
+import FacilityDetails from "./components/managerPages/amenities/facilities/facilityDetails";
+import ActivityDetails from "./components/managerPages/amenities/facilities/activities/activityDetails";
 import Staff from "./components/managerPages/staff/staff";
-import ClassDetails from "./components/managerPages/bookings/classes/classDetails";
+import ClassDetails from "./components/managerPages/amenities/classes/classDetails";
 import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
 import MembershipDetails from './components/managerPages/memberships/membershipDetails';
+<<<<<<< HEAD
 import Statistics from "./components/managerPages/statistics/Statistics";
 import BookingDetails from './components/managerPages/bookings/bookings/bookings';
+=======
+import BookingDetails from './components/managerPages/amenities/bookings/bookings';
+import Statistics from './components/managerPages/statistics/Statistics';
+
+>>>>>>> c594cdc62423d6d7a8b774f65b07784faa230649
 import Dashboard from "./components/pages/dashboard/Dashboard"
-
-
-import Climbingwall from './components/pages/individual-facilities/Climbingwall';
-import Fitnessroom from './components/pages/individual-facilities/Fitnessroom';
-import Sportshall from './components/pages/individual-facilities/Sportshall';
-import Swimmingpool from './components/pages/individual-facilities/Swimmingpool';
-import Squashcourt from './components/pages/individual-facilities/Squashcourt';
-import Studio from './components/pages/individual-facilities/Studio';
-import Aerobics from './components/pages/individual-classes/Aerobics';
-import Pilates from './components/pages/individual-classes/Pilates';
-import Yoga from './components/pages/individual-classes/Yoga';
-//import MyComponent from './components/dropDownFacility/DropDownFacility';
-//import DropdownChoice from './components/dropDownFacility/DropDownFacility';
-//import successPage from './components/pages/success/successPage';
+import DropDownChoice from './components/dropDownFacility/DropDownFacility';
+import SuccessPage from './components/pages/success/successPage';
+import CancelPage from './components/pages/cancel/CancelPage';
+import FacilityPage from './components/pages/individual-facilities/FacilityPage';
+import FacilityBookingDetails from './components/ICalendar/FacilityBooking';
 
 function App() {
   const {user} = useContext(Auth);
@@ -59,32 +56,26 @@ function App() {
 
           <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
           <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
-          <Route exact path="/activitydetails" element={<ActivityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
           <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
+          <Route exact path="/statistics" element={<Statistics/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/pricing" element={<Pricing />} />
-          <Route exact path="/aerobics" element={<Aerobics/>}/>
-          <Route exact path="/pilates" element={<Pilates/>}/>
-          <Route exact path="/yoga" element={<Yoga/>}/>
-
-          <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
-          <Route exact path="/climbingwall" element={<Climbingwall/>}/>
-          <Route exact path="/fitnessroom" element={<Fitnessroom/>}/>
-          <Route exact path="/sportshall" element={<Sportshall/>}/>
-          <Route exact path="/swimmingpool" element={<Swimmingpool/>}/>
-          <Route exact path="/squashcourt" element={<Squashcourt/>}/>
-          <Route exact path="/studio" element={<Studio/>}/>
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
           <Route exact path="/success" element={<successPage/>}/>
+<<<<<<< HEAD
           <Route exact path="/statistics" element={<Statistics/>}/>          
+=======
+          <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
+          <Route exact path="/FacilityBookingDetails" element={<FacilityBookingDetails/>}/>
+          
+>>>>>>> c594cdc62423d6d7a8b774f65b07784faa230649
 
           
 

@@ -88,7 +88,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
               value={formInputs.isManager ? 'Manager' : 'Staff'}
               onChange={handleFormInputChange}
             >
-              <option>Please select an option</option>
+              <option value="">Please select an option</option>
               <option value="Manager">Manager</option>
               <option value="Staff">Staff</option>
             </Form.Select>

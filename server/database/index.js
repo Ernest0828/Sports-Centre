@@ -8,6 +8,8 @@ const Facility = require("./models/facility");
 const Payment = require("./models/payment");
 const Classes = require("./models/classes");
 const Membership = require("./models/membership");
+const Basket = require("./models/basket");
+const Discount = require("./models/discount");
 
 // relation between tables
 // 1. Customer has many to one relation with Booking
@@ -50,12 +52,12 @@ Classes.belongsTo(Facility, { foreignKey: "facilityName" });
 Customer.hasOne(Membership, { foreignKey: "customerId" });
 Membership.belongsTo(Customer, { foreignKey: "customerId" });
 
-// 11. Payment has one to one relation with Membership
-Payment.hasOne(Membership, { foreignKey: "paymentId" });
-Membership.belongsTo(Payment, { foreignKey: "paymentId" });
+// 11. Basket has one to one relation with Booking
+Basket.hasOne(Booking, { foreignKey: "basketId" });
+Booking.belongsTo(Basket, { foreignKey: "basketId" });
 
 db
-    .sync()
+    .sync({force:true})
     .then((result) => {
         console.log(result);
     })
@@ -70,6 +72,7 @@ module.exports = db,
     Booking,
     Activity,
     Facility,
-    Payment,
+    Basket,
+    Discount,
     Classes,
     Membership;

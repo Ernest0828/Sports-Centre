@@ -160,7 +160,7 @@ router.get("/membership-info/:customerId", async (req, res, next) => {
 });
 
 // 5. Get all customer memberships (for staffs)
-router.get("/memberships", verifyStaff, async (req, res, next) => {
+router.get("/memberships", async (req, res, next) => {
   try {
     const memberships = await Membership.findAll({
       include: [{ model: Customer }],

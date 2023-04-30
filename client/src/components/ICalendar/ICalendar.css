@@ -2,7 +2,7 @@
     margin-top: 105px;
 }
 .timetable {
-    max-width: 1200px;
+    max-width: 1300px;
   }
   
   .title{
@@ -24,4 +24,14 @@
   .timetable td {
     height: 30px;
   }
+
+  .timetable td:hover {
+    background-color: #a9a9a9;
+    cursor: pointer;
+  }
+
+ .hide {
+  color: white;
+  font-size: 10px;
+ }
   

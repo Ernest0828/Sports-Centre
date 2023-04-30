@@ -27,22 +27,22 @@ const PricingClass = () => {
                 console.log(err.response.data);
             }
         }
-            async function fetchFacilitiesData() {
-                try {
-                    const res = await axios.get("http://localhost:4000/api/facilities/");
-                    setFacilityData(res.data);
-                } catch(err) {
-                    console.log(err.response.data);
-                }
+        async function fetchFacilitiesData() {
+            try {
+                const res = await axios.get("http://localhost:4000/api/facilities/");
+                setFacilityData(res.data);
+            } catch(err) {
+                console.log(err.response.data);
             }
-            async function fetchActivityData() {
-                try {
-                    const res = await axios.get("http://localhost:4000/api/activities/");
-                    setActivityData(res.data);
-                } catch(err) {
-                    console.log(err.response.data);
-                }
+        }
+        async function fetchActivityData() {
+            try {
+                const res = await axios.get("http://localhost:4000/api/activities/");
+                setActivityData(res.data);
+            } catch(err) {
+                console.log(err.response.data);
             }
+        }
         fetchClassesData();
         fetchFacilitiesData();
         fetchActivityData();
