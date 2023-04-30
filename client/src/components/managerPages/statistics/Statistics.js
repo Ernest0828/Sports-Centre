@@ -28,7 +28,7 @@ const Statistics = () => {
         };
       }));
     }, [bookingData]);
-    console.log("booking details:", bookingDetails);
+    // console.log("booking details:", bookingDetails);
 
 
 
@@ -67,6 +67,8 @@ const Statistics = () => {
     }; 
 
     
+    const [test, setTest] = useState(activityDetails);
+    
     //chart data
     const [graphData, setGraphData] = useState();
 
@@ -82,19 +84,20 @@ const Statistics = () => {
             return facToDay;
         });
 
-        // {facilityName:Swimming pool, activityNames:["general use", ...]}
+         // {facilityName:Swimming pool, activityNames:["general use", ...]}
         const groupedActivities = activityDetails.reduce((acc, curr) => {
             const { facilityName, activityName, activityId } = curr;
             const facility = acc.find((f) => f.facilityName === facilityName);
             if (facility) {
-              facility.activityNames.push(activityName);
-              facility.activityIds.push(activityId);
+            facility.activityNames.push(activityName);
+            facility.activityIds.push(activityId);
             } else {
-              acc.push({ facilityName, activityNames: [activityName], activityIds: [activityId] });
+            acc.push({ facilityName, activityNames: [activityName], activityIds: [activityId] });
             }
             return acc;
-        }, []);
-        // console.log("groupedActivities",groupedActivities);
+        }, []);    
+        
+        setTest(groupedActivities);
 
         //create an initial array with every combination of day and activity set to 0 
         const initActivityDay = daysOfWeek.map(day => {
@@ -105,9 +108,11 @@ const Statistics = () => {
                 .forEach(activity => {
                 activityToDay[activity] = 0;
             });
-
-            // console.log("test",groupedActivities.filter(group => group.facilityName === selectedFacility).flatMap(group => group.activityNames)
+            // console.log("ahdsifh", activityToDay);
+            // console.log("test grp activity filter",groupedActivities.filter(group => group.facilityName === selectedFacility).flatMap(group => group.activityNames)
             // )
+
+            
 
             return activityToDay;
         });
@@ -140,26 +145,32 @@ const Statistics = () => {
             if (bookingType !== "activity"){
                 return acc;
             }
+
+            if (facilityName !== selectedFacility) {
+                return acc;
+              }
+            //Get activity name
             const bookingFindActivity = groupedActivities.find(f => f.facilityName === facilityName);
-            console.log("bookingfindac:",bookingFindActivity);
+            // console.log("bookingfindac:",bookingFindActivity);
             const bookingToIndex = bookingFindActivity.activityIds.findIndex(id => id === activityId);
-            console.log("bookingToIndex:",bookingToIndex);
+            // console.log("bookingToIndex:",bookingToIndex);
             const activityName = bookingFindActivity.activityNames[bookingToIndex];
-            console.log("activityName:",activityName);
+            // console.log("activityName:",activityName);
 
 
-
+            console.log("acc test",acc);
             //dayIndex used for each activity
             const dayIndex = acc.findIndex(a => a.day === day);
+            // console.log("acc day index:",acc[dayIndex]);
+            
             acc[dayIndex][activityName] += noOfPeople;     
-            console.log("acc",acc);
             return acc;
         }, initActivityDay);
 
         selectedFacility === "Summary" ? setGraphData(summaryData) :
         setGraphData(activityData)
 
-}, [bookingDetails,activityDetails,selectedFacility]);
+    }, [bookingDetails,selectedFacility,activityDetails]);
 
 
     //For choosing week 
@@ -267,9 +278,14 @@ const Statistics = () => {
                             {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
                                 <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
                             )) : 
-                            activityDetails.map((activity,index)=>(
-                                <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
+                            test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
+                                <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
                             ))}
+                            
+                            {/* activityDetails.map((activity,index)=>(
+                                <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
+                            ))} */}
+
                         </BarChart>
                     </div>
                 </div>
