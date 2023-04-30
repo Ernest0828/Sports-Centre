@@ -24,17 +24,12 @@ import ManagerProfileInfo from "./components/managerPages/managerProfile/manager
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
 import MembershipDetails from './components/managerPages/memberships/membershipDetails';
-<<<<<<< HEAD
-import Statistics from "./components/managerPages/statistics/Statistics";
-import BookingDetails from './components/managerPages/bookings/bookings/bookings';
-=======
 import BookingDetails from './components/managerPages/amenities/bookings/bookings';
 import Statistics from './components/managerPages/statistics/Statistics';
 
->>>>>>> c594cdc62423d6d7a8b774f65b07784faa230649
 import Dashboard from "./components/pages/dashboard/Dashboard"
 import DropDownChoice from './components/dropDownFacility/DropDownFacility';
-import SuccessPage from './components/pages/success/successPage';
+import SuccessPage from './components/pages/success/SuccessPage';
 import CancelPage from './components/pages/cancel/CancelPage';
 import FacilityPage from './components/pages/individual-facilities/FacilityPage';
 import FacilityBookingDetails from './components/ICalendar/FacilityBooking';
@@ -68,14 +63,10 @@ function App() {
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-          <Route exact path="/success" element={<successPage/>}/>
-<<<<<<< HEAD
-          <Route exact path="/statistics" element={<Statistics/>}/>          
-=======
+          <Route exact path="/success" element={<SuccessPage/>}/>
           <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
           <Route exact path="/FacilityBookingDetails" element={<FacilityBookingDetails/>}/>
           
->>>>>>> c594cdc62423d6d7a8b774f65b07784faa230649
 
           
 
