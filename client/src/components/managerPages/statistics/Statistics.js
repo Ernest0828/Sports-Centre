@@ -269,29 +269,32 @@ const Statistics = () => {
                         <h3>
                             {selectedFacility} 
                         </h3>
-                        <BarChart
-                            width={900}
-                            height={400}
-                            data={graphData}
-                            margin={{ top: 10, right: 30, left: 90, bottom: 5 }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="day" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
-                                <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
-                            )) : 
-                            test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
-                                <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
-                            ))}
-                            
-                            {/* activityDetails.map((activity,index)=>(
-                                <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
-                            ))} */}
+                        <div className="usageGraphs">
+                            <BarChart
+                                width={900}
+                                height={400}
+                                data={graphData}
+                                margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="day" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
+                                    <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
+                                )) : 
+                                test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
+                                    <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
+                                ))}
+                                
+                                {/* activityDetails.map((activity,index)=>(
+                                    <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
+                                ))} */}
 
-                        </BarChart>
+                            </BarChart>
+                        </div>
+                        
                     </div>
                 </div>
                     {/* {console.log("summaryData:",summaryData)}; */}
