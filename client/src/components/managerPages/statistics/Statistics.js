@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"
 import moment from 'moment';
-import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar } from 'recharts';
+import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar ,PieChart, Pie, ResponsiveContainer} from 'recharts';
 
 
   
@@ -15,7 +15,7 @@ const Statistics = () => {
     const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
     const [bookingDetails, setBookingDetails] = useState([]);
     useEffect(() => {
-        setBookingDetails(bookingData.map(({noOfPeople, date, startTime, endTime, bookingType, activityId, classId,facilityName}) => {
+        setBookingDetails(bookingData.map(({noOfPeople, date, startTime, endTime, bookingType, activityId, classId,facilityName,price}) => {
         return {
             noOfPeople,
             date,
@@ -25,11 +25,10 @@ const Statistics = () => {
             activityId, 
             classId,
             facilityName,
+            price,
         };
       }));
     }, [bookingData]);
-    // console.log("booking details:", bookingDetails);
-
 
 
     //Get activity data
@@ -59,18 +58,24 @@ const Statistics = () => {
         }));
     },[facilityData]);
 
-
     //handle sidebar clicking
     const [selectedFacility, setSelectedFacility] = useState("Summary");
     const handleFacilityClick = (facility) => {
         setSelectedFacility(facility);
     }; 
 
+    //for groupedActivities
+    const [activityGroup, setActivityGroup] = useState(activityDetails);
     
-    const [test, setTest] = useState(activityDetails);
-    
-    //chart data
-    const [graphData, setGraphData] = useState();
+    //Bar chart data
+    const [barChartData, setBarChartData] = useState();
+    //Pie chart data
+    const [pieChartData, setPieChartData] = useState();
+
+    //Calculate total revenue
+    const [revenueData, setRevenueData] = useState();
+
+
 
     useEffect(() => {
         const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"];
@@ -84,7 +89,12 @@ const Statistics = () => {
             return facToDay;
         });
 
-         // {facilityName:Swimming pool, activityNames:["general use", ...]}
+        const initFacPrice = facilities.map(facility => ({
+            facilityName: facility,
+            revenue : 0
+        }));
+
+         //Makes array of form {facilityName:Swimming pool, activityNames:["general use", ...]}
         const groupedActivities = activityDetails.reduce((acc, curr) => {
             const { facilityName, activityName, activityId } = curr;
             const facility = acc.find((f) => f.facilityName === facilityName);
@@ -97,7 +107,7 @@ const Statistics = () => {
             return acc;
         }, []);    
         
-        setTest(groupedActivities);
+        setActivityGroup(groupedActivities);
 
         //create an initial array with every combination of day and activity set to 0 
         const initActivityDay = daysOfWeek.map(day => {
@@ -108,19 +118,12 @@ const Statistics = () => {
                 .forEach(activity => {
                 activityToDay[activity] = 0;
             });
-            // console.log("ahdsifh", activityToDay);
-            // console.log("test grp activity filter",groupedActivities.filter(group => group.facilityName === selectedFacility).flatMap(group => group.activityNames)
-            // )
-
-            
-
             return activityToDay;
         });
-        console.log("initActivityDay", initActivityDay);        
 
 
-        //get graph data for Summary
-        const summaryData = bookingDetails.reduce((acc, curr) => {
+        //get usage graph data for Summary
+        const summaryBarData = bookingDetails.reduce((acc, curr) => {
             //change date to day
             const formatDate = new Date(curr.date);
             formatDate.setUTCHours(0, 0, 0, 0);
@@ -132,8 +135,28 @@ const Statistics = () => {
             return acc;
         }, initFacDay);
 
+
+        //get revenue graph data for summary
+        const summaryPieData = bookingDetails.reduce((acc,curr) => {
+            const {facilityName, price} = curr;
+            const facilityIndex = acc.findIndex(f => f.facilityName === facilityName);
+            acc[facilityIndex].revenue += price;
+            return acc;
+        }, initFacPrice);
+
+        const sumRevenue = summaryPieData.reduce((totalRevenue, facility) => {
+            return totalRevenue + facility.revenue;
+          }, 0);
+          
+        setRevenueData(sumRevenue);
+        console.log("revenueData",revenueData);
+        
+
+
+
+
         // chart data for activities
-        const activityData = bookingDetails.reduce((acc, curr) => {
+        const activityBarData = bookingDetails.reduce((acc, curr) => {
             //change date to day
             const formatDate = new Date(curr.date);
             formatDate.setUTCHours(0, 0, 0, 0);
@@ -141,11 +164,12 @@ const Statistics = () => {
             const {noOfPeople , activityId, facilityName, bookingType} = curr;
             // console.log("curr",curr);
 
-            //TEST ZONE
+            //Makes sure it is activity
             if (bookingType !== "activity"){
                 return acc;
             }
 
+            //Makes sure only add if facility name is same
             if (facilityName !== selectedFacility) {
                 return acc;
               }
@@ -158,7 +182,7 @@ const Statistics = () => {
             // console.log("activityName:",activityName);
 
 
-            console.log("acc test",acc);
+            // console.log("acc test",acc);
             //dayIndex used for each activity
             const dayIndex = acc.findIndex(a => a.day === day);
             // console.log("acc day index:",acc[dayIndex]);
@@ -167,10 +191,16 @@ const Statistics = () => {
             return acc;
         }, initActivityDay);
 
-        selectedFacility === "Summary" ? setGraphData(summaryData) :
-        setGraphData(activityData)
+
+
+        selectedFacility === "Summary" ? setBarChartData(summaryBarData):
+        setBarChartData(activityBarData)
+
+        selectedFacility === "Summary" ? setPieChartData(summaryPieData):
+        setPieChartData();
 
     }, [bookingDetails,selectedFacility,activityDetails]);
+
 
 
     //For choosing week 
@@ -195,8 +225,7 @@ const Statistics = () => {
 
     //Colors for graph
     const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7","#fdcce5"];
-
-
+    
     return (
         <Fragment>
         <Navbar />
@@ -266,38 +295,54 @@ const Statistics = () => {
                                     
                     </div>
                     <div className="statsRight"> 
-                        <h3>
-                            {selectedFacility} 
-                        </h3>
-                        <div className="usageGraphs">
-                            <BarChart
-                                width={900}
-                                height={400}
-                                data={graphData}
-                                margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="day" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
-                                    <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
-                                )) : 
-                                test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
-                                    <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
-                                ))}
-                                
-                                {/* activityDetails.map((activity,index)=>(
-                                    <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
-                                ))} */}
-
-                            </BarChart>
+                        <div className="usage">
+                            <h3>
+                                {selectedFacility} 
+                            </h3>
+                            <div className="usageGraph">
+                                <BarChart
+                                    width={900}
+                                    height={400}
+                                    data={barChartData}
+                                    margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="day" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
+                                        <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
+                                    )) : 
+                                    activityGroup.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
+                                        <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
+                                    ))}
+                                </BarChart>
+                            </div>
                         </div>
-                        
+                        <div className="revenue">
+                            {selectedFacility === "Summary" && <h3>Revenue</h3>}
+                            {selectedFacility === "Summary" && <p>Total revenue: £{revenueData}</p>}
+                            <div className="revenueGraph">
+                                <PieChart width={900} height={300}>
+                                    {selectedFacility === "Summary" && facilityDetails.map((facility,index)=>(
+                                        <Pie
+                                            dataKey="revenue"
+                                            nameKey = "facilityName"
+                                            isAnimationActive={true}
+                                            data={pieChartData}
+                                            outerRadius={80}
+                                            fill={colors[index]}
+                                            label
+                                        />
+                                    ))}
+                                    <Tooltip />
+                                </PieChart>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                    {/* {console.log("summaryData:",summaryData)}; */}
+                    {/* {console.log("summaryBarData:",summaryBarData)}; */}
             </div>
         </div>
         </Fragment>

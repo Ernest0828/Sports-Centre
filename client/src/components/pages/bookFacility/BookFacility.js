@@ -61,7 +61,7 @@ const BookFacility = () => {
             ))}
           </div>
           </div>
-          {/* <Basket removeItem={removeItem} /> */}
+          <Basket/>
         </div>
       </div>
     </Fragment>
