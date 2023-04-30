@@ -368,12 +368,13 @@ const Statistics = () => {
                                     legendType="circle"
                                 />
                                 ))
-                            ) : selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
+                                ) : selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
                                     <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
                                 )) : (
                                 test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
                                     <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
-                                ))}
+                                )))
+                                }
                                 
                                 {/* activityDetails.map((activity,index)=>(
                                     <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
