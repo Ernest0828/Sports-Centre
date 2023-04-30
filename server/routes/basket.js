@@ -6,7 +6,7 @@ const Booking  = require("../database/models/booking");
 const Activity  = require("../database/models/activity");
 const Classes  = require("../database/models/classes");
 const Facility = require("../database/models/facility");
-const Payment  = require("../database/models/payment");
+const Discount  = require("../database/models/discount");
 const Customer  = require("../database/models/customer");
 const verifyUser = require("../middleware/verifyUser");
 
@@ -38,11 +38,11 @@ router.post("/basketid", async (req, res, next) => {
         if (sameBooking) {
             return res.status(401).json("You have a booking session");
         }
-        
         // check if activity or class exists
         let basketType;
         let basketTypeId;
         let end;
+        let prices;
         if (activityId) {
             const activity = await Activity.findOne({ where: {activityId, facilityName} });
             if (!activity) 
@@ -54,7 +54,11 @@ router.post("/basketid", async (req, res, next) => {
             } else {
                 end = moment.duration(start).add(moment.duration('01:00:00'));
             }
-            price = activity.price;
+            if (customer.isMembership == true) {
+                prices = "0";
+            } else {
+                prices = activity.price;
+            }
             basketType = "activity";
             basketTypeId = activityId;
         } 
@@ -64,22 +68,25 @@ router.post("/basketid", async (req, res, next) => {
                 return res.status(404).json("This class is not available at this facility");
             // set endTime for classes to be +1hr after startTime
             end = moment.duration(start).add(moment.duration('01:00:00'));
-            price = classes.price;
+            if (customer.isMembership == true) {
+                prices = "0";
+            } else {
+                prices = classes.price;
+            }
             basketType = "class";
             basketTypeId = classId;
         } 
         else
             return res.status(400).json("Basket is empty"); 
-            
+          
         // format the endTime
         end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
-        
         // create item in basket
         const newBasket = await Basket.create({
             date,
             startTime: start,
             endTime: end,
-            price,
+            price: prices,
             basketType,
             customerId,
             ['${basketType}Id']: basketTypeId,
@@ -91,8 +98,8 @@ router.post("/basketid", async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
-
+});   
+          
 // 2. Get items in basket for a customer
 router.get("/basket/:customerId", async (req, res, next) => {
     try {
@@ -102,8 +109,23 @@ router.get("/basket/:customerId", async (req, res, next) => {
         if (!customer) {
             return res.status(404).json("Customer not found");
         }
+        const basket = await Basket.findAll({ where: { customerId } });
         
-        const basket = await Basket.findAll( {where: {customerId } });
+        // Check if customer has at least 3 items in their basket
+        if (basket.length >= 3) {
+            const discountData = await Discount.findOne();
+            const discount = discountData ? discountData.discount : 0;
+            
+            // Update the price of each item in the basket to the discounted price
+            for (let i = 0; i < basket.length; i++) {
+                if (!basket[i].discountApplied) {
+                    basket[i].price = basket[i].price * (1 - discount);
+                    basket[i].discountApplied = true;
+                    await basket[i].save();
+                }
+            }
+        }
+        
         return res.status(200).json(basket);
     } catch (err) {
         next(err);
@@ -126,6 +148,22 @@ router.delete("/:customerId/:basketId", async (req, res, next) => {
     if (deleted === 0) {
       return res.status(404).json("Basket item not found");
     }
+
+    const basket = await Basket.findAll({ where: { customerId } });
+    // Check if customer has at least 3 items in their basket
+        if (basket.length < 3) {
+            const discountData = await Discount.findOne();
+            const discount = discountData ? discountData.discount : 0;
+            
+            // Update the price of each item in the basket to the discounted price
+            for (let i = 0; i < basket.length; i++) {
+                if (basket[i].discountApplied) {
+                    basket[i].price = basket[i].price / (1 - discount);
+                    basket[i].discountApplied = false;
+                    await basket[i].save();
+                }
+            }
+        }
 
     return res.status(200).json("Basket item deleted");
   } catch (err) {
