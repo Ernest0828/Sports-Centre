@@ -4,7 +4,6 @@ import Basket from '../../basket/Basket';
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 // import ICalendar from '../../ICalendar/ICalendar';
-import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
 import { useLocation } from "react-router-dom";

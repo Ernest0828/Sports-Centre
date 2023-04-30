@@ -16,11 +16,11 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
     
-    const [selectedOptionB, setSelectedOptionB] = useState('General Use');
+    const [selectedOptionB, setSelectedOptionB] = useState('');
     const [selectedOptionC, setSelectedOptionC] = useState('');
 
     const selectedClasses = classData
-    ? classData.find((classes) => classes.className === selectedOptionB)
+    ? classData.find((classes) => classes.className === selectedClass)
     : null;
   const classId = selectedClasses ? selectedClasses.classId : null;
     
@@ -54,7 +54,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
                 customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
                 activityId: null, //convert the selectedOptionB to activity number
                 classId: classId,
-                facilityName: facility.facilityName 
+                facilityName: "Studio" 
               });
               alert('Item added to basket!');
             } catch (err) {
@@ -68,6 +68,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
 
     return (
         <Form>
+            {console.log("Class :", selectedClass)}
             <Form.Group controlId="formFacility">
                 <Form.Label>Facility: {facility.facilityName} </Form.Label>
             </Form.Group>
@@ -98,6 +99,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
             <Button variant="primary" style={{ marginTop: "15px" }} onClick={handleClick}>
         Submit
       </Button>
+      {console.log("Class ID:", classId)}
         </Form>
     );
 };

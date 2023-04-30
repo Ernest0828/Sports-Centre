@@ -126,7 +126,7 @@ const StudioSchedule = () => {
                     const count = countObj ? countObj.count : 0;
                     return (
                       <div key={c.className}>
-                        <button onClick={() => handleOpenModal(day, time.slice(0,5), c.className)}>{bookingCount[`${day}_${time.slice(0,5)}`]?.count || 0}</button>
+                        <button onClick={() => handleOpenModal(day, time.slice(0,5), c.className)}>{c.className}</button>
 
                       </div>
                     );

@@ -9,48 +9,74 @@ const Facility = require("../database/models/facility");
 const Membership = require("../database/models/membership");
 
 router.post('/booking-checkout-session', async (req, res) => {
-   const items = req.body.basketItems;
-   console.log("received items:", items)
-  const activities = await Promise.all(
-    items.map(item => Activity.findByPk(item.activityId))
-  );
-  console.log("Activities:", activities);
-  
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const day = ("0" + date.getDate()).slice(-2);
-    return `${year}/${month}/${day}`;
-  };
+  const items = req.body.basketItems;
+  console.log("received items:", items)
+ const activities = await Promise.all(
+   items.map(item => Activity.findByPk(item.activityId))
+ );
+ const classes = await Promise.all(
+   items.map(item => Classes.findByPk(item.classId))
+ );
+ console.log("Activities:", activities);
+ console.log("Classes:", classes);
 
-  const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(":");
-    return `${hours}:${minutes}`;
-  };
+ 
+ const formatDate = (dateString) => {
+   const date = new Date(dateString);
+   const year = date.getFullYear();
+   const month = ("0" + (date.getMonth() + 1)).slice(-2);
+   const day = ("0" + date.getDate()).slice(-2);
+   return `${year}/${month}/${day}`;
+ };
 
-  const line_items = items.map((item, index) => {
-    const activity = activities[index];
-    return {
-      price_data: {
-        currency: 'gbp',
-        product_data: {
-          name: `${item.facilityName} - ${activity.activityName} \n${formatDate(item.date)}-${formatTime(item.startTime)}`,
-        },
-        unit_amount: item.price * 100,
-      },
-      quantity: 1, // Update this logic based on your requirements
-    };
-  });
+ const formatTime = (timeString) => {
+   const [hours, minutes] = timeString.split(":");
+   return `${hours}:${minutes}`;
+ };
 
-    const session = await stripe.checkout.sessions.create({
-    line_items,
-    mode: 'payment',
-    success_url: 'http://localhost:3000/booking-success', //Takes us here upon successful payment
-    cancel_url: 'http://localhost:3000/book-facility', //Change this to something else?
-  });
-    res.send({url: session.url});
-  });
+ const line_items = items.map((item, index) => {
+   if (item.basketType === "activity") {
+     const activity = activities[index];
+     return {
+       price_data: {
+         currency: 'gbp',
+         product_data: {
+           name: `${item.facilityName} - ${activity.activityName} \n${formatDate(item.date)}-${formatTime(item.startTime)}`,
+         },
+         unit_amount: item.price * 100,
+       },
+       quantity: 1,
+     };
+   } else if (item.basketType === "class") {
+     const listedClass = classes[index];
+     console.log(`Class Name: ${listedClass.className}`);
+     return {
+       price_data: {
+         currency: 'gbp',
+         product_data: {
+           name: `${item.facilityName} - ${listedClass.className} \n${formatDate(item.date)}-${formatTime(item.startTime)}`,
+         },
+         unit_amount: item.price * 100,
+       },
+       quantity: 1,
+     };
+   } else {
+     return null;
+   }
+ }).filter(item => item !== null);
+
+ if (line_items.length === 0) {
+   return res.status(400).json("No bookings were made");
+ }
+
+   const session = await stripe.checkout.sessions.create({
+   line_items,
+   mode: 'payment',
+   success_url: 'http://localhost:3000/booking-success', //Takes us here upon successful payment
+   cancel_url: 'http://localhost:3000/book-facility', //Change this to something else?
+ });
+   res.send({url: session.url});
+ });
 
 
   router.post('/membership-checkout-session', async (req, res) => {
@@ -140,3 +166,46 @@ router.post('/booking-checkout-session', async (req, res) => {
 
   module.exports = router;
 
+  // router.post('/booking-checkout-session', async (req, res) => {
+  //   const items = req.body.basketItems;
+  //   console.log("received items:", items)
+  //  const activities = await Promise.all(
+  //    items.map(item => Activity.findByPk(item.activityId))
+  //  );
+  //  console.log("Activities:", activities);
+   
+  //  const formatDate = (dateString) => {
+  //    const date = new Date(dateString);
+  //    const year = date.getFullYear();
+  //    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  //    const day = ("0" + date.getDate()).slice(-2);
+  //    return `${year}/${month}/${day}`;
+  //  };
+ 
+  //  const formatTime = (timeString) => {
+  //    const [hours, minutes] = timeString.split(":");
+  //    return `${hours}:${minutes}`;
+  //  };
+ 
+  //  const line_items = items.map((item, index) => {
+  //    const activity = activities[index];
+  //    return {
+  //      price_data: {
+  //        currency: 'gbp',
+  //        product_data: {
+  //          name: `${item.facilityName} - ${activity.activityName} \n${formatDate(item.date)}-${formatTime(item.startTime)}`,
+  //        },
+  //        unit_amount: item.price * 100,
+  //      },
+  //      quantity: 1, // Update this logic based on your requirements
+  //    };
+  //  });
+ 
+  //    const session = await stripe.checkout.sessions.create({
+  //    line_items,
+  //    mode: 'payment',
+  //    success_url: 'http://localhost:3000/booking-success', //Takes us here upon successful payment
+  //    cancel_url: 'http://localhost:3000/book-facility', //Change this to something else?
+  //  });
+  //    res.send({url: session.url});
+  //  });

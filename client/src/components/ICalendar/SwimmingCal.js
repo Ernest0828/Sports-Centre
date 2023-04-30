@@ -90,7 +90,7 @@ const SwimmingPoolSchedule = (props) => {
                     <div>{a.activityName}</div>
                   </div>
                 ))}
-                <div className="hide" onClick={() => handleOpenModal(day, formattedTime)}>-----</div>
+                <div className="hide" onClick={() => handleOpenModal(day, formattedTime)}>CLICK HERE</div>
               </td>
             );
             })}

@@ -12,8 +12,8 @@ const BookClasses = () => {
   const [classes, setClasses] = useState([]);
   const [facilities, setFacilities] = useState([]);
   const navigate =useNavigate();
-  const handleClick = (filteredFacilities) =>{
-    navigate('/FacilityPage',{state: {facility: filteredFacilities}});
+  const handleClick = () =>{
+    navigate('/FacilityPage', {state: {facility: studioFacilities}});
   }
 
 
@@ -42,7 +42,7 @@ const BookClasses = () => {
   fetchClasses();
 }, []);
 //Filter to get "Studio" Facility
-const filteredFacilities = facilities.filter(
+const studioFacilities = facilities.find(
   (facility) => facility.facilityName === "Studio"
 );
 
@@ -56,9 +56,11 @@ const filteredFacilities = facilities.filter(
               <h3>Book a class</h3>
               <p>Select a class to view timetables and availability.</p>
             </div>
-            <div className="gridFormat" onClick={() => handleClick(filteredFacilities)}>
-              {classes.map((classes) => (
-                <ClassItem key={classes.className} classes={classes}/>
+            <div className="gridFormat">
+            {classes.map((classItem) => (
+            <div key={classItem.className} className="griddy" onClick={handleClick}>
+              <ClassItem classes={classItem} />
+            </div>
               ))}
             </div>
           </div>

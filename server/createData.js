@@ -29,7 +29,7 @@ const activities = [
     { activityName: "1-hour sessions", price: "8", facilityName: "Squash court A" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Squash court B" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Sports hall" },
-    { activityName: "Team events", day: "Thurdsay", startTime: "19:00:00", endTime: "21:00:00", price: "20", facilityName: "Sports hall" },
+    { activityName: "Team events", day: "Thursday", startTime: "19:00:00", endTime: "21:00:00", price: "20", facilityName: "Sports hall" },
     { activityName: "Team events", day: "Saturday", startTime: "09:00:00", endTime: "11:00:00", price: "20", facilityName: "Sports hall" },
     { activityName: "General use", price: "8", facilityName: "Climbing wall" }
 ];
