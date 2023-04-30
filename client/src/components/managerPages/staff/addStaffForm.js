@@ -9,8 +9,13 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
       const handleFormInputChange = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         const name = event.target.name;
-    
-        if (name === 'isManager') {
+
+        setFormInputs({
+          ...formInputs,
+          [name]: value
+        });
+      }
+        /*if (name === 'isManager') {
           setFormInputs({
             ...formInputs,
             [name]: value === 'Manager' ? true : false
@@ -21,7 +26,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             [name]: value
           });
         }
-      };
+      };*/
       
       return (
         <Modal show={showAdd} onHide={handleClose}>
@@ -85,12 +90,12 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
             <div>
             <Form.Select
               name="isManager"
-              value={formInputs.isManager ? 'Manager' : 'Staff'}
+              value={formInputs.isManager}
               onChange={handleFormInputChange}
             >
               <option value="">Please select an option</option>
-              <option value="Manager">Manager</option>
-              <option value="Staff">Staff</option>
+              <option value={true} >Manager</option>
+              <option value={false}>Staff</option>
             </Form.Select>
             </div>
           </Form.Group>

@@ -212,7 +212,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               </Form.Control>
             </Form.Group>
       
-            <Button className="addBookingButton" style={{marginTop: "10px", marginBottom: "10px"}}variant="primary" type="submit">
+            <Button  style={{marginTop: "10px", marginBottom: "10px"}}variant="primary" type="submit">
               Book
             </Button>
           </Form>

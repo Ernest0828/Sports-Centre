@@ -10,6 +10,7 @@ import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditBookingForm from "./editBookingForm";
 import BookActivityForm from "./bookActivityForm";
 import BookClassForm from "./bookClassForm";
+import EditDiscountForm from "./editDiscountForm";
 
 const BookingDetails = () => {
 
@@ -19,22 +20,26 @@ const BookingDetails = () => {
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
 
-    const { user } = useContext(Auth);
     const [bookingDetails, setBookingDetails] = useState()
+    const [discountDetails, setDiscountDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
     const [selectedBooking, setSelectedBooking] = useState(null);
+    const [selectedDiscount, setSelectedDiscount] = useState(null);
 
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [showClass, setShowClass] = useState(false);
+    const [showDiscount, setShowDiscount] = useState(false);
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
       setShowClass(false);
+      setShowDiscount(false);
     }
 
     useEffect(() => {
@@ -48,7 +53,9 @@ const BookingDetails = () => {
             bookingId: booking.bookingId,
             noOfPeople: booking.noOfPeople,
             date: new Date(booking.date).toISOString().slice(0, 10),
+            //date: booking.date,
             startTime: booking.startTime,
+
             endTime: booking.endTime,
             bookingType: booking.bookingType,
 
@@ -68,7 +75,15 @@ const BookingDetails = () => {
             facilityName: booking.facilityName
             };
         }));
-        }, [bookingData]);
+
+        if (discountData) {
+          setDiscountDetails({
+            discountId: discountData.id,
+            discount: discountData.discount
+          });
+        }
+
+        }, [bookingData, discountData]);
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
@@ -85,6 +100,11 @@ const BookingDetails = () => {
       classId: "",
       className:"",
       facilityName: "",
+    });
+
+    const [discountInputs, setDiscountInputs] = useState({
+      discountId: "",
+      discount:"",
     });
 
     const handleShow = (bookingId) => {
@@ -139,10 +159,26 @@ const BookingDetails = () => {
     }
     };
 
+    const handleDiscount = (discountId) => {
+      const selectedDiscount = {
+        discountId: discountId,
+        discount: discountDetails.discount
+      };
+      setSelectedDiscount(selectedDiscount);
+      if (selectedDiscount) {
+        setDiscountInputs({
+          discount: selectedDiscount.discount*100
+        });
+      }
+      setShowDiscount(true);
+    };
+    
+    
+
     const handleClassSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
       const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
@@ -150,8 +186,9 @@ const BookingDetails = () => {
       const staffId = selectedStaff ? selectedStaff.staffId : null;
 
       // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-      const [day, month, year] = formInputs.date.split("/");
-      const date = `${year}/${month}/${day}`;
+     /* const [day, month, year] = formInputs.date.split("/");
+      const date = `${year}/${month}/${day}`;*/
+
 
       const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
@@ -166,7 +203,7 @@ const BookingDetails = () => {
         
         updatedDetails.customerId = customerId;
         updatedDetails.staffId = staffId;
-        updatedDetails.date = date;
+        updatedDetails.date = formInputs.date;
         updatedDetails.startTime = formInputs.startTime;
         updatedDetails.activityId =  activityId;
         updatedDetails.classId =  classId;
@@ -179,7 +216,7 @@ const BookingDetails = () => {
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
         customerId: customerId,
         staffId: staffId,
-        date: date,
+        date: formInputs.date,
         start: formInputs.startTime,
         activityId: activityId,
         classId: classId,
@@ -265,7 +302,7 @@ const BookingDetails = () => {
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
       const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
@@ -322,6 +359,26 @@ const BookingDetails = () => {
       
     };
 
+    const handleSubmitDiscount = (event) => {
+      event.preventDefault();
+
+      const updatedDiscount = discountInputs.discount/100
+
+      // Send updated facility details to server
+      axios.put(`http://localhost:4000/api/discount/${discountDetails.discountId}`, {
+        discount: updatedDiscount
+        })
+        .then(response => {
+        console.log(response.data);
+        window.location.reload();
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+        });
+
+      };
+
     const handleDelete = (bookingId) => {
       const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
       setSelectedBooking(selectedBooking);
@@ -364,6 +421,13 @@ const BookingDetails = () => {
               handleClassSubmit={handleClassSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
+            />
+            <EditDiscountForm 
+              showDiscount={showDiscount}
+              handleClose={handleClose}
+              handleSubmitDiscount={handleSubmitDiscount}
+              discountInputs={discountInputs}
+              setDiscountInputs={setDiscountInputs}
             />
             <div  className="bookingDetails">
               <div className="bookingDetailsTable">
@@ -427,13 +491,39 @@ const BookingDetails = () => {
                                 </tr>
                                 ))}
                             </tbody>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex'}}>
                               <button className="addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
                                 Book Activity
                               </button>
                               <button className="addBookingButton" onClick={() => { handleAddClass();}}>
                                 Book Class
                               </button>
+                            </div>
+                            <div>
+                            <table className="discountTable" style={{float: "left"}}>
+                              <thead>
+                                <tr>
+                                <th className="discountHead">Discount</th>
+                                <th className="discountHead"></th>
+                                <th className="discountHead"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {discountDetails && discountDetails.discount && (
+                                  <tr>
+                                    <td>Booking Discount: </td>
+                                    <td>
+                                      <span>{(discountDetails.discount * 100).toFixed(2)}%</span>
+                                    </td>
+                                    <td>
+                                    <button className="addBookingButton" onClick={() => {handleDiscount(discountDetails.discountId)}}>
+                                    Edit
+                                    </button>
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
                             </div>
                         </table>
                     </div>
