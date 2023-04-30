@@ -110,19 +110,44 @@ router.get("/basket/:customerId", async (req, res, next) => {
             return res.status(404).json("Customer not found");
         }
         const basket = await Basket.findAll({ where: { customerId } });
+        const basketDates = basket.map((item) => {
+            const date = new Date(item.date);
+            date.setHours(0, 0, 0, 0); // set time component to 0
+            return date;
+        });
         
         // Check if customer has at least 3 items in their basket
         if (basket.length >= 3) {
             const discountData = await Discount.findOne();
             const discount = discountData ? discountData.discount : 0;
             
-            // Update the price of each item in the basket to the discounted price
-            for (let i = 0; i < basket.length; i++) {
-                if (!basket[i].discountApplied) {
-                    basket[i].price = basket[i].price * (1 - discount);
-                    basket[i].discountApplied = true;
-                    await basket[i].save();
+            // Check if all the dates in the basket are within a 7-day period
+            let isWithin7Days = true;
+            for (let i = 0; i < basketDates.length - 1; i++) {
+                const timeDiff = Math.abs(basketDates[i + 1] - basketDates[i]);
+                const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                if (diffDays > 7) {
+                    isWithin7Days = false;
+                    break; // break out of the loop if any date is outside the 7-day period
                 }
+            }
+            if (isWithin7Days) {
+                // Update the price of each item in the basket to the discounted price
+                for (let i = 0; i < basket.length; i++) {
+                    if (!basket[i].discountApplied) {
+                        basket[i].price = basket[i].price * (1 - discount);
+                        basket[i].discountApplied = true;
+                        await basket[i].save();
+                    }
+                }
+            }
+        } 
+        // Check if customer buy membership afer adding stuff to basket
+        else if (customer.isMembership == true) {
+            // Update the price of each item in the basket to be 0
+            for (let i = 0; i < basket.length; i++) {
+                basket[i].price = 0;
+                await basket[i].save();
             }
         }
         
