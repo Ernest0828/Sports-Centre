@@ -14,6 +14,7 @@ const BookFacility = () => {
   const [facilities, setFacilities] = useState([]);
   const [basketItems, setBasketItems] = useState([]);
   const navigate =useNavigate();
+  
   const handleClick = (facility) =>{
     navigate('/FacilityPage', { state: {facility} });
   }
