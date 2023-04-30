@@ -24,11 +24,13 @@ const activities = [
     { activityName: "Lane swimming", price: "8", facilityName: "Swimming pool" },
     { activityName: "Lessons", price: "10", facilityName: "Swimming pool" },
     { activityName: "Team events", day: "Friday", startTime: "08:00:00", endTime: "10:00:00", price: "20", facilityName: "Swimming pool" },
+    { activityName: "Team events", day: "Sunday", startTime: "08:00:00", endTime: "10:00:00", price: "20", facilityName: "Swimming pool" },
     { activityName: "General use", price: "8", facilityName: "Fitness room" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Squash court A" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Squash court B" },
     { activityName: "1-hour sessions", price: "8", facilityName: "Sports hall" },
     { activityName: "Team events", day: "Thurdsay", startTime: "19:00:00", endTime: "21:00:00", price: "20", facilityName: "Sports hall" },
+    { activityName: "Team events", day: "Saturday", startTime: "09:00:00", endTime: "11:00:00", price: "20", facilityName: "Sports hall" },
     { activityName: "General use", price: "8", facilityName: "Climbing wall" }
 ];
 

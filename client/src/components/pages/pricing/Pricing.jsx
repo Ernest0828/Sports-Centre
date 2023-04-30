@@ -3,7 +3,6 @@ import "./pricing.css";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../navbar/Navbar";
 import axios from "axios";
-import MembershipPricing from "../../membershipPricing/MembershipPricing";
 import { Auth } from "../../../context/Auth";
 import useFetch from "../../../hooks/useFetch";
 const url = "http://localhost:4000/api";
@@ -16,7 +15,7 @@ const PricingClass = () => {
     const navigate = useNavigate();
     const{user} = useContext(Auth);
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
-    const selectedCustomer = customerData.find((customer) => customer.customerId === user.details.customerId) ?? {}
+    const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
     useEffect(() => {
         async function fetchClassesData() {
             try {

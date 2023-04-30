@@ -29,7 +29,7 @@ const SquashCourtSchedule = () => {
     async function getSquashCourtActivities() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/activities/"
+          "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
           (a) => a.facilityName === "Squash court");

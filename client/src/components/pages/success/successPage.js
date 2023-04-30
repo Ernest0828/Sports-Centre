@@ -1,162 +1,59 @@
 import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Auth } from '../../../context/Auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Navbar } from 'react-bootstrap';
 
+function useQuery() {
+	return new URLSearchParams(useLocation().search);
+}
 
 function SuccessPage() {
 
   const{user} = useContext(Auth);
   const navigate = useNavigate();
+  const query = useQuery();
+  const location = useLocation();
 
   useEffect(() => {
     const createBooking = async () => {
       try {
-        const items = JSON.parse(localStorage.getItem("basketItems")) || [];
-        const bookingsData = [];
-  
-        for (const item of items) {
-          // Get the required data for the API call
-          const selectedDate = item.date; 
-          const selectedTime = item.time; 
-          const activityId = item.activityId;  
-          const facilityName = item.facilityName;
-          const bookingData = {
-            date: selectedDate,
-            start: selectedTime,
-            customerId: user.details.customerId,
-            activityId: activityId,
-            classId: null,
-            facilityName: facilityName,
-          };
-          bookingsData.push(bookingData);
-        }
-        console.log(bookingsData)
-        
-        // Send the data to the backend
-        const response = await axios.post("http://localhost:4000/api/bookings", bookingsData);
-        if (response.data.success) {
-          console.log("Booking created successfully");
-          alert("Booking successful!");
-        } else {
-          console.log("Failed to create booking");
-          alert("Booking unsuccessful!");
-        }
-      } catch (err) {
-        console.log("Error:", err.message);
-        alert("Booking unsuccessful!");
-      }
+				const response = await axios.post(`http://localhost:4000/api/bookings/bookingid`, {
+					customerId: user.details.customerId,
+				});
+	
+				console.log("Response data:", response.data);
+	
+				// Check response status for success or adjust the condition accordingly
+				if (response.status === 200) {
+					console.log("Booking created successfully");
+					alert("Booking completed!");
+				} else {
+					console.log("Failed to create a booking");
+					alert("Booking not complete");
+				}
+			} catch (error) {
+				console.error("Error:", error.message);
+				alert("An error occurred while completing the booking.");
+			}
     };
     createBooking();
   }, []);
-          
-  //         const response = await axios.post("http://localhost:4000/api/bookings/bookingid", {
-  //           date: selectedDate,
-  //           start: selectedTime,
-  //           customerId: user.details.customerId,
-  //           activityId: activityId,
-  //           classId: null,
-  //           facilityName: facilityName,
-  //         });
 
-  //         if (response.data.success) {
-  //           console.log("Booking created successfully");
-  //           alert("Booking successful!");
-  //         } else {
-  //           console.log("Failed to create booking");
-  //           alert("Booking unsuccessful!");
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.log("Error:", err.message);
-  //       alert("Booking unsuccessful!");
-  //     }
-  //   };
-  
-  //   createBooking();
-  // }, []);
-
-const handleClick = () =>{
- navigate('/');
-}
+  const handleClick = () =>{
+    navigate('/');
+   }
+        
 
   return (
     <div>
-      <h1>BOOKING SUCCESSFUL!!</h1>
-      <button onClick={handleClick}>Back to home</button>
+        <div>
+        <Navbar/>
+        <h1>BOOKING SUCCESSFUL!!</h1>
+        <button onClick={handleClick}>Back to home</button>
+        </div>
     </div>
   )
 }
 
 export default SuccessPage
-
-// function SuccessPage() {
-
-//   const{user} = useContext(Auth);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const createBooking = async () => {
-//       try {
-//         const items = JSON.parse(localStorage.getItem("cartItems")) || [];
-//         const bookings = new Set();
-  
-//         for (const item of items) {
-//           // Get the required data for the API call
-//           const selectedDate = item.date; 
-//           const selectedTime = item.time; 
-//           const activityId = item.activityId;  
-//           const facilityName = item.facilityName;
-          
-//           const bookingData = {
-//             date: selectedDate,
-//             start: selectedTime,
-//             customerId: user.details.customerId,
-//             activityId: activityId,
-//             classId: null,
-//             facilityName: facilityName,
-//           };
-
-//           // Check if this booking has already been sent
-//           if (!bookings.has(JSON.stringify(bookingData))) {
-//             const response = await axios.post(
-//               "http://localhost:4000/api/bookings/bookingid",
-//               bookingData
-//             );
-
-//             if (response.data.success) {
-//               console.log("Booking created successfully");
-//               alert("Booking successful!");
-//             } else {
-//               console.log("Failed to create booking");
-//               alert("Booking unsuccessful!");
-//             }
-
-//             // Add booking to Set
-//             bookings.add(JSON.stringify(bookingData));
-//           }
-//         }
-
-//         // Remove items from localStorage
-//         localStorage.removeItem("cartItems");
-//       } catch (err) {
-//         console.log("Error:", err.message);
-//         alert("Booking unsuccessful!");
-//       }
-//     };
-
-//     createBooking();
-//   }, [user.details.customerId]);
-
-//   const handleClick = () => {
-//     navigate("/");
-//   };
-//   return (
-//     <div>
-//       <h1>BOOKING SUCCESSFUL!!</h1>
-//       <button onClick={handleClick}>Back to home</button>
-//     </div>
-//   )
-// }
-
-// export default SuccessPage

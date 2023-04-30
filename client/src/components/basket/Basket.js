@@ -5,12 +5,13 @@ import {Auth} from "../../context/Auth"
 import axios from "axios";
 import PayButton from "../paybutton/PayButton";
 
-export default function Basket({ removeItem }) {
+export default function Basket() {
   const { user } = useContext(Auth);
   const [items, setItems] = useState([]);
   const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
+    if(user && user.details){
     const fetchBasketItems = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/basket/basket/" + user.details.customerId);
@@ -36,7 +37,8 @@ export default function Basket({ removeItem }) {
     };
     
     fetchBasketItems();
-  }, [user.details.customerId]);
+    }
+  }, [user, user?.details]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -53,6 +55,7 @@ export default function Basket({ removeItem }) {
 
 
   useEffect(() => {
+    if(user && user.details){
     axios.get("http://localhost:4000/api/discount/")
     .then(response => { 
       setDiscount(response.data.discount);
@@ -60,7 +63,8 @@ export default function Basket({ removeItem }) {
     .catch(error => {
       console.error("Failed to fetch discount:", error);
     });
-  }, []);
+  }
+  }, [user, user?.details]);
 
   const calculateTotalCost = () => {
     const total = items.reduce((total, item) => total + item.price, 0);

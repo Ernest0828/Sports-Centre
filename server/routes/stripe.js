@@ -3,27 +3,50 @@ const router = express.Router()
 const stripe = require('stripe')('sk_test_51MrbuEHb9PPilNEF1HgDEBmPrJYnSTEeUojKam6GR16HUsfr5G8i0gu5XO1oPJUophzGpa6JxAawBELbzelmuk7b00do44JoiY');
 const axios = require('axios');
 const Customer  = require("../database/models/customer");
+const Activity  = require("../database/models/activity");
+const Classes  = require("../database/models/classes");
+const Facility = require("../database/models/facility");
 const Membership = require("../database/models/membership");
 
-router.post('/create-checkout-session', async (req, res) => {
-   const items = req.body.items;
-  const line_items = items.map((item) => {
-    return{
+router.post('/booking-checkout-session', async (req, res) => {
+   const items = req.body.basketItems;
+   console.log("received items:", items)
+  const activities = await Promise.all(
+    items.map(item => Activity.findByPk(item.activityId))
+  );
+  console.log("Activities:", activities);
+  
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    return `${year}/${month}/${day}`;
+  };
+
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  };
+
+  const line_items = items.map((item, index) => {
+    const activity = activities[index];
+    return {
       price_data: {
-          currency: 'gbp',
-          product_data: {
-            name: item.description, //its called description instead of name. This works!
-          },
-          unit_amount: item.cost * 100,
+        currency: 'gbp',
+        product_data: {
+          name: `${item.facilityName} - ${activity.activityName} \n${formatDate(item.date)}-${formatTime(item.startTime)}`,
         },
-        quantity: 1 /*itemCounts[item.description]*/, //Need to fix this so that it counts the number of individual items i.e: Swimmming pool =5 Memebership =1 instead of total number of items in cart
+        unit_amount: item.price * 100,
+      },
+      quantity: 1, // Update this logic based on your requirements
     };
   });
 
     const session = await stripe.checkout.sessions.create({
     line_items,
     mode: 'payment',
-    success_url: 'http://localhost:3000/successful', //Takes us here upon successful payment
+    success_url: 'http://localhost:3000/booking-success', //Takes us here upon successful payment
     cancel_url: 'http://localhost:3000/book-facility', //Change this to something else?
   });
     res.send({url: session.url});

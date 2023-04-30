@@ -33,9 +33,7 @@ import Dashboard from "./components/pages/dashboard/Dashboard"
 
 import DropDownChoice from './components/dropdownfacility/DropDownFacility';
 import SuccessPage from './components/pages/success/SuccessPage';
-import CancelPage from './components/pages/cancel/CancelPage';
 import FacilityPage from './components/pages/individual-facilities/FacilityPage';
-import MembershipPricing from './components/membershipPricing/MembershipPricing';
 import MembershipSuccess from './components/pages/membershipSuccess/MembershipSuccess';
 import FacilityBookingDetails from './components/ICalendar/FacilityBooking';
 
@@ -68,9 +66,8 @@ function App() {
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-          <Route exact path="/success" element={<successPage/>}/>
+          <Route exact path="/booking-success" element={<SuccessPage/>}/>
           <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
-          <Route exact path="/MembershipCheckout" element={<MembershipPricing/>}/>
           <Route exact path="/MembershipSuccess" element={<MembershipSuccess/>}/>
           
           <Route exact path="/FacilityBookingDetails" element={<FacilityBookingDetails/>}/>
