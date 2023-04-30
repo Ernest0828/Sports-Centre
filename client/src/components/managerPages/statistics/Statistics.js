@@ -74,7 +74,7 @@ const Statistics = () => {
 
     useEffect(() => {
         const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"];
-        const facilities = ["Studio","Swimming pool", "Fitness room","Sports hall","Squash court", "Climbing wall"];
+        const facilities = ["Studio","Swimming pool", "Fitness room","Sports hall","Squash court A", "Squash court B", "Climbing wall"];
 
         // create an initial array with every combination of day and facility set to 0
         const initFacDay = daysOfWeek.map(day => {
@@ -194,7 +194,7 @@ const Statistics = () => {
     };
 
     //Colors for graph
-    const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7"];
+    const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7","#fdcce5"];
 
 
     return (
@@ -248,8 +248,13 @@ const Statistics = () => {
                                 </button>
                             </li>
                             <li className="statsNavItem">
-                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court")}>
-                                    Squash court
+                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court A")}>
+                                    Squash court A
+                                </button>
+                            </li>
+                            <li className="statsNavItem">
+                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court B")}>
+                                    Squash court B
                                 </button>
                             </li>
                             <li className="statsNavItem">
