@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"
 import moment from 'moment';
+import 'moment/locale/en-gb';
 import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar } from 'recharts';
 
 
@@ -58,6 +59,24 @@ const Statistics = () => {
               };
         }));
     },[facilityData]);
+
+    //VECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECOVECO
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const [classDetails, setClassDetails] = useState([]);
+
+    useEffect(()=>{
+        const uniqueClassNames = classData.reduce((uniqueClasses, currentClass) => {
+          if (!uniqueClasses.includes(currentClass.className)) {
+            uniqueClasses.push(currentClass.className);
+          }
+          return uniqueClasses;
+        }, []);
+        
+        setClassDetails(uniqueClassNames.map(className => ({ 
+            className 
+        })));
+      }, [classData]);
+      
 
 
     //handle sidebar clicking
@@ -116,24 +135,76 @@ const Statistics = () => {
 
             return activityToDay;
         });
-        console.log("initActivityDay", initActivityDay);        
+        console.log("initActivityDay", initActivityDay);      
+
+
+        // create an initial array with every combination of day and facility set to 0
+        const initClassDay = daysOfWeek.map(day => {
+            const classToDay = { day };
+            classDetails.forEach(({ className }) => {
+              classToDay[className] = 0;
+            });
+            return classToDay;
+          });
+
+        const classesData = bookingDetails
+        .filter(booking => booking.bookingType === "class" &&// filter by bookingType
+            moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]')) // filter by bookingType and date range
+        .reduce((acc, curr) => {
+
+            const classInfo = classData.find(c => c.classId === curr.classId);
+                if (!classInfo) {
+                return acc;
+                }
+                const className = classInfo.className;
+
+            //change date to day
+            const formatDate = new Date(curr.date);
+            formatDate.setUTCHours(0, 0, 0, 0);
+            const day = daysOfWeek[formatDate.getUTCDay()];
+            const {noOfPeople} = curr;
+
+            // get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
+
+            //classIndex used for Summary
+            const classIndex = acc.findIndex(c => c.day === daysOfWeek[previousDayIndex]);
+            acc[classIndex][className] += noOfPeople;   
+            return acc;
+
+        }, initClassDay);
 
 
         //get graph data for Summary
-        const summaryData = bookingDetails.reduce((acc, curr) => {
+        const summaryData = bookingDetails
+            .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
+            .reduce((acc, curr) => {
+
             //change date to day
             const formatDate = new Date(curr.date);
             formatDate.setUTCHours(0, 0, 0, 0);
             const day = daysOfWeek[formatDate.getUTCDay()];
             const {facilityName, noOfPeople} = curr;
+
+            //get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
+
             //facilityIndex used for Summary
-            const facilityIndex = acc.findIndex(f => f.day === day);
+            const facilityIndex = acc.findIndex(f => f.day === daysOfWeek[previousDayIndex]);
             acc[facilityIndex][facilityName] += noOfPeople;   
             return acc;
         }, initFacDay);
 
         // chart data for activities
-        const activityData = bookingDetails.reduce((acc, curr) => {
+        const activityData = bookingDetails
+        .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
+        .reduce((acc, curr) => {
             //change date to day
             const formatDate = new Date(curr.date);
             formatDate.setUTCHours(0, 0, 0, 0);
@@ -168,10 +239,17 @@ const Statistics = () => {
         }, initActivityDay);
 
         selectedFacility === "Summary" ? setGraphData(summaryData) :
+        selectedFacility === "Studio" ? setGraphData(classesData) :
         setGraphData(activityData)
 
-    }, [bookingDetails,selectedFacility,activityDetails]);
+}, [bookingDetails,activityDetails,selectedFacility]);
 
+    // Set Monday as the start of the week
+    moment.locale('en-gb', {
+        week: {
+        dow: 1, // Monday is the first day of the week
+        },
+    });
 
     //For choosing week 
     const [dateRange, setDateRange] = useState({
@@ -281,16 +359,27 @@ const Statistics = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
+                                {selectedFacility === "Studio" ? (
+                                classDetails.map((classes, index) => (
+                                <Bar
+                                    dataKey={classes.className}
+                                    stackId="day"
+                                    fill={colors[index]}
+                                    legendType="circle"
+                                />
+                                ))
+                            ) : selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
                                     <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
-                                )) : 
+                                )) : (
                                 test.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
                                     <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
                                 ))}
                                 
                                 {/* activityDetails.map((activity,index)=>(
                                     <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
-                                ))} */}
+                                ))
+                            )
+                            } */}
 
                             </BarChart>
                         </div>
