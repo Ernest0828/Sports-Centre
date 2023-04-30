@@ -10,7 +10,6 @@ import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditBookingForm from "./editBookingForm";
 import BookActivityForm from "./bookActivityForm";
 import BookClassForm from "./bookClassForm";
-import EditDiscountForm from "./editDiscountForm";
 
 const BookingDetails = () => {
 
@@ -20,26 +19,22 @@ const BookingDetails = () => {
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
-    const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
 
     const [bookingDetails, setBookingDetails] = useState()
-    const [discountDetails, setDiscountDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
     const [selectedBooking, setSelectedBooking] = useState(null);
-    const [selectedDiscount, setSelectedDiscount] = useState(null);
 
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [showClass, setShowClass] = useState(false);
-    const [showDiscount, setShowDiscount] = useState(false);
+    
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
       setShowClass(false);
-      setShowDiscount(false);
     }
 
     useEffect(() => {
@@ -76,14 +71,7 @@ const BookingDetails = () => {
             };
         }));
 
-        if (discountData) {
-          setDiscountDetails({
-            discountId: discountData.id,
-            discount: discountData.discount
-          });
-        }
-
-        }, [bookingData, discountData]);
+        }, [bookingData]);
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
@@ -102,10 +90,6 @@ const BookingDetails = () => {
       facilityName: "",
     });
 
-    const [discountInputs, setDiscountInputs] = useState({
-      discountId: "",
-      discount:"",
-    });
 
     const handleShow = (bookingId) => {
       const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
@@ -157,20 +141,6 @@ const BookingDetails = () => {
         facilityName: "",
       });
     }
-    };
-
-    const handleDiscount = (discountId) => {
-      const selectedDiscount = {
-        discountId: discountId,
-        discount: discountDetails.discount
-      };
-      setSelectedDiscount(selectedDiscount);
-      if (selectedDiscount) {
-        setDiscountInputs({
-          discount: selectedDiscount.discount*100
-        });
-      }
-      setShowDiscount(true);
     };
     
     
@@ -359,26 +329,6 @@ const BookingDetails = () => {
       
     };
 
-    const handleSubmitDiscount = (event) => {
-      event.preventDefault();
-
-      const updatedDiscount = discountInputs.discount/100
-
-      // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/discount/${discountDetails.discountId}`, {
-        discount: updatedDiscount
-        })
-        .then(response => {
-        console.log(response.data);
-        window.location.reload();
-        })
-        .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
-
-      };
-
     const handleDelete = (bookingId) => {
       const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
       setSelectedBooking(selectedBooking);
@@ -421,13 +371,6 @@ const BookingDetails = () => {
               handleClassSubmit={handleClassSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
-            />
-            <EditDiscountForm 
-              showDiscount={showDiscount}
-              handleClose={handleClose}
-              handleSubmitDiscount={handleSubmitDiscount}
-              discountInputs={discountInputs}
-              setDiscountInputs={setDiscountInputs}
             />
             <div  className="bookingDetails">
               <div className="bookingDetailsTable">
@@ -498,32 +441,6 @@ const BookingDetails = () => {
                               <button className="addBookingButton" onClick={() => { handleAddClass();}}>
                                 Book Class
                               </button>
-                            </div>
-                            <div>
-                            <table className="discountTable" style={{float: "left"}}>
-                              <thead>
-                                <tr>
-                                <th className="discountHead">Discount</th>
-                                <th className="discountHead"></th>
-                                <th className="discountHead"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {discountDetails && discountDetails.discount && (
-                                  <tr>
-                                    <td>Booking Discount: </td>
-                                    <td>
-                                      <span>{(discountDetails.discount * 100).toFixed(2)}%</span>
-                                    </td>
-                                    <td>
-                                    <button className="addBookingButton" onClick={() => {handleDiscount(discountDetails.discountId)}}>
-                                    Edit
-                                    </button>
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
                             </div>
                         </table>
                     </div>

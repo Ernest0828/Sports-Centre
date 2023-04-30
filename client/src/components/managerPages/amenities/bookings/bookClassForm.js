@@ -43,7 +43,7 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
       return (
         <Modal show={showClass} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Book Activity</Modal.Title>
+          <Modal.Title>Book Class</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
             <span aria-hidden="true">&times;</span>
           </button>

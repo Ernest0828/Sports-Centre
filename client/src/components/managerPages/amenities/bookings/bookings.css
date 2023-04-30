@@ -117,12 +117,3 @@ button.editBookingButton {
     overflow-y: auto;
 }
 
-.discountTable {
-    width: 50%;
-    margin-top: 30px;
-  }
-
-.discountHead{
-    background-color: grey;
-    padding: 10px;
-}
