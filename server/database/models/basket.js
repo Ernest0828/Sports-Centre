@@ -1,13 +1,11 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 const Facility = require("./facility")
-const Staff = require("./staff")
 const Activity = require("./activity")
 const Customer = require("./customer")
 const Classes = require("./classes")
-const Booking = require("./booking")
 
-const { INTEGER, DATE, TIME, ENUM, FLOAT } = Sequelize;
+const { INTEGER, DATE, TIME, ENUM, FLOAT, BOOLEAN } = Sequelize;
 
 const Basket = db.define('Basket', {
     basketId: {
@@ -35,7 +33,11 @@ const Basket = db.define('Basket', {
     basketType: {
         type: ENUM('activity', 'class'),
         allowNull: false
-  },
+    },
+    discountApplied: {
+        type: BOOLEAN,
+        defaultValue: false
+    }
 });
 
 // add foreign key constraint

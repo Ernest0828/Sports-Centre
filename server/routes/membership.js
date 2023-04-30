@@ -74,7 +74,6 @@ router.post("/cancel/:id", async (req, res, next) => {
 
     // Delete the membership record from the database
     await membership.destroy();
-
     const updatedCustomer = await customer.update({ isMembership: false , membershipType: null});
     // Update customer in the database
     await customer.save();

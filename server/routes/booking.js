@@ -42,6 +42,7 @@ router.post("/bookingid", async (req, res, next) => {
       let number;
       let end;
       let facilityName;
+      let price;
 
       // check if activity or class exists
       if (basketItem.basketType === "activity") {
@@ -82,6 +83,9 @@ router.post("/bookingid", async (req, res, next) => {
         return res.status(400).json("No bookings were made");
       }
 
+      // get price from basket
+      price = basketItem.price;
+
       // format the endTime
       end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
       
@@ -96,7 +100,8 @@ router.post("/bookingid", async (req, res, next) => {
         [`${bookingType}Id`]: bookingTypeId,
         activityId: basketItem.activityId,
         classId: basketItem.classId,
-        facilityName: basketItem.facilityName
+        facilityName: basketItem.facilityName,
+        price: price
       });
       
       // add the newly created booking to the array of bookings
