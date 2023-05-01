@@ -44,18 +44,20 @@ router.post("/bookingid", async (req, res, next) => {
       let facilityName;
       let prices;
 
+      // check facility exists
+      const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
+      if (!facility) {
+        return res.status(404).json({ message: "Facility not found" });
+      }
+
       // check if activity or class exists
       if (basketItem.basketType === "activity") {
         const activity = await Activity.findOne({ where: {activityId: basketItem.activityId } });
         if (!activity) 
-          return res.status(404).json("This activity is not available at any facility");    
+          return res.status(404).json({ message: "This activity is not available at any facility" });    
         // set endTime for "Team events" to be +2hr after startTime
         // other activities +1hr
         if (activity.activityName === "Team events") {
-          const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
-          if (!facility) {
-            return res.status(404).json('Facility not found');
-          }
           number = facility.capacity;
           end = moment.duration(basketItem.startTime).add(moment.duration('02:00:00'));
         } else {
@@ -69,9 +71,8 @@ router.post("/bookingid", async (req, res, next) => {
       else if (basketItem.basketType === "class") {
         const classes = await Classes.findOne({ where: {classId: basketItem.classId, facilityName: basketItem.facilityName } });
         if (!classes) {
-          return res.status(404).json("This class is not available at any facility");
+          return res.status(404).json({ message: "This class is not available at any facility" });
         }
-
         // set endTime for classes to be +1hr after startTime
         number = "1";
         end = moment.duration(basketItem.startTime).add(moment.duration('01:00:00'));
@@ -80,12 +81,11 @@ router.post("/bookingid", async (req, res, next) => {
         facilityName = basketItem.facilityName;
       } 
       else {
-        return res.status(400).json("No bookings were made");
+        return res.status(400).json({ message: "No bookings were made" });
       }
 
       // get price from basket
       prices = basketItem.price;
-
       // format the endTime
       end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
       
@@ -131,7 +131,8 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   try {
     const booking = await Booking.findByPk(req.params.id);
-    if(!booking) return res.status(404).json("Booking not found");
+    if(!booking) 
+      return res.status(404).json({ message: "Booking not found" });
     else { 
       // find the associated staff bookings for the booking being deleted
       const staffBookings = await StaffBooking.findAll({ where: { bookingId: booking.bookingId } });
@@ -139,7 +140,7 @@ router.delete("/:id", async (req, res, next) => {
       await Promise.all(staffBookings.map((sb) => sb.destroy()));
       // delete the booking
       await booking.destroy(req.body);
-      res.status(200).json("Booking deleted");
+      res.status(200).json({ message: "Booking deleted" });
     };
   } catch (err) {
     next(err);
@@ -173,7 +174,7 @@ router.get("/bookings/:customerId", async (req, res, next) => {
     const customer = await Customer.findByPk(customerId);
 
     if (!customer) {
-      return res.status(404).json("Customer not found");
+      return res.status(404).json({ message: "Customer not found" });
     }
 
     const bookings = await Booking.findAll({
@@ -201,51 +202,58 @@ router.post("/staff-booking", async (req, res, next) => {
       price,
     } = req.body;
 
+    // Check if valid customer and staff
+    const customer = await Customer.findByPk(customerId);
+    if (!customer) return res.status(404).json({ message: "Customer not found" });
+
+    const staff = await Staff.findByPk(staffId);
+    if (!staff) return res.status(404).json({ message: "Staff not found" });
+
+    // Check if booking already exists
+    const existingBooking = await Booking.findOne({ where: { customerId, date, facilityName, startTime: start} });
+    if (existingBooking) return res.status(401).json({ message: "Booking already exists"});
+
+    // check facility exists
+    const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
+    if (!facility) {
+      return res.status(404).json({ message: "Facility not found" });
+    }
+
     // Check if the specified activity or class exists
     let bookingType;
     let bookingTypeId;
     let end;
     if (activityId) {
       const activity = await Activity.findOne({ where: {activityId, facilityName} });
-      if (!activity) return res.status(404).json("This activity is not available at this facility");
+      if (!activity) return res.status(404).json({ message: "This activity is not available at this facility" });
       bookingType = "activity";
       bookingTypeId = activityId;
       
       // set endTime for "Team events" to be +2hr after startTime
       // other activities +1hr
       if (activity.activityName === "Team events (2-hours)") {
+        number = facility.capacity;
         end = moment.duration(start).add(moment.duration('02:00:00'));
       } else {
+        number = "1"
         end = moment.duration(start).add(moment.duration('01:00:00'));
       }
     } 
     else if (classId) {
       const classes = await Classes.findOne({ where: {classId, facilityName} });
-      if (!classes) return res.status(404).json("This class is not available at this facility");
+      if (!classes) return res.status(404).json({ message: "This class is not available at this facility" });
       bookingType = "class";
       bookingTypeId = classId;
-
+      number = "1";
       // set endTime for classes to be +1hr after startTime
       end = moment.duration(start).add(moment.duration('01:00:00'));
     } 
     else 
-      return res.status(400).json("No bookings were made");
-
-    // Check if valid customer and staff
-    const customer = await Customer.findByPk(customerId);
-    if (!customer) return res.status(404).json("Customer not found");
-
-    const staff = await Staff.findByPk(staffId);
-    if (!staff) return res.status(404).json("Staff not found");
-
-    // Check if booking already exists
-    const existingBooking = await Booking.findOne({ where: { customerId, date, facilityName, startTime: start} });
-    if (existingBooking) return res.status(401).json("Booking already exists");
+      return res.status(400).json({ message: "No bookings were made" });
 
     // format the endTime
     end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
-    let number = 1;
-    
+
     // Create the booking and staff booking
     const booking = await Booking.create({
             noOfPeople: number,

@@ -10,8 +10,16 @@ const PORT = process.env.PORT ||4000;
 
 // middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({
+  verify: function(req, res, buf) {
+    var url = req.originalUrl;
+    if(url.endsWith('/hooks')){
+    req.rawBody = buf.toString();
+    }
+  }
+}));
 app.use(cookieParser())
+//added the verify section for the use of stripe hooks.
 
 // routes
 app.use("/api/auth", require("./routes/customerRoutes"));

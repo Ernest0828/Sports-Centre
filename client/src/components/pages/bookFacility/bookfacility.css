@@ -50,6 +50,8 @@
 
 .griddy{
   display: grid;
+  align-self: center;
+  
   /* grid-template-columns: repeat(3, 1fr); */
   text-align: center;
   /* gap: 20px; */

@@ -1,19 +1,20 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./bookfacility.css";
 import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from "../../navbar/Navbar";
-import {Auth} from "../../../context/Auth"
+// import {Auth} from "../../../context/Auth"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
   
 const BookFacility = () => {
 
-  const { user } = useContext(Auth);
+  // const { user } = useContext(Auth);
   const [facilities, setFacilities] = useState([]);
-  const [basketItems, setBasketItems] = useState([]);
+  // const [basketItems, setBasketItems] = useState([]);
   const navigate =useNavigate();
+  
   const handleClick = (facility) =>{
     navigate('/FacilityPage', { state: {facility} });
   }

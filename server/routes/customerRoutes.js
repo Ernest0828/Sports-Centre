@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 const Customer  = require("../database/models/customer");
 const bcrypt = require("bcrypt");
 const validData = require("../middleware/validData");
-const verifyToken = require("../middleware/verifyToken");
-const verifyUser = require("../middleware/verifyUser");
 
 // routes for registering new customer
 router.post("/register", validData, async (req, res, next) => {

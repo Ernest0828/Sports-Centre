@@ -32,7 +32,7 @@ const SportsHallSchedule = () => {
     async function getSportsHallActivities() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/activities/"
+          "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
           (a) => a.facilityName === "Sports hall");
@@ -84,13 +84,12 @@ const SportsHallSchedule = () => {
                   (a.day === day && a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
                 );
                 return (
-                  <td key={day}>
+                  <td key={day} onClick={() => handleOpenModal(day, formattedTime)} >
                     {activities.map((a) => (
                       <div key={a.activityName}>
                         <div>{a.activityName}</div>
                       </div>
                     ))}
-                    <div className="hide" onClick={() => handleOpenModal(day, formattedTime)}>-----</div>
                   </td>
                 );
               })}   
@@ -104,7 +103,7 @@ const SportsHallSchedule = () => {
   return (
     <div className="Cal-container">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="title">Sports Hall Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

@@ -3,15 +3,17 @@ import "./bookclasses.css";
 import { Link} from "react-router-dom";
 import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
+import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from '../../navbar/Navbar';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
   
 const BookClasses = () => {
   const [classes, setClasses] = useState([]);
+  const [facilities, setFacilities] = useState([]);
   const navigate =useNavigate();
   const handleClick = () =>{
-    navigate('/aerobics');
+    navigate('/FacilityPage', {state: {facility: studioFacilities}});
   }
 
 
@@ -27,9 +29,22 @@ const BookClasses = () => {
       console.error(err);
     }
   };
+  const fetchFacilities = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/api/facilities/");
+      setFacilities(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchFacilities();
 
   fetchClasses();
 }, []);
+//Filter to get "Studio" Facility
+const studioFacilities = facilities.find(
+  (facility) => facility.facilityName === "Studio"
+);
 
    return (
     <Fragment>
@@ -41,9 +56,11 @@ const BookClasses = () => {
               <h3>Book a class</h3>
               <p>Select a class to view timetables and availability.</p>
             </div>
-            <div className="gridFormat" onClick={handleClick}>
-              {classes.map((classes) => (
-                <ClassItem key={classes.className} classes={classes}/>
+            <div className="gridFormat">
+            {classes.map((classItem) => (
+            <div key={classItem.className} className="griddy" onClick={handleClick}>
+              <ClassItem classes={classItem} />
+            </div>
               ))}
             </div>
           </div>

@@ -11,6 +11,7 @@ export default function Basket() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    if(user && user.details){
     const fetchBasketItems = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/basket/basket/" + user.details.customerId);
@@ -36,7 +37,8 @@ export default function Basket() {
     };
     
     fetchBasketItems();
-  }, [user.details.customerId]);
+    }
+  }, [user, user?.details]);
 
   const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
     const selectedCustomer = customerData.find((customer) => customer.customerId === user.details.customerId) ?? {}
@@ -103,10 +105,10 @@ export default function Basket() {
           {user ? (
             <p>Total: £{calculateTotalCost()}</p>
           ) : (
-            <p>Total: £0.00</p>
+            <p></p>
           )}
         </div>
-        <PayButton items={items} />
+        {user? (<PayButton items={items} />) : ("")}
       </div>
     </div>
   )

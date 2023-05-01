@@ -1,8 +1,11 @@
 .Cal-container{
-    margin-top: 105px;
+    margin-top: 50px;
 }
 .timetable {
-    max-width: 1300px;
+    max-width: 95%;
+    /* max-height: 900px; */
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
   
   .title{
@@ -15,14 +18,17 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
+    width: 180px;
   }
   
   .timetable th {
     background-color: #1c768f;
+    
   }
   
   .timetable td {
-    height: 30px;
+    height: 80px;
+    
   }
 
   .timetable td:hover {
@@ -32,6 +38,6 @@
 
  .hide {
   color: white;
-  font-size: 10px;
+  font-size: 15px;
  }
   

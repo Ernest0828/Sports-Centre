@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
+import { Modal, Button, Form} from "react-bootstrap";
+import BookingDetails from "./FacilityBooking";
+
 
 const SquashCourtSchedule = () => {
   const [SquashCourtSchedule, setSquashCourtSchedule] = useState([]);
@@ -13,7 +16,7 @@ const SquashCourtSchedule = () => {
           "http://localhost:4000/api/facilities/"
         );
         const SquashCourt = response.data.find(
-          (facility) => facility.facilityName === "Squash court"
+          (facility) => facility.facilityName === "Squash court A"
         );
         const startTime = parseInt(SquashCourt.startTime.slice(0, 2));
         const endTime = parseInt(SquashCourt.endTime.slice(0, 2));
@@ -29,10 +32,10 @@ const SquashCourtSchedule = () => {
     async function getSquashCourtActivities() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/activities/"
+          "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
-          (a) => a.facilityName === "Squash court");
+          (a) => a.facilityName === "Squash court A");
           setSquashCourtActivities(activity);
       } catch (error) {
         console.error(error);
@@ -50,6 +53,20 @@ const SquashCourtSchedule = () => {
     return `${formattedNextHour}${timeString.slice(2)}`;
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState([]);
+  const [selectedTime, setSelectedTime] = useState([]);
+
+  const handleOpenModal = (day, time) => {
+    setSelectedDay(day);
+    setSelectedTime(time);
+    setShowModal(true);
+  };
+  
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const renderSquashCourtSchedule = () => {
     const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -57,6 +74,7 @@ const SquashCourtSchedule = () => {
       <>
         {SquashCourtSchedule.map((time) => {
           const nextHourTime = addOneHour(time);
+          const formattedTime = time.slice(0, 5);
           return (
           <tr key={time}>
         <td>{time}</td>
@@ -66,7 +84,7 @@ const SquashCourtSchedule = () => {
               (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
               );
               return (
-                <td key={day}>
+                <td key={day} onClick={() => handleOpenModal(day, formattedTime)}>
                 {activities.map((a) => (
                   <div key={a.activityName}>
                     <div>{a.activityName}</div>
@@ -85,7 +103,7 @@ const SquashCourtSchedule = () => {
   return (
     <div className="Cal-container">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="title">Squash Court A Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>
@@ -104,6 +122,19 @@ const SquashCourtSchedule = () => {
           </tbody>
         </table>
       </div>
+      <Modal show={showModal} onHide={handleCloseModal}>
+  <Modal.Header closeButton>
+    <Modal.Title>Booking Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <BookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseModal}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
     </div>
   );
 };

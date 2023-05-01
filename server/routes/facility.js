@@ -10,7 +10,7 @@ router.post("/facilityid", async (req, res, next) => {
         // check if activity already exist
         const existingFacility = await Facility.findOne({ where: {facilityName: name}});
         if (existingFacility) 
-            return res.status(401).json("Facility already exists");
+            return res.status(401).json({ message: "Facility already exists" });
 
         const newFacility = await Facility.create({ facilityName: name, capacity: capacity, startTime: start, endTime: end });
         return res.status(200).json(newFacility);
@@ -34,10 +34,10 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(req.params.id);
-        if(!facility) return res.status(404).json("Facility not found");
+        if(!facility) return res.status(404).json({ message: "Facility not found" });
         else { 
             await facility.destroy();
-            res.status(200).json("Facility deleted");
+            res.status(200).json({ message: "Facility deleted" });
         }
     } catch (err) {
         next(err);

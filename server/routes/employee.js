@@ -58,10 +58,10 @@ router.put("/change-password/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const staff = await Staff.findByPk(req.params.id);
-        if(!staff) return res.status(404).json("Staff not found");
+        if(!staff) return res.status(404).json({ message: "Staff not found" });
         else { 
             await staff.destroy(req.body);
-            res.status(200).json("Account deleted");
+            res.status(200).json({ message: "Account deleted" });
         }
     } catch (err) {
         next(err);

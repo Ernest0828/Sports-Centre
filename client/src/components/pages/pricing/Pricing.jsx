@@ -1,14 +1,21 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import "./pricing.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../navbar/Navbar";
 import axios from "axios";
+import { Auth } from "../../../context/Auth";
+import useFetch from "../../../hooks/useFetch";
+const url = "http://localhost:4000/api";
+
 
 const PricingClass = () => {
     const [classData, setClassData] = useState([]);
     const [facilityData, setFacilityData] = useState([]);
     const [activityData, setActivityData] = useState([]);
-
+    const navigate = useNavigate();
+    const{user} = useContext(Auth);
+    const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
+    const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
     useEffect(() => {
         async function fetchClassesData() {
             try {
@@ -48,6 +55,30 @@ const PricingClass = () => {
         fetchActivityData();
     }, []);
 
+    
+    const handleClick = (membershipType) => async() => {
+        // navigate('/MembershipCheckout')
+        if(membershipType === "MONTHLY"){
+        axios.post(`http://localhost:4000/api/stripe/membership-checkout-session`, {
+            customerID: user.details.customerID,
+            memberType: "MONTHLY",
+        }).then((res) => {
+            if(res.data.url){
+                window.location.href = res.data.url
+            }
+        }).catch((err)=> console.log(err.message));
+    }else if(membershipType === "ANNUAL"){
+        axios.post(`http://localhost:4000/api/stripe/membership-checkout-session`, {
+            customerID: user.details.customerID,
+            memberType: "ANNUAL",
+        }).then((res) => {
+            if(res.data.url){
+                window.location.href = res.data.url
+            }
+        }).catch((err)=> console.log(err.message));
+    }
+    }
+
     // Filter out the "Studio" facility
     const filteredFacilities = facilityData.filter(
         (facility) => facility.facilityName !== "Studio");
@@ -64,12 +95,14 @@ const PricingClass = () => {
                             <div className="grid-item">
                                 <h3>Monthly</h3>
                                 <p className="price">£35.00</p>
-                                <button className="join-button">Join Now</button>
+                                {selectedCustomer.isMembership === false &&(<button className="join-button" onClick={handleClick("MONTHLY")}>Join Now</button>
+                                )}
                             </div>
                             <div className="grid-item">
                                 <h3>Annual</h3>
                                 <p className="price">£300.00</p>
-                                <button className="join-button">Join Now</button>
+                                {selectedCustomer.isMembership === false &&(<button className="join-button" onClick={handleClick("ANNUAL")}>Join Now</button>
+                                )}
                             </div>
                         </div>
                     </div>

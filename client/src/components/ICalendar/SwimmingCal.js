@@ -84,13 +84,12 @@ const SwimmingPoolSchedule = (props) => {
               (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
               );
               return (
-                <td key={day}>
+                <td key={day } onClick={() => handleOpenModal(day, formattedTime)}>
                 {activities.map((a) => (
-                  <div key={a.activityName} onClick={() => props.onData(a)}>
+                  <div key={a.activityName}>
                     <div>{a.activityName}</div>
                   </div>
                 ))}
-                <div className="hide" onClick={() => handleOpenModal(day, formattedTime)}>-----</div>
               </td>
             );
             })}
@@ -104,7 +103,7 @@ const SwimmingPoolSchedule = (props) => {
   return (
     <div className="Cal-container">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="title">Swimming Pool Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

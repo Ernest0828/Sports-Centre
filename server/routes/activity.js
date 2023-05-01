@@ -10,12 +10,12 @@ router.post("/activityid", async (req, res, next) => {
     try {
         const facility = await Facility.findByPk(facilityName);
         if (!facility) 
-            return res.status(404).send("Facility not found");
+            return res.status(404).send({ message: "Facility not found" });
 
         // check if activity already exist
         const existingActivity = await Activity.findOne({ where: {activityName: name, facilityName:facilityName}});
         if (existingActivity) 
-            return res.status(401).send("Activity already exists");
+            return res.status(401).send({ message: "Activity already exists" });
 
         const newActivity = await Activity.create({ 
             activityName: name, 
@@ -46,10 +46,10 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const activity = await Activity.findByPk(req.params.id);
-        if(!activity) return res.status(404).send("Activity not found");
+        if(!activity) return res.status(404).send({ message: "Activity not found" });
         else { 
             await activity.destroy();
-            res.status(200).json("Activity deleted");
+            res.status(200).json({ message: "Activity deleted" });
         }
     } catch (err) {
         next(err);
@@ -77,7 +77,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // 6. Get all activities and their corresponding facilities
-router.get('/facilites', async (req, res) => {
+router.get('/facilities', async (req, res) => {
   try {
     const availableActivities = await Activity.findAll({
       attributes: ['activityName'],
@@ -88,9 +88,8 @@ router.get('/facilites', async (req, res) => {
       group: ['activityName', 'Facility.facilityName']
     });
     res.json(availableActivities);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Server error' });
+  } catch (err) {
+    next(err);
   }
 });
 
