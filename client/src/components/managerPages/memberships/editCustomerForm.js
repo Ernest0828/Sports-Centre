@@ -34,7 +34,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
       
-            <Form.Group controlId="formCustomerName">
+            <Form.Group controlId="formCustomerEmail">
               <Form.Label>Customer Name</Form.Label>
               <Form.Control
                 type="text"
@@ -111,8 +111,8 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 onChange={handleFormInputChange}
             >
                 <option value="">Please choose an option</option>
-                <option value="MONTHLY">Monthly</option>
-                <option value="ANNUAL">Annual</option>
+                <option value="MONTHLY">MONTHLY</option>
+                <option value="ANNUAL">ANNUAL</option>
             </Form.Select>
             </Form.Group>
       

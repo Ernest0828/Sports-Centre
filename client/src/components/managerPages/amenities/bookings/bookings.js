@@ -54,7 +54,7 @@ const BookingDetails = () => {
             bookingType: booking.bookingType,
 
             customerId: booking.customerId,
-            //customerEmail: customer ? customer.customerEmail : '',
+            customerEmail: customer ? customer.customerEmail : '',
             //customerName: customer.customerName,
 
             staffId: booking.staffId,
