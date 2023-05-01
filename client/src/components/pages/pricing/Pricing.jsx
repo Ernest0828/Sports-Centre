@@ -135,12 +135,16 @@ const PricingClass = () => {
                     {filteredFacilities.map((facility) => (
                         <div key={facility.facilityName} className="facility-item">
                         <h3>{facility.facilityName}</h3>
-                        <p>{activityData.filter((activity) => activity.facilityName === facility.facilityName).map((activity) => (
-                            <p key={activity.activityId}>
-                            {activity.activityName}: <span className="facility-price">£{activity.price}.00</span>
-                            </p>
-                        ))}
-                        </p>    
+                        <div>
+                            {activityData
+                            .filter((activity) => activity.facilityName === facility.facilityName)
+                            .map((activity) => (
+                                <p key={activity.activityId}>
+                                {activity.activityName}:{" "}
+                                <span className="facility-price">£{activity.price}.00</span>
+                                </p>
+                            ))}
+                        </div>
                         </div>
                     ))}
                     </div>
