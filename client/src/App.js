@@ -28,10 +28,8 @@ import BookingDetails from './components/managerPages/amenities/bookings/booking
 import Statistics from './components/managerPages/statistics/Statistics';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
-// import Climbingwall from './components/pages/individual facilities/Climbingwall';
-// import Aerobics from './components/pages/individual classes/Aerobics';
 
-import DropDownChoice from './components/dropdownfacility/DropDownFacility';
+
 import SuccessPage from './components/pages/success/SuccessPage';
 import FacilityPage from './components/pages/individual-facilities/FacilityPage';
 import MembershipSuccess from './components/pages/membershipSuccess/MembershipSuccess';
