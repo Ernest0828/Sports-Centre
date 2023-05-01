@@ -4,14 +4,16 @@ import useFetch from "../../hooks/useFetch";
 import { useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import Basket from "../basket/Basket";
-import { Auth } from '../../context/Auth';
-import axios from 'axios'
+import { Auth } from "../../context/Auth";
+import axios from "axios";
 
 const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
   const [selectedDate, setSelectedDate] = useState();
-  const {user} = useContext(Auth);
+  const [numBookings, setNumBookings] = useState(0);
+  const [totalNoOfPeople, setTotalNoOfPeople] = useState(0);
+  const { user } = useContext(Auth);
 
   const {
     data: facilityData,
@@ -23,41 +25,65 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     loading: activityLoading,
     error: activityError,
   } = useFetch("http://localhost:4000/api/activities/");
+  const {
+    data: bookingData,
+    loading: bookingLoading,
+    error: bookingError,
+  } = useFetch("http://localhost:4000/api/bookings/");
 
   const [selectedOptionB, setSelectedOptionB] = useState(" Use");
   let selectedActivity;
-if(selectedOptionB === "Team events"){
- selectedActivity = activityData
-    ? activityData.find((activity) => activity.activityName === selectedOptionB && activity.day === selectedDay && activity.facilityName === facility.facilityName)
-    : null;
-}else {
-   selectedActivity = activityData
-    ? activityData.find((activity) => activity.activityName === selectedOptionB && activity.facilityName === facility.facilityName)
-    : null;
-}
+  if (selectedOptionB === "Team events") {
+    selectedActivity = activityData
+      ? activityData.find(
+          (activity) =>
+            activity.activityName === selectedOptionB &&
+            activity.day === selectedDay &&
+            activity.facilityName === facility.facilityName
+        )
+      : null;
+  } else {
+    selectedActivity = activityData
+      ? activityData.find(
+          (activity) =>
+            activity.activityName === selectedOptionB &&
+            activity.facilityName === facility.facilityName
+        )
+      : null;
+  }
   const activityId = selectedActivity ? selectedActivity.activityId : null;
 
   const filteredActivities = activityData
-  ? activityData.filter(
-      (activity) => activity.facilityName === facility.facilityName
-    )
-  : [];
+    ? activityData.filter(
+        (activity) => activity.facilityName === facility.facilityName
+      )
+    : [];
 
-const furtherFilteredActivities = filteredActivities.filter(
-  (activity) =>
-    (selectedDay === "Friday" && (selectedTime === "08:00" || selectedTime === "09:00") && activity.facilityName === "Swimming pool")||
-    (selectedDay === "Sunday" && (selectedTime === "08:00" || selectedTime === "09:00") && activity.facilityName === "Swimming pool")||
-    (selectedDay === "Thursday" && (selectedTime === "19:00" || selectedTime === "20:00") && activity.facilityName === "Sports hall")||
-    (selectedDay === "Saturday" && (selectedTime === "09:00" || selectedTime === "10:00") && activity.facilityName === "Sports hall")||
-    (activity.activityName !== "Team events" ||
-    (activity.activityName === "Team events" &&
-      selectedDay === activity.startTime &&
-      facility.facilityName === activity.facilityName))
-);
+  const furtherFilteredActivities = filteredActivities.filter(
+    (activity) =>
+      (selectedDay === "Friday" &&
+        (selectedTime === "08:00" || selectedTime === "09:00") &&
+        activity.facilityName === "Swimming pool") ||
+      (selectedDay === "Sunday" &&
+        (selectedTime === "08:00" || selectedTime === "09:00") &&
+        activity.facilityName === "Swimming pool") ||
+      (selectedDay === "Thursday" &&
+        (selectedTime === "19:00" || selectedTime === "20:00") &&
+        activity.facilityName === "Sports hall") ||
+      (selectedDay === "Saturday" &&
+        (selectedTime === "09:00" || selectedTime === "10:00") &&
+        activity.facilityName === "Sports hall") ||
+      activity.activityName !== "Team events" ||
+      (activity.activityName === "Team events" &&
+        selectedDay === activity.startTime &&
+        facility.facilityName === activity.facilityName)
+  );
 
-const uniqueActivityNames = [
-  ...new Set(furtherFilteredActivities.map((activity) => activity.activityName)),
-];
+  const uniqueActivityNames = [
+    ...new Set(
+      furtherFilteredActivities.map((activity) => activity.activityName)
+    ),
+  ];
 
   function getDayOfWeek(day) {
     switch (day) {
@@ -83,12 +109,12 @@ const uniqueActivityNames = [
   function getNextDate(day) {
     const today = new Date();
     const targetDay = getDayOfWeek(day);
-  
+
     let nextDate = new Date(today);
     while (nextDate.getDay() !== targetDay) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
-  
+
     return nextDate;
   }
 
@@ -96,27 +122,60 @@ const uniqueActivityNames = [
     setSelectedDate(getNextDate(selectedDay));
   }, [selectedDay]);
 
-  const handleClick = async() => {
+  useEffect(() => {
+    const bookings = bookingData.filter((b) => {
+      const bookingDate = new Date(b.date)
+        .toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+        .replace(/\//g, "-");
+      const selectedDateFormatted = selectedDate
+        .toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+        .replace(/\//g, "-");
+      return (
+        b.facilityName === facility.facilityName &&
+        bookingDate === selectedDateFormatted &&
+        b.startTime.substring(0, 5) === selectedTime
+      );
+    });
+    setNumBookings(bookings.length);
+    const noOfPeople = bookings.reduce((total, b) => total + b.noOfPeople, 0);
+    setTotalNoOfPeople(noOfPeople);
+  }, [
+    bookingData,
+    facility.facilityName,
+    selectedDay,
+    selectedTime,
+    selectedDate,
+  ]);
+
+  const handleClick = async () => {
     if (user) {
       try {
-          await axios.post('http://localhost:4000/api/basket/basketid', {
-            date: selectedDate,
-            start: selectedTime, //Start time
-            customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
-            activityId: activityId, //convert the selectedOptionB to activity number
-            classId: null,
-            facilityName: facility.facilityName 
-          });
-          alert('Item added to basket!');
-          window.location.reload();
-        } catch (err) {
-          console.log(err.message);
-          alert("Error adding item to basket!");
-        } 
+        await axios.post("http://localhost:4000/api/basket/basketid", {
+          date: selectedDate,
+          start: selectedTime, //Start time
+          customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
+          activityId: activityId, //convert the selectedOptionB to activity number
+          classId: null,
+          facilityName: facility.facilityName,
+        });
+        alert("Item added to basket!");
+        window.location.reload();
+      } catch (err) {
+        console.log(err.message);
+        alert("Error adding item to basket!");
+      }
     } else {
-      alert('You must be logged in to book an activity.');
+      alert("You must be logged in to book an activity.");
     }
-   }
+  };
 
   return (
     <Form>
@@ -136,9 +195,7 @@ const uniqueActivityNames = [
           value={selectedOptionB}
           onChange={(e) => setSelectedOptionB(e.target.value)}
         >
-          <option value="" >
-            Select an activity
-          </option>
+          <option value="">Select an activity</option>
           {uniqueActivityNames.map((activityName) => (
             <option key={activityName} value={activityName}>
               {activityName}
@@ -159,8 +216,16 @@ const uniqueActivityNames = [
             return dayOfWeek === getDayOfWeek(selectedDay);
           }}
         />
+        <p>Space left: {facility.capacity - totalNoOfPeople}</p>
+        {totalNoOfPeople >= facility.capacity && <p>Fully booked</p>}
       </Form.Group>
-      <Button variant="primary" style={{ marginTop: "15px" }} onClick={handleClick}>
+
+      <Button
+        variant="primary"
+        style={{ marginTop: "15px" }}
+        onClick={handleClick}
+        disabled={totalNoOfPeople >= facility.capacity}
+      >
         Submit
       </Button>
     </Form>

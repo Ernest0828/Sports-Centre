@@ -9,11 +9,9 @@ import useFetch from "../../hooks/useFetch";
 const StudioSchedule = () => {
   const [studioSchedule, setStudioSchedule] = useState([]);
   const [studioClasses, setStudioClasses] = useState([]);
-  const [bookingCapacity, setBookingCapacity] = useState(0);
-  const [numBookings, setNumBookings] = useState(0);
-  
-  useEffect(() => {
+  const [bookings, setBookings] = useState([]);
 
+  useEffect(() => {
     let studio = {};
 
     async function getStudioSchedule() {
@@ -21,7 +19,7 @@ const StudioSchedule = () => {
         const response = await axios.get(
           "http://localhost:4000/api/facilities/"
         );
-        
+
         studio = response.data.find(
           (facility) => facility.facilityName === "Studio"
         );
@@ -31,138 +29,75 @@ const StudioSchedule = () => {
         for (let i = startTime; i < endTime; i++) {
           schedule.push({
             time: `${i < 10 ? "0" + i : i}:00-${i + 1}:00`,
-            capacity: studio.capacity
+            capacity: studio.capacity,
           });
         }
-        console.log("Availability:",studio.capacity)
+        // console.log("Availability:",studio.capacity)
         setStudioSchedule(schedule);
       } catch (error) {
         console.error(error);
       }
     }
-    let bookings = [];
-    
-    async function getBookings() {
-      try {
-        const response = await axios.get("http://localhost:4000/api/bookings/");
-        bookings = response.data;
-        let bookingCapacity = 0;
-        let numBookings = 0;
-        const bookingsMap = new Map();
-        let day = "";
-        let booking = "";
-    
-        bookings.forEach((booking) => {
-          if (booking.facilityName === "Studio") {
-            bookingCapacity += booking.noOfPeople;
-    
-            const date = new Date(booking.date);
-            console.log(booking.date)
-            day = date.toLocaleDateString("en-US", {weekday: "long"});
-            const time = date.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"}).replace(/:\d{2}\s/, ' ');
-    
-            const bookingKey = `${day} at ${time}`;
-            if (booking.startTime === "18:00:00" && day === "Monday") {//change this part
-              numBookings++;
-            }
-            // if (bookingsMap.has(bookingKey)) {
-            //   bookingsMap.set(bookingKey, bookingsMap.get(bookingKey) + booking.noOfPeople);
-            // } else {
-            //   bookingsMap.set(bookingKey, booking.noOfPeople);
-            // }
-          }
-        });
-    
-
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    // Helper function to get the remaining spots for a class
-// function getRemainingSpots(bookings, classData) {
-//   const classBookings = bookings.filter(
-//     (b) => b.facilityName === classData.facilityName && b.day === classData.day && b.startTime === classData.startTime
-//   );
-//   const totalPeople = classBookings.reduce((acc, curr) => acc + curr.noOfPeople, 0);
-//   console.log("TOTAL POEPL:", totalPeople)
-//   const remainingSpots = studio.capacity - totalPeople;
-//   return remainingSpots;
-// }
-function getRemainingSpots(bookings, classData, studio) {
-  const classBookings = bookings.filter(
-    (b) =>
-      b.facilityName === classData.facilityName &&
-      b.day === classData.day &&
-      b.startTime === classData.startTime &&
-      b.date === classData.date
-  );
-  const totalPeople = classBookings.reduce((acc, curr) => acc + curr.noOfPeople, 0);
-  console.log("TOTAL PEOPLE:", totalPeople);
-  const remainingSpots = studio.capacity - totalPeople;
-  return remainingSpots;
-}
 
     async function getStudioClasses() {
       try {
         const response = await axios.get("http://localhost:4000/api/classes/");
-        const classes = response.data.filter((c) => c.facilityName === "Studio");
+        const classes = response.data.filter(
+          (c) => c.facilityName === "Studio"
+        );
+        let day = "";
+
+        const bookingsResponse = await axios.get(
+          "http://localhost:4000/api/bookings/"
+        );
+        const bookings = bookingsResponse.data;
+        const date = new Date(bookings.date);
+        day = date.toLocaleDateString("en-US", { weekday: "long" });
+
         for (const c of classes) {
-          const remainingSpots = getRemainingSpots(bookings, c, studio);
-          if (remainingSpots <= 0) {
+          let numBookings = 0;
+          for (const b of bookings) {
+            const bookingDate = new Date(b.date);
+            const bookingDay = bookingDate.toLocaleDateString("en-US", {
+              weekday: "long",
+            });
+
+            if (
+              b.facilityName === "Studio" &&
+              bookingDay === c.day &&
+              b.startTime === c.startTime
+            ) {
+              numBookings++;
+            }
+          }
+          console.log("Number of bookings for", c.day, "is", numBookings);
+
+          if (numBookings >= studio.capacity) {
             console.log(`${c.className} is fully booked.`);
           } else {
-            console.log(`${c.className} has ${remainingSpots} spots remaining.`);
+            console.log(
+              `${c.className} has ${
+                studio.capacity - numBookings
+              } spots remaining.`
+            );
           }
-    
-          // Display all the times and days for the class
-          const days = [];
-          if (c.day.includes("M")) {
-            days.push("Monday");
-          }
-          if (c.day.includes("Tu")) {
-            days.push("Tuesday");
-          }
-          if (c.day.includes("W")) {
-            days.push("Wednesday");
-          }
-          if (c.day.includes("Th")) {
-            days.push("Thursday");
-          }
-          if (c.day.includes("F")) {
-            days.push("Friday");
-          }
-          if (c.day.includes("Sa")) {
-            days.push("Saturday");
-          }
-          if (c.day.includes("Su")) {
-            days.push("Sunday");
-          }
-          console.log(`${c.className} has classes on ${days.join(", ")} at ${c.startTime}`);
         }
-    
+        setBookings(bookings);
+
         setStudioClasses(classes);
       } catch (error) {
         console.error(error);
       }
     }
-    
-    
-   
+
     getStudioSchedule();
     getStudioClasses();
-    getBookings();
   }, []);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState([]);
   const [selectedTime, setSelectedTime] = useState([]);
   const [selectedClass, setSelectedClass] = useState([]);
-  // const {
-  //   data: bookingData,
-  //   loading: bookingLoading,
-  //   error: bookingError,
-  // } = useFetch("http://localhost:4000/api/bookings/");
 
   const handleOpenModal = (day, time, className) => {
     setSelectedDay(day);
@@ -176,51 +111,73 @@ function getRemainingSpots(bookings, classData, studio) {
   };
 
   const renderStudioSchedule = () => {
-  const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+
+    return (
+      <>
+        {studioSchedule.map((timeSlot) => (
+          <tr key={timeSlot.time}>
+            <td>{timeSlot.time}</td>
+            {weekdays.map((day) => {
+              return (
+                <td key={day}>
+                  {studioClasses
+                    .filter(
+                      (c) =>
+                        c.day === day &&
+                        c.startTime.slice(0, 5) === timeSlot.time.slice(0, 5)
+                    )
+                    .map((c) => {
+                      const numBookings = bookings.filter(
+                        (b) =>
+                          b.facilityName === "Studio" &&
+                          new Date(b.date).toLocaleDateString("en-US", {
+                            weekday: "long",
+                          }) === c.day &&
+                          b.startTime === c.startTime
+                      ).length;
+                      const spotsRemaining =
+                        studioSchedule[0].capacity - numBookings;
+                      const isFullyBooked =
+                        numBookings >= studioSchedule[0].capacity;
+                      return (
+                        <div key={c.className}>
+                          <button
+                            onClick={() =>
+                              handleOpenModal(
+                                day,
+                                timeSlot.time.slice(0, 5),
+                                c.className
+                              )
+                            }
+                            disabled={isFullyBooked}
+                          >
+                            {c.className}
+                          </button>
+                        </div>
+                      );
+                    })}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </>
+    );
+  };
 
   return (
-    <>
-      {studioSchedule.map((timeSlot) => (
-        <tr key={timeSlot.time}>
-          <td>{timeSlot.time}</td>
-          {weekdays.map((day) => {
-            
-            return (
-              <td key={day}>
-                {studioClasses
-                  .filter(
-                    (c) =>
-                      c.day === day &&
-                      c.startTime.slice(0, 5) === timeSlot.time.slice(0, 5)
-                  )
-                  .map((c) => {
-                    return (
-                      <div key={c.className}>
-                        <button
-                          onClick={() =>
-                            handleOpenModal(day, timeSlot.time.slice(0, 5), c.className)
-                          }
-                        >
-                          {c.className}
-                          <br />
-                          <span> </span>
-                        </button>
-                      </div>
-                    );
-                  })}
-              </td>
-            );
-          })}
-        </tr>
-      ))}
-    </>
-  );
-};
-
-  return (
-    <div className="Cal-container">
+    <div className="calContainer">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="calendarTitle">Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

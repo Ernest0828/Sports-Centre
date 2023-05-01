@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form} from "react-bootstrap";
-import Datepicker from 'react-datepicker';
+import { Modal, Button, Form } from "react-bootstrap";
+import Datepicker from "react-datepicker";
 import FacilityBookingDetails from "./FacilityBooking";
 
 const ClibmingWallSchedule = (props) => {
@@ -35,8 +35,9 @@ const ClibmingWallSchedule = (props) => {
           "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
-          (a) => a.facilityName === "Climbing wall");
-          setClimbingWallActivities(activity);
+          (a) => a.facilityName === "Climbing wall"
+        );
+        setClimbingWallActivities(activity);
       } catch (error) {
         console.error(error);
       }
@@ -62,48 +63,62 @@ const ClibmingWallSchedule = (props) => {
     setSelectedTime(time);
     setShowModal(true);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const renderClibmingWallSchedule = () => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
 
     return (
       <>
         {ClibmingWallSchedule.map((time) => {
           const nextHourTime = addOneHour(time);
           const formattedTime = time.slice(0, 5);
-          return(
-          <tr key={time}>
-          <td>{time}</td>
-            {weekdays.map((day) => {
-              const activities = climbingWallActivities.filter((a) => 
-              (a.day === day && a.startTime.slice(0, 5) === formattedTime) ||
-              (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
-              );
-              return (
-                <td key={day} onClick={() => handleOpenModal(day, formattedTime)}>
-                {activities.map((a) => (
-                  <div key={a.activityName} >
-                    <div>{a.activityName}</div>
-                  </div>
-                ))}
-              </td>
-            );
-            })}
-          </tr>
-        );
+          return (
+            <tr key={time}>
+              <td>{time}</td>
+              {weekdays.map((day) => {
+                const activities = climbingWallActivities.filter(
+                  (a) =>
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === formattedTime) ||
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
+                );
+                return (
+                  <td
+                    key={day}
+                    onClick={() => handleOpenModal(day, formattedTime)}
+                  >
+                    {activities.map((a) => (
+                      <div key={a.activityName}>
+                        <div>{a.activityName}</div>
+                      </div>
+                    ))}
+                  </td>
+                );
+              })}
+            </tr>
+          );
         })}
       </>
     );
   };
 
   return (
-    <div className="Cal-container">
+    <div className="calContainer">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="calendarTitle">Climbing Wall Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>
@@ -123,18 +138,21 @@ const ClibmingWallSchedule = (props) => {
         </table>
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>Booking Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <FacilityBookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Booking Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FacilityBookingDetails
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

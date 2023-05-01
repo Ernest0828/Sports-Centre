@@ -1,43 +1,35 @@
-.Cal-container{
-    margin-top: 50px;
+.calContainer {
+  margin-top: 50px;
 }
 .timetable {
-    max-width: 95%;
-    /* max-height: 900px; */
-    margin-top: 50px;
-    margin-bottom: 50px;
-  }
-  
-  .title{
-    font-weight:bold;
-    text-align: center;
-    font-size: 40px;
-  }
-  .timetable th,
-  .timetable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-    width: 180px;
-  }
-  
-  .timetable th {
-    background-color: #1c768f;
-    
-  }
-  
-  .timetable td {
-    height: 80px;
-    
-  }
+  max-width: 95%;
+  /* max-height: 900px; */
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 
-  .timetable td:hover {
-    background-color: #a9a9a9;
-    cursor: pointer;
-  }
+.calendarTitle {
+  font-weight: bold;
+  text-align: center;
+  font-size: 40px;
+}
+.timetable th,
+.timetable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  width: 180px;
+}
 
- .hide {
-  color: white;
-  font-size: 15px;
- }
-  
+.timetable th {
+  background-color: #1c768f;
+}
+
+.timetable td {
+  height: 80px;
+}
+
+.timetable td:hover {
+  background-color: #a9a9a9;
+  cursor: pointer;
+}
