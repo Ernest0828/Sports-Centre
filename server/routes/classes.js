@@ -11,11 +11,11 @@ router.post("/classid", async (req, res, next) => {
         
         const facility = await Facility.findByPk(facilityName);
         if (!facility) 
-            return res.status(404).json("Facility not found");
+            return res.status(404).json({ message: "Facility not found" });
         //§ check if class already exist
         const existingClass = await Classes.findOne({ where: {className: name, day: day, startTime: start} });
         if (existingClass) 
-            return res.status(401).json("Class already exists");
+            return res.status(401).json({ message: "Class already exists" });
            
         const classes = await Classes.create({ className: name, day: day, startTime: start, endTime: end, price: price, facilityName: facilityName });
         return res.status(200).json(classes);
@@ -39,10 +39,10 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const classes = await Classes.findByPk(req.params.id);
-        if(!classes) return res.status(404).json("Classes not found");
+        if(!classes) return res.status(404).json({ message: "Classes not found" });
         else { 
             await classes.destroy();
-            res.status(200).json("Class deleted");
+            res.status(200).json({ message:"Class deleted" });
         }
     } catch (err) {
         next(err);

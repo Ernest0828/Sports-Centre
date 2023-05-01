@@ -26,7 +26,7 @@ router.put('/:id', async (req, res, next) => {
         // find the Discount record to update
         const discountToUpdate = await Discount.findByPk(id);
         if (!discountToUpdate) {
-            return res.status(404).json('Discount not found');
+            return res.status(404).json({ message: "Discount not found" });
         }
 
         // update the discount value
@@ -49,7 +49,5 @@ router.get('/', async (req, res) => {
         next(err)
     }
 });
-
-module.exports = router;
 
 module.exports = router;
