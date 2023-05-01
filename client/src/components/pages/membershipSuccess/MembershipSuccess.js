@@ -58,7 +58,7 @@ function MembershipSuccess() {
     <div>
       <div className="success-page">
         <div className="successpage-container">
-          <h1 className="success-heading">Membership Signup Successful</h1>
+          <h1 className="success-heading">MEMBERSHIP SIGNUP SUCCESSFUL</h1>
           <p className="success-text">
             Congratulations, {user && user.details && user.details.customerName}! You have successfully signed up for a {membershipType} membership.
           </p>
