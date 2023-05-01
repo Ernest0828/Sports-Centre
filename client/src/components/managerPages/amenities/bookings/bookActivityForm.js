@@ -65,12 +65,12 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               <Form.Label>Customer</Form.Label>
               <Form.Control
                 as="select"
-                name="customerName"
+                name="customerEmail"
                 onChange={(e) => {
                   setSelectedCustomer(e.target.value);
                   setFormInputs({
                     ...formInputs,
-                    customerName: e.target.value
+                    customerEmail: e.target.value
                   });
                 }}
                 value={selectedCustomer}
@@ -81,9 +81,9 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
                   customerData.map((customer) => (
                     <option
                       key={customer.customerId}
-                      value={customer.customerName}
+                      value={customer.customerEmail}
                     >
-                      {customer.customerName}
+                      {customer.customerEmail}
                     </option>
                   ))}
               </Form.Control>

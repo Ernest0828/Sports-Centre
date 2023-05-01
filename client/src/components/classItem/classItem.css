@@ -4,8 +4,9 @@
   border-radius:10px ;
   background-color: #1c768f;
   z-index: 3;
-  width: 250px;
+  width: 100%;
   height: 250px;
+  text-align: center;
 }
 
 .classItem:hover{

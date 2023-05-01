@@ -41,7 +41,10 @@ export default function Basket() {
   }, [user, user?.details]);
 
   const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
-    const selectedCustomer = customerData.find((customer) => customer.customerId === user.details.customerId) ?? {}
+  const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
+
+
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

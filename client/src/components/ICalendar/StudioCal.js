@@ -237,9 +237,12 @@ function getRemainingSpots(bookings, classData, studio) {
           <tbody>{studioSchedule.length > 0 && renderStudioSchedule()}</tbody>
         </table>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+      <Modal show={showModal}>
+        <Modal.Header>
           <Modal.Title>Booking Details</Modal.Title>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
         </Modal.Header>
         <Modal.Body>
           <BookingDetails
@@ -248,11 +251,6 @@ function getRemainingSpots(bookings, classData, studio) {
             selectedClass={selectedClass}
           />
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );

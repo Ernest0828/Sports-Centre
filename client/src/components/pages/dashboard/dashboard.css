@@ -39,6 +39,11 @@
     margin: 1;
 }
 
+
+.dashItem:hover{
+    transform: scale(.99);
+}
+
 @media only screen and (max-width: 768px) {
     .text-container {
         font-size: 30px;

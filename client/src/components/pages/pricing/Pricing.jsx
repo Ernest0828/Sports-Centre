@@ -89,18 +89,18 @@ const PricingClass = () => {
             <div className="pricing">
                 <div className="pricing-container">
                     <div className="membership-container">
-                        <h2 className="title">GymCorp Membership</h2>
-                        <p className="header">Join GymCorp today and get full access to our facilities for a great value.</p>
+                        <h2 className="pricingTitle">GymCorp Membership</h2>
+                        <p className="pricingHeader">Join GymCorp today and get full access to our facilities for a great value.</p>
                         <div className="grid-container">
                             <div className="grid-item">
                                 <h3>Monthly</h3>
-                                <p className="price">£35.00</p>
+                                <p className="pricingPrice">£35.00</p>
                                 {selectedCustomer.isMembership === false &&(<button className="join-button" onClick={handleClick("MONTHLY")}>Join Now</button>
                                 )}
                             </div>
                             <div className="grid-item">
                                 <h3>Annual</h3>
-                                <p className="price">£300.00</p>
+                                <p className="pricingPrice">£300.00</p>
                                 {selectedCustomer.isMembership === false &&(<button className="join-button" onClick={handleClick("ANNUAL")}>Join Now</button>
                                 )}
                             </div>
@@ -108,8 +108,8 @@ const PricingClass = () => {
                     </div>
                 </div>
                 <div className="classes-container">
-                    <h2 className="title">Classes</h2>
-                    <p className="header">We hold our classes every week at the Studio.</p>
+                    <h2 className="pricingTitle">Classes</h2>
+                    <p className="pricingHeader">We hold our classes every week at the Studio.</p>
                     <div className="class-list">
                     {classData.map((classes) => (
                         <div key={classes.classId} className="class-item">
@@ -123,24 +123,28 @@ const PricingClass = () => {
                                 <p>{day} at {hour12}:{minute} {suffix}</p>
                                 </div>);
                         })}        
-                        <p className="price">£{classes.price}.00</p>        
+                        <p className="pricingPrice">£{classes.price}.00</p>        
                         </div>        
                     ))}            
                     </div>            
                 </div>
                 <div className="facility-container">
-                    <h2 className="title">Activities</h2>
-                    <p className="header">Check out all activities that we offer at each of our facilities.</p>
+                    <h2 className="pricingTitle">Activities</h2>
+                    <p className="pricingHeader">Check out all activities that we offer at each of our facilities.</p>
                     <div className="facility-list">
                     {filteredFacilities.map((facility) => (
                         <div key={facility.facilityName} className="facility-item">
                         <h3>{facility.facilityName}</h3>
-                        <p>{activityData.filter((activity) => activity.facilityName === facility.facilityName).map((activity) => (
-                            <p key={activity.activityId}>
-                            {activity.activityName}: <span className="facility-price">£{activity.price}.00</span>
-                            </p>
-                        ))}
-                        </p>    
+                        <div>
+                            {activityData
+                            .filter((activity) => activity.facilityName === facility.facilityName)
+                            .map((activity) => (
+                                <p key={activity.activityId}>
+                                {activity.activityName}:{" "}
+                                <span className="facility-price">£{activity.price}.00</span>
+                                </p>
+                            ))}
+                        </div>
                         </div>
                     ))}
                     </div>

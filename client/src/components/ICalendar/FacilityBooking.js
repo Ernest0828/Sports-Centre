@@ -96,6 +96,8 @@ const uniqueActivityNames = [
     setSelectedDate(getNextDate(selectedDay));
   }, [selectedDay]);
 
+  const[errorMessage, setErrorMessage] = useState("")
+  
   const handleClick = async() => {
     if (user) {
       try {
@@ -110,8 +112,12 @@ const uniqueActivityNames = [
           alert('Item added to basket!');
           window.location.reload();
         } catch (err) {
-          console.log(err.message);
-          alert("Error adding item to basket!");
+          if (err.response.data.message === "You have already booked for this time slot" || "You already have a booking session") {
+            setErrorMessage(err.response.data.message);
+          } else {
+            console.log(err.message);
+          
+          }
         } 
     } else {
       alert('You must be logged in to book an activity.');
@@ -163,6 +169,9 @@ const uniqueActivityNames = [
       <Button variant="primary" style={{ marginTop: "15px" }} onClick={handleClick}>
         Submit
       </Button>
+        {errorMessage && (
+      <p style={{ color: "red" }}>{errorMessage}</p>
+    )}
     </Form>
   );
 };

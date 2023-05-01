@@ -63,13 +63,13 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
               <Form.Label>Customer</Form.Label>
               <Form.Control
                 as="select"
-                name="customerName"
+                name="customerEmail"
                 value={selectedCustomer}
                 onChange={(e) => {
                   setSelectedCustomer(e.target.value);
                   setFormInputs({
                     ...formInputs,
-                    customerName: e.target.value
+                    customerEmail: e.target.value
                   });
                 }}
               >
@@ -78,9 +78,9 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
                   customerData.map((customer) => (
                     <option
                       key={customer.customerId}
-                      value={customer.customerName}
+                      value={customer.customerEmail}
                     >
-                      {customer.customerName}
+                      {customer.customerEmail}
                     </option>
                   ))}
               </Form.Control>

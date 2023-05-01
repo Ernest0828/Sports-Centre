@@ -1,4 +1,4 @@
-.title {
+.pricingTitle {
     padding-top: 30px;
     align-self: center;
     font-weight: bold;
@@ -7,7 +7,7 @@
     margin-bottom: 20px ;
 }
 
-.header {
+.pricingHeader {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -76,7 +76,7 @@
     color: white;
 }
 
-.price {
+.pricingPrice {
     text-align: center;
     font-weight: bold;
     font-size: 30px;

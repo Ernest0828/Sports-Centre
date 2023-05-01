@@ -1,8 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Fragment } from 'react';
 import axios from 'axios';
 import { Auth } from '../../../context/Auth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
+import Navbar from '../../navbar/Navbar';
+import '../success/successpage.css';
+
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -15,8 +17,6 @@ function MembershipSuccess() {
 	const query = useQuery();
 	const membershipType = query.get('membershipType');
 	const location = useLocation();
-	
-	
 
 	useEffect(() => {
 		const searchParameter = new URLSearchParams(location.search);
@@ -53,9 +53,42 @@ function MembershipSuccess() {
 
 
 	return (
-    <div><Navbar/>
-			<div className="div">MembershipSuccess</div>
+    <Fragment>
+    <Navbar />
+    <div>
+      <div className="success-page">
+        <div className="successpage-container">
+          <h1 className="success-heading">Membership Signup Successful</h1>
+          <p className="success-text">
+            Congratulations, {user && user.details && user.details.customerName}! You have successfully signed up for a {membershipType} membership.
+          </p>
+          <button
+            className="success-button"
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
 		</div>
+    <div className="footer-container">
+        <div className="footer-item">
+          <h2 style={{ color: '#fa991c' }}>CONTACT US</h2>
+          <ul>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@gymcorp.com</li>
+          </ul>
+        </div>
+        <div className="footer-item">
+          <h2 style={{ color: '#fa991c' }}>OPENING TIMES</h2>
+          <ul>
+            <li>8:00am - 10:00pm</li>
+          </ul>
+        </div>
+      </div>
+    </Fragment>
   )
 }
 

@@ -103,7 +103,7 @@ const ClibmingWallSchedule = (props) => {
   return (
     <div className="Cal-container">
       <div className="Calendar">
-        <h1 className="title">Timetable</h1>
+        <h1 className="title">Climbing wall Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>
@@ -122,18 +122,16 @@ const ClibmingWallSchedule = (props) => {
           </tbody>
         </table>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
+      <Modal show={showModal}>
+  <Modal.Header>
     <Modal.Title>Booking Details</Modal.Title>
+    <Button variant="secondary" onClick={handleCloseModal}>
+      Close
+    </Button>
   </Modal.Header>
   <Modal.Body>
     <FacilityBookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
   </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
 </Modal>
     </div>
   );
