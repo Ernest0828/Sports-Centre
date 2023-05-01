@@ -13,8 +13,6 @@ function SuccessPage() {
 
   const{user} = useContext(Auth);
   const navigate = useNavigate();
-  const query = useQuery();
-  const location = useLocation();
 
   useEffect(() => {
     const createBooking = async () => {
@@ -51,11 +49,11 @@ function SuccessPage() {
       <Navbar />
       <div className="success-page">
         <div className="successpage-container">
-          <h1>BOOKING SUCCESSFUL!!</h1>
+          <h1 className='success-heading'>BOOKING SUCCESSFUL!!</h1>
           <p className="success-text">
             Thank you for booking with us.
           </p>
-          <button onClick={handleClick}>Back to home</button>
+          <button className="success-button" onClick={handleClick}>Back to home</button>
         </div>
       </div>
       <div className="footer-container">
