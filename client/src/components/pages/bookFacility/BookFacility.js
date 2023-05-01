@@ -1,18 +1,18 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./bookfacility.css";
 import Basket from "../../basket/Basket";
 import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from "../../navbar/Navbar";
-import {Auth} from "../../../context/Auth"
+// import {Auth} from "../../../context/Auth"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
   
 const BookFacility = () => {
 
-  const { user } = useContext(Auth);
+  // const { user } = useContext(Auth);
   const [facilities, setFacilities] = useState([]);
-  const [basketItems, setBasketItems] = useState([]);
+  // const [basketItems, setBasketItems] = useState([]);
   const navigate =useNavigate();
   
   const handleClick = (facility) =>{
@@ -36,13 +36,13 @@ const BookFacility = () => {
     (facility) => facility.facilityName !== "Studio"
   );
 
-  const removeItem = async (itemId) => {
-    try {
-      await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const removeItem = async (itemId) => {
+  //   try {
+  //     await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}`);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -62,7 +62,7 @@ const BookFacility = () => {
             ))}
           </div>
           </div>
-          <Basket removeItem={removeItem} />
+          <Basket/>
         </div>
       </div>
     </Fragment>

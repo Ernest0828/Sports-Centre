@@ -6,7 +6,7 @@
     color: black;
     flex: 1;
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
-        border-radius: 10px;
+    border-radius: 10px;
     background-color: #fa991c;
     height: 70vh;
 }

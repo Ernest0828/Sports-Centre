@@ -79,7 +79,7 @@ const AddCustomerForm = ({showAdd, handleClose, handleAddSubmit, formInputs, set
             </Form.Group>
       
             <Button style={{marginTop: "10px"}} variant="primary" type="submit">
-              Register Customer
+              Register
             </Button>
           </Form>
         </Modal.Body>

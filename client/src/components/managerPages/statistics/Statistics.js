@@ -5,7 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"
 import moment from 'moment';
-import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar } from 'recharts';
+import 'moment/locale/en-gb';
+import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar ,PieChart, Pie} from 'recharts';
 
 
   
@@ -15,7 +16,7 @@ const Statistics = () => {
     const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
     const [bookingDetails, setBookingDetails] = useState([]);
     useEffect(() => {
-        setBookingDetails(bookingData.map(({noOfPeople, date, startTime, endTime, bookingType, activityId, classId,facilityName}) => {
+        setBookingDetails(bookingData.map(({noOfPeople, date, startTime, endTime, bookingType, activityId, classId,facilityName,price}) => {
         return {
             noOfPeople,
             date,
@@ -25,11 +26,10 @@ const Statistics = () => {
             activityId, 
             classId,
             facilityName,
+            price,
         };
       }));
     }, [bookingData]);
-    console.log("booking details:", bookingDetails);
-
 
 
     //Get activity data
@@ -59,6 +59,24 @@ const Statistics = () => {
         }));
     },[facilityData]);
 
+    //Get class data
+    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const [classDetails, setClassDetails] = useState([]);
+
+    useEffect(()=>{
+        const uniqueClassNames = classData.reduce((uniqueClasses, currentClass) => {
+          if (!uniqueClasses.includes(currentClass.className)) {
+            uniqueClasses.push(currentClass.className);
+          }
+          return uniqueClasses;
+        }, []);
+        
+        setClassDetails(uniqueClassNames.map(className => ({ 
+            className 
+        })));
+      }, [classData]);
+      
+
 
     //handle sidebar clicking
     const [selectedFacility, setSelectedFacility] = useState("Summary");
@@ -66,101 +84,23 @@ const Statistics = () => {
         setSelectedFacility(facility);
     }; 
 
+    //for groupedActivities
+    const [activityGroup, setActivityGroup] = useState(activityDetails);
     
-    //chart data
-    const [graphData, setGraphData] = useState();
+    //Bar chart data
+    const [barChartData, setBarChartData] = useState();
+    //Pie chart data
+    const [pieChartData, setPieChartData] = useState();
 
-    useEffect(() => {
-        const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"];
-        const facilities = ["Studio","Swimming pool", "Fitness room","Sports hall","Squash court", "Climbing wall"];
+    //Calculate total revenue
+    const [revenueData, setRevenueData] = useState();
 
-        // create an initial array with every combination of day and facility set to 0
-        const initFacDay = daysOfWeek.map(day => {
-            const facToDay = { day };
-            facilities.forEach(facility => facToDay[facility] = 0);
-            // console.log("factoday:",facToDay);
-            return facToDay;
-        });
-
-        // {facilityName:Swimming pool, activityNames:["general use", ...]}
-        const groupedActivities = activityDetails.reduce((acc, curr) => {
-            const { facilityName, activityName, activityId } = curr;
-            const facility = acc.find((f) => f.facilityName === facilityName);
-            if (facility) {
-              facility.activityNames.push(activityName);
-              facility.activityIds.push(activityId);
-            } else {
-              acc.push({ facilityName, activityNames: [activityName], activityIds: [activityId] });
-            }
-            return acc;
-        }, []);
-        // console.log("groupedActivities",groupedActivities);
-
-        //create an initial array with every combination of day and activity set to 0 
-        const initActivityDay = daysOfWeek.map(day => {
-            const activityToDay = { day };
-            groupedActivities
-                .filter(group => group.facilityName === selectedFacility)
-                .flatMap(group => group.activityNames)
-                .forEach(activity => {
-                activityToDay[activity] = 0;
-            });
-
-            // console.log("test",groupedActivities.filter(group => group.facilityName === selectedFacility).flatMap(group => group.activityNames)
-            // )
-
-            return activityToDay;
-        });
-        console.log("initActivityDay", initActivityDay);        
-
-
-        //get graph data for Summary
-        const summaryData = bookingDetails.reduce((acc, curr) => {
-            //change date to day
-            const formatDate = new Date(curr.date);
-            formatDate.setUTCHours(0, 0, 0, 0);
-            const day = daysOfWeek[formatDate.getUTCDay()];
-            const {facilityName, noOfPeople} = curr;
-            //facilityIndex used for Summary
-            const facilityIndex = acc.findIndex(f => f.day === day);
-            acc[facilityIndex][facilityName] += noOfPeople;   
-            return acc;
-        }, initFacDay);
-
-        // chart data for activities
-        const activityData = bookingDetails.reduce((acc, curr) => {
-            //change date to day
-            const formatDate = new Date(curr.date);
-            formatDate.setUTCHours(0, 0, 0, 0);
-            const day = daysOfWeek[formatDate.getUTCDay()];
-            const {noOfPeople , activityId, facilityName, bookingType} = curr;
-            // console.log("curr",curr);
-
-            //TEST ZONE
-            if (bookingType !== "activity"){
-                return acc;
-            }
-            const bookingFindActivity = groupedActivities.find(f => f.facilityName === facilityName);
-            console.log("bookingfindac:",bookingFindActivity);
-            const bookingToIndex = bookingFindActivity.activityIds.findIndex(id => id === activityId);
-            console.log("bookingToIndex:",bookingToIndex);
-            const activityName = bookingFindActivity.activityNames[bookingToIndex];
-            console.log("activityName:",activityName);
-
-
-
-            //dayIndex used for each activity
-            const dayIndex = acc.findIndex(a => a.day === day);
-            acc[dayIndex][activityName] += noOfPeople;     
-            console.log("acc",acc);
-            return acc;
-        }, initActivityDay);
-
-        selectedFacility === "Summary" ? setGraphData(summaryData) :
-        setGraphData(activityData)
-
-}, [bookingDetails,activityDetails,selectedFacility]);
-
+    // Set Monday as the start of the week
+    moment.locale('en-gb', {
+        week: {
+        dow: 1, // Monday is the first day of the week
+        },
+    });
 
     //For choosing week 
     const [dateRange, setDateRange] = useState({
@@ -182,18 +122,195 @@ const Statistics = () => {
         });
     };
 
+    useEffect(() => {
+        const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"];
+        const facilities = ["Studio","Swimming pool", "Fitness room","Sports hall","Squash court A", "Squash court B", "Climbing wall"];
+
+
+        
+        // create an initial array with every combination of day and facility set to 0
+        const initFacDay = daysOfWeek.map(day => {
+            const facToDay = { day };
+            facilities.forEach(facility => facToDay[facility] = 0);
+            // console.log("factoday:",facToDay);
+            return facToDay;
+        });
+
+        const initFacPrice = facilities.map(facility => ({
+            facilityName: facility,
+            revenue : 0
+        }));
+
+         //Makes array of form {facilityName:Swimming pool, activityNames:["general use", ...]}
+        const groupedActivities = activityDetails.reduce((acc, curr) => {
+            const { facilityName, activityName, activityId } = curr;
+            const facility = acc.find((f) => f.facilityName === facilityName);
+            if (facility) {
+                facility.activityNames.push(activityName);
+                facility.activityIds.push(activityId);
+            } else {
+                acc.push({ facilityName, activityNames: [activityName], activityIds: [activityId] });
+            }
+            return acc;
+        }, []);    
+        
+        setActivityGroup(groupedActivities);
+
+        //create an initial array with every combination of day and activity set to 0 
+        const initActivityDay = daysOfWeek.map(day => {
+            const activityToDay = { day };
+            groupedActivities
+                .filter(group => group.facilityName === selectedFacility)
+                .flatMap(group => group.activityNames)
+                .forEach(activity => {
+                activityToDay[activity] = 0;
+            });
+            return activityToDay;
+        });
+
+
+        // create an initial array with every combination of day and facility set to 0
+        const initClassDay = daysOfWeek.map(day => {
+            const classToDay = { day };
+            classDetails.forEach(({ className }) => {
+              classToDay[className] = 0;
+            });
+            return classToDay;
+        });
+
+        const classesData = bookingDetails
+        .filter(booking => booking.bookingType === "class" &&
+            moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]')) 
+        .reduce((acc, curr) => {
+
+            const classInfo = classData.find(c => c.classId === curr.classId);
+                if (!classInfo) {
+                    return acc;
+                }
+                const className = classInfo.className;
+
+            //change date to day
+            const formatDate = new Date(curr.date);
+            formatDate.setUTCHours(0, 0, 0, 0);
+            const day = daysOfWeek[formatDate.getUTCDay()];
+            const {noOfPeople} = curr;
+
+            // get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
+
+            //classIndex used for Summary
+            const classIndex = acc.findIndex(c => c.day === daysOfWeek[previousDayIndex]);
+            acc[classIndex][className] += noOfPeople;   
+            return acc;
+
+        }, initClassDay);
+
+
+        //get usage graph data for Summary
+        const summaryBarData = bookingDetails
+        .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
+        .reduce((acc, curr) => {
+            //change date to day
+            const formatDate = new Date(curr.date);
+            formatDate.setUTCHours(0, 0, 0, 0);
+            const day = daysOfWeek[formatDate.getUTCDay()];
+            const {facilityName, noOfPeople} = curr;
+
+            //get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
+
+            //facilityIndex used for Summary
+            const facilityIndex = acc.findIndex(f => f.day === daysOfWeek[previousDayIndex]);
+            acc[facilityIndex][facilityName] += noOfPeople;   
+            return acc;
+        }, initFacDay);
+
+
+        //get revenue graph data for summary
+        const summaryPieData = bookingDetails.reduce((acc,curr) => {
+            const {facilityName, price} = curr;
+            const facilityIndex = acc.findIndex(f => f.facilityName === facilityName);
+            acc[facilityIndex].revenue += price;
+            return acc;
+        }, initFacPrice);
+
+        const sumRevenue = summaryPieData.reduce((totalRevenue, facility) => {
+            return totalRevenue + facility.revenue;
+          }, 0);
+          
+        setRevenueData(sumRevenue);
+        // console.log("revenueData",revenueData);
+        
+
+        // chart data for activities
+        const activityBarData = bookingDetails
+        .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
+        .reduce((acc, curr) => {
+            //change date to day
+            const formatDate = new Date(curr.date);
+            formatDate.setUTCHours(0, 0, 0, 0);
+            const day = daysOfWeek[formatDate.getUTCDay()];
+            const {noOfPeople , activityId, facilityName, bookingType} = curr;
+            // console.log("curr",curr);
+
+            //Makes sure it is activity
+            if (bookingType !== "activity"){
+                return acc;
+            }
+
+            //Makes sure only add if facility name is same
+            if (facilityName !== selectedFacility) {
+                return acc;
+            }
+            //Get activity name
+            const bookingFindActivity = groupedActivities.find(f => f.facilityName === facilityName);
+            // console.log("bookingfindac:",bookingFindActivity);
+            const bookingToIndex = bookingFindActivity.activityIds.findIndex(id => id === activityId);
+            // console.log("bookingToIndex:",bookingToIndex);
+            const activityName = bookingFindActivity.activityNames[bookingToIndex];
+            // console.log("activityName:",activityName);
+
+            //get the index of the current day
+            const currentDayIndex = daysOfWeek.findIndex(d => d === day);
+
+            // get the index of the previous day (wrapping around to Sunday if current day is Monday)
+            const previousDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
+
+            // console.log("acc test",acc);
+            //dayIndex used for each activity
+            const dayIndex = acc.findIndex(a => a.day === daysOfWeek[previousDayIndex]);
+            // console.log("acc day index:",acc[dayIndex]);
+            
+            acc[dayIndex][activityName] += noOfPeople;     
+            return acc;
+        }, initActivityDay);
+
+        selectedFacility === "Summary" ? setBarChartData(summaryBarData):
+        selectedFacility === "Studio" ? setBarChartData(classesData) :
+        setBarChartData(activityBarData)
+        selectedFacility === "Summary" && setPieChartData(summaryPieData);
+        
+    }, [bookingDetails,activityDetails,selectedFacility,classData,dateRange.end,dateRange.start,classDetails]);
+
+
+
     //Colors for graph
-    const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7"];
-
-
+    const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7","#fdcce5"];
+    
     return (
         <Fragment>
         <Navbar />
         <div className="statistics">
             <div className="statsWrapper">
                 <div className="statsDescription">
-                <h3>Usage and Revenue</h3>
-                <p>Select a facility to view usage.</p>
+                    <h3>Usage and Revenue</h3>
+                    <p>Select a facility to view usage.</p>
                 </div>
                 <div className="statsChooseDate">
                     <div className="statsDateArrow left">
@@ -237,8 +354,13 @@ const Statistics = () => {
                                 </button>
                             </li>
                             <li className="statsNavItem">
-                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court")}>
-                                    Squash court
+                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court A")}>
+                                    Squash court A
+                                </button>
+                            </li>
+                            <li className="statsNavItem">
+                                <button className="statsNavButton" onClick={() => handleFacilityClick("Squash court B")}>
+                                    Squash court B
                                 </button>
                             </li>
                             <li className="statsNavItem">
@@ -246,34 +368,66 @@ const Statistics = () => {
                                     Climbing wall
                                 </button>
                             </li>
-                        </ul>
-                                    
+                        </ul>        
                     </div>
-                    <div className="statsRight"> 
-                        <h3>
-                            {selectedFacility} 
-                        </h3>
-                        <BarChart
-                            width={900}
-                            height={400}
-                            data={graphData}
-                            margin={{ top: 10, right: 30, left: 90, bottom: 5 }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="day" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
-                                <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
-                            )) : 
-                            activityDetails.map((activity,index)=>(
-                                <Bar dataKey={activity.activityName} stackId="day" fill={colors[index]} legendType="circle" />
-                            ))}
-                        </BarChart>
+                    <div className="statsRight">
+                        <div className="usage">
+                            <h3>
+                                {selectedFacility} 
+                            </h3>
+                             <div className="usageGraph">
+                                <BarChart
+                                    width={900}
+                                    height={400}
+                                    data={barChartData}
+                                    margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="day" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
+                                        <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
+                                    )) : 
+                                    selectedFacility === "Studio" ? (
+                                        classDetails.map((classes,index) => (
+                                            <Bar
+                                                dataKey = {classes.className}
+                                                stackId = "day"
+                                                fill = {colors[index]}
+                                                legendType = "circle"
+                                            />
+                                        ))
+                                    ):
+                                    activityGroup.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
+                                        <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
+                                    ))}
+                                </BarChart>
+                            </div>
+                        </div>
+                        <div className="revenue">
+                            {selectedFacility === "Summary" && <h3>Revenue</h3>}
+                            {selectedFacility === "Summary" && <p>Total revenue: £{revenueData}</p>}
+                            <div className="revenueGraph">
+                                <PieChart width={900} height={300}>
+                                    {selectedFacility === "Summary" && facilityDetails.map((facility,index)=>(
+                                        <Pie
+                                            dataKey="revenue"
+                                            nameKey = "facilityName"
+                                            isAnimationActive={true}
+                                            data={pieChartData}
+                                            outerRadius={80}
+                                            fill={colors[index]}
+                                            label
+                                        />
+                                    ))}
+                                    <Tooltip />
+                                </PieChart>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                    {/* {console.log("summaryData:",summaryData)}; */}
             </div>
         </div>
         </Fragment>

@@ -8,7 +8,7 @@ const Payment = require("./payment")
 const Classes = require("./classes");
 const Basket = require("./basket");
 
-const { INTEGER, DATE, TIME, ENUM } = Sequelize;
+const { INTEGER, DATE, TIME, ENUM, FLOAT } = Sequelize;
 
 const Booking = db.define('Booking', {
     bookingId: {
@@ -36,7 +36,11 @@ const Booking = db.define('Booking', {
     bookingType: {
         type: ENUM('activity', 'class'),
         allowNull: false
-  },
+    },
+    price: {
+        type: FLOAT,
+        allowNull: false
+    },
 });
 
 // add foreign key constraint

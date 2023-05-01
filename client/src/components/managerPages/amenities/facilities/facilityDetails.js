@@ -216,7 +216,7 @@ const FacilityDetails = () => {
                                           ))}
                                         </td>
                                         <td>
-                                        <button className="editFacilityButton" onClick={() => {handleShow(facilityName);}}>
+                                        <button className="button editFacilityButton" onClick={() => {handleShow(facilityName);}}>
                                           {editableRows[facilityName] ? "Done" : "Edit"}
                                         </button>
                                         </td>

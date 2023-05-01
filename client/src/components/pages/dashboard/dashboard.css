@@ -1,8 +1,26 @@
 .upper-container {
-    margin-top: 0px;
+    margin-top: 80px;
 }
 
 .quote-container {
+    color: white;
+    padding-top: 10px;
+    margin-bottom: 0px;
+    position: relative;
+    text-align: center;
+    background-color: #033756;
+    border-top: 5px solid #fa991c;
+    border-bottom: 5px solid #fa991c;
+}
+
+.quote-container p {
+    font-size: 30px;
+    font-family: 'Arimo', sans-serif;
+    font-weight: bold;
+    margin: 1;
+}
+
+.quote-container-2 {
     color: white;
     padding-top: 10px;
     margin-bottom: 50px;
@@ -14,7 +32,7 @@
     border-bottom: 5px solid #fa991c;
 }
 
-.quote-container p {
+.quote-container-2 p {
     font-size: 30px;
     font-family: 'Arimo', sans-serif;
     font-weight: bold;

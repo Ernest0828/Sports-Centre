@@ -8,7 +8,6 @@ import { addDays, isThursday } from "date-fns";
 const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, setFormInputs}) => {
 
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
@@ -21,6 +20,15 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
     const [activityNames, setActivityNames] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
 
+    const [uniqueClassNames, setUniqueClassNames] = useState([]);
+
+    useEffect(() => {
+      if (classData) {
+        const classNames = classData.map((data) => data.className);
+        const uniqueClassNames = Array.from(new Set(classNames));
+        setUniqueClassNames(uniqueClassNames);
+      }
+    }, [classData]);
 
       const handleFormInputChange = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -43,7 +51,7 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
       return (
         <Modal show={showClass} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
-          <Modal.Title>Book Activity</Modal.Title>
+          <Modal.Title>Book Class</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
             <span aria-hidden="true">&times;</span>
           </button>
@@ -148,12 +156,11 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
                 }}
               >
                 <option value="">Select Class</option>
-                {classData &&
-                  classData.map((classes) => (
-                    <option key={classes.classId} value={classes.className}>
-                      {classes.className}
-                    </option>
-                  ))}
+                {uniqueClassNames.map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
               </Form.Control>
             </Form.Group>
 
@@ -217,7 +224,7 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
               </Form.Control>
             </Form.Group>
       
-            <Button className="addBookingButton" style={{marginTop: "10px", marginBottom: "10px"}}variant="primary" type="submit">
+            <Button style={{marginTop: "10px", marginBottom: "10px"}}variant="primary" type="submit">
               Book
             </Button>
           </Form>

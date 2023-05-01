@@ -21,6 +21,7 @@ const Staff = () => {
 
     const [selectedStaff, setSelectedStaff] = useState(null);
 
+
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const handleClose = () => {
@@ -232,12 +233,12 @@ const Staff = () => {
                                     )}
                                     </td>
                                     <td>
-                                    <button className="editStaffButton" onClick={() => {handleShow(staffId);}}>
+                                    <button className="button editStaffButton" onClick={() => {handleShow(staffId);}}>
                                     {editableRows[staffId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
                                     <td>
-                                    <button className="editStaffButton" onClick={() => {handleDelete(staffId);}}>
+                                    <button className="button editStaffButton" onClick={() => {handleDelete(staffId);}}>
                                     {editableRows[staffId] ? "Delete" : "Delete"}
                                     </button>
                                     </td>
@@ -245,7 +246,7 @@ const Staff = () => {
                                 ))}
                             </tbody>
                             <div>
-                              <button className="addButton" onClick={() => { handleAdd();}}>
+                              <button className="button addButton" onClick={() => { handleAdd();}}>
                                 Add
                               </button>
                             </div>

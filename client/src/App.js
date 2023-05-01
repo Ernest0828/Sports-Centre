@@ -53,12 +53,12 @@ function App() {
           <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
           <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
+          <Route exact path="/activitydetails" element={<ActivityDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
           <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/statistics" element={<Statistics/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/pricing" element={<Pricing />} />
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
