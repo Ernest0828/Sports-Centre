@@ -434,12 +434,12 @@ const BookingDetails = () => {
                                               <span>{staffName}</span>
                                     </td>
                                      <td>
-                                    <button className="editBookingButton" onClick={() => {handleShow(bookingId);}}>
+                                    <button className="button editBookingButton" onClick={() => {handleShow(bookingId);}}>
                                     {editableRows[bookingId] ? "Edit" : "Edit"}
                                     </button>
                                     </td>
                                     <td>
-                                    <button className="editBookingButton" onClick={() => {handleDelete(bookingId);}}>
+                                    <button className="button editBookingButton" onClick={() => {handleDelete(bookingId);}}>
                                     {editableRows[bookingId] ? "Delete" : "Delete"}
                                     </button>
                                     </td>
@@ -447,10 +447,10 @@ const BookingDetails = () => {
                                 ))}
                             </tbody>
                             <div style={{ display: 'flex'}}>
-                              <button className="addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
+                              <button className="button addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
                                 Book Activity
                               </button>
-                              <button className="addBookingButton" onClick={() => { handleAddClass();}}>
+                              <button className="button addBookingButton" onClick={() => { handleAddClass();}}>
                                 Book Class
                               </button>
                             </div>
