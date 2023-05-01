@@ -2,8 +2,8 @@ import React from 'react';
 import {useEffect, useState, useContext} from 'react';
 import "./bookings.css";
 import Navbar from "../../managerNavbar/ManagerNavbar";
-import {Auth} from "../../../../context/Auth"
-import { Link } from 'react-router-dom';
+// import {Auth} from "../../../../context/Auth"
+// import { Link } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -54,7 +54,7 @@ const BookingDetails = () => {
             bookingType: booking.bookingType,
 
             customerId: booking.customerId,
-            customerName: customer ? customer.customerName : '',
+            //customerEmail: customer ? customer.customerEmail : '',
             //customerName: customer.customerName,
 
             staffId: booking.staffId,
@@ -75,7 +75,7 @@ const BookingDetails = () => {
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
-      customerName:"",
+      customerEmail:"",
       staffId: "",
       staffName:"",
       noOfPeople: "",
@@ -97,7 +97,7 @@ const BookingDetails = () => {
       setShow(true);
       if (selectedBooking) {
       setFormInputs({
-        customerName: selectedBooking.customerName,
+        customerEmail: selectedBooking.customerEmail,
         staffName: selectedBooking.staffName,
         bookingType: selectedBooking.bookingType,
         noOfPeople: selectedBooking.noOfPeople,
@@ -142,14 +142,13 @@ const BookingDetails = () => {
       });
     }
     };
-    
-    
+  
 
     const handleClassSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
-      const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
+      // const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
+      const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
@@ -184,7 +183,7 @@ const BookingDetails = () => {
         return updatedDetails;
         });
     
-      // Send new staff details to server
+      // Send new booking details made by staff
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
         customerId: customerId,
         staffId: staffId,
@@ -199,9 +198,11 @@ const BookingDetails = () => {
           console.log(response.data);
           window.location.reload();
         })
-        .catch(error => {
-          console.log(error);
-          alert('No available activity/classes within the selected day and time');
+        .catch(err => {
+          console.log(err);
+          if (err.response.data.message === "Customer has already booked this session" || "Capacity has been reached") {
+            alert(err.response.data.message);
+          }
         });
     
       // Close modal
@@ -212,7 +213,7 @@ const BookingDetails = () => {
     const handleSubmit = (event) => {
       event.preventDefault();
 
-      const selectedCustomer = customerData.find((customer) => customer.customerName === formInputs.customerName);
+      const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
@@ -250,7 +251,7 @@ const BookingDetails = () => {
       return updatedDetails;
       });
 
-      // Send updated facility details to server
+      // Send updated customer booking details
       axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
 
         customerId: customerId,
@@ -280,8 +281,7 @@ const BookingDetails = () => {
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
-      const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
+      const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
@@ -404,10 +404,12 @@ const BookingDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookingDetails && bookingDetails.map(({bookingId, customerName, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => (
+                                {bookingDetails && bookingDetails.map(({bookingId, customerId, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => {
+                                const customerEmail = customerData.find(customer => customer.customerId === customerId)?.customerEmail;
+                                return (
                                 <tr key = {bookingId}>
                                     <td>
-                                              <span>{customerName}</span>
+                                              <span>{customerEmail}</span>
                                     </td>
                                     <td>
                                               <span>{bookingType}</span>
@@ -444,7 +446,8 @@ const BookingDetails = () => {
                                     </button>
                                     </td>
                                 </tr>
-                                ))}
+                                );
+                                })}
                             </tbody>
                             <div style={{ display: 'flex'}}>
                               <button className="button addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
