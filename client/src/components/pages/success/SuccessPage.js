@@ -1,8 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Fragment } from 'react';
 import axios from 'axios';
 import { Auth } from '../../../context/Auth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
+import Navbar from '../../navbar/Navbar';
+import "./successpage.css"
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -46,13 +47,33 @@ function SuccessPage() {
         
 
   return (
-    <div>
-        <div>
-        <Navbar/>
-        <h1>BOOKING SUCCESSFUL!!</h1>
-        <button onClick={handleClick}>Back to home</button>
+    <Fragment>
+      <Navbar />
+      <div className="success-page">
+        <div className="successpage-container">
+          <h1>BOOKING SUCCESSFUL!!</h1>
+          <p className="success-text">
+            Thank you for booking with us.
+          </p>
+          <button onClick={handleClick}>Back to home</button>
         </div>
-    </div>
+      </div>
+      <div className="footer-container">
+        <div className="footer-item">
+          <h2 style={{ color: '#fa991c' }}>CONTACT US</h2>
+          <ul>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@gymcorp.com</li>
+          </ul>
+        </div>
+        <div className="footer-item">
+          <h2 style={{ color: '#fa991c' }}>OPENING TIMES</h2>
+          <ul>
+            <li>8:00am - 10:00pm</li>
+          </ul>
+        </div>
+      </div>
+    </Fragment>
   )
 }
 
