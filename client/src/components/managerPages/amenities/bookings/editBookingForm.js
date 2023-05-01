@@ -66,9 +66,10 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
               <Form.Control
                 type="text"
                 name="customerName"
-                value={formInputs.customerName}
+                value={formInputs.customerEmail}
                 onChange={handleFormInputChange}
-                placeholder="Jane"
+                placeholder=""
+                disabled = {true}
               />
             </Form.Group>
 

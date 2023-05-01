@@ -197,10 +197,11 @@ router.post("/staff-booking", async (req, res, next) => {
       start,
       activityId,
       classId,
-      facilityName,
-      paymentId,
-      price,
+      facilityName
     } = req.body;
+
+    // format the date string
+    const formattedDate = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
     // Check if valid customer and staff
     const customer = await Customer.findByPk(customerId);
@@ -210,11 +211,11 @@ router.post("/staff-booking", async (req, res, next) => {
     if (!staff) return res.status(404).json({ message: "Staff not found" });
 
     // Check if booking already exists
-    const existingBooking = await Booking.findOne({ where: { customerId, date, facilityName, startTime: start} });
-    if (existingBooking) return res.status(401).json({ message: "Booking already exists"});
+    const existingBooking = await Booking.findOne({ where: { customerId, date:formattedDate, facilityName, startTime: start} });
+    if (existingBooking) return res.status(401).json({ message: "Customer has already booked this session"});
 
     // check facility exists
-    const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
+    const facility = await Facility.findOne({ where: { facilityName: facilityName } });
     if (!facility) {
       return res.status(404).json({ message: "Facility not found" });
     }
@@ -223,6 +224,7 @@ router.post("/staff-booking", async (req, res, next) => {
     let bookingType;
     let bookingTypeId;
     let end;
+    let prices;
     if (activityId) {
       const activity = await Activity.findOne({ where: {activityId, facilityName} });
       if (!activity) return res.status(404).json({ message: "This activity is not available at this facility" });
@@ -238,6 +240,11 @@ router.post("/staff-booking", async (req, res, next) => {
         number = "1"
         end = moment.duration(start).add(moment.duration('01:00:00'));
       }
+      if (customer.isMembership == true) {
+        prices = "0";
+      } else {
+        prices = activity.price;
+      }
     } 
     else if (classId) {
       const classes = await Classes.findOne({ where: {classId, facilityName} });
@@ -247,17 +254,36 @@ router.post("/staff-booking", async (req, res, next) => {
       number = "1";
       // set endTime for classes to be +1hr after startTime
       end = moment.duration(start).add(moment.duration('01:00:00'));
+      if (customer.isMembership == true) {
+        prices = "0";
+      } else {
+        prices = classes.price;
+      }
     } 
     else 
       return res.status(400).json({ message: "No bookings were made" });
 
+    // get the bookings for the given facility and time slot
+    const bookings = await Booking.findAll({where: {facilityName, date:formattedDate, startTime: start} });
+    let totalPeople = 0;
+    bookings.forEach((booking) => {
+      if (booking.noOfPeople) {
+        totalPeople += Number(booking.noOfPeople);
+      } 
+      else {
+        totalPeople += 1;
+      }
+    });
+    if (Number(facility.capacity) < totalPeople + Number(number)) {
+      return res.status(400).json({ message: "Capacity has been reached" });
+    }  
     // format the endTime
     end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
 
     // Create the booking and staff booking
     const booking = await Booking.create({
             noOfPeople: number,
-            date,
+            date: formattedDate,
             startTime: start,
             endTime: end,
             bookingType,
@@ -265,10 +291,9 @@ router.post("/staff-booking", async (req, res, next) => {
             staffId,
             ['${bookingType}Id']: bookingTypeId,
             facilityName,
-            paymentId,
             activityId,
             classId,
-            price,
+            price: prices,
     });
     
     await StaffBooking.create({
