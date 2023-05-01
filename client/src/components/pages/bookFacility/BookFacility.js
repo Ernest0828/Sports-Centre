@@ -36,14 +36,6 @@ const BookFacility = () => {
     (facility) => facility.facilityName !== "Studio"
   );
 
-  // const removeItem = async (itemId) => {
-  //   try {
-  //     await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}`);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   return (
     <Fragment>
     <Navbar />
