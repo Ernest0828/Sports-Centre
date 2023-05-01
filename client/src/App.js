@@ -28,7 +28,7 @@ import BookingDetails from './components/managerPages/amenities/bookings/booking
 import Statistics from './components/managerPages/statistics/Statistics';
 
 import Dashboard from "./components/pages/dashboard/Dashboard"
-import DropDownChoice from './components/dropdownfacility/DropDownFacility';
+import DropDownChoice from './components/dropDownFacility/DropDownFacility';
 import SuccessPage from './components/pages/success/SuccessPage';
 import CancelPage from './components/pages/cancel/CancelPage';
 import FacilityPage from './components/pages/individual-facilities/FacilityPage';
@@ -52,12 +52,12 @@ function App() {
           <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
           <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
+          <Route exact path="/activitydetails" element={<ActivityDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
           <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/statistics" element={<Statistics/>}/>
           <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/pricing" element={<Pricing />} />
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>

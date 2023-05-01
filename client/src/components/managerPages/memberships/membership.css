@@ -52,7 +52,7 @@ td{
     width: 80px;
 	border: none;
 	border-radius: 20px;
-	padding: 5px;
+	padding: 15px;
     cursor: pointer;
 	color: white;
     background-color: grey;
@@ -112,24 +112,6 @@ button.editCustomerButton {
 	color: white;
 }
 
-.cancelMembershipButton{
-    width: 80px;
-    text-decoration: none;
-	border: none;
-	border-radius: 20px;
-    margin-top: 5px;
-	padding: 5px;
-    cursor: pointer;
-	color: white;
-    background-color: grey;
-}
-
-.cancelMembershipButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
-
 
 .profileDeleteBookingBtn{
     width: 80px;
@@ -142,9 +124,35 @@ button.editCustomerButton {
 }
 
 
-
 .profileDeleteBookingBtn:hover{
 	transform: scale(.98);
 	background-color: black ;
 	color: white;
+}
+
+.saveButton{
+    width: 150px;
+    text-decoration: none;
+	border: none;
+    margin-top: 5px;
+	padding: 5px;
+    cursor: pointer;
+	color: white;
+    background-color: rgb(14, 136, 250);
+}
+
+.saveButton:hover{
+	transform: scale(.98);
+	background-color: black ;
+	color: white;
+}
+
+.discountTable {
+    width: 50%;
+    margin-top: 30px;
+  }
+
+.discountHead{
+    background-color: grey;
+    padding: 8px;
 }

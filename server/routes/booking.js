@@ -199,6 +199,7 @@ router.post("/staff-booking", async (req, res, next) => {
       classId,
       facilityName,
       paymentId,
+      price,
     } = req.body;
 
     // Check if valid customer and staff
@@ -266,7 +267,8 @@ router.post("/staff-booking", async (req, res, next) => {
             facilityName,
             paymentId,
             activityId,
-            classId
+            classId,
+            price,
     });
     
     await StaffBooking.create({

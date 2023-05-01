@@ -234,18 +234,18 @@ const ActivityDetails = () => {
                                     </td>
                                     {isEditable && (
                                     <td>
-                                    <button className="deleteButton" >
+                                    <button className="button deleteButton" >
                                         Delete Activity
                                     </button>
                                     </td>
                                      )}
                                     <td>
-                                    <button className="editActivityButton" onClick={() => {setSelectedActivity({activityId, activityName, day, startTime, endTime, price, facilityName}); handleShow(activityId);}}>
+                                    <button className="button editActivityButton" onClick={() => {setSelectedActivity({activityId, activityName, day, startTime, endTime, price, facilityName}); handleShow(activityId);}}>
                                     {editableRows[activityId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
                                     <td>
-                                    <button className="editActivityButton" onClick={() => {handleDelete(activityId);}}>
+                                    <button className="button editActivityButton" onClick={() => {handleDelete(activityId);}}>
                                     {editableRows[activityId] ? "Delete" : "Delete"}
                                     </button>
                                     </td>
@@ -253,7 +253,7 @@ const ActivityDetails = () => {
                                 ))}
                             </tbody>
                             <div>
-                              <button className="addActivityButton" onClick={() => { handleAdd();}}>
+                              <button className="button addActivityButton" onClick={() => { handleAdd();}}>
                                 Add
                               </button>
                             </div>

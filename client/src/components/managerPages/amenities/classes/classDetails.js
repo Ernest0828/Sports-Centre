@@ -229,12 +229,12 @@ const ClassDetails = () => {
                                       <span>{facilityName}</span>
                                     </td>
                                     <td>
-                                    <button className="editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleShow(classId);}}>
+                                    <button className="button editButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleShow(classId);}}>
                                     {editableRows[classId] ? "Done" : "Edit"}
                                     </button>
                                     </td>
                                     <td>
-                                    <button className="deleteClassButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleDelete(classId);}}>
+                                    <button className="button deleteClassButton" onClick={() => {setSelectedClass({classId, className, price, dayTime, facilityName}); handleDelete(classId);}}>
                                     {editableRows[classId] ? "Delete" : "Delete"}
                                     </button>
                                     </td>
@@ -242,7 +242,7 @@ const ClassDetails = () => {
                                 ))}
                             </tbody>
                             <div>
-                            <button className="addClassButton" onClick={() => { handleAdd();}}>
+                            <button className="button addClassButton" onClick={() => { handleAdd();}}>
                               Add
                             </button>
                             </div>

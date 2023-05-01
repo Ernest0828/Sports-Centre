@@ -74,11 +74,7 @@ td{
     background-color: grey;
 }
 
-.deleteBookingButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
+
 
 .editBookingButton{
     margin-top: 10px;
@@ -90,6 +86,7 @@ td{
     background-color: grey;
     box-sizing: border-box;
 }
+
 
 button.editBookingButton {
   width: 100%;
@@ -106,13 +103,9 @@ button.editBookingButton {
     background-color: grey;
 }
 
-.addBookingButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
 
 .activityTable {
     max-height: 300px;
     overflow-y: auto;
 }
+

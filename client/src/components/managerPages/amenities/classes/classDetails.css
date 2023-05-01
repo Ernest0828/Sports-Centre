@@ -79,6 +79,7 @@ td{
     box-sizing: border-box;
 }
 
+
 button.editButton {
   width: 80%;
 }
@@ -94,6 +95,8 @@ button.editButton {
     box-sizing: border-box;
 }
 
+
+
 button.addClassButton {
   width: 40%;
 }
@@ -107,6 +110,10 @@ button.addClassButton {
 	color: white;
     background-color: grey;
     box-sizing: border-box;
+}
+
+.deleteClassButton:hover{
+    background-color: black;
 }
 
 button.deleteClassButton {

@@ -82,7 +82,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 </Form.Select>
                 </div>
                 <div>
-                <Button className= "cancelMembershipButton" style={{marginTop: "10px"}}variant="primary" onClick={handleSubmitCancel}>
+                <Button style={{marginTop: "10px"}}variant="primary" onClick={handleSubmitCancel}>
                   Cancel
                 </Button>
                 </div>
@@ -103,7 +103,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
             </Form.Select>
             </Form.Group>
       
-            <Button className= "addCustomerButton" style={{marginTop: "10px"}}variant="primary" type="submit">
+            <Button style={{marginTop: "10px"}}variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>

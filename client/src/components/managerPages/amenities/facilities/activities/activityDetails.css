@@ -75,11 +75,6 @@ td{
     background-color: grey;
 }
 
-.addActivityButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
 
 .deleteButton{
     width: 80px;
@@ -91,11 +86,6 @@ td{
     background-color: grey;
 }
 
-.deleteButton:hover{
-	transform: scale(.98);
-	background-color: black ;
-	color: white;
-}
 
 .editActivityButton{
     margin-top: 10px;
@@ -107,6 +97,8 @@ td{
     background-color: grey;
     box-sizing: border-box;
 }
+
+
 
 button.editActivityButton {
   width: 90%;
