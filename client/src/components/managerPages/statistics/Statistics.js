@@ -66,9 +66,13 @@ const Statistics = () => {
 
     useEffect(()=>{
 
-        setClassDetails(classData.map(classes => ({ 
-            className: classes.className,
-            classId: classes.classId,
+        setClassDetails(classData.map((className, index) => ({ 
+            className: className.className,
+            classId: className.classId,
+            
+            nextClassName: index < classData.length - 1 ? classData.find(c => c.classId === className.classId + 1).className : ''
+
+            
 
         })));
 
@@ -224,7 +228,7 @@ const Statistics = () => {
 
         }, initClassDay);
 
-       /* //get revenue graph data for summary
+        //get revenue graph data for summary
         const classPieData = bookingDetails
         .filter(booking => booking.bookingType === "class" &&
             moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]')) 
@@ -232,8 +236,11 @@ const Statistics = () => {
 
             const {classId, price} = curr;
             const classIndex = acc.findIndex(f => f.classId === classId);
-            acc[classIndex].classRevenue += price;
+            if (classIndex >= 0) {
+                acc[classIndex].classRevenue += price;
+              }
             return acc;
+            //console.log("classId",classId);
         }, initClassPrice);
 
         const sumClassRevenue = classPieData.reduce((totalRevenue, classes) => {
@@ -241,8 +248,8 @@ const Statistics = () => {
           }, 0);
           
           
-        setClassRevenueData(sumClassRevenue);
-        // console.log("revenueData",revenueData);*/
+        setClassRevenueData(sumClassRevenue.toFixed(1));
+        
 
 
         //get usage graph data for Summary
@@ -334,8 +341,8 @@ const Statistics = () => {
         selectedFacility === "Studio" ? setBarChartData(classesData) :
         setBarChartData(activityBarData); 
         
-        selectedFacility === "Summary" && setPieChartData(summaryPieData) 
-        //setPieChartData(classPieData);
+        selectedFacility === "Summary" ? setPieChartData(summaryPieData) :
+        setPieChartData(classPieData);
 
         
     }, [bookingDetails,activityDetails,selectedFacility,classData,dateRange.end,dateRange.start, classNames, classDetails]);
@@ -466,10 +473,10 @@ const Statistics = () => {
                                             label
                                         />
                                     ))}
-                                    {selectedFacility === "Studio" && classDetails.map((classes,index)=>(
+                                    {selectedFacility === "Studio" && classNames.map((classNames,index)=>(
                                         <Pie
-                                            dataKey="revenue"
-                                            nameKey = "classNames"
+                                            dataKey="classRevenue"
+                                            nameKey = "className"
                                             isAnimationActive={true}
                                             data={pieChartData}
                                             outerRadius={80}

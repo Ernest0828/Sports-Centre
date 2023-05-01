@@ -78,10 +78,10 @@ const MembershipDetails = () => {
       const index = updatedDetails.findIndex(
           (customer) => customer.customerId === selectedCustomer.customerId
       );
-      updatedDetails[index].customerId = formInputs.customerId;
-      updatedDetails[index].customerName = formInputs.customerName;
-      updatedDetails[index].customerNumber = formInputs.customerNumber;
-      updatedDetails[index].customerEmail = formInputs.customerEmail;
+      //updatedDetails[index].customerId = formInputs.customerId;
+      //updatedDetails[index].customerName = formInputs.customerName;
+      //updatedDetails[index].customerNumber = formInputs.customerNumber;
+      //updatedDetails[index].customerEmail = formInputs.customerEmail;
       updatedDetails[index].isMembership =  formInputs.isMembership;
       updatedDetails[index].membershipType =  formInputs.membershipType;
 
@@ -89,7 +89,7 @@ const MembershipDetails = () => {
       });
 
       // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/customer/${selectedCustomer.customerId}`, {
+     /* axios.put(`http://localhost:4000/api/customer/${selectedCustomer.customerId}`, {
 
         //staffId: formInputs.staffId,
         customerName: formInputs.customerName,
@@ -102,9 +102,9 @@ const MembershipDetails = () => {
         console.log(response.data);
         })
         .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
+        //console.log(error);
+        //alert('Failed to save data')
+        });*/
 
       if (formInputs.isMembership === true) {
         const hasMembership = membershipData.some(membership => membership.customerId === selectedCustomer.customerId);
@@ -115,7 +115,7 @@ const MembershipDetails = () => {
           })
           .then(response => {
           console.log(response.data);
-          window.location.reload();
+          //window.location.reload();
           })
           .catch(error => {
           console.log(error);
@@ -127,7 +127,7 @@ const MembershipDetails = () => {
         })
           .then(response => {
             console.log(response.data);
-            window.location.reload();
+            //window.location.reload();
             })
             .catch(error => {
             console.log(error);

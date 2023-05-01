@@ -41,7 +41,8 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 name="customerName"
                 value={formInputs.customerName}
                 onChange={handleFormInputChange}
-                placeholder="Sebastian Lai"
+                placeholder=""
+                disabled = {true}
               />
             </Form.Group>
       
@@ -53,6 +54,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 value={formInputs.customerNumber}
                 onChange={handleFormInputChange}
                 placeholder="019283746"
+                disabled = {true}
               />
             </Form.Group>
       
@@ -64,13 +66,22 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 value={formInputs.customerEmail}
                 onChange={handleFormInputChange}
                 placeholder="sebastian@gmail.com"
+                disabled = {true}
               />
             </Form.Group>
-
+            
+            
             <Form.Group controlId="formIsMembership">
                 <div style={{display: 'block'}}>
                 <Form.Label>Member Status</Form.Label>
                 </div>
+                {formInputs.isMembership === true &&
+                <Form.Control
+                name="isMembership"
+                value={formInputs.isMembership ? 'Member' : 'Non-member'}
+                disabled = {true}
+              />}
+                {formInputs.isMembership === false &&
                 <div>
                 <Form.Select
                 name="isMembership"
@@ -81,12 +92,14 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 <option>Non-member</option>
                 </Form.Select>
                 </div>
+                }
                 <div>
                 <Button style={{marginTop: "10px"}}variant="primary" onClick={handleSubmitCancel}>
                   Cancel
                 </Button>
                 </div>
             </Form.Group>
+            
 
             <Form.Group controlId="formMembershipType">
             <div style={{display: 'block'}}>
