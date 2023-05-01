@@ -66,7 +66,6 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               <Form.Control
                 as="select"
                 name="customerName"
-                value={selectedCustomer}
                 onChange={(e) => {
                   setSelectedCustomer(e.target.value);
                   setFormInputs({
@@ -74,6 +73,8 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
                     customerName: e.target.value
                   });
                 }}
+                value={selectedCustomer}
+                
               >
                 <option value="">Select Customer</option>
                 {customerData &&

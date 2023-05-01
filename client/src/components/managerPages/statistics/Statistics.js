@@ -95,12 +95,39 @@ const Statistics = () => {
     //Calculate total revenue
     const [revenueData, setRevenueData] = useState();
 
+    // Set Monday as the start of the week
+    moment.locale('en-gb', {
+        week: {
+        dow: 1, // Monday is the first day of the week
+        },
+    });
 
+    //For choosing week 
+    const [dateRange, setDateRange] = useState({
+        start: moment().startOf('week'),
+        end: moment().endOf('week')
+    });
+
+    const handleBackWeek = () => {
+        setDateRange({
+            start: moment(dateRange.start).subtract(1, 'week').startOf('week'),
+            end: moment(dateRange.end).subtract(1, 'week').endOf('week')
+        });
+    };
+
+    const handleForwardWeek = () => {
+        setDateRange({
+            start: moment(dateRange.start).add(1, 'week').startOf('week'),
+            end: moment(dateRange.end).add(1, 'week').endOf('week')
+        });
+    };
 
     useEffect(() => {
         const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"];
         const facilities = ["Studio","Swimming pool", "Fitness room","Sports hall","Squash court A", "Squash court B", "Climbing wall"];
 
+
+        
         // create an initial array with every combination of day and facility set to 0
         const initFacDay = daysOfWeek.map(day => {
             const facToDay = { day };
@@ -221,9 +248,6 @@ const Statistics = () => {
         // console.log("revenueData",revenueData);
         
 
-
-
-
         // chart data for activities
         const activityBarData = bookingDetails
         .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
@@ -272,34 +296,9 @@ const Statistics = () => {
         setBarChartData(activityBarData)
         selectedFacility === "Summary" && setPieChartData(summaryPieData);
         
-    }, [bookingDetails,activityDetails,selectedFacility]);
+    }, [bookingDetails,activityDetails,selectedFacility,classData,dateRange.end,dateRange.start,classDetails]);
 
-    // Set Monday as the start of the week
-    moment.locale('en-gb', {
-        week: {
-        dow: 1, // Monday is the first day of the week
-        },
-    });
 
-    //For choosing week 
-    const [dateRange, setDateRange] = useState({
-        start: moment().startOf('week'),
-        end: moment().endOf('week')
-    });
-
-    const handleBackWeek = () => {
-        setDateRange({
-            start: moment(dateRange.start).subtract(1, 'week').startOf('week'),
-            end: moment(dateRange.end).subtract(1, 'week').endOf('week')
-        });
-    };
-
-    const handleForwardWeek = () => {
-        setDateRange({
-            start: moment(dateRange.start).add(1, 'week').startOf('week'),
-            end: moment(dateRange.end).add(1, 'week').endOf('week')
-        });
-    };
 
     //Colors for graph
     const colors = ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3c7","#fdcce5"];
@@ -391,6 +390,16 @@ const Statistics = () => {
                                     {selectedFacility === "Summary" ? facilityDetails.map((facility,index)=>(
                                         <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
                                     )) : 
+                                    selectedFacility === "Studio" ? (
+                                        classDetails.map((classes,index) => (
+                                            <Bar
+                                                dataKey = {classes.className}
+                                                stackId = "day"
+                                                fill = {colors[index]}
+                                                legendType = "circle"
+                                            />
+                                        ))
+                                    ):
                                     activityGroup.filter(group => group.facilityName === selectedFacility)[0].activityNames.map((activity,index)=>(
                                         <Bar dataKey={activity} stackId="day" fill={colors[index]} legendType="circle" />
                                     ))}
