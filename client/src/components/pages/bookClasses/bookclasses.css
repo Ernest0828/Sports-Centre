@@ -14,7 +14,7 @@
 }
 
 .classes{
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
@@ -23,6 +23,8 @@
     background-color: white;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.09);
     border-radius: 10px;
+    width: 100%;
+    height:100%
   }
   
   
@@ -49,7 +51,45 @@
 
 
 
+/*Make code responsive*/
+@media (max-width: 1200px) {
+  .gridFormat{
+    grid-template-columns: repeat(2, 1fr);
+  }
 
+  .classWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 90%;
+  }
+
+  .classes{
+    margin-bottom: 30px;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .classWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 90%;
+  }
+
+  .classes{
+    margin-bottom: 30px;
+    margin-right: 0;
+  }
+
+  .gridFormat{
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+}
 
 
 

@@ -1,12 +1,11 @@
 
-
-
 .facilityItem{
   position: relative;
   border-radius:10px ;
   background-color: #1c768f;
-  width: 250px;
   height: 250px;
+  width: 100%;
+  text-align: center;
 }
 
 .facilityItem:hover{
@@ -17,7 +16,7 @@
 
 .facilityName{
   color: white;
-  align-self: flex-end;
+  /* align-self: flex-end; */
   font-weight: 600;
 }
 
