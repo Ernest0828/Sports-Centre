@@ -101,6 +101,7 @@ button.editBookingButton {
     cursor: pointer;
 	color: white;
     background-color: grey;
+    margin-right: 10px;
 }
 
 
@@ -109,3 +110,21 @@ button.editBookingButton {
     overflow-y: auto;
 }
 
+.addBookingButtonContainer {
+  display: flex;
+  margin-left: 65px;
+  margin-bottom: 2%;
+}
+
+.addBookingButton:hover {
+  transform: scale(.98);
+  background-color: black;
+  color: white;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .button-container {
+    margin-left: 20px;
+  }
+}
