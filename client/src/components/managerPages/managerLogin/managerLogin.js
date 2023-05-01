@@ -26,7 +26,7 @@ const ManagerLogin = () => {
         const res = await axios.post("http://localhost:4000/auth/staff/login", credentials);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-        navigate('/manager-profile')
+        navigate('/employee-profile')
         
         dispatch({
             type: "SET_MANAGER",
