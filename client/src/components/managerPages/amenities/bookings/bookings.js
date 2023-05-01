@@ -449,15 +449,15 @@ const BookingDetails = () => {
                                 );
                                 })}
                             </tbody>
-                            <div style={{ display: 'flex'}}>
-                              <button className="button addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
-                                Book Activity
-                              </button>
-                              <button className="button addBookingButton" onClick={() => { handleAddClass();}}>
-                                Book Class
-                              </button>
-                            </div>
                         </table>
+                        <div className="addBookingButtonContainer">
+                                <button className="button addBookingButton" onClick={() => { handleAdd(); }}>
+                                  Book Activity
+                                </button>
+                                <button className="button addBookingButton" onClick={() => { handleAddClass(); }}>
+                                  Book Class
+                                </button>
+                              </div>
                     </div>
                 </div>
         </div>
