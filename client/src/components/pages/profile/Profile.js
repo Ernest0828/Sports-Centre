@@ -53,7 +53,7 @@ const MemberProfile = () => {
 
     //delete booking
     const handleDelete = async (bookingId) => {
-        if (window.confirm("Are you sure you want to delete this staff member?")) {
+        if (window.confirm("Are you sure you want to delete this booking?")) {
         try {
             const res = await axios.delete("http://localhost:4000/api/bookings/"+ bookingId);
             console.log(res);
