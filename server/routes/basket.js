@@ -21,6 +21,7 @@ router.post("/basketid", async (req, res, next) => {
             classId,
             facilityName } = req.body;
 
+        const formattedDate = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
         // check if customer exists
         const customer = await Customer.findByPk(customerId);
         if (!customer){
@@ -28,13 +29,13 @@ router.post("/basketid", async (req, res, next) => {
         }
 
         // check if same booking added to basket
-        const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date}})
+        const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date: formattedDate}})
         if (sameItem) {
             return res.status(401).json({ message: "You have already booked for this time slot" });
         }
 
         // check if same booking has already been made
-        const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date}})
+        const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date: formattedDate}})
         if (sameBooking) {
             return res.status(401).json({ message: "You have a booking session" });
         }
@@ -90,7 +91,7 @@ router.post("/basketid", async (req, res, next) => {
         end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
         // create item in basket
         const newBasket = await Basket.create({
-            date,
+            date: formattedDate,
             startTime: start,
             endTime: end,
             price: prices,
