@@ -122,18 +122,16 @@ const SportsHallSchedule = () => {
           </tbody>
         </table>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
+      <Modal show={showModal}>
+  <Modal.Header>
     <Modal.Title>Booking Details</Modal.Title>
+    <Button variant="secondary" onClick={handleCloseModal}>
+      Close
+    </Button>
   </Modal.Header>
   <Modal.Body>
     <BookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
   </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
 </Modal>
     </div>
   );

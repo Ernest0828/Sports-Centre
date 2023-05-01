@@ -244,7 +244,7 @@ const Statistics = () => {
             return totalRevenue + facility.revenue;
           }, 0);
           
-        setRevenueData(sumRevenue);
+        setRevenueData(sumRevenue.toFixed(1));
         // console.log("revenueData",revenueData);
         
 
