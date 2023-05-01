@@ -45,6 +45,22 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
         }
     }
 
+    function getNextDate(day) {
+        const today = new Date();
+        const targetDay = getDayOfWeek(day);
+      
+        let nextDate = new Date(today);
+        while (nextDate.getDay() !== targetDay) {
+          nextDate.setDate(nextDate.getDate() + 1);
+        }
+      
+        return nextDate;
+      }
+    
+      useEffect(() => {
+        setSelectedDate(getNextDate(selectedDay));
+      }, [selectedDay]);
+
     const handleClick = async() => {
         if (user) {
           try {
@@ -57,6 +73,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
                 facilityName: "Studio" 
               });
               alert('Item added to basket!');
+              window.location.reload();
             } catch (err) {
               console.log(err.message);
               alert("Error adding item to basket!");

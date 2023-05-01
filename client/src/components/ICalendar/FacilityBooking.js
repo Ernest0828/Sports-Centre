@@ -10,7 +10,7 @@ import axios from 'axios'
 const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState();
   const {user} = useContext(Auth);
 
   const {
@@ -24,11 +24,17 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     error: activityError,
   } = useFetch("http://localhost:4000/api/activities/");
 
-  const [selectedOptionB, setSelectedOptionB] = useState("General Use");
-
-  const selectedActivity = activityData
+  const [selectedOptionB, setSelectedOptionB] = useState(" Use");
+  let selectedActivity;
+if(selectedOptionB === "Team events"){
+ selectedActivity = activityData
     ? activityData.find((activity) => activity.activityName === selectedOptionB && activity.day === selectedDay && activity.facilityName === facility.facilityName)
     : null;
+}else {
+   selectedActivity = activityData
+    ? activityData.find((activity) => activity.activityName === selectedOptionB && activity.facilityName === facility.facilityName)
+    : null;
+}
   const activityId = selectedActivity ? selectedActivity.activityId : null;
 
   const filteredActivities = activityData
@@ -74,6 +80,22 @@ const uniqueActivityNames = [
     }
   }
 
+  function getNextDate(day) {
+    const today = new Date();
+    const targetDay = getDayOfWeek(day);
+  
+    let nextDate = new Date(today);
+    while (nextDate.getDay() !== targetDay) {
+      nextDate.setDate(nextDate.getDate() + 1);
+    }
+  
+    return nextDate;
+  }
+
+  useEffect(() => {
+    setSelectedDate(getNextDate(selectedDay));
+  }, [selectedDay]);
+
   const handleClick = async() => {
     if (user) {
       try {
@@ -86,6 +108,7 @@ const uniqueActivityNames = [
             facilityName: facility.facilityName 
           });
           alert('Item added to basket!');
+          window.location.reload();
         } catch (err) {
           console.log(err.message);
           alert("Error adding item to basket!");
@@ -113,7 +136,7 @@ const uniqueActivityNames = [
           value={selectedOptionB}
           onChange={(e) => setSelectedOptionB(e.target.value)}
         >
-          <option value="" disabled selected hidden>
+          <option value="" >
             Select an activity
           </option>
           {uniqueActivityNames.map((activityName) => (

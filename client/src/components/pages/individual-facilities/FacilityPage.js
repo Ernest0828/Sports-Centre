@@ -11,9 +11,11 @@ import { Auth } from '../../../context/Auth';
 import SwimmingPoolSchedule from '../../ICalendar/SwimmingCal';
 import SportsHallSchedule from '../../ICalendar/SportsCal';
 import SquashCourtSchedule from '../../ICalendar/SquashCal';
+import SquashCourtBSchedule from '../../ICalendar/SquashCalB';
 import ClimbingWallSchedule from '../../ICalendar/ClimbCal';
 import FitnessRoomSchedule from '../../ICalendar/FitnessCal';
 import StudioSchedule from '../../ICalendar/StudioCal';
+
 
 function FacilityPage() {
 	const[selectedDate, setSelectedDate] = useState(new Date());
@@ -60,8 +62,11 @@ function FacilityPage() {
     case 'Sports hall':
         Timetable = <SportsHallSchedule />;
         break;
-    case 'Squash court':
+    case 'Squash court A':
         Timetable = <SquashCourtSchedule />;
+        break;
+    case 'Squash court B':
+        Timetable = <SquashCourtBSchedule />;
         break;
     case 'Climbing wall':
         Timetable = <ClimbingWallSchedule />;
