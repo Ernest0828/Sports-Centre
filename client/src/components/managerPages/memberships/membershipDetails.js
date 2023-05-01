@@ -8,31 +8,23 @@ import axios from 'axios';
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditCustomerForm from "./editCustomerForm";
 import AddCustomerForm from "./addCustomerForm";
-import EditDiscountForm from "./editDiscountForm";
 
 const MembershipDetails = () => {
 
     //useFetch Hooks
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:membershipData, loading:membershipLoading, error:membershipError} = useFetch ("http://localhost:4000/api/membership/memberships");
-    const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
 
     const [customerDetails, setCustomerDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
     const [isEditable, setIsEditable] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
-
     const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [discountDetails, setDiscountDetails] = useState()
-    const [selectedDiscount, setSelectedDiscount] = useState(null);
-    const [showDiscount, setShowDiscount] = useState(false);
-
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
-      setShowDiscount(false);
     }
 
     useEffect(() => {
@@ -49,14 +41,7 @@ const MembershipDetails = () => {
         };
       }));
 
-      if (discountData) {
-        setDiscountDetails({
-          discountId: discountData.id,
-          discount: discountData.discount
-        });
-      }
-
-    }, [customerData, discountData]);
+    }, [customerData]);
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
@@ -68,10 +53,6 @@ const MembershipDetails = () => {
       membershipType:"",
     });
 
-    const [discountInputs, setDiscountInputs] = useState({
-      discountId: "",
-      discount:"",
-    });
 
     const handleShow = (customerId) => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
@@ -248,41 +229,6 @@ const MembershipDetails = () => {
     };
 
 
-    const handleDiscount = (discountId) => {
-      const selectedDiscount = {
-        discountId: discountId,
-        discount: discountDetails.discount
-      };
-      setSelectedDiscount(selectedDiscount);
-      if (selectedDiscount) {
-        setDiscountInputs({
-          discount: selectedDiscount.discount*100
-        });
-      }
-      setShowDiscount(true);
-    };
-
-
-    const handleSubmitDiscount = (event) => {
-      event.preventDefault();
-
-      const updatedDiscount = discountInputs.discount/100
-
-      // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/discount/${discountDetails.discountId}`, {
-        discount: updatedDiscount
-        })
-        .then(response => {
-        console.log(response.data);
-        window.location.reload();
-        })
-        .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
-
-      };
-
     const handleDelete = (customerId) => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
       setSelectedCustomer(selectedCustomer);
@@ -318,13 +264,6 @@ const MembershipDetails = () => {
               handleAddSubmit={handleAddSubmit}
               formInputs={formInputs}
               setFormInputs={setFormInputs}
-            />
-            <EditDiscountForm 
-              showDiscount={showDiscount}
-              handleClose={handleClose}
-              handleSubmitDiscount={handleSubmitDiscount}
-              discountInputs={discountInputs}
-              setDiscountInputs={setDiscountInputs}
             />
             <div  className="customerDetails">
               <div className="customerDetailsTable">
@@ -383,33 +322,6 @@ const MembershipDetails = () => {
                               <button className="addCustomerButton" onClick={() => { handleAdd();}}>
                                 Register Customer
                               </button>
-                            </div>
-
-                            <div>
-                            <table className="discountTable" style={{float: "left"}}>
-                              <thead>
-                                <tr>
-                                <th className="discountHead">Discount</th>
-                                <th className="discountHead"></th>
-                                <th className="discountHead"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {discountDetails && discountDetails.discount && (
-                                  <tr>
-                                    <td>Booking Discount: </td>
-                                    <td>
-                                      <span>{(discountDetails.discount * 100).toFixed(2)}%</span>
-                                    </td>
-                                    <td>
-                                    <button className="editCustomerButton" onClick={() => {handleDiscount(discountDetails.discountId)}}>
-                                    Edit
-                                    </button>
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
                             </div>
                         </table>
                     </div>

@@ -94,6 +94,17 @@ td{
     margin-left: 10px;
 }
 
+
+.discountTable {
+    width: 50%;
+    margin-top: 30px;
+  }
+
+.discountHead{
+    background-color: grey;
+    padding: 8px;
+}
+
 /*{isEditable && (
     <td>
         <button className="deleteButton" onClick={() => onDeleteRow(id)}>
