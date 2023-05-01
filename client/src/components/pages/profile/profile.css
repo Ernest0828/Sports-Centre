@@ -5,6 +5,8 @@
     align-items: center;
     justify-content: center;
     font-family: Arimo;
+    width: 100%;
+    height: 100%;
 }
 
 .profileWrapper{
@@ -82,3 +84,28 @@ td{
 	background-color: black ;
 	color: white;
 }
+
+
+/*Make code responsive*/
+@media (max-width: 768px) {
+    .profileWrapper{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .profileRight{
+        margin-top: 30px;
+        width: 90%;
+    }
+
+    .userBookingsTable{
+        overflow-x:auto ;
+        overflow-y: auto;
+        width: 100%;
+    }
+  }
+  
+  
+  

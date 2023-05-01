@@ -52,10 +52,10 @@
   display: grid;
   /* grid-template-columns: repeat(3, 1fr); */
   text-align: center;
-  gap: 20px;
-  padding: 0px;
-  width: 100%;
-  height: 90%;
+  /* gap: 20px; */
+  /* padding: 0px; */
+  /* width: 100%;
+  height: 90%; */
 }
 /*Make code responsive*/
 @media (max-width: 768px) {
