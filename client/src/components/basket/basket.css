@@ -9,6 +9,7 @@
     border-radius: 10px;
     background-color: #fa991c;
     height: 70vh;
+    width: 90%;
 }
 
 .basketTitle{
@@ -132,4 +133,13 @@
 	transform: scale(.98);
 	background-color: #DE7F05 ;
 	color: white;
+}
+
+
+/*Make code responsive*/
+@media (max-width: 1200px) {
+    .basket{
+        height: 100%;
+        width: 100%;
+    }
 }
