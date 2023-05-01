@@ -54,7 +54,7 @@ const BookingDetails = () => {
             bookingType: booking.bookingType,
 
             customerId: booking.customerId,
-            customerName: customer ? customer.customerName : '',
+            // customerName: customer ? customer.customerName : '',
             //customerName: customer.customerName,
 
             staffId: booking.staffId,
@@ -250,215 +250,218 @@ const BookingDetails = () => {
       return updatedDetails;
       });
 
-      // Send updated facility details to server
-      axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
+        // Send updated facility details to server
+        axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
 
-        customerId: customerId,
-        staffId: staffId,
-        date: formInputs.date,
-        startTime: formInputs.startTime,
-        endTime: formInputs.endTime,
-        activityId: activityId,
-        classId: classId,
-        facilityName:  formInputs.facilityName,
-        price: pricee
-        })
-        .then(response => {
-        console.log(response.data);
-        window.location.reload();
-        })
-        .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
-
-      // Close modal
-      handleClose();
-    };
-    
-
-    const handleAddSubmit = (event) => {
-      event.preventDefault();
-
-      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
-      const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
-      const customerId = selectedCustomer ? selectedCustomer.customerId : null;
-
-      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
-      const staffId = selectedStaff ? selectedStaff.staffId : null;
-
-      // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-      //const [day, month, year] = formInputs.date.split("/");
-      //onst date = `${year}/${month}/${day}`;
-
-      const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
-      const activityId = selectedActivity ? selectedActivity.activityId : null;
-      const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
-
-
-      const dateofDay = new Date(formInputs.date);
-      const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
-      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
-      const classId = selectedClass ? selectedClass.classId : null;
-
-      setBookingDetails((prevState) => {
-        const updatedDetails = [...prevState];
-        
-        updatedDetails.customerId = customerId;
-        updatedDetails.staffId = staffId;
-        updatedDetails.date = formInputs.date;
-        updatedDetails.startTime = formInputs.startTime;
-        updatedDetails.activityId =  activityId;
-        updatedDetails.classId =  classId;
-        updatedDetails.facilityName =  formInputs.facilityName;
-        updatedDetails.price =  activityPrice;
-  
-        return updatedDetails;
-        });
-    
-      // Send new staff details to server
-      axios.post('http://localhost:4000/api/bookings/staff-booking', {
-        customerId: customerId,
-        staffId: staffId,
-        date: formInputs.date,
-        start: formInputs.startTime,
-        activityId: activityId,
-        classId: classId,
-        facilityName: formInputs.facilityName,
-        price: activityPrice,
-      })
-        .then(response => {
+          customerId: customerId,
+          staffId: staffId,
+          date: formInputs.date,
+          startTime: formInputs.startTime,
+          endTime: formInputs.endTime,
+          activityId: activityId,
+          classId: classId,
+          facilityName:  formInputs.facilityName,
+          price: pricee
+          })
+          .then(response => {
           console.log(response.data);
           window.location.reload();
-        })
-        .catch(error => {
-          console.log(error);
-          alert('No available activity/classes within the selected day and time');
-        });
-    
-      // Close modal
-      handleClose();
-      
-    };
-
-    const handleDelete = (bookingId) => {
-      const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
-      setSelectedBooking(selectedBooking);
-      
-      if (window.confirm("Are you sure you want to delete this booking?")) {
-        axios.delete(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`)
-          .then(() => {
-            // remove the deleted staff member from staffDetails state
-            setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
-            setIsSaved(true); // set a flag to show that the data has been saved
           })
-          .catch(err => console.error('Failed to delete booking', err));
-      }
-    };
-    
-    
+          .catch(error => {
+          console.log(error);
+          alert('Failed to save data')
+          });
 
-    return(
-        <div>
-            <Navbar/>
-            <EditBookingForm 
-              show={show}
-              handleClose={handleClose}
-              handleSubmit={handleSubmit}
-              booking={selectedBooking}
-              formInputs={formInputs}
-              setFormInputs={setFormInputs}
-            />
-            <BookActivityForm 
-              showAdd={showAdd}
-              handleClose={handleClose}
-              handleAddSubmit={handleAddSubmit}
-              //staff={selectedStaff}
-              formInputs={formInputs}
-              setFormInputs={setFormInputs}
-            />
-            <BookClassForm 
-              showClass={showClass}
-              handleClose={handleClose}
-              handleClassSubmit={handleClassSubmit}
-              formInputs={formInputs}
-              setFormInputs={setFormInputs}
-            />
-            <div  className="bookingDetails">
-              <div className="bookingDetailsTable">
-                  <h1 className="bookingDetailsTitle">Bookings</h1>
-                        <table className ="bookingTable">
-                            <thead>
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Type</th>
-                                    <th>Activity</th>
-                                    <th>Class</th>
-                                    <th>Date</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Facility Name</th>
-                                    <th>Employee</th>
-                                    <th> </th>
-                                    <th> </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bookingDetails && bookingDetails.map(({bookingId, customerName, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => (
-                                <tr key = {bookingId}>
-                                    <td>
-                                              <span>{customerName}</span>
-                                    </td>
-                                    <td>
-                                              <span>{bookingType}</span>
-                                    </td>
-                                    <td>
-                                              <span>{activityName}</span>
-                                    </td>
-                                    <td>
-                                              <span>{className}</span>
-                                    </td>
-                                    <td>
-                                              <span>{date}</span>
-                                    </td>
-                                    <td>
-                                              <span>{startTime}</span>
-                                    </td>
-                                    <td>
-                                              <span>{endTime}</span>
-                                    </td>
-                                    <td>
-                                              <span>{facilityName}</span>
-                                    </td>
-                                    <td>
-                                              <span>{staffName}</span>
-                                    </td>
-                                     <td>
-                                    <button className="button editBookingButton" onClick={() => {handleShow(bookingId);}}>
-                                    {editableRows[bookingId] ? "Edit" : "Edit"}
-                                    </button>
-                                    </td>
-                                    <td>
-                                    <button className="button editBookingButton" onClick={() => {handleDelete(bookingId);}}>
-                                    {editableRows[bookingId] ? "Delete" : "Delete"}
-                                    </button>
-                                    </td>
-                                </tr>
-                                ))}
-                            </tbody>
-                            <div style={{ display: 'flex'}}>
-                              <button className="button addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
-                                Book Activity
-                              </button>
-                              <button className="button addBookingButton" onClick={() => { handleAddClass();}}>
-                                Book Class
-                              </button>
-                            </div>
-                        </table>
-                    </div>
-                </div>
-        </div>
-    )
-}
+        // Close modal
+        handleClose();
+      };
+      
+
+      const handleAddSubmit = (event) => {
+        event.preventDefault();
+
+        const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
+        const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
+        const customerId = selectedCustomer ? selectedCustomer.customerId : null;
+
+        const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+        const staffId = selectedStaff ? selectedStaff.staffId : null;
+
+        // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
+        //const [day, month, year] = formInputs.date.split("/");
+        //onst date = `${year}/${month}/${day}`;
+
+        const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+        const activityId = selectedActivity ? selectedActivity.activityId : null;
+        const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
+
+
+        const dateofDay = new Date(formInputs.date);
+        const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
+        const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+        const classId = selectedClass ? selectedClass.classId : null;
+
+        setBookingDetails((prevState) => {
+          const updatedDetails = [...prevState];
+          
+          updatedDetails.customerId = customerId;
+          updatedDetails.staffId = staffId;
+          updatedDetails.date = formInputs.date;
+          updatedDetails.startTime = formInputs.startTime;
+          updatedDetails.activityId =  activityId;
+          updatedDetails.classId =  classId;
+          updatedDetails.facilityName =  formInputs.facilityName;
+          updatedDetails.price =  activityPrice;
+    
+          return updatedDetails;
+          });
+      
+        // Send new staff details to server
+        axios.post('http://localhost:4000/api/bookings/staff-booking', {
+          customerId: customerId,
+          staffId: staffId,
+          date: formInputs.date,
+          start: formInputs.startTime,
+          activityId: activityId,
+          classId: classId,
+          facilityName: formInputs.facilityName,
+          price: activityPrice,
+        })
+          .then(response => {
+            console.log(response.data);
+            window.location.reload();
+          })
+          .catch(error => {
+            console.log(error);
+            alert('No available activity/classes within the selected day and time');
+          });
+      
+        // Close modal
+        handleClose();
+        
+      };
+
+      const handleDelete = (bookingId) => {
+        const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
+        setSelectedBooking(selectedBooking);
+        
+        if (window.confirm("Are you sure you want to delete this booking?")) {
+          axios.delete(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`)
+            .then(() => {
+              // remove the deleted staff member from staffDetails state
+              setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
+              setIsSaved(true); // set a flag to show that the data has been saved
+            })
+            .catch(err => console.error('Failed to delete booking', err));
+        }
+      };
+      
+      
+
+      return(
+          <div>
+              <Navbar/>
+              <EditBookingForm 
+                show={show}
+                handleClose={handleClose}
+                handleSubmit={handleSubmit}
+                booking={selectedBooking}
+                formInputs={formInputs}
+                setFormInputs={setFormInputs}
+              />
+              <BookActivityForm 
+                showAdd={showAdd}
+                handleClose={handleClose}
+                handleAddSubmit={handleAddSubmit}
+                //staff={selectedStaff}
+                formInputs={formInputs}
+                setFormInputs={setFormInputs}
+              />
+              <BookClassForm 
+                showClass={showClass}
+                handleClose={handleClose}
+                handleClassSubmit={handleClassSubmit}
+                formInputs={formInputs}
+                setFormInputs={setFormInputs}
+              />
+              <div  className="bookingDetails">
+                <div className="bookingDetailsTable">
+                    <h1 className="bookingDetailsTitle">Bookings</h1>
+                          <table className ="bookingTable">
+                              <thead>
+                                  <tr>
+                                      <th>Customer</th>
+                                      <th>Type</th>
+                                      <th>Activity</th>
+                                      <th>Class</th>
+                                      <th>Date</th>
+                                      <th>Start Time</th>
+                                      <th>End Time</th>
+                                      <th>Facility Name</th>
+                                      <th>Employee</th>
+                                      <th> </th>
+                                      <th> </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              {bookingDetails && bookingDetails.map(({bookingId, customerId, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => {
+                                const customerName = customerData.find(customer => customer.customerId === customerId)?.customerName;
+                                return (
+                                  <tr key = {bookingId}>
+                                      <td>
+                                                <span>{customerName}</span>
+                                      </td>
+                                      <td>
+                                                <span>{bookingType}</span>
+                                      </td>
+                                      <td>
+                                                <span>{activityName}</span>
+                                      </td>
+                                      <td>
+                                                <span>{className}</span>
+                                      </td>
+                                      <td>
+                                                <span>{date}</span>
+                                      </td>
+                                      <td>
+                                                <span>{startTime}</span>
+                                      </td>
+                                      <td>
+                                                <span>{endTime}</span>
+                                      </td>
+                                      <td>
+                                                <span>{facilityName}</span>
+                                      </td>
+                                      <td>
+                                                <span>{staffName}</span>
+                                      </td>
+                                      <td>
+                                      <button className="button editBookingButton" onClick={() => {handleShow(bookingId);}}>
+                                      {editableRows[bookingId] ? "Edit" : "Edit"}
+                                      </button>
+                                      </td>
+                                      <td>
+                                      <button className="button editBookingButton" onClick={() => {handleDelete(bookingId);}}>
+                                      {editableRows[bookingId] ? "Delete" : "Delete"}
+                                      </button>
+                                      </td>
+                                  </tr>
+                                    );
+                                  })}
+                              </tbody>
+                              </table>
+                              <div className="addBookingButtonContainer">
+                                <button className="button addBookingButton" onClick={() => { handleAdd(); }}>
+                                  Book Activity
+                                </button>
+                                <button className="button addBookingButton" onClick={() => { handleAddClass(); }}>
+                                  Book Class
+                                </button>
+                              </div>                          
+                      </div>
+                  </div>
+          </div>
+      )
+  }
 
 export default BookingDetails;
