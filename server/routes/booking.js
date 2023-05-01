@@ -42,7 +42,7 @@ router.post("/bookingid", async (req, res, next) => {
       let number;
       let end;
       let facilityName;
-      let price;
+      let prices;
 
       // check if activity or class exists
       if (basketItem.basketType === "activity") {
@@ -84,7 +84,7 @@ router.post("/bookingid", async (req, res, next) => {
       }
 
       // get price from basket
-      price = basketItem.price;
+      prices = basketItem.price;
 
       // format the endTime
       end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
@@ -101,7 +101,7 @@ router.post("/bookingid", async (req, res, next) => {
         activityId: basketItem.activityId,
         classId: basketItem.classId,
         facilityName: basketItem.facilityName,
-        price: price
+        price: prices
       });
       
       // add the newly created booking to the array of bookings
@@ -198,6 +198,7 @@ router.post("/staff-booking", async (req, res, next) => {
       classId,
       facilityName,
       paymentId,
+      price,
     } = req.body;
 
     // Check if the specified activity or class exists
@@ -244,7 +245,7 @@ router.post("/staff-booking", async (req, res, next) => {
     // format the endTime
     end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
     let number = 1;
-
+    
     // Create the booking and staff booking
     const booking = await Booking.create({
             noOfPeople: number,
@@ -258,7 +259,8 @@ router.post("/staff-booking", async (req, res, next) => {
             facilityName,
             paymentId,
             activityId,
-            classId
+            classId,
+            price,
     });
     
     await StaffBooking.create({

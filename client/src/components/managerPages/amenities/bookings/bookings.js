@@ -20,10 +20,8 @@ const BookingDetails = () => {
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
-    const { user } = useContext(Auth);
     const [bookingDetails, setBookingDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
-    const [isEditable, setIsEditable] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
     const [selectedBooking, setSelectedBooking] = useState(null);
@@ -31,6 +29,7 @@ const BookingDetails = () => {
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [showClass, setShowClass] = useState(false);
+    
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
@@ -48,7 +47,9 @@ const BookingDetails = () => {
             bookingId: booking.bookingId,
             noOfPeople: booking.noOfPeople,
             date: new Date(booking.date).toISOString().slice(0, 10),
+            //date: booking.date,
             startTime: booking.startTime,
+
             endTime: booking.endTime,
             bookingType: booking.bookingType,
 
@@ -65,9 +66,11 @@ const BookingDetails = () => {
             classId: booking.classId,
             className: classes ? classes.className : '',
 
-            facilityName: booking.facilityName
+            facilityName: booking.facilityName,
+            price: booking.price
             };
         }));
+
         }, [bookingData]);
 
     const [formInputs, setFormInputs] = useState({
@@ -86,6 +89,7 @@ const BookingDetails = () => {
       className:"",
       facilityName: "",
     });
+
 
     const handleShow = (bookingId) => {
       const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
@@ -138,11 +142,13 @@ const BookingDetails = () => {
       });
     }
     };
+    
+    
 
     const handleClassSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
       const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
@@ -150,8 +156,9 @@ const BookingDetails = () => {
       const staffId = selectedStaff ? selectedStaff.staffId : null;
 
       // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-      const [day, month, year] = formInputs.date.split("/");
-      const date = `${year}/${month}/${day}`;
+     /* const [day, month, year] = formInputs.date.split("/");
+      const date = `${year}/${month}/${day}`;*/
+
 
       const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
@@ -160,17 +167,19 @@ const BookingDetails = () => {
       const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
       const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
       const classId = selectedClass ? selectedClass.classId : null;
+      const classPrice = classId ? classData.find(classes => classes.classId === classId).price : null;
 
       setBookingDetails((prevState) => {
         const updatedDetails = [...prevState];
         
         updatedDetails.customerId = customerId;
         updatedDetails.staffId = staffId;
-        updatedDetails.date = date;
+        updatedDetails.date = formInputs.date;
         updatedDetails.startTime = formInputs.startTime;
         updatedDetails.activityId =  activityId;
         updatedDetails.classId =  classId;
         updatedDetails.facilityName =  formInputs.facilityName;
+        updatedDetails.price =  classPrice;
   
         return updatedDetails;
         });
@@ -179,11 +188,12 @@ const BookingDetails = () => {
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
         customerId: customerId,
         staffId: staffId,
-        date: date,
+        date: formInputs.date,
         start: formInputs.startTime,
         activityId: activityId,
         classId: classId,
         facilityName: formInputs.facilityName,
+        price: classPrice,
       })
         .then(response => {
           console.log(response.data);
@@ -211,12 +221,15 @@ const BookingDetails = () => {
       const selectedActivity = activityData.find((activity) => 
       activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
+      const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
 
       const date = new Date(formInputs.date);
       const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
       const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
       const classId = selectedClass ? selectedClass.classId : null;
-      
+      const classPrice = classId ? classData.find(classes => classes.classId === classId).price : null;
+
+      const pricee = formInputs.activityId === null ? classPrice : activityPrice;
 
       // Update facility details with formInputs values
       setBookingDetails((prevState) => {
@@ -232,6 +245,7 @@ const BookingDetails = () => {
       updatedDetails[index].activityId =  formInputs.activityId;
       updatedDetails[index].classId =  formInputs.classId;
       updatedDetails[index].facilityName =  formInputs.facilityName;
+      updatedDetails[index].price =  pricee;
 
       return updatedDetails;
       });
@@ -246,7 +260,8 @@ const BookingDetails = () => {
         endTime: formInputs.endTime,
         activityId: activityId,
         classId: classId,
-        facilityName:  formInputs.facilityName
+        facilityName:  formInputs.facilityName,
+        price: pricee
         })
         .then(response => {
         console.log(response.data);
@@ -265,7 +280,7 @@ const BookingDetails = () => {
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
-      const customerNameUpper = formInputs.customerName.toUpperCase();
+      const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
       const selectedCustomer = customerData.find((customer) => customer.customerName === customerNameUpper);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
@@ -273,11 +288,13 @@ const BookingDetails = () => {
       const staffId = selectedStaff ? selectedStaff.staffId : null;
 
       // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-      const [day, month, year] = formInputs.date.split("/");
-      const date = `${year}/${month}/${day}`;
+      //const [day, month, year] = formInputs.date.split("/");
+      //onst date = `${year}/${month}/${day}`;
 
       const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
+      const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
+
 
       const dateofDay = new Date(formInputs.date);
       const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
@@ -289,11 +306,12 @@ const BookingDetails = () => {
         
         updatedDetails.customerId = customerId;
         updatedDetails.staffId = staffId;
-        updatedDetails.date = date;
+        updatedDetails.date = formInputs.date;
         updatedDetails.startTime = formInputs.startTime;
         updatedDetails.activityId =  activityId;
         updatedDetails.classId =  classId;
         updatedDetails.facilityName =  formInputs.facilityName;
+        updatedDetails.price =  activityPrice;
   
         return updatedDetails;
         });
@@ -302,11 +320,12 @@ const BookingDetails = () => {
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
         customerId: customerId,
         staffId: staffId,
-        date: date,
+        date: formInputs.date,
         start: formInputs.startTime,
         activityId: activityId,
         classId: classId,
         facilityName: formInputs.facilityName,
+        price: activityPrice,
       })
         .then(response => {
           console.log(response.data);
@@ -427,7 +446,7 @@ const BookingDetails = () => {
                                 </tr>
                                 ))}
                             </tbody>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex'}}>
                               <button className="addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
                                 Book Activity
                               </button>

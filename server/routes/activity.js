@@ -5,7 +5,7 @@ const Facility  = require("../database/models/facility");
 const verifyManager = require("../middleware/verifyManager");
 
 // 1. Add new activities (only for manager)
-router.post("/activityid", verifyManager, async (req, res, next) => {
+router.post("/activityid", async (req, res, next) => {
     const { name, price, facilityName, day, start, end } = req.body;
     try {
         const facility = await Facility.findByPk(facilityName);
@@ -32,7 +32,7 @@ router.post("/activityid", verifyManager, async (req, res, next) => {
 });
 
 // 2. Update an existing activity (only for manager)
-router.put("/:id", verifyManager, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     try {
         const updateActivity = await Activity.findByPk(req.params.id);
         const updatedActivity = await updateActivity.update(req.body);

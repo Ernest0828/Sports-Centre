@@ -9,7 +9,6 @@ import PayButton from "../paybutton/PayButton";
 export default function Basket() {
   const { user } = useContext(Auth);
   const [items, setItems] = useState([]);
-  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     const fetchBasketItems = async () => {
@@ -55,35 +54,8 @@ export default function Basket() {
     return `${hours}:${minutes}`;
   };
 
-
-  useEffect(() => {
-    axios.get("http://localhost:4000/api/discount/")
-    .then(response => { 
-      setDiscount(response.data.discount);
-    })
-    .catch(error => {
-      console.error("Failed to fetch discount:", error);
-    });
-  }, []);
-
   const calculateTotalCost = () => {
-    if (selectedCustomer.isMembership === true) {
-      return 0;
-    }
     const total = items.reduce((total, item) => total + item.price, 0);
-    const discountedTotal = total * (1 - discount);
-    if (items.length < 3) {
-      return total.toFixed(2);
-    }
-    const dates = items.map(item => formatDate(item.date));
-    const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
-    const firstDate = sortedDates[0];
-    const lastDate = sortedDates[sortedDates.length - 1];
-    const timeDiff = Math.abs(new Date(lastDate) - new Date(firstDate));
-    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    if (diffDays <= 7) {
-      return discountedTotal.toFixed(2);
-    }
     return total.toFixed(2);
   };
   
@@ -92,6 +64,7 @@ export default function Basket() {
       await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}/${itemId}`);
       const response = await axios.get(`http://localhost:4000/api/basket/basket/${user.details.customerId}`);
       setItems(response.data);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -110,7 +83,7 @@ export default function Basket() {
             </div>
             <div className="belowDescription">
               <div className="itemCost">
-                <p>£{selectedCustomer.isMembership === true ? "0.00" : item.price.toFixed(2)}</p>
+                <p>£{item.price}</p>
               </div>
               <button className="removeBookingButton" onClick={() => handleRemoveItem(item.basketId)}>Remove</button>
             </div>
