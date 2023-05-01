@@ -45,7 +45,7 @@ router.post("/bookingid", async (req, res, next) => {
       let prices;
 
       // check facility exists
-      const facility = await Facility.findOne({ where: { facilityName: basketItem.facilityName } });
+      const facility = await Facility.findOne({ where: { facilityName: facilityName } });
       if (!facility) {
         return res.status(404).json({ message: "Facility not found" });
       }

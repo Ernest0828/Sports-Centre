@@ -109,3 +109,12 @@ button.editBookingButton {
     overflow-y: auto;
 }
 
+.bookActivityForm {
+    padding-top:60px;
+    padding-bottom: 50px;
+}
+
+.bookClassForm {
+    padding-top:60px;
+    padding-bottom: 50px;
+}

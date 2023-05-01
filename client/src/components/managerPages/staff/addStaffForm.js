@@ -1,6 +1,7 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
 import {useContext, useState} from 'react';
+import "./staff.css";
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
@@ -29,7 +30,7 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
       };*/
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className = "addStaffForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Add New Staff</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

@@ -146,3 +146,13 @@ button.editCustomerButton {
 	background-color: black ;
 	color: white;
 }
+
+.registerCustomerForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
+
+.editCustomerForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}

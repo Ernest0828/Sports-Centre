@@ -24,7 +24,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
   };
       
       return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className = "editCustomerForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Customer</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

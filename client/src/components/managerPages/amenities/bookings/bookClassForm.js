@@ -49,7 +49,7 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
       
       
       return (
-        <Modal show={showClass} onHide={handleClose}>
+        <Modal className = "bookClassForm" show={showClass} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Book Class</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

@@ -137,3 +137,13 @@ button.deleteClassButton {
 	background-color: #DE7F05 ;
 	color: white;
 }
+
+.addClassForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
+
+.editClassForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
