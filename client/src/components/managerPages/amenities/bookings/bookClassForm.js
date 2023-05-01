@@ -186,14 +186,14 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
               >
                 <option value="">Select Time</option>
                 {[...Array(15).keys()].map((hour) => {
-                  const startHour = hour + 8;
-                  const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
-                  return (
-                    <option>
-                      <option value={`${formattedStartHour}:00`}>{`${formattedStartHour}:00`}</option>
-                    </option>
-                  );
-                })}
+                    const startHour = hour + 8;
+                    const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
+                    return (
+                      <option key={formattedStartHour} value={`${formattedStartHour}:00`}>
+                        {`${formattedStartHour}:00`}
+                      </option>
+                    );
+                  })}
               </Form.Control>
             </Form.Group>
 
