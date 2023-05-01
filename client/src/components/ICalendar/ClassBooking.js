@@ -77,7 +77,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
               alert('Item added to basket!');
               window.location.reload();
             } catch (err) {
-                if (err.response.data.message === "You have already booked for this time slot") {
+                if (err.response.data.message === "You have already booked for this time slot" || "You already have a booking session") {
                     setErrorMessage(err.response.data.message);
                 } else {
                     console.log(err.message);               
