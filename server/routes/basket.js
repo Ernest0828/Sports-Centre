@@ -37,7 +37,7 @@ router.post("/basketid", async (req, res, next) => {
         // check if same booking has already been made
         const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date: formattedDate}})
         if (sameBooking) {
-            return res.status(401).json({ message: "You have a booking session" });
+            return res.status(401).json({ message: "You already have a booking session" });
         }
 
         // check facility exists
