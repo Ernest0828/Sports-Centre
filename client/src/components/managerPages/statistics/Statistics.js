@@ -95,6 +95,8 @@ const Statistics = () => {
     //Calculate total revenue
     const [revenueData, setRevenueData] = useState();
 
+    const [classRevenueData, setClassRevenueData] = useState();
+
     // Set Monday as the start of the week
     moment.locale('en-gb', {
         week: {
@@ -245,6 +247,26 @@ const Statistics = () => {
           }, 0);
           
         setRevenueData(sumRevenue.toFixed(1));
+        // console.log("revenueData",revenueData);
+
+        //get revenue graph data for summary
+        const classPieData = bookingDetails.reduce((acc,curr) => {
+
+            const {className: classValue, price} = curr;
+  
+            const classObj = classData.find(c => c.classId === curr.classId);
+            const className = classObj ? classObj.className : 'Unknown';
+            
+            const classIndex = acc.findIndex(c => c.className === className);
+            acc[classIndex].revenue += price;
+            return acc;
+            }, initClassPrice);
+
+        const classRevenue = classPieData.reduce((totalRevenue, classes) => {
+            return totalRevenue + classes.revenue;
+          }, 0);
+          
+        setClassRevenueData(classRevenue);
         // console.log("revenueData",revenueData);
         
 
