@@ -16,28 +16,28 @@
 }
 
 .facilities{
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    flex: 2.5;
-    margin-right: 30px;
-    background-color: white;
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.09);
-    border-radius: 10px;
-    height: 100%;
-    width: 100%;
-  }
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex: 2.5;
+  margin-right: 30px;
+  background-color: white;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
 
-  .bookFacilityDescription{
-    margin-top: 25px;
-    text-align: center;
-  }
-  
-  .bookFacilityDescription > h3{
-    color: #032539;
-    font-weight: 800;
-  }
+.bookFacilityDescription{
+  margin-top: 25px;
+  text-align: center;
+}
+
+.bookFacilityDescription > h3{
+  color: #032539;
+  font-weight: 800;
+}
 
 .gridFormat{
   display: grid;
