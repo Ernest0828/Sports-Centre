@@ -127,10 +127,10 @@ export default function Basket() {
           {user ? (
             <p>Total: £{calculateTotalCost()}</p>
           ) : (
-            <p>Total: £0.00</p>
+            <p></p>
           )}
         </div>
-        <PayButton items={items} />
+        {user? (<PayButton items={items} />) : ("")}
       </div>
     </div>
   )

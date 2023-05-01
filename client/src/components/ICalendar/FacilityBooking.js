@@ -163,7 +163,6 @@ const uniqueActivityNames = [
       <Button variant="primary" style={{ marginTop: "15px" }} onClick={handleClick}>
         Submit
       </Button>
-      <p>{activityId}</p>
     </Form>
   );
 };

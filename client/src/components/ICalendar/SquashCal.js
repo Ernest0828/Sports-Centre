@@ -84,13 +84,12 @@ const SquashCourtSchedule = () => {
               (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
               );
               return (
-                <td key={day}>
+                <td key={day} onClick={() => handleOpenModal(day, formattedTime)}>
                 {activities.map((a) => (
                   <div key={a.activityName}>
                     <div>{a.activityName}</div>
                   </div>
                 ))}
-                <div className="hide" onClick={() => handleOpenModal(day, formattedTime)}>CLICK HERE</div>
               </td>
             );
             })}

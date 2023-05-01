@@ -169,41 +169,8 @@ const handleBooking = async () => {
           <div className="facilityPageWrapper">
             <h1 className='Title'>{facility.facilityName}</h1>
             {Timetable}
-            {facility.facilityName !== "Studio" && (
-              <div className="facilityBookingContainer">
-                <div className="facilityBookingDetails">
-                  <h1>Select Your Details</h1>
-                  <Datepicker selected={selectedDate} onChange={date => setSelectedDate(date)} defaultValue={new Date()} // set default value to today's date
-                  minDate={new Date()} // set minimum date to today's date
-                  maxDate={new Date(Date.now() + 12096e5)} // set maximum date to 2 weeks from today 
-                  />
-                    <div className="facilityOption">
-                      <label>Facility: {facility.facilityName} </label>
-                    </div>
-                    <div className="dropDownActivity">
-                      <label>Activity: </label>
-                      <select id="optionB" value={selectedOptionB} onChange={handleOptionBChange}>
-                      <option value="">-- Please select an option --</option>
-                      {uniqueName.map(activityName =>  (
-                        <option key={activityName} value={activityName}>{activityName}</option>
-                      ))}
-                      </select>
-                    </div>
-                    <div className="dropDownTime">
-                        <label>Time: </label>
-                        <select id="optionC" value={selectedOptionC} onChange={handleOptionCChange} disabled={!selectedOptionB}>
-                          <option value="">-- Please select an option --</option>
-                          {filteredTimeOptions(selectedDate, selectedOptionB).map(time => (
-                            <option key={time} value={time}>{time}</option>
-                          ))} 
-                        </select>
-                    </div>  
-                    <button onClick={handleBooking} >Add to cart</button>
-                </div>                
-              </div>
-            )}
-              <Basket basketItems={basketItems} removeItem={removeItem}/>
           </div>
+        <Basket basketItems={basketItems} removeItem={removeItem}/>
         </div>
     </div>
   )

@@ -30,7 +30,7 @@ router.post("/basketid", async (req, res, next) => {
         // check if same booking added to basket
         const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date}})
         if (sameItem) {
-            return res.status(401).json("You have already booked for this time slot");
+            return res.status(401).json("You have already booked for this time slot");  
         }
 
         // check if same booking has already been made
