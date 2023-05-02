@@ -1,8 +1,8 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
 import "./classDetails.css";
-import {useContext, useState, useEffect} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useState, useEffect} from 'react';
+import { Modal } from 'react-bootstrap';
 
 const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
 

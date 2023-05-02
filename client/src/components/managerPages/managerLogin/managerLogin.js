@@ -1,6 +1,6 @@
 import React,{Fragment, useState, useContext} from "react";
 import "./managerLogin.css";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import { Auth } from "../../../context/Auth";
 
