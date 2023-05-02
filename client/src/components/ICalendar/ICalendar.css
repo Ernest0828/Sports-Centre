@@ -1,11 +1,11 @@
 
-.Cal-container{
+.calContainer{
     margin-top: 50px;
     width: 100vw;
     height: 100%;
 }
 
-.Calendar{
+.calendar{
   width: 100%;
   margin-top: 60px;
   display: flex;
@@ -22,7 +22,7 @@
   margin-bottom: 50px;
 }
 
-.title{
+.calendarTitle{
   font-weight:bold;
   align-self: center;
   font-size: 40px;

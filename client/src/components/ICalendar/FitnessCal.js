@@ -116,7 +116,7 @@ const FitnessRoomSchedule = () => {
 
   return (
     <div className="calContainer">
-      <div className="Calendar">
+      <div className="calendar">
         <h1 className="calendarTitle">Fitness Room Timetable</h1>
         <table className="timetable">
           <thead>
