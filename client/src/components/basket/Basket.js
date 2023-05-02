@@ -2,46 +2,51 @@ import React, { useState, useContext, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import "./basket.css";
 import { Link } from "react-router-dom";
-import {Auth} from "../../context/Auth"
+import { Auth } from "../../context/Auth";
 import axios from "axios";
 import PayButton from "../paybutton/PayButton";
 
 export default function Basket() {
   const { user } = useContext(Auth);
   const [items, setItems] = useState([]);
-
+  //useEffect is used to automatically get the basket items from the database
   useEffect(() => {
-    if(user && user.details){
-    const fetchBasketItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/api/basket/basket/" + user.details.customerId);
-        const itemsWithNames = await Promise.all(response.data.map(async (item) => {
-          if (item.basketType === "class") {
-            const classResponse = await axios.get("http://localhost:4000/api/classes/find/" + item.classId);
-            return {
-              ...item,
-              className: classResponse.data.className
-            };
-          } else {
-            const activityResponse = await axios.get("http://localhost:4000/api/activities/find/" + item.activityId);
-            return {
-              ...item,
-              activityName: activityResponse.data.activityName
-            };
-          }
-        }));
-        setItems(itemsWithNames);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
-    fetchBasketItems();
+    if (user && user.details) {
+      const fetchBasketItems = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:4000/api/basket/basket/" + user.details.customerId
+          );
+          const itemsWithNames = await Promise.all(
+            response.data.map(async (item) => {
+              if (item.basketType === "class") {
+                const classResponse = await axios.get(
+                  "http://localhost:4000/api/classes/find/" + item.classId
+                );
+                return {
+                  ...item,
+                  className: classResponse.data.className,
+                };
+              } else {
+                const activityResponse = await axios.get(
+                  "http://localhost:4000/api/activities/find/" + item.activityId
+                );
+                return {
+                  ...item,
+                  activityName: activityResponse.data.activityName,
+                };
+              }
+            })
+          );
+          setItems(itemsWithNames);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchBasketItems();
     }
   }, [user, user?.details]);
-
-  const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
-  const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
 
   // function to format the date
   const formatDate = (dateString) => {
@@ -66,8 +71,12 @@ export default function Basket() {
   // remove button
   const handleRemoveItem = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}/${itemId}`);
-      const response = await axios.get(`http://localhost:4000/api/basket/basket/${user.details.customerId}`);
+      await axios.delete(
+        `http://localhost:4000/api/basket/${user.details.customerId}/${itemId}`
+      );
+      const response = await axios.get(
+        `http://localhost:4000/api/basket/basket/${user.details.customerId}`
+      );
       setItems(response.data);
       window.location.reload();
     } catch (error) {
@@ -83,20 +92,33 @@ export default function Basket() {
           items.map((item) => (
             <div className="itemInBasket" key={item.basketId}>
               <div className="itemDescription">
-                <p>{`${item.facilityName} - ${item.basketType === "class" ? item.className : item.activityName}`}</p>
-                <p>{`${formatDate(item.date)} - ${formatTime(item.startTime)}`}</p>
-            </div>
-            <div className="belowDescription">
-              <div className="itemCost">
-                <p>£{item.price}</p>
+                <p>{`${item.facilityName} - ${
+                  item.basketType === "class"
+                    ? item.className
+                    : item.activityName
+                }`}</p>
+                <p>{`${formatDate(item.date)} - ${formatTime(
+                  item.startTime
+                )}`}</p>
               </div>
-              <button className="removeBookingButton" onClick={() => handleRemoveItem(item.basketId)}>Remove</button>
+              <div className="belowDescription">
+                <div className="itemCost">
+                  <p>£{item.price}</p>
+                </div>
+                <button
+                  className="removeBookingButton"
+                  onClick={() => handleRemoveItem(item.basketId)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
-            </div>
-            ))
+          ))
         ) : (
           <div className="basketLoginPrompt">
-            <div className="basketLoginPromptDescription">Login to add new bookings!</div>
+            <div className="basketLoginPromptDescription">
+              Login to add new bookings!
+            </div>
             <Link to="../login">
               <button className="basketLoginButton">Login</button>
             </Link>
@@ -105,15 +127,10 @@ export default function Basket() {
       </div>
       <div className="basketBottom">
         <div className="basketTotalCost">
-          {user ? (
-            <p>Total: £{calculateTotalCost()}</p>
-          ) : (
-            <p></p>
-          )}
+          {user ? <p>Total: £{calculateTotalCost()}</p> : <p></p>}
         </div>
-        {user? (<PayButton items={items} />) : ("")}
+        {user ? <PayButton items={items} /> : ""}
       </div>
     </div>
-  )
+  );
 }
-

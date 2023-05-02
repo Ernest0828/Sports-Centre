@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import BookingDetails from "./FacilityBooking";
 
 const SquashCourtSchedule = () => {
@@ -137,16 +137,19 @@ const SquashCourtSchedule = () => {
         </table>
       </div>
       <Modal show={showModal}>
-  <Modal.Header>
-    <Modal.Title>Booking Details</Modal.Title>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Header>
-  <Modal.Body>
-    <BookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
-  </Modal.Body>
-</Modal>
+        <Modal.Header>
+          <Modal.Title>Booking Details</Modal.Title>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Header>
+        <Modal.Body>
+          <BookingDetails
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+          />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

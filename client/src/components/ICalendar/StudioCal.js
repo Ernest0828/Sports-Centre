@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form } from "react-bootstrap";
-import Datepicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
 import BookingDetails from "./ClassBooking";
-import useFetch from "../../hooks/useFetch";
 import "../ICalendar/studioCal.css";
 
 
@@ -67,11 +65,6 @@ const StudioSchedule = () => {
             if (booking.startTime === "18:00:00" && day === "Monday") {//change this part
               numBookings++;
             }
-            // if (bookingsMap.has(bookingKey)) {
-            //   bookingsMap.set(bookingKey, bookingsMap.get(bookingKey) + booking.noOfPeople);
-            // } else {
-            //   bookingsMap.set(bookingKey, booking.noOfPeople);
-            // }
           }
         });
     
@@ -81,16 +74,6 @@ const StudioSchedule = () => {
       }
     }
 
-    // Helper function to get the remaining spots for a class
-// function getRemainingSpots(bookings, classData) {
-//   const classBookings = bookings.filter(
-//     (b) => b.facilityName === classData.facilityName && b.day === classData.day && b.startTime === classData.startTime
-//   );
-//   const totalPeople = classBookings.reduce((acc, curr) => acc + curr.noOfPeople, 0);
-//   console.log("TOTAL POEPL:", totalPeople)
-//   const remainingSpots = studio.capacity - totalPeople;
-//   return remainingSpots;
-// }
 function getRemainingSpots(bookings, classData, studio) {
   const classBookings = bookings.filter(
     (b) =>
@@ -160,11 +143,6 @@ function getRemainingSpots(bookings, classData, studio) {
   const [selectedDay, setSelectedDay] = useState([]);
   const [selectedTime, setSelectedTime] = useState([]);
   const [selectedClass, setSelectedClass] = useState([]);
-  // const {
-  //   data: bookingData,
-  //   loading: bookingLoading,
-  //   error: bookingError,
-  // } = useFetch("http://localhost:4000/api/bookings/");
 
   const handleOpenModal = (day, time, className) => {
     setSelectedDay(day);
@@ -220,7 +198,7 @@ function getRemainingSpots(bookings, classData, studio) {
   return (
     <div className="calContainer">
       <div className="calendar">
-        <h1 className="calendarTitle">Timetable</h1>
+        <h1 className="calendarTitle">Studio Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

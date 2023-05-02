@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form } from "react-bootstrap";
-import Datepicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
 import BookingDetails from "./FacilityBooking";
 
 const SportsHallSchedule = () => {
