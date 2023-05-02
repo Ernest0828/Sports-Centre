@@ -6,7 +6,7 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
 1. Download and install a PostgreSQL server. For instructions, refer to the PostgreSQL documentation on www.postgresql.org.
 2. Add the PostgreSQL bin directory path to the PATH environmental variable.
 3. Open the psql command-line tool:  
-  In the Windows Command Prompt, run the command:  
+  In the Windows Command Prompt, run the command:    
   psql -U postgres  
   Enter your password when prompted (On our code, we set the password to hogwarts6393)  
 4. Run a CREATE DATABASE command to create a new database (On our code, we set the db name to be gymCorp)  
