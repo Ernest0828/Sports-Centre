@@ -13,7 +13,7 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
    CREATE DATABASE gymCorp WITH ENCODING 'UTF8' LC_COLLATE='English_United Kingdom' LC_CTYPE='English_United Kingdom';
    
 // To run our server
-1. Open the terminal/command prompt and navigate to the server directory:
+1. Open the terminal/command prompt and navigate to the server directory:  
   cd server
 2. Open the terminal/command prompt and navigate to the database directory:
   cd database
