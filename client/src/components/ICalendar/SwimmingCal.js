@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form} from "react-bootstrap";
-import Datepicker from 'react-datepicker';
+import { Modal, Button, Form } from "react-bootstrap";
+import Datepicker from "react-datepicker";
 import FacilityBookingDetails from "./FacilityBooking";
 
 const SwimmingPoolSchedule = (props) => {
   const [swimmingPoolSchedule, setSwimmingPoolSchedule] = useState([]);
   const [swimmingPoolActivities, setSwimmingPoolActivities] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
+    let swimmingPool = {};
     async function getSwimmingPoolSchedule() {
       try {
         const response = await axios.get(
@@ -24,6 +26,7 @@ const SwimmingPoolSchedule = (props) => {
         for (let i = startTime; i < endTime; i++) {
           poolSchedule.push(`${i < 10 ? "0" + i : i}:00-${i + 1}:00`);
         }
+        // console.log("Availability:",swimmingPool.capacity);
         setSwimmingPoolSchedule(poolSchedule);
       } catch (error) {
         console.error(error);
@@ -35,8 +38,19 @@ const SwimmingPoolSchedule = (props) => {
           "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
-          (a) => a.facilityName === "Swimming pool");
-          setSwimmingPoolActivities(activity);
+          (a) => a.facilityName === "Swimming pool"
+        );
+
+        const bookingsResponse = await axios.get(
+          "http://localhost:4000/api/bookings/"
+        );
+        const bookings = bookingsResponse.data;
+        const date = new Date(bookings.date);
+        const day = date.toLocaleDateString("en-US", { weekday: "long" });
+
+        setBookings(bookings);
+
+        setSwimmingPoolActivities(activity);
       } catch (error) {
         console.error(error);
       }
@@ -62,48 +76,62 @@ const SwimmingPoolSchedule = (props) => {
     setSelectedTime(time);
     setShowModal(true);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const renderSwimmingPoolSchedule = () => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+
     return (
       <>
         {swimmingPoolSchedule.map((time) => {
           const nextHourTime = addOneHour(time);
           const formattedTime = time.slice(0, 5);
           return (
-          <tr key={time}>
-            <td>{time}</td>
-            {weekdays.map((day) => {
-              const activities = swimmingPoolActivities.filter((a) => 
-              (a.day === day && a.startTime.slice(0, 5) === formattedTime) ||
-              (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
-              );
-              return (
-                <td key={day } onClick={() => handleOpenModal(day, formattedTime)}>
-                {activities.map((a) => (
-                  <div key={a.activityName}>
-                    <div>{a.activityName}</div>
-                  </div>
-                ))}
-              </td>
-            );
-            })}
-          </tr>
-        );
+            <tr key={time}>
+              <td>{time}</td>
+              {weekdays.map((day) => {
+                const activities = swimmingPoolActivities.filter(
+                  (a) =>
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === formattedTime) ||
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
+                );
+                return (
+                  <td
+                    key={day}
+                    onClick={() => handleOpenModal(day, formattedTime)}
+                  >
+                    {activities.map((a) => (
+                      <div key={a.activityName}>
+                        <div>{a.activityName}</div>
+                      </div>
+                    ))}
+                  </td>
+                );
+              })}
+            </tr>
+          );
         })}
       </>
     );
   };
 
   return (
-    <div className="Cal-container">
-      <div className="Calendar">
-        <h1 className="title">Swimming Pool Timetable</h1>
+    <div className="calContainer">
+      <div className="calendar">
+        <h1 className="calendarTitle">Swimming Pool Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

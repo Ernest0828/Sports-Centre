@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form} from "react-bootstrap";
-import Datepicker from 'react-datepicker';
+import { Modal, Button, Form } from "react-bootstrap";
+import Datepicker from "react-datepicker";
 import BookingDetails from "./FacilityBooking";
 
 const FitnessRoomSchedule = () => {
   const [fitnessRoomSchedule, setFitnessRoomSchedule] = useState([]);
   const [fitnessRoomActivities, setFitnessRoomActivities] = useState([]);
-  
+
   useEffect(() => {
     const getFitnessRoomSchedule = async () => {
       try {
@@ -28,19 +28,20 @@ const FitnessRoomSchedule = () => {
       } catch (error) {
         console.error(error);
       }
-    }
-    const getFitnessRoomActivities = async () =>{
+    };
+    const getFitnessRoomActivities = async () => {
       try {
         const response = await axios.get(
           "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
-          (a) => a.facilityName === "Fitness room");
-          setFitnessRoomActivities(activity);
+          (a) => a.facilityName === "Fitness room"
+        );
+        setFitnessRoomActivities(activity);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     getFitnessRoomActivities();
     getFitnessRoomSchedule();
   }, []);
@@ -61,48 +62,62 @@ const FitnessRoomSchedule = () => {
     setSelectedTime(time);
     setShowModal(true);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const renderFitnessRoomSchedule = () => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
 
     return (
       <>
         {fitnessRoomSchedule.map((time) => {
-            const nextHourTime = addOneHour(time);
-            const formattedTime = time.slice(0, 5);
-            return (
+          const nextHourTime = addOneHour(time);
+          const formattedTime = time.slice(0, 5);
+          return (
             <tr key={time}>
-          <td>{time}</td>
-          {weekdays.map((day) => {
-            const activities = fitnessRoomActivities.filter((a) =>
-            (a.day === day && a.startTime.slice(0, 5) === time.slice(0, 5)) ||
-                (a.day === day && a.startTime.slice(0,5) === nextHourTime.slice(0,5))
+              <td>{time}</td>
+              {weekdays.map((day) => {
+                const activities = fitnessRoomActivities.filter(
+                  (a) =>
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === time.slice(0, 5)) ||
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
                 );
                 return (
-                  <td key={day} onClick={() => handleOpenModal(day, formattedTime)}>
-                  {activities.map((a) => (
-                    <div key={a.activityName}>
-                      <div>{a.activityName}</div>
-                    </div>
-                  ))}
-                </td>
-              );
+                  <td
+                    key={day}
+                    onClick={() => handleOpenModal(day, formattedTime)}
+                  >
+                    {activities.map((a) => (
+                      <div key={a.activityName}>
+                        <div>{a.activityName}</div>
+                      </div>
+                    ))}
+                  </td>
+                );
               })}
             </tr>
           );
-          })}
+        })}
       </>
     );
   };
 
   return (
-    <div className="Cal-container">
-      <div className="Calendar">
-        <h1 className="title">Fitness Room Timetable</h1>
+    <div className="calContainer">
+      <div className="calendar">
+        <h1 className="calendarTitle">Fitness Room Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>

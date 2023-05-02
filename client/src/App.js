@@ -58,12 +58,11 @@ function App() {
           <Route exact path="/membershipdetails" element={<MembershipDetails/>}/>
           <Route exact path="/bookingdetails" element={<BookingDetails/>}/>
           <Route exact path="/statistics" element={<Statistics/>}/>
-          <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
+          <Route exact path="/employee-profile" element={<ManagerProfile/>}/>
           <Route path="/pricing" element={<Pricing />} />
 
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
-          <Route exact path="/manager-profile" element={<ManagerProfile/>}/>
           <Route exact path="/booking-success" element={<SuccessPage/>}/>
           <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
           <Route exact path="/MembershipSuccess" element={<MembershipSuccess/>}/>

@@ -26,7 +26,7 @@ const ManagerLogin = () => {
         const res = await axios.post("http://localhost:4000/auth/staff/login", credentials);
         console.log(res);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-        navigate('/manager-profile')
+        navigate('/employee-profile')
         
         dispatch({
             type: "SET_MANAGER",
@@ -48,7 +48,7 @@ const ManagerLogin = () => {
                 <div className="loginWrapper">
                     <div className="loginLeft">
                         <h3 className="loginLogo">GymCorp</h3>
-                        <span className="loginDesc">HAVE A GREAT DAY AT WORK!</span>
+                        <span className="loginDesc">Have a great day at work!</span>
                     </div>
                     <div className="loginRight">
                         <div className="loginBox">
@@ -57,7 +57,6 @@ const ManagerLogin = () => {
                             <input id="password" type="password" placeholder="Password" className="loginInput" onChange={handleChange}/>
                             <button disabled={loading} onClick={handleClick} className="loginButton">Log In</button>
                             {error && <span className="loginErrorMsg">{error.message}</span>}
-                            <span className="loginForgot">Forgot Password?</span>
                         </div>
                     </div>
                 </div>

@@ -51,7 +51,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
       
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className = "bookActivityForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Book Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
@@ -164,14 +164,15 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               >
                 <option value="">Select Time</option>
                 {[...Array(15).keys()].map((hour) => {
-                  const startHour = hour + 8;
-                  const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
-                  return (
-                    <option>
-                      <option value={`${formattedStartHour}:00`}>{`${formattedStartHour}:00`}</option>
-                    </option>
-                  );
-                })}
+                const startHour = hour + 8;
+                const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
+                return (
+                  <option key={formattedStartHour} value={`${formattedStartHour}:00`}>
+                    {`${formattedStartHour}:00`}
+                  </option>
+                );
+              })}
+
               </Form.Control>
             </Form.Group>
 

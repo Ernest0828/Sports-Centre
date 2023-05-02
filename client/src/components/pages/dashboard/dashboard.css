@@ -42,6 +42,7 @@
 
 .dashItem:hover{
     transform: scale(.99);
+    text-decoration: none;
 }
 
 @media only screen and (max-width: 768px) {

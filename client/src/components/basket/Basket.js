@@ -96,7 +96,7 @@ export default function Basket() {
             ))
         ) : (
           <div className="basketLoginPrompt">
-            <div className="basketLoginPromptDescription">Log in add new bookings!</div>
+            <div className="basketLoginPromptDescription">Login to add new bookings!</div>
             <Link to="../login">
               <button className="basketLoginButton">Login</button>
             </Link>
