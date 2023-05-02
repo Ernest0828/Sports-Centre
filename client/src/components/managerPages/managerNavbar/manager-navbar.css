@@ -86,10 +86,6 @@
   color: #fa991c;
 }
 
-.managerNavRight {
-  display: flex;
-  align-items: center;
-}
 
 .managerNavDropdown {
   position: relative;
@@ -139,7 +135,6 @@
 
 .managerNavListLogout{
   position: absolute;
-  /* display: block; */
   background-color: #033756;
   list-style: none;
   margin: 0;
@@ -172,9 +167,6 @@
     width: 100%;
   }
 
-  /* .nav-links-burger .managerNavDropdown{
-    margin-top: 90px;
-  } */
 
   .managerNavLeft{
     text-align: center;

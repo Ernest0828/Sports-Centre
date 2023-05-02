@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Auth } from "../../../context/Auth";
 import {FaBars, FaTimes} from "react-icons/fa"
@@ -10,6 +10,16 @@ const ManagerNavbar = () => {
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
   const [isBurgerNav, setIsBurgerNav] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsBurgerNav(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <nav className="managerNavbar">
@@ -24,7 +34,7 @@ const ManagerNavbar = () => {
             <Link to="/facilitydetails" className="managerNavDropdownTrigger managerNavLink" onClick={() => window.location.href="/facilitydetails"}>
               Amenities
             </Link>
-            <ul className={isBurgerNav ? " managerNavDropdownList" : "managerNavDropdownList"}>
+            <ul className="managerNavDropdownList">
               <li className="managerNavItem" onClick={() => window.location.href="/facilitydetails"}>
                   Facilities
               </li>

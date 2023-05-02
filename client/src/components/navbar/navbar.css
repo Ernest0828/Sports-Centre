@@ -28,7 +28,6 @@
     font-size: 30px;
     font-weight: bold;
     text-decoration: none;
-    margin-right: 50px;
   }
 
   .navLogo:hover {
@@ -46,7 +45,8 @@
   }
   
   .navItem {
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
   .navLink {
@@ -82,7 +82,6 @@
   .navDropdownTrigger {
     color: white;
     text-decoration: none;
-    margin-right: 20px;
     transition: color 0.2s ease-in-out;
   }
   
@@ -116,17 +115,64 @@
     margin-bottom: 10px;
     text-align: center;
   }
+
+  .navRight{
+    margin-right: 130px;
+  }
   
-  .navLogout {
+  
+@media only screen and (max-width: 1024px) {
+  .navLogo{
+    margin-top: 20px;
+  }
+  
+  .navList{
+    display: none;
+  }
+
+  .nav-links-burger{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    list-style:none;
+    background-color: #033756;
+    left: 0;
+    top: 75px;
+    transition: all 0.5s ease-out;
+    width: 100%;
+  }
+
+
+  .navLeft{
+    text-align: center;
+    padding: 32px;
+    width: 100%;
+  }
+
+  .navItem{
+    padding:10px;
+    margin-right: 40px;
+  }
+
+  .burger-menu-icon{
+    display: block;
+    position: absolute;
+    font-size: 30px;
     color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    transition: color 0.2s ease-in-out;
+    background-color: #033756;
+    border: none;
+    outline: none;
+    top: 15px;  
+    right: 25px;
   }
-  
-  .navLogout:hover {
-    color: #fa991c;
+
+
+}
+
+@media only screen and (max-width: 400px) {
+  .navLogo {
+    display: none;
   }
-  
-  
-  
+}
+
+
