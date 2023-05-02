@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Classes  = require("../database/models/classes.js");
 const Facility  = require("../database/models/facility.js");
-const verifyManager = require("../middleware/verifyManager.js");
 
 // 1. Add new classes (only for manager)
 router.post("/classid", async (req, res, next) => {

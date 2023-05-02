@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const Staff = require("../database/models/staff");
 const bcrypt = require("bcrypt");
 const validData = require("../middleware/validData");
-const verifyManager = require("../middleware/verifyManager");
 
 //ROUTES//
 
