@@ -138,16 +138,19 @@ const ClibmingWallSchedule = (props) => {
         </table>
       </div>
       <Modal show={showModal}>
-  <Modal.Header>
-    <Modal.Title>Booking Details</Modal.Title>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Header>
-  <Modal.Body>
-    <FacilityBookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
-  </Modal.Body>
-</Modal>
+        <Modal.Header>
+          <Modal.Title>Booking Details</Modal.Title>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Header>
+        <Modal.Body>
+          <FacilityBookingDetails
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+          />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

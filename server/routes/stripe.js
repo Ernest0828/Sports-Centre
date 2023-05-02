@@ -1,3 +1,6 @@
+//Code was made with reference to Stripe Documenttaion
+//https://stripe.com/docs/payments/accept-a-payment?platform=web&ui=checkout
+
 const express = require("express");
 const router = express.Router()
 const stripe = require('stripe')('sk_test_51MrbuEHb9PPilNEF1HgDEBmPrJYnSTEeUojKam6GR16HUsfr5G8i0gu5XO1oPJUophzGpa6JxAawBELbzelmuk7b00do44JoiY');
@@ -8,19 +11,20 @@ const Classes  = require("../database/models/classes");
 const Facility = require("../database/models/facility");
 const Membership = require("../database/models/membership");
 
+//Route for booking Classes/Facilities
 router.post('/booking-checkout-session', async (req, res) => {
-  const items = req.body.basketItems;
-  console.log("received items:", items)
- const activities = await Promise.all(
-   items.map(item => Activity.findByPk(item.activityId))
- );
- const classes = await Promise.all(
-   items.map(item => Classes.findByPk(item.classId))
- );
- console.log("Activities:", activities);
- console.log("Classes:", classes);
+    const items = req.body.basketItems;
+    console.log("received items:", items)
+    const activities = await Promise.all(
+      items.map(item => Activity.findByPk(item.activityId))
+    );
+    const classes = await Promise.all(
+      items.map(item => Classes.findByPk(item.classId))
+    );
+    console.log("Activities:", activities);
+    console.log("Classes:", classes);
 
- 
+ //Formatting the date 
  const formatDate = (dateString) => {
    const date = new Date(dateString);
    const year = date.getFullYear();
