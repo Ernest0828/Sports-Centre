@@ -8,17 +8,12 @@ import FacilityBookingDetails from "./FacilityBooking";
 const SwimmingPoolSchedule = (props) => {
   const [swimmingPoolSchedule, setSwimmingPoolSchedule] = useState([]);
   const [swimmingPoolActivities, setSwimmingPoolActivities] = useState([]);
-  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     async function getSwimmingPoolSchedule() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/facilities/"
-        );
-        const swimmingPool = response.data.find(
-          (facility) => facility.facilityName === "Swimming pool"
-        );
+        const response = await axios.get("http://localhost:4000/api/facilities/");
+        const swimmingPool = response.data.find((facility) => facility.facilityName === "Swimming pool"); //fetches data from facilities api for swimming pool only
         const startTime = parseInt(swimmingPool.startTime.slice(0, 2));
         const endTime = parseInt(swimmingPool.endTime.slice(0, 2));
         const poolSchedule = [];
@@ -32,21 +27,8 @@ const SwimmingPoolSchedule = (props) => {
     }
     async function getSwimmingPoolActivities() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/activities/"
-        );
-        const activity = response.data.filter(
-          (a) => a.facilityName === "Swimming pool"
-        );
-
-        const bookingsResponse = await axios.get(
-          "http://localhost:4000/api/bookings/"
-        );
-        const bookings = bookingsResponse.data;
-        const date = new Date(bookings.date);
-        const day = date.toLocaleDateString("en-US", { weekday: "long" });
-
-        setBookings(bookings);
+        const response = await axios.get("http://localhost:4000/api/activities/");
+        const activity = response.data.filter((a) => a.facilityName === "Swimming pool"); //fetches data from activities api for swimming pool only
 
         setSwimmingPoolActivities(activity);
       } catch (error) {
@@ -80,15 +62,7 @@ const SwimmingPoolSchedule = (props) => {
   };
 
   const renderSwimmingPoolSchedule = () => {
-    const weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     return (
       <>
@@ -109,9 +83,9 @@ const SwimmingPoolSchedule = (props) => {
                 return (
                   <td
                     key={day}
-                    onClick={() => handleOpenModal(day, formattedTime)}
+                    onClick={() => handleOpenModal(day, formattedTime)} //opens modal with booking details if clicked
                   >
-                    {activities.map((a) => (
+                    {activities.map((a) => ( //displays class name in the correct time slot
                       <div key={a.activityName}>
                         <div>{a.activityName}</div>
                       </div>

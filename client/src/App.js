@@ -15,7 +15,6 @@ import FacilityDetails from "./components/managerPages/amenities/facilities/faci
 import ActivityDetails from "./components/managerPages/amenities/facilities/activities/activityDetails";
 import Staff from "./components/managerPages/staff/staff";
 import ClassDetails from "./components/managerPages/amenities/classes/classDetails";
-import ManagerProfileInfo from "./components/managerPages/managerProfile/managerProfileInfo";
 import ManagerProfile from "./components/managerPages/managerProfile/managerProfile";
 import ManagerLogin from "./components/managerPages/managerLogin/managerLogin";
 import MembershipDetails from './components/managerPages/memberships/membershipDetails';

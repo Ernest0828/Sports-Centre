@@ -11,12 +11,8 @@ const SquashCourtSchedule = () => {
   useEffect(() => {
     async function getSquashCourtSchedule() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/facilities/"
-        );
-        const SquashCourt = response.data.find(
-          (facility) => facility.facilityName === "Squash court A"
-        );
+        const response = await axios.get("http://localhost:4000/api/facilities/");
+        const SquashCourt = response.data.find((facility) => facility.facilityName === "Squash court A"); //fetches data from facilities api for Squash Court A only
         const startTime = parseInt(SquashCourt.startTime.slice(0, 2));
         const endTime = parseInt(SquashCourt.endTime.slice(0, 2));
         const poolSchedule = [];
@@ -30,12 +26,8 @@ const SquashCourtSchedule = () => {
     }
     async function getSquashCourtActivities() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/activities/"
-        );
-        const activity = response.data.filter(
-          (a) => a.facilityName === "Squash court A"
-        );
+        const response = await axios.get("http://localhost:4000/api/activities/");
+        const activity = response.data.filter((a) => a.facilityName === "Squash court A"); //fetches data from activities api for Squash Court A only
         setSquashCourtActivities(activity);
       } catch (error) {
         console.error(error);
@@ -68,15 +60,7 @@ const SquashCourtSchedule = () => {
   };
 
   const renderSquashCourtSchedule = () => {
-    const weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     return (
       <>
@@ -97,9 +81,9 @@ const SquashCourtSchedule = () => {
                 return (
                   <td
                     key={day}
-                    onClick={() => handleOpenModal(day, formattedTime)}
+                    onClick={() => handleOpenModal(day, formattedTime)} //opens modal with booking details if clicked
                   >
-                    {activities.map((a) => (
+                    {activities.map((a) => ( //displays class name in the correct time slot
                       <div key={a.activityName}>
                         <div>{a.activityName}</div>
                       </div>

@@ -11,12 +11,8 @@ const ClibmingWallSchedule = (props) => {
   useEffect(() => {
     async function getClibmingWallSchedule() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/facilities/"
-        );
-        const ClibmingWall = response.data.find(
-          (facility) => facility.facilityName === "Climbing wall"
-        );
+        const response = await axios.get("http://localhost:4000/api/facilities/");
+        const ClibmingWall = response.data.find((facility) => facility.facilityName === "Climbing wall"); //fetches data from facilities api for ClibmingWall only
         const startTime = parseInt(ClibmingWall.startTime.slice(0, 2));
         const endTime = parseInt(ClibmingWall.endTime.slice(0, 2));
         const poolSchedule = [];
@@ -30,12 +26,8 @@ const ClibmingWallSchedule = (props) => {
     }
     async function getClimbingWallActivities() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/activities/"
-        );
-        const activity = response.data.filter(
-          (a) => a.facilityName === "Climbing wall"
-        );
+        const response = await axios.get("http://localhost:4000/api/activities/");
+        const activity = response.data.filter((a) => a.facilityName === "Climbing wall"); //fetches data from activities api for ClibmingWall only
         setClimbingWallActivities(activity);
       } catch (error) {
         console.error(error);
@@ -68,15 +60,7 @@ const ClibmingWallSchedule = (props) => {
   };
 
   const renderClibmingWallSchedule = () => {
-    const weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
+    const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
     return (
       <>
@@ -97,11 +81,11 @@ const ClibmingWallSchedule = (props) => {
                 return (
                   <td
                     key={day}
-                    onClick={() => handleOpenModal(day, formattedTime)}
+                    onClick={() => handleOpenModal(day, formattedTime)} //opens modal with booking details if clicked
                   >
-                    {activities.map((a) => (
-                      <div key={a.activityName}>
-                        <div>{a.activityName}</div>
+                    {activities.map((a) => ( //displays activity name on correct day and time
+                      <div key={a.activityName}> 
+                        <div>{a.activityName}</div> 
                       </div>
                     ))}
                   </td>
