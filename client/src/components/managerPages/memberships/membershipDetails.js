@@ -190,7 +190,7 @@ const MembershipDetails = () => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
       setSelectedCustomer(selectedCustomer);
       
-      if (window.confirm("Are you sure you want to delete this staff member?")) {
+      if (window.confirm("Are you sure you want to delete this customer?")) {
         axios.delete(`http://localhost:4000/api/customer/${selectedCustomer.customerId}`)
           .then(() => {
             // remove the deleted staff member from staffDetails state
