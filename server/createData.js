@@ -43,7 +43,6 @@ const activities = [
 
 const classes = [
     { className: "Pilates", day: "Monday", startTime: "18:00:00", endTime: "19:00:00", price: "10", facilityName: "Studio" },
-    { className: "Badminton", day: "Wednesday", startTime: "18:00:00", endTime: "19:00:00", price: "10", facilityName: "Studio" },
     { className: "Aerobics", day: "Tuesday", startTime: "10:00:00", endTime: "11:00:00", price: "10", facilityName: "Studio" },
     { className: "Aerobics", day: "Thursday", startTime: "19:00:00", endTime: "20:00:00", price: "10", facilityName: "Studio" },
     { className: "Aerobics", day: "Saturday", startTime: "10:00:00", endTime: "11:00:00", price: "10", facilityName: "Studio" },
