@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Auth } from "../../../context/Auth";
 import {FaBars, FaTimes} from "react-icons/fa"
@@ -6,46 +6,36 @@ import {FaBars, FaTimes} from "react-icons/fa"
 import "./manager-navbar.css";
 
 const ManagerNavbar = () => {
+
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
-
-  const managerNavRef = useRef();
-
-	const showNavbar = () => {
-		managerNavRef.current.classList.toggle(
-			"responsive_nav"
-		);
-	};
-
-  
-
+  const [isBurgerNav, setIsBurgerNav] = useState(false);
 
   return (
-
-    
-    <nav  ref= {managerNavRef} className="managerNavbar">
+    <nav className="managerNavbar">
+      <Link to="/employee-profile" className="managerNavLogo">
+        GymCorp
+      </Link>
       <div className="managerNavLeft">
-        <Link to="/employee-profile" className="managerNavLogo">
-          GymCorp
-        </Link>
-        <ul className="managerNavList">
+        <ul className={isBurgerNav ? "nav-links-burger" : "managerNavList"}
+        onClick={() => setIsBurgerNav(false)}>
         {user.isManager &&
-        <div className="managerNavDropdown">
-        <Link to="/facilitydetails" className="managerNavDropdownTrigger managerNavLink" onClick={() => window.location.href="/facilitydetails"}>
-          Amenities
-        </Link>
-        <ul className="managerNavDropdownList">
-          <li className="managerNavItem" onClick={() => window.location.href="/facilitydetails"}>
-              Facilities
-          </li>
-          <li className="managerNavItem" onClick={() => window.location.href="/activitydetails"}>
-              Activities
-          </li>
-          <li className="managerNavItem" onClick={() => window.location.href="/classdetails"}>
-              Classes 
-          </li>
-        </ul>
-      </div>
+          <div className="managerNavDropdown managerNavItem">
+            <Link to="/facilitydetails" className="managerNavDropdownTrigger managerNavLink" onClick={() => window.location.href="/facilitydetails"}>
+              Amenities
+            </Link>
+            <ul className={isBurgerNav ? " managerNavDropdownList" : "managerNavDropdownList"}>
+              <li className="managerNavItem" onClick={() => window.location.href="/facilitydetails"}>
+                  Facilities
+              </li>
+              <li className="managerNavItem" onClick={() => window.location.href="/activitydetails"}>
+                  Activities
+              </li>
+              <li className="managerNavItem" onClick={() => window.location.href="/classdetails"}>
+                  Classes 
+              </li>
+            </ul>
+          </div>
         }
         {user.isManager && 
           <li className="managerNavItem">
@@ -54,57 +44,53 @@ const ManagerNavbar = () => {
             </Link>
           </li>
         }
-          <li className="managerNavItem">
-            <Link to="/membershipdetails" className="managerNavLink">
-              Memberships
-            </Link>
-          </li>
-          <li className="managerNavItem">
-            <Link to="/bookingdetails" className="managerNavLink">
-              Bookings
-            </Link>
-          </li>
-          {user.isManager &&
+        <li className="managerNavItem">
+          <Link to="/membershipdetails" className="managerNavLink">
+            Memberships
+          </Link>
+        </li>
+        <li className="managerNavItem">
+          <Link to="/bookingdetails" className="managerNavLink">
+            Bookings
+          </Link>
+        </li>
+        {user.isManager &&
           <li className="managerNavItem">
             <Link to="/statistics" className="managerNavLink">
               Statistics
             </Link>
           </li>
         }
-        </ul>
-      </div>
-    
-      <div className="managerNavRight">
         {user && 
-        <ul className="managerNavList">
           <li className="managerNavItem">
             <Link to="/employee-profile" className="managerNavLink" >
               Profile
             </Link>
           </li>
-        </ul>
         }
-        
-        {user && 
-        <ul className="managerNavList">
-          <li className="managerNavItem">
+        </ul>
+      </div>
+      <div className="managerNavRight">      
+      {user && 
+        <ul className="managerNavListLogout">
+          <li className="managerNavItemLogout">
           <Link to="/" className="managerNavLink managerNavLogout" onClick={() => dispatch({ type: "LOGOUT" }) && window.location.reload()}>
             Logout
           </Link>
           </li>
         </ul>
-        }
-       <button
-					className="nav-btn nav-close-btn"
-					onClick={showNavbar}>
-					<FaTimes />
-				</button>
+      }
       </div>
-      <button
-				className="nav-btn"
-				onClick={showNavbar}>
-				<FaBars />
-			</button>
+      <button className="burger-menu-icon"
+      onClick={() => setIsBurgerNav(!isBurgerNav) }>
+        {
+          isBurgerNav ? (
+            <FaTimes/>
+          ):(
+            <FaBars/>
+          )
+        }
+      </button>
     </nav>
   );
 };
