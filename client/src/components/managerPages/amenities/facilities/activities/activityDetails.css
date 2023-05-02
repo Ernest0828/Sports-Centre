@@ -122,3 +122,13 @@ button.editActivityButton {
 	background-color: black ;
 	color: white;
 }
+
+.addActivityForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
+
+.editActivityForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}

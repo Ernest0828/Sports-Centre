@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Discount  = require("../database/models/discount");
+const verifyManager = require("../middleware/verifyManager");
 
 // 1. new discount
 router.post('/', async (req, res, next) => {
@@ -18,7 +19,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // 2. update discount
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', verifyManager, async (req, res, next) => {
     try {
         const { id } = req.params;
         const { discount } = req.body;

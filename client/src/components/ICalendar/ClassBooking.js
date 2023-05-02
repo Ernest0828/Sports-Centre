@@ -72,6 +72,8 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
     setSelectedDate(getNextDate(selectedDay));
   }, [selectedDay]);
 
+    const[errorMessage, setErrorMessage] = useState("")
+
   useEffect(() => {
     const bookings = bookingData.filter((b) => {
       const bookingDate = new Date(b.date)
@@ -119,8 +121,11 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
         alert("Item added to basket!");
         window.location.reload();
       } catch (err) {
-        console.log(err.message);
-        alert("Error adding item to basket!");
+                if (err.response.data.message === "You have already booked for this time slot" || "You already have a booking session") {
+                    setErrorMessage(err.response.data.message);
+                } else {
+              console.log(err.message);               
+          }
       }
     } else {
       alert("You must be logged in to book an activity.");

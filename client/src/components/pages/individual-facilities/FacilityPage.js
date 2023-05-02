@@ -15,6 +15,7 @@ import SquashCourtBSchedule from '../../ICalendar/SquashCalB';
 import ClimbingWallSchedule from '../../ICalendar/ClimbCal';
 import FitnessRoomSchedule from '../../ICalendar/FitnessCal';
 import StudioSchedule from '../../ICalendar/StudioCal';
+import "./facilityPage.css";
 
 
 function FacilityPage() {
@@ -163,14 +164,15 @@ const handleBooking = async () => {
   };
 
   return (
-    <div>
+    <div className="bookingFacilityPage">
       <Navbar />
         <div className="facilityPageContainer">
           <div className="facilityPageWrapper">
-            <h1 className='Title'>{facility.facilityName}</h1>
             {Timetable}
           </div>
-        <Basket basketItems={basketItems} removeItem={removeItem}/>
+          <div className="calenderBasket">
+            <Basket basketItems={basketItems} removeItem={removeItem}/>
+          </div>
         </div>
     </div>
   )

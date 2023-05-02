@@ -61,9 +61,21 @@ const Statistics = () => {
 
     //Get class data
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const [classNames, setClassNames] = useState([]);
     const [classDetails, setClassDetails] = useState([]);
 
     useEffect(()=>{
+
+        setClassDetails(classData.map((className, index) => ({ 
+            className: className.className,
+            classId: className.classId,
+            
+            nextClassName: index < classData.length - 1 ? classData.find(c => c.classId === className.classId + 1).className : ''
+
+            
+
+        })));
+
         const uniqueClassNames = classData.reduce((uniqueClasses, currentClass) => {
           if (!uniqueClasses.includes(currentClass.className)) {
             uniqueClasses.push(currentClass.className);
@@ -71,7 +83,7 @@ const Statistics = () => {
           return uniqueClasses;
         }, []);
         
-        setClassDetails(uniqueClassNames.map(className => ({ 
+        setClassNames(uniqueClassNames.map(className => ({ 
             className 
         })));
       }, [classData]);
@@ -94,6 +106,8 @@ const Statistics = () => {
 
     //Calculate total revenue
     const [revenueData, setRevenueData] = useState();
+
+    const [classRevenueData, setClassRevenueData] = useState();
 
     // Set Monday as the start of the week
     moment.locale('en-gb', {
@@ -172,11 +186,17 @@ const Statistics = () => {
         // create an initial array with every combination of day and facility set to 0
         const initClassDay = daysOfWeek.map(day => {
             const classToDay = { day };
-            classDetails.forEach(({ className }) => {
+            classNames.forEach(({ className }) => {
               classToDay[className] = 0;
             });
             return classToDay;
         });
+
+        const initClassPrice = classDetails.map(classes => ({
+            className: classes.className,
+            classId: classes.classId,
+            classRevenue : 0
+        }));
 
         const classesData = bookingDetails
         .filter(booking => booking.bookingType === "class" &&
@@ -208,6 +228,29 @@ const Statistics = () => {
 
         }, initClassDay);
 
+        //get revenue graph data for summary
+        const classPieData = bookingDetails
+        .filter(booking => booking.bookingType === "class" &&
+            moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]')) 
+        .reduce((acc,curr) => {
+
+            const {classId, price} = curr;
+            const classIndex = acc.findIndex(f => f.classId === classId);
+            if (classIndex >= 0) {
+                acc[classIndex].classRevenue += price;
+              }
+            return acc;
+            //console.log("classId",classId);
+        }, initClassPrice);
+
+        const sumClassRevenue = classPieData.reduce((totalRevenue, classes) => {
+            return totalRevenue + classes.classRevenue;
+          }, 0);
+          
+          
+        setClassRevenueData(sumClassRevenue.toFixed(1));
+        
+
 
         //get usage graph data for Summary
         const summaryBarData = bookingDetails
@@ -233,7 +276,9 @@ const Statistics = () => {
 
 
         //get revenue graph data for summary
-        const summaryPieData = bookingDetails.reduce((acc,curr) => {
+        const summaryPieData = bookingDetails
+        .filter(booking => moment(booking.date).isBetween(dateRange.start, dateRange.end, null, '[]'))
+        .reduce((acc,curr) => {
             const {facilityName, price} = curr;
             const facilityIndex = acc.findIndex(f => f.facilityName === facilityName);
             acc[facilityIndex].revenue += price;
@@ -244,8 +289,9 @@ const Statistics = () => {
             return totalRevenue + facility.revenue;
           }, 0);
           
-        setRevenueData(sumRevenue);
+        setRevenueData(sumRevenue.toFixed(1));
         // console.log("revenueData",revenueData);
+
         
 
         // chart data for activities
@@ -293,10 +339,13 @@ const Statistics = () => {
 
         selectedFacility === "Summary" ? setBarChartData(summaryBarData):
         selectedFacility === "Studio" ? setBarChartData(classesData) :
-        setBarChartData(activityBarData)
-        selectedFacility === "Summary" && setPieChartData(summaryPieData);
+        setBarChartData(activityBarData); 
         
-    }, [bookingDetails,activityDetails,selectedFacility,classData,dateRange.end,dateRange.start,classDetails]);
+        selectedFacility === "Summary" ? setPieChartData(summaryPieData) :
+        setPieChartData(classPieData);
+
+        
+    }, [bookingDetails,activityDetails,selectedFacility,classData,dateRange.end,dateRange.start, classNames, classDetails]);
 
 
 
@@ -391,7 +440,7 @@ const Statistics = () => {
                                         <Bar dataKey={facility.facilityName} stackId="day" fill={colors[index]} legendType="circle" /> //change fill color later
                                     )) : 
                                     selectedFacility === "Studio" ? (
-                                        classDetails.map((classes,index) => (
+                                        classNames.map((classes,index) => (
                                             <Bar
                                                 dataKey = {classes.className}
                                                 stackId = "day"
@@ -409,12 +458,25 @@ const Statistics = () => {
                         <div className="revenue">
                             {selectedFacility === "Summary" && <h3>Revenue</h3>}
                             {selectedFacility === "Summary" && <p>Total revenue: £{revenueData}</p>}
+                            {selectedFacility === "Studio" && <h3>Revenue</h3>}
+                            {selectedFacility === "Studio" && <p>Total revenue: £{classRevenueData}</p>}
                             <div className="revenueGraph">
                                 <PieChart width={900} height={300}>
                                     {selectedFacility === "Summary" && facilityDetails.map((facility,index)=>(
                                         <Pie
                                             dataKey="revenue"
                                             nameKey = "facilityName"
+                                            isAnimationActive={true}
+                                            data={pieChartData}
+                                            outerRadius={80}
+                                            fill={colors[index]}
+                                            label
+                                        />
+                                    ))}
+                                    {selectedFacility === "Studio" && classNames.map((classNames,index)=>(
+                                        <Pie
+                                            dataKey="classRevenue"
+                                            nameKey = "className"
                                             isAnimationActive={true}
                                             data={pieChartData}
                                             outerRadius={80}

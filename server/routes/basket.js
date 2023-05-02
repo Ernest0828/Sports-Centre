@@ -21,22 +21,24 @@ router.post("/basketid", async (req, res, next) => {
             classId,
             facilityName } = req.body;
 
+        // format the date string
+        const formattedDate = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');     
         // check if customer exists
         const customer = await Customer.findByPk(customerId);
         if (!customer){
             return res.status(404).json({ message: "Customer not found" });
         }
 
-        // check if same booking added to basket
-        const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date}})
+        // check if same item added to basket
+        const sameItem = await Basket.findOne({ where: {startTime: start, customerId, date: formattedDate}})
         if (sameItem) {
-            return res.status(401).json({ message: "You have already booked for this time slot" });
+            return res.status(401).json({ message: "Item has already added to basket" });
         }
 
         // check if same booking has already been made
-        const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date}})
+        const sameBooking = await Booking.findOne({ where: {startTime: start, customerId, date: formattedDate}})
         if (sameBooking) {
-            return res.status(401).json({ message: "You have a booking session" });
+            return res.status(401).json({ message: "You already have a booking for this session" });
         }
 
         // check facility exists
@@ -90,7 +92,7 @@ router.post("/basketid", async (req, res, next) => {
         end = moment.utc(end.as('milliseconds')).format("HH:mm:ss");
         // create item in basket
         const newBasket = await Basket.create({
-            date,
+            date: formattedDate,
             startTime: start,
             endTime: end,
             price: prices,
@@ -157,6 +159,22 @@ router.get("/basket/:customerId", async (req, res, next) => {
             for (let i = 0; i < basket.length; i++) {
                 basket[i].price = 0;
                 await basket[i].save();
+            }
+        }
+        else {
+            // Update the price of each item in the basket to the activity/class price
+            for (let i = 0; i < basket.length; i++) {
+                const item = basket[i];
+                const activity = await Activity.findByPk(item.activityId);
+                const classes = await Classes.findByPk(item.classId);
+                if (activity) {
+                    item.price = activity.price;
+                    await item.save();
+        
+                } else if (classes) {
+                    item.price = classes.price;
+                    await item.save();
+                }
             }
         }
         return res.status(200).json(basket);

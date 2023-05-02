@@ -1,6 +1,7 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
 import {useContext, useState} from 'react';
+import "./membership.css";
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const AddCustomerForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
@@ -24,7 +25,7 @@ const AddCustomerForm = ({showAdd, handleClose, handleAddSubmit, formInputs, set
       };
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className="registerCustomerForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Register New Customer</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

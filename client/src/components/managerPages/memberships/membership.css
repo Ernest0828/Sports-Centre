@@ -147,12 +147,12 @@ button.editCustomerButton {
 	color: white;
 }
 
-.discountTable {
-    width: 50%;
-    margin-top: 30px;
-  }
+.registerCustomerForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
 
-.discountHead{
-    background-color: grey;
-    padding: 8px;
+.editCustomerForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
 }

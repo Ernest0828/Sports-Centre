@@ -5,6 +5,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import Datepicker from "react-datepicker";
 import BookingDetails from "./ClassBooking";
 import useFetch from "../../hooks/useFetch";
+import "../ICalendar/studioCal.css";
+
 
 const StudioSchedule = () => {
   const [studioSchedule, setStudioSchedule] = useState([]);
@@ -194,9 +196,12 @@ const StudioSchedule = () => {
           <tbody>{studioSchedule.length > 0 && renderStudioSchedule()}</tbody>
         </table>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+      <Modal show={showModal}>
+        <Modal.Header>
           <Modal.Title>Booking Details</Modal.Title>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
         </Modal.Header>
         <Modal.Body>
           <BookingDetails
@@ -205,11 +210,6 @@ const StudioSchedule = () => {
             selectedClass={selectedClass}
           />
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );

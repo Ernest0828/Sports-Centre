@@ -122,6 +122,8 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     setSelectedDate(getNextDate(selectedDay));
   }, [selectedDay]);
 
+  const[errorMessage, setErrorMessage] = useState("")
+  
   useEffect(() => {
     const bookings = bookingData.filter((b) => {
       const bookingDate = new Date(b.date)
@@ -158,20 +160,24 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   const handleClick = async () => {
     if (user) {
       try {
-        await axios.post("http://localhost:4000/api/basket/basketid", {
-          date: selectedDate,
-          start: selectedTime, //Start time
-          customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
-          activityId: activityId, //convert the selectedOptionB to activity number
-          classId: null,
-          facilityName: facility.facilityName,
-        });
-        alert("Item added to basket!");
-        window.location.reload();
-      } catch (err) {
-        console.log(err.message);
-        alert("Error adding item to basket!");
-      }
+          await axios.post('http://localhost:4000/api/basket/basketid', {
+            date: selectedDate,
+            start: selectedTime, //Start time
+            customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
+            activityId: activityId, //convert the selectedOptionB to activity number
+            classId: null,
+            facilityName: facility.facilityName 
+          });
+          alert('Item added to basket!');
+          window.location.reload();
+        } catch (err) {
+          if (err.response.data.message === "You have already booked for this time slot" || "You already have a booking session") {
+            setErrorMessage(err.response.data.message);
+          } else {
+            console.log(err.message);
+          
+          }
+        } 
     } else {
       alert("You must be logged in to book an activity.");
     }
@@ -228,6 +234,9 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
       >
         Submit
       </Button>
+        {errorMessage && (
+      <p style={{ color: "red" }}>{errorMessage}</p>
+    )}
     </Form>
   );
 };
