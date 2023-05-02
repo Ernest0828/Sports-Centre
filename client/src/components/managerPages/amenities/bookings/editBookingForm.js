@@ -1,9 +1,8 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../hooks/useFetch"
 import "./bookings.css";
-import axios from 'axios'
 import {useEffect, useState} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 
 const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormInputs}) => {
@@ -28,8 +27,6 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
 
       const uniqueNames = new Set(filteredActivities.map((activity) => activity.activityName));
       const names = Array.from(uniqueNames);
-
-      // Update the state with the activity names
       setActivityNames(names);
     
     }, [facilityData, activityData, selectedFacility]);
