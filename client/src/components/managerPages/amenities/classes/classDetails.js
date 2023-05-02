@@ -2,25 +2,20 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import "./classDetails.css";
 import Navbar from "../../managerNavbar/ManagerNavbar";
-import { Link } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
-import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditClassForm from "./editClassForm";
 import AddClassForm from "./addClassForm";
 
 
 const ClassDetails = () => {
 
-    //useFetch Hooks
+    //Getting data
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
     const [classDetails, setClassDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
-    const [isEditable, setIsEditable] = useState(false);
-
     const [selectedClass, setSelectedClass] = useState(null);
-
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const handleClose = () => {
@@ -59,8 +54,8 @@ const ClassDetails = () => {
         classId: selectedClass.classId,
         className: selectedClass.className,
         price: selectedClass.price,
-        day: selectedClass.dayTime[0].day, // set the day value from the dayTime array
-        startTime: selectedClass.dayTime[0].startTime, // set the startTime value from the dayTime array
+        day: selectedClass.dayTime[0].day, 
+        startTime: selectedClass.dayTime[0].startTime, 
         endTime: selectedClass.dayTime[0].endTime,
         facilityName: selectedClass.facilityName
       });
@@ -83,7 +78,7 @@ const ClassDetails = () => {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      // Update facility details with formInputs values
+      // Update facility details with updated formInput values
       setClassDetails((prevState) => {
       const updatedDetails = [...prevState];
       const index = updatedDetails.findIndex(
@@ -167,7 +162,7 @@ const ClassDetails = () => {
       if (window.confirm("Are you sure you want to delete this class?")) {
         axios.delete(`http://localhost:4000/api/classes/${selectedClass.classId}`)
           .then(() => {
-            // remove the deleted staff member from staffDetails state
+            // remove the deleted staff member from table
             setClassDetails(classDetails.filter(classes => classes.classId !== selectedClass.classId));
           })
           .catch(err => console.error('Failed to delete class', err));
