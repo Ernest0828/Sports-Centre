@@ -1,9 +1,7 @@
 import React,{ useState, useEffect, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
-import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
 import { useLocation } from "react-router-dom";
 import { Auth } from '../../../context/Auth';

@@ -29,9 +29,7 @@
 
     const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
     const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
-    //How to get all the basket items where customer id = ? and how do i pass all of them to stripe?
     const handleCheckout= async() =>{
-        // console.log(items);
         if(selectedCustomer.isMembership){
             navigate('/booking-success')
         }
@@ -49,8 +47,7 @@
 
     return (
     <>
-    <button onClick={()=> handleCheckout()}>Check out
-    </button>
+        <button onClick={()=> handleCheckout()}>Check out</button>
     </>
 
     );

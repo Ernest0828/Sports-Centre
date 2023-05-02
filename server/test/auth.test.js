@@ -1,16 +1,26 @@
 const request = require("supertest");
 const app = require("../index");
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'gymCorp',
+    password: 'hogwarts6393',
+    port: 5432,
+});
 
 // test for Customer Authentication
-describe("Customer register/login", () => {
+describe("Customer register OR login", () => {
   describe("POST /auth/register", () => {
 
     // test for successful register
     test("Should respond with a 200 status code and a success message", async () => {
+      await pool.query('DELETE from "Bookings"');
       const res = await request(app).post("/api/auth/register").send({
         name: "Edmund",
-        number: "0123456789",
-        email: "ed@gmail.com",
+        number: "07825570396",
+        email: "edmund@gmail.com",
         password: "ed123",
       });
       expect(res.statusCode).toBe(200);
@@ -20,10 +30,10 @@ describe("Customer register/login", () => {
     // test if customer already exists
     test("Should respond with a 401 status code and an error message if customer already exists", async () => {
       const res = await request(app).post("/api/auth/register").send({
-        name: "Edmund",
-        number: "0123456789",
-        email: "ed@gmail.com",
-        password: "ed123",
+        name: "TEST",
+        number: "01234567891",
+        email: "test@gmail.com",
+        password: "test123",
       });
       expect(res.statusCode).toBe(401);
       expect(res.body.message).toBe("User already exists");
@@ -45,7 +55,7 @@ describe("Customer register/login", () => {
     test("Should respond with a 401 status code and an error message if invalid email", async () => {
       const res = await request(app).post("/api/auth/register").send({
         name: "Edmund",
-        number: "0123456789",
+        number: "01234567891",
         email: "brayden@invalidemail",
         password: "brayden123",
       });
@@ -57,10 +67,10 @@ describe("Customer register/login", () => {
   describe("POST /auth/login", () => {
 
     // test for successful login
-    test("Should respond with a 200 status code and a success message", async () => {
+    test("Should respond with a 200 status code", async () => {
       const res = await request(app).post("/api/auth/login").send({
-        customerEmail: "ed@gmail.com",
-        password: "ed123",
+        customerEmail: "test@gmail.com",
+        password: "test123",
       });
       expect(res.statusCode).toBe(200);
       expect(res.body.details).toBe(res.body.details);
@@ -69,7 +79,7 @@ describe("Customer register/login", () => {
     // test for incorrect password
     test("Should respond with a 401 status code and an error message if password is incorrect", async () => {
       const res = await request(app).post("/api/auth/login").send({
-        customerEmail: "ed@gmail.com",
+        customerEmail: "test@gmail.com",
         password: "wrongpassword",
       });
       expect(res.statusCode).toBe(401);
@@ -96,7 +106,7 @@ describe("Staff register/login", () => {
     test("Should respond with a 200 status code and a success message", async () => {
       const res = await request(app).post("/auth/staff/register").send({
         name: "Veco",
-        number: "0123251617",
+        number: "01234567891",
         email: "veco@gmail.com",
         password: "veco123",
         isManager: true,
@@ -108,11 +118,11 @@ describe("Staff register/login", () => {
     // test if staff already exists
     test("Should respond with a 401 status code and an error message if staff already exists", async () => {
       const res = await request(app).post("/auth/staff/register").send({
-        name: "Najmi",
-        number: "0123251617",
-        email: "najmi@gmail.com",
-        password: "najmi123",
-        isManager: true
+        name: "testStaff",
+        number: "01234567891",
+        email: "testStaff@gmail.com",
+        password: "test123",
+        isManager: false
       });
       expect(res.statusCode).toBe(401);
       expect(res.body.message).toBe("Staff already exits");
@@ -122,10 +132,10 @@ describe("Staff register/login", () => {
   describe("POST /auth/staff/login", () => {
 
     // test for successful login
-    test("Should respond with a 200 status code and a success message", async () => {
+    test("Should respond with a 200 status code", async () => {
       const res = await request(app).post("/auth/staff/login").send({
-        staffEmail: "najmi@gmail.com",
-        password: "najmi123",
+        staffEmail: "testManager@gmail.com",
+        password: "test123",
       });
       expect(res.statusCode).toBe(200);
       expect(res.body.details).toBe(res.body.details);
@@ -134,7 +144,7 @@ describe("Staff register/login", () => {
     // test for incorrect password
     test("Should respond with a 401 status code and an error message if password is incorrect", async () => {
       const res = await request(app).post("/auth/staff/login").send({
-        staffEmail: "najmi@gmail.com",
+        staffEmail: "testManager@gmail.com",
         password: "wrongpassword",
       });
       expect(res.statusCode).toBe(401);
@@ -144,8 +154,8 @@ describe("Staff register/login", () => {
     // test if logged in user not staff
     test("Should respond with a 404 status code and an error message if not a staff", async () => {
       const res = await request(app).post("/auth/staff/login").send({
-        staffEmail: "hazim@gmail.com",
-        password: "hazim123",
+        staffEmail: "test@gmail.com",
+        password: "test123",
       });
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe("Not a Staff Member");

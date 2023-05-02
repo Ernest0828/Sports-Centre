@@ -5,9 +5,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../navbar/Navbar';
 import "./successpage.css"
 
-function useQuery() {
-	return new URLSearchParams(useLocation().search);
-}
+// function useQuery() {
+// 	return new URLSearchParams(useLocation().search);
+// }
 
 function SuccessPage() {
 
@@ -21,14 +21,10 @@ function SuccessPage() {
 					customerId: user.details.customerId,
 				});
 	
-				console.log("Response data:", response.data);
-	
 				// Check response status for success or adjust the condition accordingly
 				if (response.status === 200) {
-					console.log("Booking created successfully");
 					alert("Booking completed!");
 				} else {
-					console.log("Failed to create a booking");
 					alert("Booking not complete");
 				}
 			} catch (error) {

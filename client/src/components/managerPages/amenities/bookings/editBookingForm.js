@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../hooks/useFetch"
+import "./bookings.css";
 import axios from 'axios'
 import {useEffect, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -51,7 +52,7 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
   };
       
       return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className="editBookingForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Booking</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

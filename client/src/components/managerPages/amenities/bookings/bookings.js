@@ -2,11 +2,8 @@ import React from 'react';
 import {useEffect, useState, useContext} from 'react';
 import "./bookings.css";
 import Navbar from "../../managerNavbar/ManagerNavbar";
-// import {Auth} from "../../../../context/Auth"
-// import { Link } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch"
 import axios from 'axios';
-import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditBookingForm from "./editBookingForm";
 import BookActivityForm from "./bookActivityForm";
 import BookClassForm from "./bookClassForm";
@@ -22,10 +19,7 @@ const BookingDetails = () => {
 
     const [bookingDetails, setBookingDetails] = useState()
     const [editableRows, setEditableRows] = useState({});
-    const [isSaved, setIsSaved] = useState(false);
-
     const [selectedBooking, setSelectedBooking] = useState(null);
-
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [showClass, setShowClass] = useState(false);
@@ -56,7 +50,6 @@ const BookingDetails = () => {
 
             customerId: booking.customerId,
             customerEmail: customerEmail,
-            //customerName: customer.customerName,
 
             staffId: booking.staffId,
             staffName: staff ? staff.staffName : '',
@@ -147,18 +140,11 @@ const BookingDetails = () => {
 
     const handleClassSubmit = (event) => {
       event.preventDefault();
-
-      // const customerNameUpper = formInputs.customerName ? formInputs.customerName.toUpperCase() : null;
       const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
       const staffId = selectedStaff ? selectedStaff.staffId : null;
-
-      // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-     /* const [day, month, year] = formInputs.date.split("/");
-      const date = `${year}/${month}/${day}`;*/
-
 
       const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
@@ -233,7 +219,7 @@ const BookingDetails = () => {
 
       const pricee = formInputs.activityId === null ? classPrice : activityPrice;
 
-      // Update facility details with formInputs values
+      // Update facility details with updated formInput values
       setBookingDetails((prevState) => {
       const updatedDetails = [...prevState];
       const index = updatedDetails.findIndex(
@@ -288,14 +274,9 @@ const BookingDetails = () => {
         const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
         const staffId = selectedStaff ? selectedStaff.staffId : null;
 
-        // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-        //const [day, month, year] = formInputs.date.split("/");
-        //onst date = `${year}/${month}/${day}`;
-
         const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
         const activityId = selectedActivity ? selectedActivity.activityId : null;
         const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
-
 
         const dateofDay = new Date(formInputs.date);
         const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
@@ -351,7 +332,7 @@ const BookingDetails = () => {
             .then(() => {
               // remove the deleted staff member from staffDetails state
               setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
-              setIsSaved(true); // set a flag to show that the data has been saved
+              
             })
             .catch(err => console.error('Failed to delete booking', err));
         }

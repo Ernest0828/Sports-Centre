@@ -67,7 +67,7 @@ const MemberProfile = () => {
                         return res.data.className;
                     }
                 });
-                                //array of activity names. Promise.all resolves each promise (name of each booking)
+                //array of activity names. Promise.all resolves each promise (name of each booking)
                 const classNames = await Promise.all(className);
                 setClassNames(classNames);
             }
@@ -84,8 +84,7 @@ const MemberProfile = () => {
     const handleDelete = async (bookingId) => {
         if (window.confirm("Are you sure you want to delete this booking?")) {
         try {
-            const res = await axios.delete("http://localhost:4000/api/bookings/"+ bookingId);
-            console.log(res);
+            await axios.delete("http://localhost:4000/api/bookings/"+ bookingId);
             const newBookings = bookings.filter(booking => booking.bookingId !== bookingId);
             setBookings(newBookings);
           // Redirect to login page or show success message
@@ -94,8 +93,6 @@ const MemberProfile = () => {
         }
         }
       };
-
-      console.log("test",bookings);
 
     return (
         <Fragment>
