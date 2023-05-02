@@ -49,7 +49,7 @@ function SuccessPage() {
       <Navbar />
       <div className="success-page">
         <div className="successpage-container">
-          <h1 className='success-heading'>BOOKING SUCCESSFUL!!</h1>
+          <h1 className='success-heading'>BOOKING SUCCESSFUL!</h1>
           <p className="success-text">
             Thank you for booking with us.
           </p>

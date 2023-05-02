@@ -138,7 +138,7 @@ const handleBooking = async () => {
   };
 
   return (
-    <div>
+    <div className="bookingFacilityPage">
       <Navbar />
         <div className="facilityPageContainer">
           <div className="facilityPageWrapper">

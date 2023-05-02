@@ -5,6 +5,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import Datepicker from "react-datepicker";
 import BookingDetails from "./ClassBooking";
 import useFetch from "../../hooks/useFetch";
+import "../ICalendar/studioCal.css";
+
 
 const StudioSchedule = () => {
   const [studioSchedule, setStudioSchedule] = useState([]);
@@ -186,7 +188,7 @@ function getRemainingSpots(bookings, classData, studio) {
           {weekdays.map((day) => {
             
             return (
-              <td key={day}>
+              <td key={day} >
                 {studioClasses
                   .filter(
                     (c) =>
@@ -195,8 +197,7 @@ function getRemainingSpots(bookings, classData, studio) {
                   )
                   .map((c) => {
                     return (
-                      <div key={c.className}>
-                        <button
+                      <div className="studioCalDiv" key={c.className}
                           onClick={() =>
                             handleOpenModal(day, timeSlot.time.slice(0, 5), c.className)
                           }
@@ -204,7 +205,6 @@ function getRemainingSpots(bookings, classData, studio) {
                           {c.className}
                           <br />
                           <span> </span>
-                        </button>
                       </div>
                     );
                   })}

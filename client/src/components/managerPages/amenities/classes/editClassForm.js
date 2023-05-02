@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
+import "./classDetails.css";
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -25,7 +26,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
       };
       
       return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className = "editClassForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Class</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

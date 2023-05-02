@@ -110,6 +110,10 @@ button.editBookingButton {
     overflow-y: auto;
 }
 
+.bookActivityForm {
+    padding-top:60px;
+    padding-bottom: 50px;
+}
 .addBookingButtonContainer {
   display: flex;
   margin-left: 65px;
@@ -122,9 +126,7 @@ button.editBookingButton {
   color: white;
 }
 
-/* Responsive styles for smaller screens */
-@media (max-width: 768px) {
-  .button-container {
-    margin-left: 20px;
-  }
+.bookClassForm {
+    padding-top:60px;
+    padding-bottom: 50px;
 }

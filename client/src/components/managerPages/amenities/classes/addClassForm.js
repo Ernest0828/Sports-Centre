@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
+import "./classDetails.css";
 import {useEffect, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -26,7 +27,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
       };
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className = "addClassForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Add New Class</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

@@ -51,7 +51,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
       
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className = "bookActivityForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Book Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

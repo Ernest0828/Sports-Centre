@@ -1,6 +1,7 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../../hooks/useFetch"
 import axios from 'axios'
+import "./activityDetails.css";
 import {useContext, useState, useEffect} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -44,7 +45,7 @@ const EditActivityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
   
   
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className = "editActivityForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

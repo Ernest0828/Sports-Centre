@@ -130,3 +130,13 @@ button.editStaffButton {
 	background-color: black ;
 	color: white;
 }
+
+.editStaffForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}
+
+.addStaffForm {
+    padding-top: 70px;
+    padding-bottom: 60px;
+}

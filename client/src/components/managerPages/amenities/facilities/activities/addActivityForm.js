@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
+import "./activityDetails.css";
 import {useContext, useState} from 'react';
 import useFetch from "../../../hooks/useFetch"
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -26,7 +27,7 @@ const AddActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, set
   
       
       return (
-        <Modal show={showAdd} onHide={handleClose}>
+        <Modal className = "addActivityForm" show={showAdd} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Add Activity</Modal.Title>
           <button className="btn-close" onClick={handleClose}>

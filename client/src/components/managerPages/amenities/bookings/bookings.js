@@ -39,6 +39,7 @@ const BookingDetails = () => {
     useEffect(() => {
         setBookingDetails(bookingData.map((booking) => {
             const customer = customerData.find((customer) => customer.customerId === booking.customerId);
+            const customerEmail = customer ? customer.customerEmail : "";
             const staff = staffData.find((staff) => staff.staffId === booking.staffId);
             const activity = activityData.find((activity) => activity.activityId === booking.activityId);
             const classes = classData.find((classes) => classes.classId === booking.classId);
@@ -54,7 +55,7 @@ const BookingDetails = () => {
             bookingType: booking.bookingType,
 
             customerId: booking.customerId,
-            //customerEmail: customer ? customer.customerEmail : '',
+            customerEmail: customerEmail,
             //customerName: customer.customerName,
 
             staffId: booking.staffId,
