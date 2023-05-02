@@ -1,7 +1,5 @@
 import { Form, Button } from "react-bootstrap"
-import axios from 'axios'
-import {useContext, useState} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 const EditDiscountForm = ({showDiscount, handleClose, handleSubmitDiscount, discountInputs, setDiscountInputs}) => {
   
