@@ -94,17 +94,17 @@ const ManagerNavbar = () => {
           </li>
         </ul>
         }
-       {/*<button
+       <button
 					className="nav-btn nav-close-btn"
 					onClick={showNavbar}>
 					<FaTimes />
-				</button>*/}
+				</button>
       </div>
-      {/*<button
+      <button
 				className="nav-btn"
 				onClick={showNavbar}>
 				<FaBars />
-			</button>*/}
+			</button>
     </nav>
   );
 };

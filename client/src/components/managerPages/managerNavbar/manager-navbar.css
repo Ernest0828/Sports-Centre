@@ -152,7 +152,7 @@
     }
   }
   
-  /*.nav-btn {
+  .nav-btn {
     padding: 5px;
     cursor: pointer;
     background: transparent;
@@ -208,9 +208,9 @@
       right: 1rem;
     }
   
-    nav a {
+    nav  li{
       font-size: 1.1rem;
     }
-  }*/
+  }
   
   
