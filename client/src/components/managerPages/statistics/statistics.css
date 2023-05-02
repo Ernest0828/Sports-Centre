@@ -149,7 +149,6 @@
     align-self: center;
 }
 
-  /* Small devices (phones) */
 @media only screen and (max-width: 1200px) {
     .statsWrapper {
       margin-top: 80px;
