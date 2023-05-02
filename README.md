@@ -44,7 +44,7 @@ email : testStaff@gmail.com
 password : test123
 
 Log in as existing manager:
-email : testManager@gmail.com
+email : testManager@gmail.com  
 password : test123
 
   
