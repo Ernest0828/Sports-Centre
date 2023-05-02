@@ -6,12 +6,13 @@ import { Modal } from 'react-bootstrap';
 
 const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, setFormInputs}) => {
 
+//Fetching data from database
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
-
+  //Initializing states 
     const [selectedFacility, setSelectedFacility] = useState("");
     const [selectedClass, setSelectedClass] = useState("");
     const [selectedCustomer, setSelectedCustomer] = useState("");
@@ -19,6 +20,8 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
     const [uniqueClassNames, setUniqueClassNames] = useState([]);
 
     useEffect(() => {
+
+      //Grouping same class names into one selection
       if (classData) {
         const classNames = classData.map((data) => data.className);
         const uniqueClassNames = Array.from(new Set(classNames));

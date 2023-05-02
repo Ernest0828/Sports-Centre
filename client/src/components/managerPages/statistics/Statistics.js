@@ -41,7 +41,6 @@ const Statistics = () => {
             facilityName
           };
         }));      
-        // console.log("activityDetails:",activityDetails);
       }, [activityData]);
 
 
@@ -142,7 +141,6 @@ const Statistics = () => {
         const initFacDay = daysOfWeek.map(day => {
             const facToDay = { day };
             facilities.forEach(facility => facToDay[facility] = 0);
-            // console.log("factoday:",facToDay);
             return facToDay;
         });
 

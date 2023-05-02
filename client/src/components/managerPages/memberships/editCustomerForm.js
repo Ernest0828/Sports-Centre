@@ -1,8 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import "./membership.css";
-import axios from 'axios'
-import {useContext, useState} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, formInputs, setFormInputs}) => {
   
@@ -107,12 +105,11 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
             </div>
             <Form.Select
                 name="membershipType"
-                value={formInputs.membershipType}
                 onChange={handleFormInputChange}
             >
                 <option value="">Please choose an option</option>
-                <option value="MONTHLY">MONTHLY</option>
-                <option value="ANNUAL">ANNUAL</option>
+                <option disabled={formInputs.membershipType === 'MONTHLY'} value="MONTHLY">MONTHLY</option>
+                <option disabled={formInputs.membershipType === 'ANNUAL'} value="ANNUAL">ANNUAL</option>
             </Form.Select>
             </Form.Group>
       

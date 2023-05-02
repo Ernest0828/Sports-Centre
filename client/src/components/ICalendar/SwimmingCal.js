@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form } from "react-bootstrap";
-import Datepicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
+
 import FacilityBookingDetails from "./FacilityBooking";
 
 const SwimmingPoolSchedule = (props) => {
@@ -11,7 +11,6 @@ const SwimmingPoolSchedule = (props) => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    let swimmingPool = {};
     async function getSwimmingPoolSchedule() {
       try {
         const response = await axios.get(
@@ -26,7 +25,6 @@ const SwimmingPoolSchedule = (props) => {
         for (let i = startTime; i < endTime; i++) {
           poolSchedule.push(`${i < 10 ? "0" + i : i}:00-${i + 1}:00`);
         }
-        // console.log("Availability:",swimmingPool.capacity);
         setSwimmingPoolSchedule(poolSchedule);
       } catch (error) {
         console.error(error);

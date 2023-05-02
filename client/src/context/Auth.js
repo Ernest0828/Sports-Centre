@@ -1,3 +1,7 @@
+//Part of code was taken from GitHub
+//https://github.com/safak/youtube2022/tree/mern-booking
+//youtube2022/client/src/context/AuthContext.js
+
 import { createContext, useEffect, useReducer } from "react";
 
 const INITIAL_STATE = {

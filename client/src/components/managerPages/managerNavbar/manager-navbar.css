@@ -14,203 +14,199 @@
     left: 0;
     right: 0;
     z-index: 10000;
-  }
-  
-  .managerNavLeft {
-    display: flex;
-    align-items: center;
-  }
-  
-  .managerNavLogo {
-    color: #fa991c;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    margin-right: 50px;
+}
+
+.managerNavLeft {
+  display: flex;
+  align-items: center;
+  margin-right: 20%;
+}
+
+.managerNavLogo {
+  color: #fa991c;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 50px;
+}
+
+.managerNavLogo:hover {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  transform: scale(.99);
+}
+
+.managerNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.managerNavItem {    
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.managerNavLink {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.managerNavLink:hover {
+  color: #fa991c;
+  text-decoration: none;
+}
+
+.managerNavRight {
+  display: flex;
+  align-items: center;
+}
+
+.managerNavLogout {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  transition: color 0.2s ease-in-out;
+}
+
+.managerNavLogout:hover {
+  color: #fa991c;
+}
+
+.managerNavDropdownList li {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.managerNavDropdownList li:hover {
+  color: #fa991c;
+}
+
+.managerNavRight {
+  display: flex;
+  align-items: center;
+}
+
+.managerNavDropdown {
+  position: relative;
+}
+
+.managerNavDropdownTrigger {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.managerNavDropdownTrigger:hover {
+  color: #fa991c;
+}
+
+.managerNavDropdownList {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #033756;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  list-style: none;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  align-content: center;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.managerNavDropdown:hover .managerNavDropdownList {
+  opacity: 1;
+  visibility: visible;
+  align-items: center;
+  cursor:pointer;
+}
+
+.managerNavDropdownItem {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+.burger-menu-icon{
+  display: none;
+}
+
+.managerNavListLogout{
+  position: absolute;
+  /* display: block; */
+  background-color: #033756;
+  list-style: none;
+  margin: 0;
+  right: 70px ;
+  padding: 0;
+  display: flex;
+}
+
+.managerNavItemLogout{
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+
+@media only screen and (max-width: 1024px) {
+  .managerNavList{
+    display: none;
   }
 
-  .managerNavLogo:hover {
-    color: white;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-    transform: scale(.99);
-  }
-  
-  .managerNavList {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-  
-  .managerNavItem {    
-    margin-right: 20px;
-  }
-  
-  .managerNavLink {
-    color: white;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .managerNavLink:hover {
-    color: #fa991c;
-    text-decoration: none;
-  }
-  
-  .managerNavRight {
-    display: flex;
-    align-items: center;
-  }
-  
-  .managerNavLogout {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .managerNavLogout:hover {
-    color: #fa991c;
-  }
-
-  .managerNavDropdownList li {
-    color: white;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .managerNavDropdownList li:hover {
-    color: #fa991c;
-  }
-  
-  .managerNavRight {
-    display: flex;
-    align-items: center;
-  }
-
-  .managerNavDropdown {
-    position: relative;
-  }
-  
-  .managerNavDropdownTrigger {
-    color: white;
-    text-decoration: none;
-    margin-right: 20px;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .managerNavDropdownTrigger:hover {
-    color: #fa991c;
-  }
-  
-  .managerNavDropdownList {
+  .nav-links-burger{
     position: absolute;
-    top: 100%;
-    right: 0;
+    display: flex;
+    flex-direction: column;
+    list-style:none;
     background-color: #033756;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    list-style: none;
-    margin: 0;
-    opacity: 0;
-    visibility: hidden;
-    align-content: center;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-  }
-  
-  .managerNavDropdown:hover .managerNavDropdownList {
-    opacity: 1;
-    visibility: visible;
-    align-items: center;
-    cursor:pointer;
-  }
-  
-  .managerNavDropdownItem {
-    margin-bottom: 10px;
-    text-align: center;
+    left: 0;
+    top: 75px;
+    transition: all 0.5s ease-out;
+    width: 100%;
   }
 
-  @media only screen and (max-width: 1024px) {
-    .managerNavbar {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-      background-color: #033756;
-      box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-      padding: 0 50px;
-      font-family: 'Arimo', sans-serif;
-      font-size: 18px;
-      width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10000;
-    }
+  /* .nav-links-burger .managerNavDropdown{
+    margin-top: 90px;
+  } */
+
+  .managerNavLeft{
+    text-align: center;
+    padding: 32px;
+    width: 100%;
   }
-  
-  .nav-btn {
-    padding: 5px;
-    cursor: pointer;
-    background: transparent;
+
+  .managerNavItem{
+    padding:10px;
+    margin-right: 40px;
+  }
+
+  .burger-menu-icon{
+    display: block;
+    position: absolute;
+    font-size: 30px;
+    color: white;
+    background-color: #033756;
     border: none;
     outline: none;
-    color: var(--textColor);
-    visibility: hidden;
-    opacity: 0;
-    font-size: 1.8rem;
+    top: 15px;  
+    right: 25px;
   }
 
-  @media only screen and (max-width: 1024px) {
-    root {
-      background-color: #033756;
-      height: 1vh;
-      overflow: hidden;
-  }
 
-    .nav-btn {
-      visibility: visible;
-      opacity: 1;
-    }
-  
-    .managerNavBar {
-      top: -100vh;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      background-color: #033756;
-      transition: 1s;
-    }
 
-    .managerNavList {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction:column;
-    }
-  
-    .responsive_nav {
-      transform: translateY(30vh);
-    }
-  
-    .nav-close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-    }
-  
-    nav  li{
-      font-size: 1.1rem;
-    }
+}
+
+@media only screen and (max-width: 400px) {
+  .managerNavLogo {
+    display: none;
   }
-  
-  
+}
+
+

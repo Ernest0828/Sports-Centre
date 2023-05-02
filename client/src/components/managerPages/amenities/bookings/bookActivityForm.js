@@ -1,16 +1,19 @@
-import { Form, Button } from "react-bootstrap"
+import {Form, Button} from "react-bootstrap"
+import {useState, useEffect} from 'react';
+import {Modal} from 'react-bootstrap';
 import useFetch from "../../hooks/useFetch"
 import "./bookings.css";
-import {useContext, useState, useEffect} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 
 const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFormInputs}) => {
 
+  //Fetching data from database
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
 
+  //Initializing states 
     const [selectedFacility, setSelectedFacility] = useState("");
     const [selectedActivity, setSelectedActivity] = useState("");
     const [selectedCustomer, setSelectedCustomer] = useState("");
@@ -19,11 +22,12 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
 
 
     useEffect(() => {
-      // Filter the activity data based on the selected facility name
+      //Getting activity data based on the selected facility by filtering
       const filteredActivities = activityData.filter(
         (activity) => activity.facilityName === selectedFacility
       );
-
+      
+      //Grouping same activity names into one selection
       const uniqueNames = new Set(filteredActivities.map((activity) => activity.activityName));
       const names = Array.from(uniqueNames);
 
@@ -176,16 +180,6 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
               </Form.Control>
             </Form.Group>
 
-            {/*<Form.Group controlId="formStartTime">
-              <Form.Label>Start</Form.Label>
-              <Form.Control
-                type="time"
-                name="startTime"
-                value={formInputs.startTime}
-                onChange={handleFormInputChange}
-                placeholder=" "
-              />
-            </Form.Group>*/}
 
             <Form.Group controlId="formStaff">
               <Form.Label>Employee</Form.Label>
@@ -219,6 +213,7 @@ const BookActivityForm = ({showAdd, handleClose, handleAddSubmit, formInputs, se
             </Button>
           </Form>
 
+        {/* A table to display list of activity and times */}
           <table className="activityTable">
             <thead>
               <tr>
