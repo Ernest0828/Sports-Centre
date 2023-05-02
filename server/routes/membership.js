@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Customer  = require("../database/models/customer");
 const Membership = require("../database/models/membership");
-const verifyManager  = require("../middleware/verifyManager");
-const verifyStaff  = require("../middleware/verifyStaff");
-const verifyUser  = require("../middleware/verifyUser");
-
 
 // 1. Buy a membership
 router.post("/buy/:id", async (req, res, next) => {

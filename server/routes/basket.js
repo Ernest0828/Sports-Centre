@@ -8,7 +8,6 @@ const Classes  = require("../database/models/classes");
 const Facility = require("../database/models/facility");
 const Discount  = require("../database/models/discount");
 const Customer  = require("../database/models/customer");
-const verifyUser = require("../middleware/verifyUser");
 
 // 1. Send item to basket
 router.post("/basketid", async (req, res, next) => {

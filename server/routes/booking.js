@@ -9,10 +9,6 @@ const Basket  = require("../database/models/basket");
 const Customer  = require("../database/models/customer");
 const Staff  = require("../database/models/staff");
 const StaffBooking  = require("../database/models/staffBooking");
-const verifyUser = require("../middleware/verifyUser");
-const verifyStaff = require("../middleware/verifyStaff");
-const verifyManager = require("../middleware/verifyManager");
-
 
 // For User to amend the booking
 
