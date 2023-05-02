@@ -18,11 +18,11 @@ const FacilityDetails = () => {
 
   //States
     const [facilityDetails, setFacilityDetails] = useState();
-    const [editableRows] = useState({});
+    const [editableRows, setEditableRows] = useState({});
     const [selectedFacility, setSelectedFacility] = useState(null); 
-    const [setSelectedActivity] = useState(null); 
+    const [selectedActivity,setSelectedActivity] = useState(null); 
     const [discountDetails, setDiscountDetails] = useState()
-    const [setSelectedDiscount] = useState(null);
+    const [selectedDiscount,setSelectedDiscount] = useState(null);
     const [showDiscount, setShowDiscount] = useState(false);
 
 

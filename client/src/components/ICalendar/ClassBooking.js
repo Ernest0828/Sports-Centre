@@ -10,7 +10,7 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
   const [selectedDate, setSelectedDate] = useState();
-  const [setNumBookings] = useState(0);
+  const [numBookings, setNumBookings] = useState(0);
   const [totalNoOfPeople, setTotalNoOfPeople] = useState(0);
   const { user } = useContext(Auth);
 
