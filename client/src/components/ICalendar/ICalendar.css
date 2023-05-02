@@ -1,5 +1,5 @@
 
-.Cal-container{
+.calContainer{
     margin-top: 50px;
     width: 100vw;
     height: 100%;
@@ -22,7 +22,7 @@
   margin-bottom: 50px;
 }
 
-.title{
+.calendarTitle{
   font-weight:bold;
   align-self: center;
   font-size: 40px;
