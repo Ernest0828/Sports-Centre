@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
 import "./pricing.css";
-import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../navbar/Navbar";
 import axios from "axios";
 import { Auth } from "../../../context/Auth";
@@ -12,9 +11,8 @@ const PricingClass = () => {
     const [classData, setClassData] = useState([]);
     const [facilityData, setFacilityData] = useState([]);
     const [activityData, setActivityData] = useState([]);
-    const navigate = useNavigate();
     const{user} = useContext(Auth);
-    const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
+    const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
     const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
     useEffect(() => {
         async function fetchClassesData() {

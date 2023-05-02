@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useContext } from 'react'
+import React,{ useState, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -16,22 +16,21 @@ import "./facilityPage.css";
 
 
 function FacilityPage() {
-	const[selectedDate, setSelectedDate] = useState(new Date());
-  const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
-  const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
-  const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
+	const[selectedDate] = useState(new Date());
+  // const {data:facilityData} = useFetch ("http://localhost:4000/api/facilities/");
+  const {data:activityData} = useFetch ("http://localhost:4000/api/activities/");
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
-  const [selectedOptionB, setSelectedOptionB] = useState('');
-  const [selectedOptionC, setSelectedOptionC] = useState('');
+  const [selectedOptionB] = useState('');
+  const [selectedOptionC] = useState('');
   const{user} = useContext(Auth);
   const selectedActivity = activityData ? activityData.find((activity) => activity.activityName === selectedOptionB) : null;
   const activityId = selectedActivity ? selectedActivity.activityId : null;
-  const filteredFacilities = facilityData.filter(facility => facility.facilityName === facility?.facilityName);
+  // const filteredFacilities = facilityData.filter(facility => facility.facilityName === facility?.facilityName);
 
-  const filteredActivities = activityData.filter(activity => activity.facilityName === facility?.facilityName);
-  const uniqueName = [...new Set(filteredActivities.map(activity => activity.activityName))];
-  const [basketItems, setBasketItems] = useState([]);
+  // const filteredActivities = activityData.filter(activity => activity.facilityName === facility?.facilityName);
+  // const uniqueName = [...new Set(filteredActivities.map(activity => activity.activityName))];
+  // const [basketItems, setBasketItems] = useState([]);
 
   //For the time options, using a for loop to increment it the time
   const startTime = parseInt(facility?.startTime?.split(':')[0], 10);
@@ -42,15 +41,15 @@ function FacilityPage() {
     availableTime.push(time);
   }
   
-  const addToBasket = (item) => {
-    setBasketItems([...basketItems, item]);
-  };
+  // const addToBasket = (item) => {
+  //   setBasketItems([...basketItems, item]);
+  // };
 
-  const removeItem = (index) => {
-    const newItems = [...basketItems];
-    newItems.splice(index, 1);
-    setBasketItems(newItems);
-  };
+  // const removeItem = (index) => {
+  //   const newItems = [...basketItems];
+  //   newItems.splice(index, 1);
+  //   setBasketItems(newItems);
+  // };
 
   let Timetable;
   switch(facility.facilityName) {
@@ -78,45 +77,6 @@ function FacilityPage() {
     default:
         Timetable = <div>No schedule available for this facility</div>;
     }
-
-  //Filtering time for the team events in sportshall and swimmingpool
-  //Filtering time for the team events in sportshall and swimmingpool
-  const filteredTimeOptions = (date, activity) => {
-    if (!date || (activity !== 'Team events')) return availableTime;
-    const dayOfWeek = new Date(date).getDay();
-
-    if (facility.facilityName === 'Sports hall') {
-      if (dayOfWeek === 4) { // Thursday
-        const sportsTeamEvent = filteredActivities.find(act => act.facilityName === 'Sports hall' && act.activityName === 'Team events' && act.day === 'Thursday');
-        const formatTime = sportsTeamEvent.startTime.slice(0, -3);
-        return [formatTime];
-      } else if (dayOfWeek === 6) { // Saturday
-        const sportsTeamEvent = filteredActivities.find(act => act.facilityName === 'Sports hall' && act.activityName === 'Team events' && act.day === 'Saturday');
-        const formatTime = sportsTeamEvent.startTime.slice(0, -3);
-        return [formatTime];
-      }
-    } else if (facility.facilityName === 'Swimming pool') {
-      if (dayOfWeek === 5) { // Friday
-        const swimmingTeamEvent = filteredActivities.find(act => act.facilityName === 'Swimming pool' && act.activityName === 'Team events' && act.day === 'Friday');
-        const formattedTime = swimmingTeamEvent.startTime.slice(0, -3);
-        return [formattedTime];
-      } else if (dayOfWeek === 0) { // Sunday
-        const swimmingTeamEvent = filteredActivities.find(act => act.facilityName === 'Swimming pool' && act.activityName === 'Team events' && act.day === 'Sunday');
-        const formattedTime = swimmingTeamEvent.startTime.slice(0, -3);
-        return [formattedTime];
-      } 
-    }
-    return [];
-  };
-
-  //handling changes
-  const handleOptionBChange = (event) => {
-    setSelectedOptionB(event.target.value);
-  };
-  const handleOptionCChange = (event) => {
-    setSelectedOptionC(event.target.value);
-  };
-
 
 const handleBooking = async () => {
   if (user) {

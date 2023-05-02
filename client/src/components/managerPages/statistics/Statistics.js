@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./statistics.css";
 import Navbar from "../managerNavbar/ManagerNavbar";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"
 import moment from 'moment';
 import 'moment/locale/en-gb';
@@ -13,7 +11,7 @@ import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar ,PieChart, 
 const Statistics = () => {
 
     //Get booking data
-    const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
+    const {data:bookingData} = useFetch ("http://localhost:4000/api/bookings/");
     const [bookingDetails, setBookingDetails] = useState([]);
     useEffect(() => {
         setBookingDetails(bookingData.map(({noOfPeople, date, startTime, endTime, bookingType, activityId, classId,facilityName,price}) => {
@@ -33,7 +31,7 @@ const Statistics = () => {
 
 
     //Get activity data
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+    const {data:activityData} = useFetch ("http://localhost:4000/api/activities/");
     const [activityDetails, setActivityDetails] = useState([])
     useEffect(() => {
         setActivityDetails(activityData.map(({ activityId, activityName, facilityName }) => {
@@ -49,7 +47,7 @@ const Statistics = () => {
 
 
     //Get facility data
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
+    const {data:facilityData} = useFetch ("http://localhost:4000/api/facilities/");
     const [facilityDetails, setFacilityDetails] = useState([]);
     useEffect(()=>{
         setFacilityDetails(facilityData.map(({facilityName})=>{
@@ -60,7 +58,7 @@ const Statistics = () => {
     },[facilityData]);
 
     //Get class data
-    const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
+    const {data:classData} = useFetch ("http://localhost:4000/api/classes/");
     const [classNames, setClassNames] = useState([]);
     const [classDetails, setClassDetails] = useState([]);
 

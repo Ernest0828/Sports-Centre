@@ -11,18 +11,18 @@ import EditDiscountForm from "./editDiscountForm";
 const FacilityDetails = () => {
 
   //useFetch Hooks
-    const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
-    const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
-    const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
+    const {data:facilityData, loading:facilityLoading} = useFetch ("http://localhost:4000/api/facilities/");
+    const {data:activityData} = useFetch ("http://localhost:4000/api/activities/");
+    const {data:discountData} = useFetch ("http://localhost:4000/api/discount/");
 
 
   //States
     const [facilityDetails, setFacilityDetails] = useState();
-    const [editableRows, setEditableRows] = useState({});
+    const [editableRows] = useState({});
     const [selectedFacility, setSelectedFacility] = useState(null); 
-    const [selectedActivity, setSelectedActivity] = useState(null); 
+    const [setSelectedActivity] = useState(null); 
     const [discountDetails, setDiscountDetails] = useState()
-    const [selectedDiscount, setSelectedDiscount] = useState(null);
+    const [setSelectedDiscount] = useState(null);
     const [showDiscount, setShowDiscount] = useState(false);
 
 
