@@ -5,12 +5,15 @@ import "./facilityDetails.css";
 import Navbar from "../../managerNavbar/ManagerNavbar";
 import useFetch from "../../hooks/useFetch"
 import EditFacilityForm from "./editFacilityForm";
+import EditDiscountForm from "./editDiscountForm";
+
 
 const FacilityDetails = () => {
 
   //useFetch Hooks
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
+    const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
 
 
   //States
@@ -18,9 +21,16 @@ const FacilityDetails = () => {
     const [editableRows, setEditableRows] = useState({});
     const [selectedFacility, setSelectedFacility] = useState(null); 
     const [selectedActivity, setSelectedActivity] = useState(null); 
+    const [discountDetails, setDiscountDetails] = useState()
+    const [selectedDiscount, setSelectedDiscount] = useState(null);
+    const [showDiscount, setShowDiscount] = useState(false);
+
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+      setShow(false);;
+      setShowDiscount(false);
+    }
 
     // Create a mapping of activityIds based on facilityName and activityName
     const activityIdMap = activityData.reduce((map, activity) => {
@@ -52,7 +62,20 @@ const FacilityDetails = () => {
           activities
         };
       }));
-    }, [facilityData, activityData]);
+
+      if (discountData) {
+        setDiscountDetails({
+          discountId: discountData.id,
+          discount: discountData.discount
+        });
+      }
+
+    }, [facilityData, activityData, discountData]);
+
+    const [discountInputs, setDiscountInputs] = useState({
+      discountId: "",
+      discount:"",
+    });
 
     const [formInputs, setFormInputs] = useState({
       facilityName: "",
@@ -86,6 +109,20 @@ const FacilityDetails = () => {
       });
       setSelectedActivity(activities); 
     }
+    };
+
+    const handleDiscount = (discountId) => {
+      const selectedDiscount = {
+        discountId: discountId,
+        discount: discountDetails.discount
+      };
+      setSelectedDiscount(selectedDiscount);
+      if (selectedDiscount) {
+        setDiscountInputs({
+          discount: selectedDiscount.discount*100
+        });
+      }
+      setShowDiscount(true);
     };
 
     
@@ -150,6 +187,27 @@ const FacilityDetails = () => {
         handleClose();
     };
     
+
+
+    const handleSubmitDiscount = (event) => {
+      event.preventDefault();
+
+      const updatedDiscount = discountInputs.discount/100
+
+      // Send updated facility details to server
+      axios.put(`http://localhost:4000/api/discount/${discountDetails.discountId}`, {
+        discount: updatedDiscount
+        })
+        .then(response => {
+        console.log(response.data);
+        window.location.reload();
+        })
+        .catch(error => {
+        console.log(error);
+        alert('Failed to save data')
+        });
+
+      };
     
 
     const onDelete = async(id) => {
@@ -173,6 +231,13 @@ const FacilityDetails = () => {
           facility={selectedFacility}
           formInputs={formInputs}
           setFormInputs={setFormInputs}
+        />
+        <EditDiscountForm 
+        showDiscount={showDiscount}
+        handleClose={handleClose}
+        handleSubmitDiscount={handleSubmitDiscount}
+        discountInputs={discountInputs}
+        setDiscountInputs={setDiscountInputs}
         />
         {facilityLoading ? (
           "Page is loading please wait"
@@ -223,6 +288,33 @@ const FacilityDetails = () => {
                                     </tr>
                                     ))}
                                 </tbody>
+
+                                <div>
+                                <table className="discountTable" style={{float: "left"}}>
+                                  <thead>
+                                    <tr>
+                                    <th className="discountHead">Discount</th>
+                                    <th className="discountHead"></th>
+                                    <th className="discountHead"></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {discountDetails && discountDetails.discount && (
+                                      <tr>
+                                        <td>Booking Discount: </td>
+                                        <td>
+                                          <span>{(discountDetails.discount * 100).toFixed(2)}%</span>
+                                        </td>
+                                        <td>
+                                        <button className="editCustomerButton" onClick={() => {handleDiscount(discountDetails.discountId)}}>
+                                        Edit
+                                        </button>
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                                </div>
                             </table>
                       </div>
                   </div>

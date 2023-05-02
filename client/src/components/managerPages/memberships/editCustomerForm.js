@@ -24,7 +24,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
   };
       
       return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className = "editCustomerForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Customer</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
@@ -34,14 +34,15 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
       
-            <Form.Group controlId="formCustomerName">
+            <Form.Group controlId="formCustomerEmail">
               <Form.Label>Customer Name</Form.Label>
               <Form.Control
                 type="text"
                 name="customerName"
                 value={formInputs.customerName}
                 onChange={handleFormInputChange}
-                placeholder="Sebastian Lai"
+                placeholder=""
+                disabled = {true}
               />
             </Form.Group>
       
@@ -53,6 +54,7 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 value={formInputs.customerNumber}
                 onChange={handleFormInputChange}
                 placeholder="019283746"
+                disabled = {true}
               />
             </Form.Group>
       
@@ -64,13 +66,22 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 value={formInputs.customerEmail}
                 onChange={handleFormInputChange}
                 placeholder="sebastian@gmail.com"
+                disabled = {true}
               />
             </Form.Group>
-
+            
+            
             <Form.Group controlId="formIsMembership">
                 <div style={{display: 'block'}}>
                 <Form.Label>Member Status</Form.Label>
                 </div>
+                {formInputs.isMembership === true &&
+                <Form.Control
+                name="isMembership"
+                value={formInputs.isMembership ? 'Member' : 'Non-member'}
+                disabled = {true}
+              />}
+                {formInputs.isMembership === false &&
                 <div>
                 <Form.Select
                 name="isMembership"
@@ -81,12 +92,14 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 <option>Non-member</option>
                 </Form.Select>
                 </div>
+                }
                 <div>
                 <Button style={{marginTop: "10px"}}variant="primary" onClick={handleSubmitCancel}>
                   Cancel
                 </Button>
                 </div>
             </Form.Group>
+            
 
             <Form.Group controlId="formMembershipType">
             <div style={{display: 'block'}}>
@@ -98,8 +111,8 @@ const EditCustomerForm = ({show, handleClose, handleSubmit, handleSubmitCancel, 
                 onChange={handleFormInputChange}
             >
                 <option value="">Please choose an option</option>
-                <option value="MONTHLY">Monthly</option>
-                <option value="ANNUAL">Annual</option>
+                <option value="MONTHLY">MONTHLY</option>
+                <option value="ANNUAL">ANNUAL</option>
             </Form.Select>
             </Form.Group>
       

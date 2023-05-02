@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap"
 import axios from 'axios'
+import "./facilityDetails.css";
 import {useContext, useState} from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -28,7 +29,7 @@ const EditFacilityForm = ({show, handleClose, handleSubmit, formInputs, setFormI
   
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal className = "editFacilityForm" show={show} onHide={handleClose}>
         <Modal.Header style={{ background: "none", border: "none" }}>
           <Modal.Title>Edit Facility</Modal.Title>
           <button className="btn-close" onClick={handleClose}>
