@@ -46,5 +46,3 @@ password : test123
 Log in as existing manager:
 email : testManager@gmail.com  
 password : test123
-
-  
