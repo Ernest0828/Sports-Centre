@@ -14,8 +14,9 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
    
 // To run our server
 1. Open the terminal/command prompt and navigate to the server directory:  
-  cd server
-2. Open the terminal/command prompt and navigate to the database directory:  
+  cd server  
+  npm i
+2. Navigate to the database directory:  
   cd database
 3. Start the database server by running the following command:  
   node index.js
@@ -28,8 +29,22 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
   
 // To run our client  
 1. Open the terminal/command prompt and navigate to the client directory:  
-  cd client
+  cd client  
+  npm i
 2. Start the client by running the following command:  
   npm start
+  
+// Once web app is launched
+Log in as existing user:  
+email : test@gmail.com  
+password : test123
+
+Log in as existing staff:  
+email : testStaff@gmail.com  
+password : test123
+
+Log in as existing manager:
+email : testManager@gmail.com
+password : test123
 
   
