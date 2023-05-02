@@ -7,7 +7,7 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
 2. Add the PostgreSQL bin directory path to the PATH environmental variable.
 3. Open the psql command-line tool:  
   In the Windows Command Prompt, run the command:    
-  psql -U postgres  
+    psql -U postgres  
   Enter your password when prompted (On our code, we set the password to hogwarts6393)  
 4. Run a CREATE DATABASE command to create a new database (On our code, we set the db name to be gymCorp)  
    CREATE DATABASE gymCorp WITH ENCODING 'UTF8' LC_COLLATE='English_United Kingdom' LC_CTYPE='English_United Kingdom';
