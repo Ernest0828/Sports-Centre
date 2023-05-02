@@ -18,7 +18,7 @@ const ManagerNavbar = () => {
   return (
     <nav className="managerNavbar">
       <div className="managerNavLeft">
-        <Link to="/manager-profile" className="managerNavLogo">
+        <Link to="/employee-profile" className="managerNavLogo">
           GymCorp
         </Link>
         <ul className="managerNavList">
@@ -71,7 +71,7 @@ const ManagerNavbar = () => {
         {user && 
         <ul className="managerNavList">
           <li className="managerNavItem">
-            <Link to="/manager-profile" className="managerNavLink" >
+            <Link to="/employee-profile" className="managerNavLink" >
               Profile
             </Link>
           </li>

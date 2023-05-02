@@ -255,109 +255,109 @@ const BookingDetails = () => {
       // Send updated customer booking details
       axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
 
-        customerId: customerId,
-        staffId: staffId,
-        date: formInputs.date,
-        startTime: formInputs.startTime,
-        endTime: formInputs.endTime,
-        activityId: activityId,
-        classId: classId,
-        facilityName:  formInputs.facilityName,
-        price: pricee
-        })
-        .then(response => {
-        console.log(response.data);
-        window.location.reload();
-        })
-        .catch(error => {
-        console.log(error);
-        alert('Failed to save data')
-        });
+          customerId: customerId,
+          staffId: staffId,
+          date: formInputs.date,
+          startTime: formInputs.startTime,
+          endTime: formInputs.endTime,
+          activityId: activityId,
+          classId: classId,
+          facilityName:  formInputs.facilityName,
+          price: pricee
+          })
+          .then(response => {
+          console.log(response.data);
+          window.location.reload();
+          })
+          .catch(error => {
+          console.log(error);
+          alert('Failed to save data')
+          });
 
-      // Close modal
-      handleClose();
-    };
-    
+        // Close modal
+        handleClose();
+      };
+      
 
-    const handleAddSubmit = (event) => {
-      event.preventDefault();
+      const handleAddSubmit = (event) => {
+        event.preventDefault();
 
       const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
 
-      const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
-      const staffId = selectedStaff ? selectedStaff.staffId : null;
+        const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
+        const staffId = selectedStaff ? selectedStaff.staffId : null;
 
-      // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
-      //const [day, month, year] = formInputs.date.split("/");
-      //onst date = `${year}/${month}/${day}`;
+        // Convert the date format from DD/MM/YYYY to YYYY/MM/DD
+        //const [day, month, year] = formInputs.date.split("/");
+        //onst date = `${year}/${month}/${day}`;
 
-      const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
-      const activityId = selectedActivity ? selectedActivity.activityId : null;
-      const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
+        const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
+        const activityId = selectedActivity ? selectedActivity.activityId : null;
+        const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
 
 
-      const dateofDay = new Date(formInputs.date);
-      const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
-      const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
-      const classId = selectedClass ? selectedClass.classId : null;
+        const dateofDay = new Date(formInputs.date);
+        const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
+        const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
+        const classId = selectedClass ? selectedClass.classId : null;
 
-      setBookingDetails((prevState) => {
-        const updatedDetails = [...prevState];
-        
-        updatedDetails.customerId = customerId;
-        updatedDetails.staffId = staffId;
-        updatedDetails.date = formInputs.date;
-        updatedDetails.startTime = formInputs.startTime;
-        updatedDetails.activityId =  activityId;
-        updatedDetails.classId =  classId;
-        updatedDetails.facilityName =  formInputs.facilityName;
-        updatedDetails.price =  activityPrice;
-  
-        return updatedDetails;
-        });
+        setBookingDetails((prevState) => {
+          const updatedDetails = [...prevState];
+          
+          updatedDetails.customerId = customerId;
+          updatedDetails.staffId = staffId;
+          updatedDetails.date = formInputs.date;
+          updatedDetails.startTime = formInputs.startTime;
+          updatedDetails.activityId =  activityId;
+          updatedDetails.classId =  classId;
+          updatedDetails.facilityName =  formInputs.facilityName;
+          updatedDetails.price =  activityPrice;
     
-      // Send new staff details to server
-      axios.post('http://localhost:4000/api/bookings/staff-booking', {
-        customerId: customerId,
-        staffId: staffId,
-        date: formInputs.date,
-        start: formInputs.startTime,
-        activityId: activityId,
-        classId: classId,
-        facilityName: formInputs.facilityName,
-        price: activityPrice,
-      })
-        .then(response => {
-          console.log(response.data);
-          window.location.reload();
+          return updatedDetails;
+          });
+      
+        // Send new staff details to server
+        axios.post('http://localhost:4000/api/bookings/staff-booking', {
+          customerId: customerId,
+          staffId: staffId,
+          date: formInputs.date,
+          start: formInputs.startTime,
+          activityId: activityId,
+          classId: classId,
+          facilityName: formInputs.facilityName,
+          price: activityPrice,
         })
-        .catch(error => {
-          console.log(error);
-          alert('No available activity/classes within the selected day and time');
-        });
-    
-      // Close modal
-      handleClose();
-      
-    };
-
-    const handleDelete = (bookingId) => {
-      const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
-      setSelectedBooking(selectedBooking);
-      
-      if (window.confirm("Are you sure you want to delete this booking?")) {
-        axios.delete(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`)
-          .then(() => {
-            // remove the deleted staff member from staffDetails state
-            setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
-            setIsSaved(true); // set a flag to show that the data has been saved
+          .then(response => {
+            console.log(response.data);
+            window.location.reload();
           })
-          .catch(err => console.error('Failed to delete booking', err));
-      }
-    };
-    
-    
+          .catch(error => {
+            console.log(error);
+            alert('No available activity/classes within the selected day and time');
+          });
+      
+        // Close modal
+        handleClose();
+        
+      };
+
+      const handleDelete = (bookingId) => {
+        const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
+        setSelectedBooking(selectedBooking);
+        
+        if (window.confirm("Are you sure you want to delete this booking?")) {
+          axios.delete(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`)
+            .then(() => {
+              // remove the deleted staff member from staffDetails state
+              setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
+              setIsSaved(true); // set a flag to show that the data has been saved
+            })
+            .catch(err => console.error('Failed to delete booking', err));
+        }
+      };
+      
+      
 
     return(
         <div>
@@ -450,15 +450,15 @@ const BookingDetails = () => {
                                 );
                                 })}
                             </tbody>
-                            <div style={{ display: 'flex'}}>
-                              <button className="button addBookingButton" style={{marginRight: "10px"}} onClick={() => { handleAdd();}}>
-                                Book Activity
-                              </button>
-                              <button className="button addBookingButton" onClick={() => { handleAddClass();}}>
-                                Book Class
-                              </button>
-                            </div>
                         </table>
+                        <div className="addBookingButtonContainer">
+                                <button className="button addBookingButton" onClick={() => { handleAdd(); }}>
+                                  Book Activity
+                                </button>
+                                <button className="button addBookingButton" onClick={() => { handleAddClass(); }}>
+                                  Book Class
+                                </button>
+                              </div>
                     </div>
                 </div>
         </div>

@@ -101,6 +101,7 @@ button.editBookingButton {
     cursor: pointer;
 	color: white;
     background-color: grey;
+    margin-right: 10px;
 }
 
 
@@ -112,6 +113,17 @@ button.editBookingButton {
 .bookActivityForm {
     padding-top:60px;
     padding-bottom: 50px;
+}
+.addBookingButtonContainer {
+  display: flex;
+  margin-left: 65px;
+  margin-bottom: 2%;
+}
+
+.addBookingButton:hover {
+  transform: scale(.98);
+  background-color: black;
+  color: white;
 }
 
 .bookClassForm {
