@@ -1,10 +1,5 @@
-import React,{Fragment, Profiler, useState, useContext} from 'react';
-import PropTypes from 'prop-types';
-import {BrowserRouter as Router, 
-  Routes, 
-  Route, 
-  Navigate
-} from 'react-router-dom';
+import React,{ useContext} from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { Auth, AuthProvider } from './context/Auth';
 
 //components
@@ -49,7 +44,6 @@ function App() {
           <Route path="/profile" element={user ? (<Profile/>) : (<Login/>)} />
           <Route path="/book-facility" element={<BookFacility />} />
           <Route path="/book-class" element={<BookClasses />} />
-
           <Route exact path="/manager-login" element={user ? (<ManagerProfile/>) : (<ManagerLogin/>)}/>
           <Route exact path="/facilitydetails" element={<FacilityDetails/>}/>
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
@@ -60,18 +54,12 @@ function App() {
           <Route exact path="/statistics" element={<Statistics/>}/>
           <Route exact path="/employee-profile" element={<ManagerProfile/>}/>
           <Route path="/pricing" element={<Pricing />} />
-
           <Route exact path="/classdetails" element={<ClassDetails/>}/>
           <Route exact path="/staff" element={<Staff/>}/>
           <Route exact path="/booking-success" element={<SuccessPage/>}/>
           <Route exact path="/FacilityPage" element={<FacilityPage/>}/>
           <Route exact path="/MembershipSuccess" element={<MembershipSuccess/>}/>
-          
           <Route exact path="/FacilityBookingDetails" element={<FacilityBookingDetails/>}/>
-          
-
-          
-
         </Routes>
       </Router>
     </AuthProvider>

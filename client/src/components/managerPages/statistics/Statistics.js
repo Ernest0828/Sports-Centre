@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./statistics.css";
 import Navbar from "../managerNavbar/ManagerNavbar";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch"
 import moment from 'moment';
 import 'moment/locale/en-gb';
@@ -43,7 +41,6 @@ const Statistics = () => {
             facilityName
           };
         }));      
-        // console.log("activityDetails:",activityDetails);
       }, [activityData]);
 
 
@@ -144,7 +141,6 @@ const Statistics = () => {
         const initFacDay = daysOfWeek.map(day => {
             const facToDay = { day };
             facilities.forEach(facility => facToDay[facility] = 0);
-            // console.log("factoday:",facToDay);
             return facToDay;
         });
 

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form } from "react-bootstrap";
-import Datepicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
 import FacilityBookingDetails from "./FacilityBooking";
 
 const ClibmingWallSchedule = (props) => {
@@ -138,16 +137,19 @@ const ClibmingWallSchedule = (props) => {
         </table>
       </div>
       <Modal show={showModal}>
-  <Modal.Header>
-    <Modal.Title>Booking Details</Modal.Title>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Header>
-  <Modal.Body>
-    <FacilityBookingDetails selectedDay={selectedDay} selectedTime={selectedTime} />
-  </Modal.Body>
-</Modal>
+        <Modal.Header>
+          <Modal.Title>Booking Details</Modal.Title>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Header>
+        <Modal.Body>
+          <FacilityBookingDetails
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+          />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

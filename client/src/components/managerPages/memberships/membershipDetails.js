@@ -2,10 +2,8 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import "./membership.css";
 import Navbar from "../managerNavbar/ManagerNavbar";
-import { Link } from 'react-router-dom';
 import useFetch from "../hooks/useFetch"
 import axios from 'axios';
-import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditCustomerForm from "./editCustomerForm";
 import AddCustomerForm from "./addCustomerForm";
 
@@ -53,7 +51,7 @@ const MembershipDetails = () => {
       membershipType:"",
     });
 
-
+//Show edit customer membership form
     const handleShow = (customerId) => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
       setSelectedCustomer(selectedCustomer);
@@ -70,9 +68,9 @@ const MembershipDetails = () => {
     }
     };
 
+    //Handle submit edit customer membership form
     const handleSubmit = (event) => {
       event.preventDefault();
-      
 
       if (formInputs.isMembership === true) {
         const hasMembership = membershipData.some(membership => membership.customerId === selectedCustomer.customerId);
@@ -104,10 +102,10 @@ const MembershipDetails = () => {
         }
       }
 
-      // Close modal
       handleClose();
     };
 
+    //Handle cancel customer membership form
     const handleSubmitCancel = () => {
       if (window.confirm("Are you sure you want to cancel membership for this customer?")) {
         axios.post(`http://localhost:4000/api/membership/cancel/${selectedCustomer.customerId}`)
@@ -133,9 +131,9 @@ const MembershipDetails = () => {
           alert('Failed to cancel membership')
           });
       }
-      //update customerDetails table
     };
 
+    //Show register customer  form
     const handleAdd = () => {
       setShowAdd(true);
       if (selectedCustomer) {
@@ -149,6 +147,7 @@ const MembershipDetails = () => {
     };
 
 
+    //Handle submit register customer form
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
@@ -165,7 +164,7 @@ const MembershipDetails = () => {
 
         });
     
-      // Send new staff details to server
+      // Send new customer details to backend
       axios.post('http://localhost:4000/api/auth/register', {
         name: formInputs.customerName,
         number: formInputs.customerNumber,
@@ -181,11 +180,11 @@ const MembershipDetails = () => {
           alert('Failed to save data');
         });
     
-      // Close modal
       handleClose();
     };
 
 
+    //Handle remove customer
     const handleDelete = (customerId) => {
       const selectedCustomer = customerDetails.find(customer => customer.customerId === customerId);
       setSelectedCustomer(selectedCustomer);
@@ -193,7 +192,7 @@ const MembershipDetails = () => {
       if (window.confirm("Are you sure you want to delete this customer?")) {
         axios.delete(`http://localhost:4000/api/customer/${selectedCustomer.customerId}`)
           .then(() => {
-            // remove the deleted staff member from staffDetails state
+            // remove the deleted customer from customer details
             setCustomerDetails(customerDetails.filter(customer => customer.customerId !== selectedCustomer.customerId));
             setIsSaved(true); // set a flag to show that the data has been saved
           })
