@@ -10,25 +10,14 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
   const location = useLocation();
   const facility = location.state ? location.state.facility : null;
   const [selectedDate, setSelectedDate] = useState();
-  const [numBookings, setNumBookings] = useState(0);
+  const [setNumBookings] = useState(0);
   const [totalNoOfPeople, setTotalNoOfPeople] = useState(0);
   const { user } = useContext(Auth);
 
-  const {
-    data: facilityData,
-    loading: facilityLoading,
-    error: facilityError,
-  } = useFetch("http://localhost:4000/api/facilities/");
-  const {
-    data: classData,
-    loading: classLoading,
-    error: classError,
-  } = useFetch("http://localhost:4000/api/classes/");
-  const {
-    data: bookingData,
-    loading: bookingLoading,
-    error: bookingError,
-  } = useFetch("http://localhost:4000/api/bookings/");
+  //fetch data from the required api
+  const {data: facilityData } = useFetch("http://localhost:4000/api/facilities/");
+  const {data: classData} = useFetch("http://localhost:4000/api/classes/");
+  const {data: bookingData} = useFetch("http://localhost:4000/api/bookings/");
 
   const selectedClasses = classData
     ? classData.find((classes) => classes.className === selectedClass)
@@ -69,21 +58,21 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
   }
 
   useEffect(() => {
-    setSelectedDate(getNextDate(selectedDay));
+    setSelectedDate(getNextDate(selectedDay));  //sets the selected date to the next date of the selected day
   }, [selectedDay]);
 
-    const[errorMessage, setErrorMessage] = useState("")
+    const[setErrorMessage] = useState("")
 
   useEffect(() => {
     const bookings = bookingData.filter((b) => {
-      const bookingDate = new Date(b.date)
+      const bookingDate = new Date(b.date) //converts the booking date to a date object which is similar to the selected date
         .toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
         })
         .replace(/\//g, "-");
-      const selectedDateFormatted = selectedDate
+      const selectedDateFormatted = selectedDate //converts the selected date to a date object which is similar to the booking date
         .toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
@@ -96,9 +85,9 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
         b.startTime.substring(0, 5) === selectedTime
       );
     });
-    setNumBookings(bookings.length);
+    setNumBookings(bookings.length); //sets the number of bookings to the length of the bookings array
     const noOfPeople = bookings.reduce((total, b) => total + b.noOfPeople, 0);
-    setTotalNoOfPeople(noOfPeople);
+    setTotalNoOfPeople(noOfPeople); //sets the total number of people to the number of people in the bookings array
   }, [
     bookingData,
     facility.facilityName,
@@ -132,11 +121,11 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
     }
   };
 
-  return (
+  return ( //displays details of the booking in a form
     <Form>
       {console.log("Class :", selectedClass)}
       <Form.Group controlId="formFacility">
-        <Form.Label>Facility: {facility.facilityName} </Form.Label>
+        <Form.Label>Facility: {facility.facilityName} </Form.Label> 
       </Form.Group>
       <Form.Group controlId="formDay">
         <Form.Label>Day</Form.Label>

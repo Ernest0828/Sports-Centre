@@ -14,25 +14,14 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
   const [totalNoOfPeople, setTotalNoOfPeople] = useState(0);
   const { user } = useContext(Auth);
 
-  const {
-    data: facilityData,
-    loading: facilityLoading,
-    error: facilityError,
-  } = useFetch("http://localhost:4000/api/facilities/");
-  const {
-    data: activityData,
-    loading: activityLoading,
-    error: activityError,
-  } = useFetch("http://localhost:4000/api/activities/");
-  const {
-    data: bookingData,
-    loading: bookingLoading,
-    error: bookingError,
-  } = useFetch("http://localhost:4000/api/bookings/");
+  //fetches data from the required api
+  const {data: facilityData} = useFetch("http://localhost:4000/api/facilities/");
+  const {data: activityData} = useFetch("http://localhost:4000/api/activities/");
+  const {data: bookingData} = useFetch("http://localhost:4000/api/bookings/");
 
   const [selectedOptionB, setSelectedOptionB] = useState(" Use");
   let selectedActivity;
-  if (selectedOptionB === "Team events") {
+  if (selectedOptionB === "Team events") { //if the selected activity is team events, then the activity must be on the same day as the facility
     selectedActivity = activityData
       ? activityData.find(
           (activity) =>
@@ -41,7 +30,7 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
             activity.facilityName === facility.facilityName
         )
       : null;
-  } else {
+  } else { //
     selectedActivity = activityData
       ? activityData.find(
           (activity) =>
@@ -58,7 +47,7 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
       )
     : [];
 
-  const furtherFilteredActivities = filteredActivities.filter(
+  const furtherFilteredActivities = filteredActivities.filter( //filters the available activities based on the selected day and time
     (activity) =>
       (selectedDay === "Friday" &&
         (selectedTime === "08:00" || selectedTime === "09:00") &&
@@ -105,7 +94,7 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     }
   }
 
-  function getNextDate(day) {
+  function getNextDate(day) { //gets the next date of the selected day
     const today = new Date();
     const targetDay = getDayOfWeek(day);
 
@@ -123,16 +112,16 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
 
   const[errorMessage, setErrorMessage] = useState("")
   
-  useEffect(() => {
+  useEffect(() => { //
     const bookings = bookingData.filter((b) => {
-      const bookingDate = new Date(b.date)
+      const bookingDate = new Date(b.date) //converts the booking date to a date object which is similar to the selected date
         .toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
         })
         .replace(/\//g, "-");
-      const selectedDateFormatted = selectedDate
+      const selectedDateFormatted = selectedDate //converts the selected date to a date object which is similar to the booking date
         .toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
@@ -145,9 +134,9 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
         b.startTime.substring(0, 5) === selectedTime
       );
     });
-    setNumBookings(bookings.length);
+    setNumBookings(bookings.length); //sets the number of bookings to the length of the bookings array
     const noOfPeople = bookings.reduce((total, b) => total + b.noOfPeople, 0);
-    setTotalNoOfPeople(noOfPeople);
+    setTotalNoOfPeople(noOfPeople); //sets the total number of people to the number of people in the bookings array
   }, [
     bookingData,
     facility.facilityName,
@@ -182,7 +171,7 @@ const FacilityBookingDetails = ({ selectedDay, selectedTime }) => {
     }
   };
 
-  return (
+  return ( //displays details of the booking in a form
     <Form>
       <Form.Group controlId="formFacility">
         <Form.Label>Facility: {facility.facilityName} </Form.Label>

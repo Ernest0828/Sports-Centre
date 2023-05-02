@@ -11,12 +11,8 @@ const SportsHallSchedule = () => {
   useEffect(() => {
     async function getSportsHallSchedule() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/facilities/"
-        );
-        const SportsHall = response.data.find(
-          (facility) => facility.facilityName === "Sports hall"
-        );
+        const response = await axios.get("http://localhost:4000/api/facilities/");
+        const SportsHall = response.data.find((facility) => facility.facilityName === "Sports hall"); //fetches data from facilities api for Sports Hall only
         const startTime = parseInt(SportsHall.startTime.slice(0, 2));
         const endTime = parseInt(SportsHall.endTime.slice(0, 2));
         const poolSchedule = [];
@@ -30,12 +26,8 @@ const SportsHallSchedule = () => {
     }
     async function getSportsHallActivities() {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/activities/"
-        );
-        const activity = response.data.filter(
-          (a) => a.facilityName === "Sports hall"
-        );
+        const response = await axios.get("http://localhost:4000/api/activities/");
+        const activity = response.data.filter((a) => a.facilityName === "Sports hall"); //fetches data from activities api for Sports Hall only
         setSportsHallActivities(activity);
       } catch (error) {
         console.error(error);
@@ -68,15 +60,7 @@ const SportsHallSchedule = () => {
   };
 
   const renderSportsHallSchedule = () => {
-    const weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
+    const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
     return (
       <>
