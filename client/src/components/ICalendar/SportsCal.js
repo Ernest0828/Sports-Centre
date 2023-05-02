@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ICalendar.css";
-import { Modal, Button, Form} from "react-bootstrap";
-import Datepicker from 'react-datepicker';
+import { Modal, Button, Form } from "react-bootstrap";
+import Datepicker from "react-datepicker";
 import BookingDetails from "./FacilityBooking";
 
 const SportsHallSchedule = () => {
@@ -35,8 +35,9 @@ const SportsHallSchedule = () => {
           "http://localhost:4000/api/activities/"
         );
         const activity = response.data.filter(
-          (a) => a.facilityName === "Sports hall");
-          setSportsHallActivities(activity);
+          (a) => a.facilityName === "Sports hall"
+        );
+        setSportsHallActivities(activity);
       } catch (error) {
         console.error(error);
       }
@@ -62,13 +63,21 @@ const SportsHallSchedule = () => {
     setSelectedTime(time);
     setShowModal(true);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const renderSportsHallSchedule = () => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
 
     return (
       <>
@@ -79,12 +88,18 @@ const SportsHallSchedule = () => {
             <tr key={time}>
               <td>{time}</td>
               {weekdays.map((day) => {
-                const activities = SportsHallActivities.filter((a) => 
-                  (a.day === day && a.startTime.slice(0, 5) === formattedTime) ||
-                  (a.day === day && a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
+                const activities = SportsHallActivities.filter(
+                  (a) =>
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === formattedTime) ||
+                    (a.day === day &&
+                      a.startTime.slice(0, 5) === nextHourTime.slice(0, 5))
                 );
                 return (
-                  <td key={day} onClick={() => handleOpenModal(day, formattedTime)} >
+                  <td
+                    key={day}
+                    onClick={() => handleOpenModal(day, formattedTime)}
+                  >
                     {activities.map((a) => (
                       <div key={a.activityName}>
                         <div>{a.activityName}</div>
@@ -92,7 +107,7 @@ const SportsHallSchedule = () => {
                     ))}
                   </td>
                 );
-              })}   
+              })}
             </tr>
           );
         })}
@@ -101,9 +116,9 @@ const SportsHallSchedule = () => {
   };
 
   return (
-    <div className="Cal-container">
+    <div className="calContainer">
       <div className="Calendar">
-        <h1 className="title">Sports Hall Timetable</h1>
+        <h1 className="calendarTitle">Sports Hall Timetable</h1>
         <table className="timetable">
           <thead>
             <tr>
