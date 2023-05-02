@@ -25,7 +25,7 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
 5. Create the necessary tables and data by running the following command:  
   node createData
 6. Start the server by running the following command:  
-  node app.js
+  nodemon app.js
   
 // To run our client  
 1. Open the terminal/command prompt and navigate to the client directory:  

@@ -12,7 +12,7 @@ import AddActivityForm from "./addActivityForm";
 
 const ActivityDetails = () => {
 
-    //useFetch Hooks
+    //useFetch to fetch data from database
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
 
     const [activityDetails, setActivityDetails] = useState()
@@ -41,7 +41,6 @@ const ActivityDetails = () => {
     }, [activityData]);
 
     const [formInputs, setFormInputs] = useState({
-
           activityName: "",
           day: "",
           startTime: "",
@@ -50,6 +49,7 @@ const ActivityDetails = () => {
           facilityName: ""
     });
 
+    //Show edit activity form
     const handleShow = (activityId) => {
       const selectedActivity = activityDetails.find(activity => activity.activityId === activityId);
       setSelectedActivity(selectedActivity);
@@ -68,6 +68,8 @@ const ActivityDetails = () => {
     }
     };
 
+
+    //Handle add activity form
     const handleAdd = () => {
       setShowAdd(true);
       if (selectedActivity) {
@@ -82,6 +84,7 @@ const ActivityDetails = () => {
     }
     };
 
+    //Handle submit edit activity form
     const handleSubmit = (event) => {
       event.preventDefault();
       // Update facility details with formInputs values
@@ -101,7 +104,7 @@ const ActivityDetails = () => {
       return updatedDetails;
       });
 
-      // Send updated facility details to server
+      // Send updated facility details to backend
       axios.put(`http://localhost:4000/api/activities/${selectedActivity.activityId}`, {
 
         activityName: formInputs.activityName,
@@ -119,10 +122,11 @@ const ActivityDetails = () => {
         alert('Failed to save data')
         });
 
-      // Close modal
       handleClose();
     };
 
+
+    //Handle submit add activity form
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
@@ -140,7 +144,7 @@ const ActivityDetails = () => {
         return updatedDetails;
         });
     
-      // Send new staff details to server
+      // Send new staff details to backend
       axios.post('http://localhost:4000/api/activities/activityId', {
         name: formInputs.activityName,
         day: formInputs.day,
@@ -158,10 +162,11 @@ const ActivityDetails = () => {
           alert('Failed to add activity');
         });
     
-      // Close modal
       handleClose();
     };
 
+
+    //Handle delete activity
     const handleDelete = (activityId) => {
       const selectedActivity = activityDetails.find(activity => activity.activityId === activityId);
       setSelectedActivity(selectedActivity);
@@ -169,7 +174,6 @@ const ActivityDetails = () => {
       if (window.confirm("Are you sure you want to delete this activity?")) {
         axios.delete(`http://localhost:4000/api/activities/${selectedActivity.activityId}`)
           .then(() => {
-            // remove the deleted staff member from staffDetails state
             setActivityDetails(activityDetails.filter(activity => activity.activityId !== selectedActivity.activityId));
           })
           .catch(err => console.error('Failed to delete activity', err));

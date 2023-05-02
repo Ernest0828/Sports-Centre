@@ -10,7 +10,7 @@ import EditDiscountForm from "./editDiscountForm";
 
 const FacilityDetails = () => {
 
-  //useFetch Hooks
+  //useFetch to fetch data from database
     const {data:facilityData, loading:facilityLoading, error:facilityError} = useFetch ("http://localhost:4000/api/facilities/");
     const {data:activityData, loading:activityLoading, error:activityError} = useFetch ("http://localhost:4000/api/activities/");
     const {data:discountData, loading:discountLoading, error:discountError} = useFetch ("http://localhost:4000/api/discount/");
@@ -32,7 +32,7 @@ const FacilityDetails = () => {
       setShowDiscount(false);
     }
 
-    // Create a mapping of activityIds based on facilityName and activityName
+    // Getting activityId based on facilityName
     const activityIdMap = activityData.reduce((map, activity) => {
       map[`${activity.facilityName}-${activity.activityName}`] = activity.activityId;
       return map;
@@ -40,7 +40,7 @@ const FacilityDetails = () => {
 
     useEffect(() => {
 
-      // Create a mapping of activityIds based on facilityName and activityName
+      // Getting activityId based on facilityName
       const activityIdMap = activityData.reduce((map, activity) => {
         map[`${activity.facilityName}-${activity.activityName}`] = activity.activityId;
         return map;
@@ -90,6 +90,8 @@ const FacilityDetails = () => {
       ]
     });
 
+
+    //Show edit facility form
     const handleShow = (facilityName) => {
       const selectedFacility = facilityDetails.find(facility => facility.facilityName === facilityName);
       setSelectedFacility(selectedFacility);
@@ -111,6 +113,7 @@ const FacilityDetails = () => {
     }
     };
 
+    //Show discount form
     const handleDiscount = (discountId) => {
       const selectedDiscount = {
         discountId: discountId,
@@ -126,7 +129,7 @@ const FacilityDetails = () => {
     };
 
     
-
+    //Handle submit edit facility form
      const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -146,9 +149,8 @@ const FacilityDetails = () => {
         return updatedDetails;
         });
     
-        // Send updated facility details to server
+        // Send updated facility details to backend
         axios.put(`http://localhost:4000/api/facilities/${selectedFacility.facilityName}`, {
-        //name: formInputs.name,
         capacity: formInputs.capacity,
         startTime: formInputs.startTime,
         endTime: formInputs.endTime,
@@ -183,7 +185,6 @@ const FacilityDetails = () => {
               
         });
 
-        // Close modal
         handleClose();
     };
     
@@ -209,16 +210,6 @@ const FacilityDetails = () => {
 
       };
     
-
-    const onDelete = async(id) => {
-      try {
-        await axios.delete("facilities/id")
-        setFacilityDetails(facilityDetails.filter((item) => item._id !== id));
-      } catch (error) {
-      
-      }
-    };
-
 
     return (
     //<Fragment>

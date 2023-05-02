@@ -10,7 +10,7 @@ import AddClassForm from "./addClassForm";
 
 const ClassDetails = () => {
 
-    //Getting data
+    //Getting data from database
     const {data:classData, loading:classLoading, error:classError} = useFetch ("http://localhost:4000/api/classes/");
 
     const [classDetails, setClassDetails] = useState()
@@ -18,6 +18,7 @@ const ClassDetails = () => {
     const [selectedClass, setSelectedClass] = useState(null);
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
+
     const handleClose = () => {
       setShow(false);
       setShowAdd(false);
@@ -35,6 +36,7 @@ const ClassDetails = () => {
       }));      
     }, [classData]);
 
+
     const [formInputs, setFormInputs] = useState({
       className: "",
       price: "",
@@ -44,6 +46,8 @@ const ClassDetails = () => {
       facilityName:""
     });
 
+
+    //Show edit class form
     const handleShow = (classId) => {
       const selectedClass = classDetails.find(classes => classes.classId === classId);
       setSelectedClass(selectedClass);
@@ -62,6 +66,8 @@ const ClassDetails = () => {
     }
     };
 
+
+    //Show add class form
     const handleAdd = () => {
       setShowAdd(true);
       if (selectedClass) {
@@ -76,6 +82,8 @@ const ClassDetails = () => {
     }
     };
 
+
+    //Handle submit edit form
     const handleSubmit = (event) => {
       event.preventDefault();
       // Update facility details with updated formInput values
@@ -95,7 +103,7 @@ const ClassDetails = () => {
       return updatedDetails;
       });
 
-      // Send updated facility details to server
+      // Send updated facility details to backend
       axios.put(`http://localhost:4000/api/classes/${selectedClass.classId}`, {
 
         name: formInputs.className,
@@ -113,10 +121,11 @@ const ClassDetails = () => {
         alert('Failed to save data')
         });
 
-      // Close modal
       handleClose();
     };
 
+
+    //Handle submit add class form
     const handleAddSubmit = (event) => {
       event.preventDefault();
 
@@ -151,10 +160,11 @@ const ClassDetails = () => {
           alert('Failed to save data');
         });
     
-      // Close modal
       handleClose();
     };
 
+
+    //Handle delete class 
     const handleDelete = (classId) => {
       const selectedClass = classDetails.find(classes => classes.classId === classId);
       setSelectedClass(selectedClass);
@@ -162,7 +172,7 @@ const ClassDetails = () => {
       if (window.confirm("Are you sure you want to delete this class?")) {
         axios.delete(`http://localhost:4000/api/classes/${selectedClass.classId}`)
           .then(() => {
-            // remove the deleted staff member from table
+            // remove the deleted class from table
             setClassDetails(classDetails.filter(classes => classes.classId !== selectedClass.classId));
           })
           .catch(err => console.error('Failed to delete class', err));

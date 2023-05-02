@@ -1,16 +1,16 @@
 import React from 'react';
+import axios from 'axios';
 import {useEffect, useState, useContext} from 'react';
 import "./bookings.css";
 import Navbar from "../../managerNavbar/ManagerNavbar";
 import useFetch from "../../hooks/useFetch"
-import axios from 'axios';
 import EditBookingForm from "./editBookingForm";
 import BookActivityForm from "./bookActivityForm";
 import BookClassForm from "./bookClassForm";
 
 const BookingDetails = () => {
 
-    //useFetch Hooks
+    //Fetching data from database
     const {data:bookingData, loading:bookingLoading, error:bookingError} = useFetch ("http://localhost:4000/api/bookings/");
     const {data:customerData, loading:customerLoading, error:customerError} = useFetch ("http://localhost:4000/api/customer/");
     const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
@@ -32,6 +32,8 @@ const BookingDetails = () => {
 
     useEffect(() => {
         setBookingDetails(bookingData.map((booking) => {
+
+          //Finding customer/staff/activity names using their ID in booking table
             const customer = customerData.find((customer) => customer.customerId === booking.customerId);
             const customerEmail = customer ? customer.customerEmail : "";
             const staff = staffData.find((staff) => staff.staffId === booking.staffId);
@@ -42,30 +44,24 @@ const BookingDetails = () => {
             bookingId: booking.bookingId,
             noOfPeople: booking.noOfPeople,
             date: new Date(booking.date).toISOString().slice(0, 10),
-            //date: booking.date,
             startTime: booking.startTime,
-
             endTime: booking.endTime,
             bookingType: booking.bookingType,
-
             customerId: booking.customerId,
             customerEmail: customerEmail,
-
             staffId: booking.staffId,
             staffName: staff ? staff.staffName : '',
-
             activityId: booking.activityId,
             activityName: activity ? activity.activityName : '',
-
             classId: booking.classId,
             className: classes ? classes.className : '',
-
             facilityName: booking.facilityName,
             price: booking.price
             };
         }));
 
         }, [bookingData]);
+
 
     const [formInputs, setFormInputs] = useState({
       customerId: "",
@@ -84,15 +80,16 @@ const BookingDetails = () => {
       facilityName: "",
     });
 
-
+//Showing form for edit booking button
     const handleShow = (bookingId) => {
       const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
       setSelectedBooking(selectedBooking);
+      const customerEmail = customerData.find(customer => customer.customerId === selectedBooking.customerId)?.customerEmail; 
       setShow(true);
       if (selectedBooking) {
       setFormInputs({
-        customerEmail: selectedBooking.customerEmail,
-        staffName: selectedBooking.staffName,
+        customerId: selectedBooking.customerId,
+        customerEmail: customerEmail,
         bookingType: selectedBooking.bookingType,
         noOfPeople: selectedBooking.noOfPeople,
         date: selectedBooking.date,
@@ -105,6 +102,7 @@ const BookingDetails = () => {
     }
     };
 
+//Showing form for add booking button
     const handleAdd = () => {
       setShowAdd(true);
       if (selectedBooking) {
@@ -121,6 +119,7 @@ const BookingDetails = () => {
     }
     };
 
+//Showing form for add class booking button
     const handleAddClass = () => {
       setShowClass(true);
       if (selectedBooking) {
@@ -137,18 +136,16 @@ const BookingDetails = () => {
     }
     };
   
-
+//Handling booking class function
     const handleClassSubmit = (event) => {
+
       event.preventDefault();
       const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
-
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
       const staffId = selectedStaff ? selectedStaff.staffId : null;
-
       const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
-
       const dateofDay = new Date(formInputs.date);
       const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
       const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
@@ -170,7 +167,7 @@ const BookingDetails = () => {
         return updatedDetails;
         });
     
-      // Send new booking details made by staff
+      // Send new booking details made by staff to backend
       axios.post('http://localhost:4000/api/bookings/staff-booking', {
         customerId: customerId,
         staffId: staffId,
@@ -192,31 +189,27 @@ const BookingDetails = () => {
           }
         });
     
-      // Close modal
       handleClose();
-      
     };
 
+
+    //Handling submitting edit booking form
     const handleSubmit = (event) => {
       event.preventDefault();
 
       const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
-
       const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
       const staffId = selectedStaff ? selectedStaff.staffId : null;
-
       const selectedActivity = activityData.find((activity) => 
       activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
       const activityId = selectedActivity ? selectedActivity.activityId : null;
       const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
-
       const date = new Date(formInputs.date);
       const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
       const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
       const classId = selectedClass ? selectedClass.classId : null;
       const classPrice = classId ? classData.find(classes => classes.classId === classId).price : null;
-
       const pricee = formInputs.activityId === null ? classPrice : activityPrice;
 
       // Update facility details with updated formInput values
@@ -238,7 +231,7 @@ const BookingDetails = () => {
       return updatedDetails;
       });
 
-      // Send updated customer booking details
+      // Send updated customer booking details to backend
       axios.put(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`, {
 
           customerId: customerId,
@@ -260,24 +253,21 @@ const BookingDetails = () => {
           alert('Failed to save data')
           });
 
-        // Close modal
         handleClose();
       };
       
 
+      //Handling submit book actvity form
       const handleAddSubmit = (event) => {
         event.preventDefault();
 
       const selectedCustomer = customerData.find((customer) => customer.customerEmail === formInputs.customerEmail);
       const customerId = selectedCustomer ? selectedCustomer.customerId : null;
-
         const selectedStaff = staffData.find((staff) => staff.staffName === formInputs.staffName);
         const staffId = selectedStaff ? selectedStaff.staffId : null;
-
         const selectedActivity = activityData.find((activity) => activity.activityName === formInputs.activityName && activity.facilityName === formInputs.facilityName);
         const activityId = selectedActivity ? selectedActivity.activityId : null;
         const activityPrice = activityId ? activityData.find(activity => activity.activityId === activityId).price : null;
-
         const dateofDay = new Date(formInputs.date);
         const dayOfWeek = dateofDay.toLocaleDateString('en-US', { weekday: 'long' });
         const selectedClass = classData.find((classes) => classes.className === formInputs.className && classes.day === dayOfWeek);
@@ -298,7 +288,7 @@ const BookingDetails = () => {
           return updatedDetails;
           });
       
-        // Send new staff details to server
+        // Send new staff details to backend
         axios.post('http://localhost:4000/api/bookings/staff-booking', {
           customerId: customerId,
           staffId: staffId,
@@ -318,11 +308,11 @@ const BookingDetails = () => {
             alert('No available activity/classes within the selected day and time');
           });
       
-        // Close modal
         handleClose();
-        
       };
 
+
+      //Handle delete booking 
       const handleDelete = (bookingId) => {
         const selectedBooking = bookingDetails.find(booking => booking.bookingId === bookingId);
         setSelectedBooking(selectedBooking);
@@ -330,7 +320,6 @@ const BookingDetails = () => {
         if (window.confirm("Are you sure you want to delete this booking?")) {
           axios.delete(`http://localhost:4000/api/bookings/${selectedBooking.bookingId}`)
             .then(() => {
-              // remove the deleted staff member from staffDetails state
               setBookingDetails(bookingDetails.filter(booking => booking.bookingId !== selectedBooking.bookingId));
               
             })
@@ -387,7 +376,7 @@ const BookingDetails = () => {
                             </thead>
                             <tbody>
                                 {bookingDetails && bookingDetails.map(({bookingId, customerId, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => {
-                                const customerEmail = customerData.find(customer => customer.customerId === customerId)?.customerEmail;
+                                const customerEmail = customerData.find(customer => customer.customerId === customerId)?.customerEmail; //Display customer email instead of name as email is unique
                                 return (
                                 <tr key = {bookingId}>
                                     <td>
