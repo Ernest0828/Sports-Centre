@@ -28,7 +28,7 @@ const PayButton = () => {
       fetchBasketItems();
     }
   }, [user]);
-
+//Fetching the customer data from database
   const { data: customerData } = useFetch("http://localhost:4000/api/customer/");
   const selectedCustomer =
     (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ??{};

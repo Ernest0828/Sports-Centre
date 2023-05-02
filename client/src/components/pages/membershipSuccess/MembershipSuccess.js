@@ -66,12 +66,7 @@ function MembershipSuccess() {
               {user && user.details && user.details.customerName}! You have
               successfully signed up for a {membershipType} membership.
             </p>
-            <button
-              className="success-button"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
+            <button className="success-button" onClick={() => {navigate("/");}}>
               Back to Home
             </button>
           </div>
