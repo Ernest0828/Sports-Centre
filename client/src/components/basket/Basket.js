@@ -43,9 +43,7 @@ export default function Basket() {
   const {data:customerData} = useFetch ("http://localhost:4000/api/customer/");
   const selectedCustomer = (user && user.details && customerData.find((customer) => customer.customerId === user.details.customerId)) ?? {}
 
-
-
-
+  // function to format the date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -53,17 +51,19 @@ export default function Basket() {
     const day = ("0" + date.getDate()).slice(-2);
     return `${year}/${month}/${day}`;
   };
-
+  // function to format the time
   const formatTime = (timeString) => {
     const [hours, minutes] = timeString.split(":");
     return `${hours}:${minutes}`;
   };
 
+  // function to calculate total cost in basket
   const calculateTotalCost = () => {
     const total = items.reduce((total, item) => total + item.price, 0);
     return total.toFixed(2);
   };
-  
+
+  // remove button
   const handleRemoveItem = async (itemId) => {
     try {
       await axios.delete(`http://localhost:4000/api/basket/${user.details.customerId}/${itemId}`);
@@ -96,7 +96,7 @@ export default function Basket() {
             ))
         ) : (
           <div className="basketLoginPrompt">
-            <div className="basketLoginPromptDescription">Log in add new bookings!</div>
+            <div className="basketLoginPromptDescription">Login to add new bookings!</div>
             <Link to="../login">
               <button className="basketLoginButton">Login</button>
             </Link>

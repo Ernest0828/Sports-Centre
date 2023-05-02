@@ -2,6 +2,7 @@
     margin-top: 120px;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 .bookingDetailsTitle{
@@ -25,6 +26,7 @@
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         color: black;
+    overflow: auto;
 }
 
 
@@ -101,6 +103,7 @@ button.editBookingButton {
     cursor: pointer;
 	color: white;
     background-color: grey;
+    margin-right: 10px;
 }
 
 
@@ -113,8 +116,24 @@ button.editBookingButton {
     padding-top:60px;
     padding-bottom: 50px;
 }
+.addBookingButtonContainer {
+  display: flex;
+  margin-left: 65px;
+  margin-bottom: 2%;
+}
+
+.addBookingButton:hover {
+  transform: scale(.98);
+  background-color: black;
+  color: white;
+}
 
 .bookClassForm {
+    padding-top:60px;
+    padding-bottom: 50px;
+}
+
+.editBookingForm{
     padding-top:60px;
     padding-bottom: 50px;
 }

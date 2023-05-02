@@ -102,14 +102,13 @@ export default function MemberProfileInfo() {
     }, [user.details.customerId],membershipType);
 
     const cancelMembership = async () => {
-        //Cancel membership
-        try {
-            const res = await axios.post("http://localhost:4000/api/membership/cancel/"+ user.details.customerId);
-            alert("Membership cancelled");
-        } 
-        catch (err) {
-            console.log(err.response.data);
-        } 
+        if (window.confirm("Are you sure you want to cancel membership?")) {
+            try {
+                await axios.post("http://localhost:4000/api/membership/cancel/"+ user.details.customerId);
+            } catch (err) {
+                console.log(err.response.data);
+            }
+        }
     };
 
 

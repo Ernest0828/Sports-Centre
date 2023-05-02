@@ -1,10 +1,7 @@
 import React,{ useState, useEffect, useContext } from 'react'
 import Navbar from "../../navbar/Navbar"
 import Basket from '../../basket/Basket';
-import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-// import ICalendar from '../../ICalendar/ICalendar';
-import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
 import { useLocation } from "react-router-dom";
 import { Auth } from '../../../context/Auth';
@@ -132,35 +129,10 @@ const handleBooking = async () => {
       cost: selectedActivity.price,
       activityId: activityId,
     };
-    // Get the current cartItems from localStorage
-    // const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    // const currentCartItems = JSON.parse(localStorage.getItem('basketItems')) || [];
 
-    // // Append the new item to the current cartItems
-    // currentCartItems.push(item);
-
-    // // Store the updated cartItems back to localStorage
-    // localStorage.setItem('basketItems', JSON.stringify(currentCartItems));    
-    // addToBasket(item);  
   } else {
     alert('You must be logged in to book an activity.');
   }
-
-  //Check if user, if not then throw an alert saying not logged in.
-    // try {
-    //   await axios.post('http://localhost:5000/api/bookings/bookingid', {
-    //     date: selectedDate,
-    //     start: selectedOptionC, //Start time
-    //     customerId: user.details.customerId, //Get the current ID **NEED TO CHECK IF THEY"RE A USER/LOGGED IN
-    //     activityId: activityId, //convert the selectedOptionB to activity number
-    //     classId: null, //convert to ID instead of name
-    //     facilityName: facility.facilityName 
-    //   });
-    //   alert('Booking successful!');
-    // } catch (err) {
-    //   console.log(err);
-    //   alert("Booking unsuccessful!");
-    // }
   };
 
   return (
@@ -171,7 +143,7 @@ const handleBooking = async () => {
             {Timetable}
           </div>
           <div className="calenderBasket">
-            <Basket basketItems={basketItems} removeItem={removeItem}/>
+            <Basket/>
           </div>
         </div>
     </div>

@@ -1,9 +1,8 @@
 import { Form, Button } from "react-bootstrap"
 import useFetch from "../../hooks/useFetch"
 import "./bookings.css";
-import {useContext, useState, useEffect} from 'react';
-import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { addDays, isThursday } from "date-fns";
+import {useState, useEffect} from 'react';
+import { Modal } from 'react-bootstrap';
 
 const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, setFormInputs}) => {
 
@@ -17,9 +16,6 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
     const [selectedClass, setSelectedClass] = useState("");
     const [selectedCustomer, setSelectedCustomer] = useState("");
     const [selectedStaff, setSelectedStaff] = useState("");
-    const [activityNames, setActivityNames] = useState([]);
-    const [selectedDate, setSelectedDate] = useState("");
-
     const [uniqueClassNames, setUniqueClassNames] = useState([]);
 
     useEffect(() => {
@@ -118,28 +114,6 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
               </Form.Control>
             </Form.Group>
 
-
-            {/*<Form.Group controlId="formFacility">
-              <Form.Label>Facility</Form.Label>
-              <Form.Control
-                as="select"
-                name="facilityName"
-                value="Studio"
-                disabled={true}
-              >
-                <option disabled selected value="Studio">Studio</option>
-                {facilityData &&
-                  facilityData.map((facility) => (
-                    <option
-                      key={facility.facilityName}
-                      value={facility.facilityName}
-                    >
-                      {facility.facilityName}
-                    </option>
-                  ))}
-              </Form.Control>
-            </Form.Group>*/}
-
       
             <Form.Group controlId="formClass">
               <Form.Label>Class</Form.Label>
@@ -186,14 +160,14 @@ const BookClassForm = ({showClass, handleClose, handleClassSubmit, formInputs, s
               >
                 <option value="">Select Time</option>
                 {[...Array(15).keys()].map((hour) => {
-                  const startHour = hour + 8;
-                  const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
-                  return (
-                    <option>
-                      <option value={`${formattedStartHour}:00`}>{`${formattedStartHour}:00`}</option>
-                    </option>
-                  );
-                })}
+                    const startHour = hour + 8;
+                    const formattedStartHour = startHour < 10 ? `${startHour}` : startHour;
+                    return (
+                      <option key={formattedStartHour} value={`${formattedStartHour}:00`}>
+                        {`${formattedStartHour}:00`}
+                      </option>
+                    );
+                  })}
               </Form.Control>
             </Form.Group>
 

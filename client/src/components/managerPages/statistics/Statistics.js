@@ -69,8 +69,6 @@ const Statistics = () => {
         setClassDetails(classData.map((className, index) => ({ 
             className: className.className,
             classId: className.classId,
-            
-            nextClassName: index < classData.length - 1 ? classData.find(c => c.classId === className.classId + 1).className : ''
 
             
 

@@ -9,16 +9,23 @@ const ManagerNavbar = () => {
   const { dispatch } = useContext(Auth);
   const {user} = useContext(Auth);
 
+  const managerNavRef = useRef();
 
-  /*const showNav = () => {
+	const showNavbar = () => {
+		managerNavRef.current.classList.toggle(
+			"responsive_nav"
+		);
+	};
 
-  }*/
+  
 
 
   return (
-    <nav className="managerNavbar">
+
+    
+    <nav  ref= {managerNavRef} className="managerNavbar">
       <div className="managerNavLeft">
-        <Link to="/manager-profile" className="managerNavLogo">
+        <Link to="/employee-profile" className="managerNavLogo">
           GymCorp
         </Link>
         <ul className="managerNavList">
@@ -35,7 +42,7 @@ const ManagerNavbar = () => {
               Activities
           </li>
           <li className="managerNavItem" onClick={() => window.location.href="/classdetails"}>
-              Classes
+              Classes 
           </li>
         </ul>
       </div>
@@ -71,7 +78,7 @@ const ManagerNavbar = () => {
         {user && 
         <ul className="managerNavList">
           <li className="managerNavItem">
-            <Link to="/manager-profile" className="managerNavLink" >
+            <Link to="/employee-profile" className="managerNavLink" >
               Profile
             </Link>
           </li>
@@ -87,14 +94,17 @@ const ManagerNavbar = () => {
           </li>
         </ul>
         }
-        <button>
-          <FaTimes />
-        </button>
-        
+       <button
+					className="nav-btn nav-close-btn"
+					onClick={showNavbar}>
+					<FaTimes />
+				</button>
       </div>
-      <button>
-        <FaBars />
-      </button>
+      <button
+				className="nav-btn"
+				onClick={showNavbar}>
+				<FaBars />
+			</button>
     </nav>
   );
 };
