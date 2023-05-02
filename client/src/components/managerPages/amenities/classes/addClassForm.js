@@ -44,7 +44,7 @@ const AddClassForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
                 name="className"
                 value={formInputs.className}
                 onChange={handleFormInputChange}
-                placeholder="Badminton"
+                placeholder="Enter class name..."
               />
             </Form.Group>
       
