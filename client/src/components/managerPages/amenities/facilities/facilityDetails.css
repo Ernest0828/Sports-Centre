@@ -2,6 +2,7 @@
     margin-top: 120px;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 .facilityActivityDetailsTable{
@@ -16,6 +17,7 @@
     box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         color: black;
+    overflow: auto;
 }
 
 .facilityActivityDetailsTitle{
