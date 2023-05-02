@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./carousel.css";
 
+// to display images on dashboard
 function Carousel({ images, height, width, autoPlayDuration }) {
   const [current, setCurrent] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);

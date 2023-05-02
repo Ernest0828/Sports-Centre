@@ -1,7 +1,7 @@
-import React,{Fragment, useState} from "react";
+import React,{Fragment} from "react";
 import "./classItem.css";
-import { Link } from "react-router-dom";
-  
+
+// group all the classes
 const Classes = ({ classes }) => {
   return (
     <Fragment>

@@ -1,9 +1,7 @@
 import React,{Fragment, useEffect, useState} from "react";
 import "./bookclasses.css";
-import { Link} from "react-router-dom";
 import Basket from "../../basket/Basket";
 import ClassItem from "../../classItem/ClassItem";
-import FacilityItem from "../../facilityItem/FacilityItem";
 import Navbar from '../../navbar/Navbar';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
@@ -38,9 +36,9 @@ const BookClasses = () => {
     }
   };
   fetchFacilities();
-
   fetchClasses();
 }, []);
+
 //Filter to get "Studio" Facility
 const studioFacilities = facilities.find(
   (facility) => facility.facilityName === "Studio"
