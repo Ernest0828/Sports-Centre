@@ -41,7 +41,7 @@ const EditStaffForm = ({show, handleClose, handleSubmit, formInputs, setFormInpu
                 name="staffName"
                 value={formInputs.staffName}
                 onChange={handleFormInputChange}
-                placeholder="Enter staff name"
+                disabled={true}
               />
             </Form.Group>
       
