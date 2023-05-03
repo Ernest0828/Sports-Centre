@@ -16,18 +16,6 @@ const AddStaffForm = ({showAdd, handleClose, handleAddSubmit, formInputs, setFor
           [name]: value
         });
       }
-        /*if (name === 'isManager') {
-          setFormInputs({
-            ...formInputs,
-            [name]: value === 'Manager' ? true : false
-          });
-        } else {
-          setFormInputs({
-            ...formInputs,
-            [name]: value
-          });
-        }
-      };*/
       
       return (
         <Modal className = "addStaffForm" show={showAdd} onHide={handleClose}>

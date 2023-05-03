@@ -5,6 +5,9 @@ import {Auth} from "../../../context/Auth"
 import axios from "axios";
 
 export default function ManagerProfileInfo() {
+
+    //useFetch to fetch data from database
+    const {data:staffData, loading:staffLoading, error:staffError} = useFetch ("http://localhost:4000/api/employee/");
     
     const {user} = useContext(Auth);
     // State: Edit mode for update profile
@@ -16,6 +19,8 @@ export default function ManagerProfileInfo() {
         setIsEditMode(!isEditMode);
     };
 
+    
+    const [staffId, setStaffId] = useState(user.details.staffId);
     const [staffName, setStaffName] = useState(user.details.staffName);
     const [staffNumber, setStaffNumber] = useState(user.details.staffNumber);
     const [staffEmail, setStaffEmail] = useState(user.details.staffEmail);
