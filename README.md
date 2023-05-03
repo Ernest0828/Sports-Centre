@@ -13,7 +13,7 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
    CREATE DATABASE gymCorp WITH ENCODING 'UTF8' LC_COLLATE='English_United Kingdom' LC_CTYPE='English_United Kingdom';
    
 // To run our server
-1. Open the terminal/command prompt and navigate to the server directory:  
+1. Open the terminal/command prompt, navigate to the server directory and install the packages :  
   cd server  
   npm i
 2. Navigate to the database directory:  
@@ -28,13 +28,13 @@ FROM:  (https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guid
   nodemon app.js
   
 // To run our client  
-1. Open the terminal/command prompt and navigate to the client directory:  
+1. Open the terminal/command prompt, navigate to the client directory and install the packages:  
   cd client  
   npm i
 2. Start the client by running the following command:  
   npm start
   
-// Once web app is launched
+// Once web app is launched  
 Log in as existing user:  
 email : test@gmail.com  
 password : test123
