@@ -57,11 +57,11 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
     return nextDate;
   }
 
+
   useEffect(() => {
     setSelectedDate(getNextDate(selectedDay));  //sets the selected date to the next date of the selected day
   }, [selectedDay]);
-
-    const[setErrorMessage] = useState("")
+  const[errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     const bookings = bookingData.filter((b) => {
@@ -163,6 +163,9 @@ const BookingDetails = ({ selectedDay, selectedTime, selectedClass }) => {
         Submit
       </Button>
       {console.log("Class ID:", classId)}
+      {errorMessage && (
+      <p style={{ color: "red" }}>{errorMessage}</p>
+    )}
     </Form>
   );
 };
