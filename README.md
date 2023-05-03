@@ -43,6 +43,6 @@ Log in as existing staff:
 email : testStaff@gmail.com  
 password : test123
 
-Log in as existing manager:
+Log in as existing manager:  
 email : testManager@gmail.com  
 password : test123
