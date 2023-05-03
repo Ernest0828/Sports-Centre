@@ -196,8 +196,8 @@ const EditBookingForm = ({show, handleClose, handleSubmit, formInputs, setFormIn
                 {staffData &&
                   staffData.map((staff) => (
                     <option
-                      key={staff.staffId}
-                      value={staff.staffId}
+                      key={staff.staffName}
+                      value={staff.staffName}
                     >
                       {staff.staffName}
                     </option>

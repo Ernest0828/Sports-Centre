@@ -375,8 +375,11 @@ const BookingDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookingDetails && bookingDetails.map(({bookingId, customerId, date, startTime, endTime, bookingType, staffName, activityName, className, facilityName}) => {
+                                {bookingDetails && bookingDetails.map(({bookingId, customerId, date, startTime, endTime, bookingType, staffId, activityId, classId, facilityName}) => {
                                 const customerEmail = customerData.find(customer => customer.customerId === customerId)?.customerEmail; //Display customer email instead of name as email is unique
+                                const staffName = staffData.find((staff) => staff.staffId === staffId)?.staffName
+                                const activityName = activityData.find((activity) => activity.activityId === activityId)?.activityName
+                                const className = classData.find((classes) => classes.classId === classId)?.className
                                 return (
                                 <tr key = {bookingId}>
                                     <td>
